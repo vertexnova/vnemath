@@ -18,20 +18,24 @@ using vne::math::examples::LoggingGuard_C;
 
 const char* apiName(GraphicsApi api) {
     switch (api) {
-        case GraphicsApi::eOpenGL: return "OpenGL";
-        case GraphicsApi::eVulkan: return "Vulkan";
-        case GraphicsApi::eMetal: return "Metal";
-        case GraphicsApi::eDirectX: return "DirectX";
-        case GraphicsApi::eWebGPU: return "WebGPU";
-        default: return "Unknown";
+        case GraphicsApi::eOpenGL:
+            return "OpenGL";
+        case GraphicsApi::eVulkan:
+            return "Vulkan";
+        case GraphicsApi::eMetal:
+            return "Metal";
+        case GraphicsApi::eDirectX:
+            return "DirectX";
+        case GraphicsApi::eWebGPU:
+            return "WebGPU";
+        default:
+            return "Unknown";
     }
 }
 
 void printApiInfo(GraphicsApi api) {
-    VNE_LOG_INFO << "  Depth Range: "
-                 << (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne ? "[0, 1]" : "[-1, 1]");
-    VNE_LOG_INFO << "  Handedness: "
-                 << (getHandedness(api) == Handedness::eLeft ? "Left-handed" : "Right-handed");
+    VNE_LOG_INFO << "  Depth Range: " << (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne ? "[0, 1]" : "[-1, 1]");
+    VNE_LOG_INFO << "  Handedness: " << (getHandedness(api) == Handedness::eLeft ? "Left-handed" : "Right-handed");
     VNE_LOG_INFO << "  Y-Flip: " << (needsYFlip(api) ? "Yes" : "No");
 }
 
@@ -52,8 +56,11 @@ void demonstratePerspectiveMatrices() {
     VNE_LOG_INFO << "  Far: " << z_far;
 
     // Generate perspective matrix for each API
-    GraphicsApi apis[] = {GraphicsApi::eOpenGL, GraphicsApi::eVulkan, GraphicsApi::eMetal,
-                          GraphicsApi::eDirectX, GraphicsApi::eWebGPU};
+    GraphicsApi apis[] = {GraphicsApi::eOpenGL,
+                          GraphicsApi::eVulkan,
+                          GraphicsApi::eMetal,
+                          GraphicsApi::eDirectX,
+                          GraphicsApi::eWebGPU};
 
     for (GraphicsApi api : apis) {
         VNE_LOG_INFO << "";
@@ -190,8 +197,7 @@ void demonstrateMVP() {
     // Transform a vertex through the pipeline
     Vec4f localVertex(0.0f, 1.0f, 0.0f, 1.0f);  // Top of unit cube
     Vec4f clipSpace = mvpMatrix * localVertex;
-    Vec3f ndc(clipSpace.x() / clipSpace.w(), clipSpace.y() / clipSpace.w(),
-              clipSpace.z() / clipSpace.w());
+    Vec3f ndc(clipSpace.x() / clipSpace.w(), clipSpace.y() / clipSpace.w(), clipSpace.z() / clipSpace.w());
 
     VNE_LOG_INFO << "Vertex transformation:";
     VNE_LOG_INFO << "  Local: " << localVertex;

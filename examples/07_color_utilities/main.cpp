@@ -18,8 +18,8 @@ using namespace vne::math;
 using vne::math::examples::LoggingGuard_C;
 
 void logColor(const std::string& name, const Color& color) {
-    VNE_LOG_INFO << "  " << name << ": RGBA(" << color.r() << ", " << color.g() << ", " << color.b()
-                 << ", " << color.a() << ")";
+    VNE_LOG_INFO << "  " << name << ": RGBA(" << color.r() << ", " << color.g() << ", " << color.b() << ", "
+                 << color.a() << ")";
 }
 
 void demonstrateColorCreation() {
@@ -84,8 +84,8 @@ void demonstrateColorLerp() {
     VNE_LOG_INFO << "Gradient from Red to Blue:";
     for (float t = 0.0f; t <= 1.0f; t += 0.25f) {
         Color blended = start.lerp(end, t);
-        VNE_LOG_INFO << "  t=" << t << ": RGBA(" << blended.r() << ", " << blended.g() << ", "
-                     << blended.b() << ", " << blended.a() << ")";
+        VNE_LOG_INFO << "  t=" << t << ": RGBA(" << blended.r() << ", " << blended.g() << ", " << blended.b() << ", "
+                     << blended.a() << ")";
     }
 
     // Fade out animation
@@ -194,19 +194,22 @@ void demonstratePracticalExamples() {
             float t = (0.5f - health) * 2.0f;  // 0 at health=0.5, 1 at health=0
             bar_color = warning.lerp(critical, t);
         }
-        VNE_LOG_INFO << "  Health " << static_cast<int>(health * 100) << "%: RGB(" << bar_color.r()
-                     << ", " << bar_color.g() << ", " << bar_color.b() << ")";
+        VNE_LOG_INFO << "  Health " << static_cast<int>(health * 100) << "%: RGB(" << bar_color.r() << ", "
+                     << bar_color.g() << ", " << bar_color.b() << ")";
     }
 
     // Day/night cycle sky color
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "Day/Night sky transition:";
-    Color day_sky(0.529f, 0.808f, 0.922f, 1.0f);   // Light blue
-    Color sunset_sky(1.0f, 0.5f, 0.0f, 1.0f);      // Orange
-    Color night_sky(0.05f, 0.05f, 0.15f, 1.0f);    // Dark blue
+    Color day_sky(0.529f, 0.808f, 0.922f, 1.0f);  // Light blue
+    Color sunset_sky(1.0f, 0.5f, 0.0f, 1.0f);     // Orange
+    Color night_sky(0.05f, 0.05f, 0.15f, 1.0f);   // Dark blue
 
-    std::vector<std::pair<std::string, float>> times = {
-        {"Noon", 0.0f}, {"Afternoon", 0.25f}, {"Sunset", 0.5f}, {"Dusk", 0.75f}, {"Night", 1.0f}};
+    std::vector<std::pair<std::string, float>> times = {{"Noon", 0.0f},
+                                                        {"Afternoon", 0.25f},
+                                                        {"Sunset", 0.5f},
+                                                        {"Dusk", 0.75f},
+                                                        {"Night", 1.0f}};
 
     for (const auto& [name, t] : times) {
         Color sky;

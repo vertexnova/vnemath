@@ -125,8 +125,7 @@ void demonstrateSphereTesting() {
             status = "OUTSIDE";
         }
 
-        VNE_LOG_INFO << "  " << name << ": center=" << sphere.center() << " r=" << sphere.radius()
-                     << " -> " << status;
+        VNE_LOG_INFO << "  " << name << ": center=" << sphere.center() << " r=" << sphere.radius() << " -> " << status;
     }
 }
 
