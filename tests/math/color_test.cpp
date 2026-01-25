@@ -13,9 +13,9 @@
 
 #include "vertexnova/math/color.h"
 
-using namespace VNE;
+using namespace vne;
 
-class ColorTest_C : public ::testing::Test {
+class ColorTest : public ::testing::Test {
     // Interface of test fixture base class
    protected:
     void SetUp() override {}
@@ -29,7 +29,7 @@ class ColorTest_C : public ::testing::Test {
  * Test predefined constant colors of the Color
  *
  */
-TEST_F(ColorTest_C, TestConstColors) {
+TEST_F(ColorTest, TestConstColors) {
     EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.R());
     EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.G());
     EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.B());
@@ -110,7 +110,7 @@ TEST_F(ColorTest_C, TestConstColors) {
  * Test Color
  *
  */
-TEST_F(ColorTest_C, TestColorRGBA) {
+TEST_F(ColorTest, TestColorRGBA) {
     vne::math::Color clr0;
     EXPECT_FLOAT_EQ(0.0f, clr0.R());
     EXPECT_FLOAT_EQ(0.0f, clr0.G());
@@ -150,7 +150,7 @@ TEST_F(ColorTest_C, TestColorRGBA) {
 /**
  * Test Color GetPtr()
  */
-TEST_F(ColorTest_C, TestColorGetPtr) {
+TEST_F(ColorTest, TestColorGetPtr) {
     vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
     EXPECT_EQ(clr.R(), *clr.GetPtr());
     EXPECT_EQ(clr.G(), *(clr.GetPtr() + 1));
@@ -161,7 +161,7 @@ TEST_F(ColorTest_C, TestColorGetPtr) {
 /**
  * Test Color Reset(...) and Set(...)
  */
-TEST_F(ColorTest_C, TestColorSetAndReset) {
+TEST_F(ColorTest, TestColorSetAndReset) {
     vne::math::Color clr(0.0f, 0.01f, 0.2f, 1.0f);
 
     clr.Reset();
@@ -209,7 +209,7 @@ TEST_F(ColorTest_C, TestColorSetAndReset) {
  * clr1.AreSame(clr2, eps)
  *
  */
-TEST_F(ColorTest_C, TestColorAreSame) {
+TEST_F(ColorTest, TestColorAreSame) {
     vne::math::Color clr(0.0f, 0.01f, 0.2f, 1.0f);
     EXPECT_TRUE(clr.AreSame(vne::math::Color(0.00000001f, 0.01000075f, 0.2000001f), 1E-5f));
     EXPECT_FALSE(clr.AreSame(vne::math::Color(0.000001f, 0.010075f, 0.20001f)));
@@ -221,7 +221,7 @@ TEST_F(ColorTest_C, TestColorAreSame) {
  * clr.IsZero(eps)
  *
  */
-TEST_F(ColorTest_C, TestColorIsZero) {
+TEST_F(ColorTest, TestColorIsZero) {
     vne::math::Color clr(0.0f, 0.01f, 0.2f, 1.0f);
     ASSERT_TRUE(vne::math::Color().IsZero());
     ASSERT_FALSE(clr.IsZero());
@@ -233,7 +233,7 @@ TEST_F(ColorTest_C, TestColorIsZero) {
  * clr1.Color(clr2, t)
  *
  */
-TEST_F(ColorTest_C, TestColorLerp) {
+TEST_F(ColorTest, TestColorLerp) {
     vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
     vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
     EXPECT_EQ(clr1, clr1.Lerp(clr2, 0.0f));
@@ -244,7 +244,7 @@ TEST_F(ColorTest_C, TestColorLerp) {
 /**
  * Test Color Addition
  */
-TEST_F(ColorTest_C, TestColorAddition) {
+TEST_F(ColorTest, TestColorAddition) {
     vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
     vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
 
@@ -276,7 +276,7 @@ TEST_F(ColorTest_C, TestColorAddition) {
 /**
  * Test Color Subtraction
  */
-TEST_F(ColorTest_C, TestColorSubtraction) {
+TEST_F(ColorTest, TestColorSubtraction) {
     vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
     vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
 
@@ -308,7 +308,7 @@ TEST_F(ColorTest_C, TestColorSubtraction) {
 /**
  * Test Color multiplication
  */
-TEST_F(ColorTest_C, TestColorMultiplication) {
+TEST_F(ColorTest, TestColorMultiplication) {
     vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
     vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
 
@@ -340,7 +340,7 @@ TEST_F(ColorTest_C, TestColorMultiplication) {
 /**
  * Test Color division
  */
-TEST_F(ColorTest_C, TestColorDivision) {
+TEST_F(ColorTest, TestColorDivision) {
     vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
 
     vne::math::Color out = clr / 0.5f;
@@ -386,7 +386,7 @@ TEST_F(ColorTest_C, TestColorDivision) {
 /**
  * Test Color comparison
  */
-TEST_F(ColorTest_C, TestColorComparison) {
+TEST_F(ColorTest, TestColorComparison) {
     vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
     vne::math::Color clr_equal = clr;
     vne::math::Color clr_less = clr - 0.001f;
@@ -399,7 +399,7 @@ TEST_F(ColorTest_C, TestColorComparison) {
 /**
  * Test Color assignment operator
  */
-TEST_F(ColorTest_C, TestColorAssignmentOp) {
+TEST_F(ColorTest, TestColorAssignmentOp) {
     vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
     vne::math::Color out;
     EXPECT_EQ(clr, out = clr);
@@ -408,7 +408,7 @@ TEST_F(ColorTest_C, TestColorAssignmentOp) {
 /**
  * Test Color specific component
  */
-TEST_F(ColorTest_C, TestColorComponent) {
+TEST_F(ColorTest, TestColorComponent) {
     vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
     EXPECT_EQ(clr.R(), clr[0]);
     EXPECT_EQ(clr.G(), clr[1]);
@@ -416,14 +416,14 @@ TEST_F(ColorTest_C, TestColorComponent) {
     EXPECT_EQ(clr.A(), clr[3]);
 }
 
-TEST_F(ColorTest_C, TestColorStreamOut) {
+TEST_F(ColorTest, TestColorStreamOut) {
     vne::math::Color clr(0.5f, 0.2f, 0.5f, 1.0f);
     std::ostringstream stream;
     stream << clr;
     EXPECT_EQ(stream.str(), "[0.5, 0.2, 0.5, 1]");
 }
 
-TEST_F(ColorTest_C, TestColorStreamIn) {
+TEST_F(ColorTest, TestColorStreamIn) {
     vne::math::Color clr(0.1f, 0.2f, 0.3f, 0.5f);
     vne::math::Color test;
     std::stringstream ss("[0.1, 0.2, 0.3, 0.5]");
@@ -431,7 +431,7 @@ TEST_F(ColorTest_C, TestColorStreamIn) {
     EXPECT_EQ(clr, test);
 }
 
-TEST_F(ColorTest_C, TestColorStreamInWithoutAlpha) {
+TEST_F(ColorTest, TestColorStreamInWithoutAlpha) {
     vne::math::Color clr(0.1f, 0.2f, 0.3f, 1.0f);
     vne::math::Color test;
     std::stringstream ss("[0.1, 0.2, 0.3]");

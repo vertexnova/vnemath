@@ -14,9 +14,9 @@
 #include "vertexnova/math/math_utils.h"
 #include "vertexnova/math/quaternion.h"
 
-using namespace VNE;
+using namespace vne;
 
-class QuaternionTest_C : public ::testing::Test {
+class QuaternionTest : public ::testing::Test {
     // Interface of test fixture base class
    protected:
     void SetUp() override {}
@@ -25,10 +25,10 @@ class QuaternionTest_C : public ::testing::Test {
 };
 
 /**
- * Test QuaternionTest_C constructors
+ * Test QuaternionTest constructors
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionConstructors) {
+TEST_F(QuaternionTest, TestQuaternionConstructors) {
     vne::math::Quaternion quat0 = vne::math::Quaternion();
     EXPECT_EQ(1.0f, quat0.w);
     EXPECT_EQ(0.0f, quat0.x);
@@ -69,7 +69,7 @@ TEST_F(QuaternionTest_C, TestQuaternionConstructors) {
 /**
  * Test Quaternion GetW() and GetVector()
  */
-TEST_F(QuaternionTest_C, TestQuaternionGetVecAndW) {
+TEST_F(QuaternionTest, TestQuaternionGetVecAndW) {
     vne::math::Quaternion quat{1.0f, 13.0f, 12.0f, 5.0f};
     EXPECT_EQ(1.0f, quat.getW());
     EXPECT_EQ(vne::math::Vec3f(13.0f, 12.0f, 5.0f), quat.getVector());
@@ -84,7 +84,7 @@ TEST_F(QuaternionTest_C, TestQuaternionGetVecAndW) {
  * quat.getAngleAxis(float&, vne::math::Vec3f&)
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionAngleAndAxis) {
+TEST_F(QuaternionTest, TestQuaternionAngleAndAxis) {
     vne::math::Quaternion quat{-0.0474207f, 0.756477f, 0.147957f, -0.635297f};
     // Get angle
     EXPECT_EQ(2.0f * vne::math::acos(quat.w), quat.getAngle());
@@ -113,7 +113,7 @@ TEST_F(QuaternionTest_C, TestQuaternionAngleAndAxis) {
  * quat.getZAxis()
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionAxes) {
+TEST_F(QuaternionTest, TestQuaternionAxes) {
     vne::math::Quaternion quat{-0.0474207f, 0.756477f, 0.147957f, -0.635297f};
 
     // Expected X, Y, Z axes after rotation
@@ -137,7 +137,7 @@ TEST_F(QuaternionTest_C, TestQuaternionAxes) {
 /**
  * Test Quaternion Clear()
  */
-TEST_F(QuaternionTest_C, TestQuaternionClear) {
+TEST_F(QuaternionTest, TestQuaternionClear) {
     vne::math::Quaternion quat{2.0f, 13.0f, 12.0f, 5.0f};
 
     quat.clear();
@@ -152,7 +152,7 @@ TEST_F(QuaternionTest_C, TestQuaternionClear) {
  * quat.lengthSquared()
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionLength) {
+TEST_F(QuaternionTest, TestQuaternionLength) {
     vne::math::Quaternion quat{0.0f, 12.0f, 5.0f, 0.0f};
 
     EXPECT_EQ(13.0f, quat.length());
@@ -165,7 +165,7 @@ TEST_F(QuaternionTest_C, TestQuaternionLength) {
  * quat.conjugate()
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionConjugate) {
+TEST_F(QuaternionTest, TestQuaternionConjugate) {
     vne::math::Quaternion quat{1.0f, 13.0f, 12.0f, 5.0f};
 
     EXPECT_EQ(vne::math::Quaternion(1.0f, -13.0f, -12.0f, -5.0f), quat.conjugate());
@@ -177,7 +177,7 @@ TEST_F(QuaternionTest_C, TestQuaternionConjugate) {
  * quat.inverse()
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionInverse) {
+TEST_F(QuaternionTest, TestQuaternionInverse) {
     vne::math::Quaternion quat{1.0f, 13.0f, 12.0f, 5.0f};
     EXPECT_EQ(quat.conjugate() / quat.lengthSquared(), quat.inverse());
 
@@ -192,7 +192,7 @@ TEST_F(QuaternionTest_C, TestQuaternionInverse) {
  * Quaternion::dot(const Quaternion&, const Quaternion&)
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionDot) {
+TEST_F(QuaternionTest, TestQuaternionDot) {
     vne::math::Quaternion quat1{1.0f, 0.0f, 12.0f, 5.0f};
     vne::math::Quaternion quat2{1.0f, 0.0f, 12.0f, 5.0f};
     EXPECT_EQ(170.0f, quat1.dot(quat2));
@@ -202,7 +202,7 @@ TEST_F(QuaternionTest_C, TestQuaternionDot) {
 /**
  * Test Quaternion addition
  */
-TEST_F(QuaternionTest_C, TestQuaternionAddition) {
+TEST_F(QuaternionTest, TestQuaternionAddition) {
     vne::math::Quaternion quat1{0.0f, 2.0f, 3.0f, 0.0f};
     vne::math::Quaternion quat2{1.0f, 13.0f, 12.0f, 5.0f};
     EXPECT_EQ(vne::math::Quaternion(1.0f, 15.0f, 15.0f, 5.0f), quat2 + quat1);
@@ -212,7 +212,7 @@ TEST_F(QuaternionTest_C, TestQuaternionAddition) {
 /**
  * Test Quaternion subtraction
  */
-TEST_F(QuaternionTest_C, TestQuaternionSubtraction) {
+TEST_F(QuaternionTest, TestQuaternionSubtraction) {
     vne::math::Quaternion quat1{0.0f, 0.0f, 2.0f, 3.0f};
     vne::math::Quaternion quat2{1.0f, 13.0f, 12.0f, 5.0f};
     EXPECT_EQ(vne::math::Quaternion(1.0f, 13.0f, 10.0f, 2.0f), quat2 - quat1);
@@ -222,7 +222,7 @@ TEST_F(QuaternionTest_C, TestQuaternionSubtraction) {
 /**
  * Test Quaternion -> quaternion to vector multiplication
  */
-TEST_F(QuaternionTest_C, TestQuaternionxVector) {
+TEST_F(QuaternionTest, TestQuaternionxVector) {
     vne::math::Quaternion quat{1.0f, 13.0f, 12.0f, 5.0f};
     vne::math::Vec3f vec{3.0f, 4.0f, 5.0f};
     EXPECT_EQ(glm::quat(1.0f, 13.0f, 12.0f, 5.0f) * glm::vec3(3.0f, 4.0f, 5.0f), quat * vec);
@@ -232,7 +232,7 @@ TEST_F(QuaternionTest_C, TestQuaternionxVector) {
 /**
  * Test Quaternion multiplication
  */
-TEST_F(QuaternionTest_C, TestQuaternionMultiplication) {
+TEST_F(QuaternionTest, TestQuaternionMultiplication) {
     vne::math::Quaternion quat1{0.0f, 2.0f, 3.0f, 0.0f};
     vne::math::Quaternion quat2{1.0f, 13.0f, 12.0f, 5.0f};
     float scalar = 2.0f;
@@ -246,7 +246,7 @@ TEST_F(QuaternionTest_C, TestQuaternionMultiplication) {
 /**
  * Test Quaternion division
  */
-TEST_F(QuaternionTest_C, TestQuaternionDivision) {
+TEST_F(QuaternionTest, TestQuaternionDivision) {
     float scalar = 2.0f;
     vne::math::Quaternion quat{3.0f, 2.0f, 4.2f, 1.0f};
 
@@ -266,7 +266,7 @@ TEST_F(QuaternionTest_C, TestQuaternionDivision) {
  * Test Quaternion comparison
  *
  */
-TEST_F(QuaternionTest_C, TestQuaternionComparison) {
+TEST_F(QuaternionTest, TestQuaternionComparison) {
     vne::math::Quaternion quat1{0.0f, 2.0f, 3.2f, 1.1f};
     vne::math::Quaternion quat2{1.0f, 1.22f, 0.342f, 1.0f};
     EXPECT_TRUE(quat1 != quat2);
@@ -279,7 +279,7 @@ TEST_F(QuaternionTest_C, TestQuaternionComparison) {
 /**
  * Test Quaternion assignment
  */
-TEST_F(QuaternionTest_C, TestQuaternionAssignment) {
+TEST_F(QuaternionTest, TestQuaternionAssignment) {
     vne::math::Quaternion test_quat;
     vne::math::Quaternion quat{1.0f, 2.0f, 3.2f, 1.1f};
     EXPECT_EQ(quat, test_quat = quat);
@@ -288,7 +288,7 @@ TEST_F(QuaternionTest_C, TestQuaternionAssignment) {
 /**
  * Test Quaternion specific component
  */
-TEST_F(QuaternionTest_C, TestQuaternionComponent) {
+TEST_F(QuaternionTest, TestQuaternionComponent) {
     float value;
     vne::math::Quaternion quat{1.0f, 2.0f, 3.2f, 1.1f};
     EXPECT_EQ(quat.x, quat[0]);
@@ -305,7 +305,7 @@ TEST_F(QuaternionTest_C, TestQuaternionComponent) {
 /**
  * Test Quaternion Unary operator
  */
-TEST_F(QuaternionTest_C, TestQuaternionUniary) {
+TEST_F(QuaternionTest, TestQuaternionUniary) {
     vne::math::Quaternion quat{1.0f, 2.0f, 3.2f, 1.1f};
     EXPECT_EQ(quat * -1.0f, -quat);
     EXPECT_EQ(quat, +quat);
@@ -316,7 +316,7 @@ TEST_F(QuaternionTest_C, TestQuaternionUniary) {
  *
  * std::cout << quat << std::endl;
  */
-TEST_F(QuaternionTest_C, TestQuaternionStreamOut) {
+TEST_F(QuaternionTest, TestQuaternionStreamOut) {
     std::ostringstream stream;
     vne::math::Quaternion quat = vne::math::Quaternion(glm::quat(2.0f, 0.0f, 0.0f, 1.0f));
     stream << quat;
@@ -326,7 +326,7 @@ TEST_F(QuaternionTest_C, TestQuaternionStreamOut) {
 /**
  * Test Quaternion SetFromEulerAngles() and GetEulerAngles()
  */
-TEST_F(QuaternionTest_C, TestQuaternionEulerAngles) {
+TEST_F(QuaternionTest, TestQuaternionEulerAngles) {
     vne::math::Quaternion quat;
     quat.setFromEulerAngles(vne::math::pi<float>() / 2, vne::math::pi<float>() / 4, vne::math::pi<float>() / 6);
 
@@ -340,7 +340,7 @@ TEST_F(QuaternionTest_C, TestQuaternionEulerAngles) {
 /**
  * Test Quaternion SetFromRotationMatrix()
  */
-TEST_F(QuaternionTest_C, TestQuaternionSetFromRotationMatrix) {
+TEST_F(QuaternionTest, TestQuaternionSetFromRotationMatrix) {
     vne::math::Mat4x4f rotation_matrix = vne::math::Mat4x4f::rotate(vne::math::pi<float>() / 2, vne::math::Vec3f(1.0f, 0.0f, 0.0f));
 
     vne::math::Quaternion quat;
@@ -355,7 +355,7 @@ TEST_F(QuaternionTest_C, TestQuaternionSetFromRotationMatrix) {
 /**
  * Test Quaternion Normalize()
  */
-TEST_F(QuaternionTest_C, TestQuaternionNormalize) {
+TEST_F(QuaternionTest, TestQuaternionNormalize) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
     vne::math::Quaternion normalized_quat = quat.normalize();
@@ -365,7 +365,7 @@ TEST_F(QuaternionTest_C, TestQuaternionNormalize) {
 /**
  * Test Quaternion RotateVector()
  */
-TEST_F(QuaternionTest_C, TestQuaternionRotateVector) {
+TEST_F(QuaternionTest, TestQuaternionRotateVector) {
     vne::math::Quaternion quat;
     quat.setFromAxisAngle(vne::math::pi<float>() / 2, vne::math::Vec3f(0.0f, 0.0f, 1.0f));
 
@@ -380,7 +380,7 @@ TEST_F(QuaternionTest_C, TestQuaternionRotateVector) {
 /**
  * Test Quaternion SetIdentity()
  */
-TEST_F(QuaternionTest_C, TestQuaternionSetIdentity) {
+TEST_F(QuaternionTest, TestQuaternionSetIdentity) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
     quat.setIdentity();
@@ -393,7 +393,7 @@ TEST_F(QuaternionTest_C, TestQuaternionSetIdentity) {
 /**
  * Test Quaternion MakeRotate()
  */
-TEST_F(QuaternionTest_C, TestQuaternionMakeRotate) {
+TEST_F(QuaternionTest, TestQuaternionMakeRotate) {
     vne::math::Vec3f from(1.0f, 0.0f, 0.0f);
     vne::math::Vec3f to(0.0f, 1.0f, 0.0f);
 
@@ -409,7 +409,7 @@ TEST_F(QuaternionTest_C, TestQuaternionMakeRotate) {
 /**
  * Test Quaternion Slerp()
  */
-TEST_F(QuaternionTest_C, TestQuaternionSlerp) {
+TEST_F(QuaternionTest, TestQuaternionSlerp) {
     vne::math::Quaternion quat1{1.0f, 0.0f, 0.0f, 0.0f};
     vne::math::Quaternion quat2{0.0f, 1.0f, 0.0f, 0.0f};
 
@@ -424,7 +424,7 @@ TEST_F(QuaternionTest_C, TestQuaternionSlerp) {
 /**
  * Test Quaternion Normalize (Static)
  */
-TEST_F(QuaternionTest_C, TestQuaternionNormalizeStatic) {
+TEST_F(QuaternionTest, TestQuaternionNormalizeStatic) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
     vne::math::Quaternion normalized_quat = vne::math::Quaternion::normalize(quat);
@@ -434,7 +434,7 @@ TEST_F(QuaternionTest_C, TestQuaternionNormalizeStatic) {
 /**
  * Test Quaternion Conjugate (Static)
  */
-TEST_F(QuaternionTest_C, TestQuaternionConjugateStatic) {
+TEST_F(QuaternionTest, TestQuaternionConjugateStatic) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
     vne::math::Quaternion conjugated_quat = vne::math::Quaternion::conjugate(quat);
@@ -444,7 +444,7 @@ TEST_F(QuaternionTest_C, TestQuaternionConjugateStatic) {
 /**
  * Test Quaternion Inverse (Static)
  */
-TEST_F(QuaternionTest_C, TestQuaternionInverseStatic) {
+TEST_F(QuaternionTest, TestQuaternionInverseStatic) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
     vne::math::Quaternion inverse_quat = vne::math::Quaternion::inverse(quat);
@@ -454,7 +454,7 @@ TEST_F(QuaternionTest_C, TestQuaternionInverseStatic) {
 /**
  * Test Quaternion operator[] const
  */
-TEST_F(QuaternionTest_C, TestQuaternionIndexOperatorConst) {
+TEST_F(QuaternionTest, TestQuaternionIndexOperatorConst) {
     const vne::math::Quaternion quat{1.0f, 2.0f, 3.0f, 4.0f};
 
     // Valid index access

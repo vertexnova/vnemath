@@ -14,23 +14,23 @@
 #include "vertexnova/math/math_utils.h"
 #include "vertexnova/math/vec3f.h"
 
-using namespace VNE;
+using namespace vne;
 
-class Vec3fTest_C : public ::testing::Test {
+class Vec3fTest : public ::testing::Test {
     // Interface of test fixture base class
    protected:
     void SetUp() override {
-        neg_xyz_vec = vne::math::Vec3f(-2.0f, 14.5f, -6.75f);
-        zero_vec = vne::math::Vec3f();
-        one_vec = vne::math::Vec3f(1.0f);
-        xyz_vec = vne::math::Vec3f(2.0f, 2.5f, 4.0f);
-        x_axis = vne::math::Vec3f(1.0f, 0.0f, 0.0f);
-        y_axis = vne::math::Vec3f(0.0f, 1.0f, 0.0f);
-        z_axis = vne::math::Vec3f(0.0f, 0.0f, 1.0f);
-        equal_vec = vne::math::Vec3f(567.345f);
-        rand_xyz_vec = vne::math::Vec3f(0.000034f, 0.000057f, 0.875f);
+        neg_xyz_vec__ = vne::math::Vec3f(-2.0f, 14.5f, -6.75f);
+        zero_vec_ = vne::math::Vec3f();
+        one_vec_ = vne::math::Vec3f(1.0f);
+        xyz_vec_ = vne::math::Vec3f(2.0f, 2.5f, 4.0f);
+        x_axis_ = vne::math::Vec3f(1.0f, 0.0f, 0.0f);
+        y_axis_ = vne::math::Vec3f(0.0f, 1.0f, 0.0f);
+        z_axis_ = vne::math::Vec3f(0.0f, 0.0f, 1.0f);
+        equal_vec_ = vne::math::Vec3f(567.345f);
+        rand_xyz_vec__ = vne::math::Vec3f(0.000034f, 0.000057f, 0.875f);
 
-        x_point = vne::math::Vec3f(1.0f, 0.0f, 0.0f);
+        x_point_ = vne::math::Vec3f(1.0f, 0.0f, 0.0f);
         y_point = vne::math::Vec3f(0.0f, 1.0f, 0.0f);
         z_point = vne::math::Vec3f(0.0f, 0.0f, 1.0f);
         xyz_point = vne::math::Vec3f(3.5f, 1.0f, 1.5f);
@@ -39,16 +39,16 @@ class Vec3fTest_C : public ::testing::Test {
     void TearDown() override {}
 
    protected:
-    vne::math::Vec3f zero_vec;
-    vne::math::Vec3f one_vec;
-    vne::math::Vec3f xyz_vec;
-    vne::math::Vec3f x_axis;
-    vne::math::Vec3f y_axis;
-    vne::math::Vec3f z_axis;
-    vne::math::Vec3f equal_vec;
-    vne::math::Vec3f neg_xyz_vec;
-    vne::math::Vec3f rand_xyz_vec;
-    vne::math::Vec3f x_point;
+    vne::math::Vec3f zero_vec_;
+    vne::math::Vec3f one_vec_;
+    vne::math::Vec3f xyz_vec_;
+    vne::math::Vec3f x_axis_;
+    vne::math::Vec3f y_axis_;
+    vne::math::Vec3f z_axis_;
+    vne::math::Vec3f equal_vec_;
+    vne::math::Vec3f neg_xyz_vec__;
+    vne::math::Vec3f rand_xyz_vec__;
+    vne::math::Vec3f x_point_;
     vne::math::Vec3f y_point;
     vne::math::Vec3f z_point;
     vne::math::Vec3f xyz_point;
@@ -61,7 +61,7 @@ class Vec3fTest_C : public ::testing::Test {
  * vne::math::Vec3f::size()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDimensions) {
+TEST_F(Vec3fTest, TestVec3fDimensions) {
     ASSERT_EQ(3, vne::math::Vec3f::dim());
     ASSERT_EQ(3, vne::math::Vec3f::size());
     ASSERT_NE(4, vne::math::Vec3f::dim());
@@ -74,9 +74,9 @@ TEST_F(Vec3fTest_C, TestVec3fDimensions) {
  * vne::math::Vec3f::zero()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fZero) {
-    ASSERT_EQ(glm::vec3(0.0f, 0.0f, 0.0f), zero_vec);
-    ASSERT_EQ(zero_vec, vne::math::Vec3f::zero());
+TEST_F(Vec3fTest, TestVec3fZero) {
+    ASSERT_EQ(glm::vec3(0.0f, 0.0f, 0.0f), zero_vec_);
+    ASSERT_EQ(zero_vec_, vne::math::Vec3f::zero());
 }
 
 /**
@@ -85,9 +85,9 @@ TEST_F(Vec3fTest_C, TestVec3fZero) {
  * vne::math::Vec3f::one()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fOne) {
-    ASSERT_EQ(glm::vec3(1.0f, 1.0f, 1.0f), one_vec);
-    ASSERT_EQ(one_vec, vne::math::Vec3f::one());
+TEST_F(Vec3fTest, TestVec3fOne) {
+    ASSERT_EQ(glm::vec3(1.0f, 1.0f, 1.0f), one_vec_);
+    ASSERT_EQ(one_vec_, vne::math::Vec3f::one());
 }
 
 /**
@@ -96,9 +96,9 @@ TEST_F(Vec3fTest_C, TestVec3fOne) {
  * vne::math::Vec3f::xAxis()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fXAxis) {
-    ASSERT_EQ(glm::vec3(1.0f, 0.0f, 0.0f), x_axis);
-    ASSERT_EQ(x_axis, vne::math::Vec3f::xAxis());
+TEST_F(Vec3fTest, TestVec3fXAxis) {
+    ASSERT_EQ(glm::vec3(1.0f, 0.0f, 0.0f), x_axis_);
+    ASSERT_EQ(x_axis_, vne::math::Vec3f::xAxis());
 }
 
 /**
@@ -107,9 +107,9 @@ TEST_F(Vec3fTest_C, TestVec3fXAxis) {
  * vne::math::Vec3f::yAxis()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fYAxis) {
-    ASSERT_EQ(glm::vec3(0.0f, 1.0f, 0.0f), y_axis);
-    ASSERT_EQ(y_axis, vne::math::Vec3f::yAxis());
+TEST_F(Vec3fTest, TestVec3fYAxis) {
+    ASSERT_EQ(glm::vec3(0.0f, 1.0f, 0.0f), y_axis_);
+    ASSERT_EQ(y_axis_, vne::math::Vec3f::yAxis());
 }
 
 /**
@@ -118,9 +118,9 @@ TEST_F(Vec3fTest_C, TestVec3fYAxis) {
  * vne::math::Vec3f::zAxis()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fZAxis) {
-    ASSERT_EQ(glm::vec3(0.0f, 0.0f, 1.0f), z_axis);
-    ASSERT_EQ(z_axis, vne::math::Vec3f::zAxis());
+TEST_F(Vec3fTest, TestVec3fZAxis) {
+    ASSERT_EQ(glm::vec3(0.0f, 0.0f, 1.0f), z_axis_);
+    ASSERT_EQ(z_axis_, vne::math::Vec3f::zAxis());
 }
 
 /**
@@ -129,7 +129,7 @@ TEST_F(Vec3fTest_C, TestVec3fZAxis) {
  * vne::math::Vec3f::up()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fUp) {
+TEST_F(Vec3fTest, TestVec3fUp) {
     ASSERT_EQ(glm::vec3(0.0f, 1.0f, 0.0f), vne::math::Vec3f::up());
 }
 
@@ -139,7 +139,7 @@ TEST_F(Vec3fTest_C, TestVec3fUp) {
  * vne::math::Vec3f::down()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDown) {
+TEST_F(Vec3fTest, TestVec3fDown) {
     ASSERT_EQ(glm::vec3(0.0f, -1.0f, 0.0f), vne::math::Vec3f::down());
 }
 
@@ -149,7 +149,7 @@ TEST_F(Vec3fTest_C, TestVec3fDown) {
  * vne::math::Vec3f::left()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fLeft) {
+TEST_F(Vec3fTest, TestVec3fLeft) {
     ASSERT_EQ(glm::vec3(-1.0f, 0.0f, 0.0f), vne::math::Vec3f::left());
 }
 
@@ -159,7 +159,7 @@ TEST_F(Vec3fTest_C, TestVec3fLeft) {
  * vne::math::Vec3f::right()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fRight) {
+TEST_F(Vec3fTest, TestVec3fRight) {
     ASSERT_EQ(glm::vec3(1.0f, 0.0f, 0.0f), vne::math::Vec3f::right());
 }
 
@@ -169,7 +169,7 @@ TEST_F(Vec3fTest_C, TestVec3fRight) {
  * vne::math::Vec3f::forward()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fForward) {
+TEST_F(Vec3fTest, TestVec3fForward) {
     ASSERT_EQ(glm::vec3(0.0f, 0.0f, 1.0f), vne::math::Vec3f::forward());
 }
 
@@ -179,7 +179,7 @@ TEST_F(Vec3fTest_C, TestVec3fForward) {
  * vne::math::Vec3f::backward()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fBackward) {
+TEST_F(Vec3fTest, TestVec3fBackward) {
     ASSERT_EQ(glm::vec3(0.0f, 0.0f, -1.0f), vne::math::Vec3f::backward());
 }
 
@@ -189,13 +189,13 @@ TEST_F(Vec3fTest_C, TestVec3fBackward) {
  * vec.getPtr()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fGetPtr) {
-    ASSERT_EQ(xyz_vec.x, *(xyz_vec.getPtr()));
-    ASSERT_EQ(xyz_vec.y, *(xyz_vec.getPtr() + 1));
-    ASSERT_EQ(xyz_vec.z, *(xyz_vec.getPtr() + 2));
-    ASSERT_EQ(x_axis.x, *(x_axis.getPtr()));
-    ASSERT_EQ(x_axis.y, *(x_axis.getPtr() + 1));
-    ASSERT_EQ(x_axis.z, *(x_axis.getPtr() + 2));
+TEST_F(Vec3fTest, TestVec3fGetPtr) {
+    ASSERT_EQ(xyz_vec_.x, *(xyz_vec_.getPtr()));
+    ASSERT_EQ(xyz_vec_.y, *(xyz_vec_.getPtr() + 1));
+    ASSERT_EQ(xyz_vec_.z, *(xyz_vec_.getPtr() + 2));
+    ASSERT_EQ(x_axis_.x, *(x_axis_.getPtr()));
+    ASSERT_EQ(x_axis_.y, *(x_axis_.getPtr() + 1));
+    ASSERT_EQ(x_axis_.z, *(x_axis_.getPtr() + 2));
 }
 
 /**
@@ -204,23 +204,23 @@ TEST_F(Vec3fTest_C, TestVec3fGetPtr) {
  * vec.xy()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fXY) {
-    ASSERT_EQ(vne::math::Vec2f(xyz_vec.x, xyz_vec.y), xyz_vec.xy());
+TEST_F(Vec3fTest, TestVec3fXY) {
+    ASSERT_EQ(vne::math::Vec2f(xyz_vec_.x, xyz_vec_.y), xyz_vec_.xy());
 }
 
 /**
  * Test coping the 2d vector into 3d vector
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fCopy2dVec) {
+TEST_F(Vec3fTest, TestVec3fCopy2dVec) {
     vne::math::Vec3f vec_3d;
-    vne::math::Vec2f vec_2d = xyz_vec.xy();
+    vne::math::Vec2f vec_2d = xyz_vec_.xy();
 
     vec_3d = vec_2d;
-    ASSERT_EQ(vne::math::Vec3f(xyz_vec.x, xyz_vec.y, 0.0f), vec_3d);
+    ASSERT_EQ(vne::math::Vec3f(xyz_vec_.x, xyz_vec_.y, 0.0f), vec_3d);
 
     vec_3d = vne::math::Vec3f(vec_3d, 5.0f);
-    ASSERT_EQ(vne::math::Vec3f(xyz_vec.x, xyz_vec.y, 5.0f), vec_3d);
+    ASSERT_EQ(vne::math::Vec3f(xyz_vec_.x, xyz_vec_.y, 5.0f), vec_3d);
 
     vec_3d = glm::vec2(1.0f, 2.0f);
     ASSERT_EQ(vne::math::Vec3f(1.0f, 2.0f, 0.0f), vec_3d);
@@ -235,19 +235,19 @@ TEST_F(Vec3fTest_C, TestVec3fCopy2dVec) {
  * vec.abs()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fAbs) {
-    ASSERT_EQ(glm::abs(glm::vec3(neg_xyz_vec)), neg_xyz_vec.abs());
+TEST_F(Vec3fTest, TestVec3fAbs) {
+    ASSERT_EQ(glm::abs(glm::vec3(neg_xyz_vec__)), neg_xyz_vec__.abs());
 }
 
 /**
  * Test Vec3f Length and LengthSquare
  */
-TEST_F(Vec3fTest_C, TestVec3fLength) {
-    ASSERT_EQ(glm::length(glm::vec3(0.0f)), zero_vec.length());
-    ASSERT_EQ(glm::length(glm::vec3(1.0f)), one_vec.length());
-    ASSERT_EQ(glm::length(glm::vec3(0.0f)), zero_vec.lengthSquare());
-    ASSERT_EQ(glm::length2(glm::vec3(1.0f)), one_vec.lengthSquare());
-    ASSERT_EQ(glm::length2(glm::vec3(xyz_vec)), xyz_vec.lengthSquare());
+TEST_F(Vec3fTest, TestVec3fLength) {
+    ASSERT_EQ(glm::length(glm::vec3(0.0f)), zero_vec_.length());
+    ASSERT_EQ(glm::length(glm::vec3(1.0f)), one_vec_.length());
+    ASSERT_EQ(glm::length(glm::vec3(0.0f)), zero_vec_.lengthSquare());
+    ASSERT_EQ(glm::length2(glm::vec3(1.0f)), one_vec_.lengthSquare());
+    ASSERT_EQ(glm::length2(glm::vec3(xyz_vec_)), xyz_vec_.lengthSquare());
 }
 
 /**
@@ -256,12 +256,12 @@ TEST_F(Vec3fTest_C, TestVec3fLength) {
  * vec.normalize()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fNormalize) {
-    ASSERT_TRUE(x_axis == x_axis.normalize());
-    ASSERT_TRUE(y_axis == y_axis.normalize());
-    ASSERT_TRUE(x_axis == vne::math::Vec3f::normalized(x_axis));
-    ASSERT_TRUE(y_axis == vne::math::Vec3f::normalized(y_axis));
-    ASSERT_EQ(glm::normalize(glm::vec3(xyz_vec)), xyz_vec.normalize());
+TEST_F(Vec3fTest, TestVec3fNormalize) {
+    ASSERT_TRUE(x_axis_ == x_axis_.normalize());
+    ASSERT_TRUE(y_axis_ == y_axis_.normalize());
+    ASSERT_TRUE(x_axis_ == vne::math::Vec3f::normalized(x_axis_));
+    ASSERT_TRUE(y_axis_ == vne::math::Vec3f::normalized(y_axis_));
+    ASSERT_EQ(glm::normalize(glm::vec3(xyz_vec_)), xyz_vec_.normalize());
 }
 
 /**
@@ -270,9 +270,9 @@ TEST_F(Vec3fTest_C, TestVec3fNormalize) {
  * vec1.min(vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fMin) {
-    ASSERT_TRUE(zero_vec == one_vec.min(zero_vec));
-    ASSERT_TRUE(xyz_vec == neg_xyz_vec.min(xyz_vec));
+TEST_F(Vec3fTest, TestVec3fMin) {
+    ASSERT_TRUE(zero_vec_ == one_vec_.min(zero_vec_));
+    ASSERT_TRUE(xyz_vec_ == neg_xyz_vec__.min(xyz_vec_));
 }
 
 /**
@@ -281,9 +281,9 @@ TEST_F(Vec3fTest_C, TestVec3fMin) {
  * vec1.max(vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fMax) {
-    ASSERT_TRUE(one_vec == one_vec.max(zero_vec));
-    ASSERT_TRUE(neg_xyz_vec == neg_xyz_vec.max(xyz_vec));
+TEST_F(Vec3fTest, TestVec3fMax) {
+    ASSERT_TRUE(one_vec_ == one_vec_.max(zero_vec_));
+    ASSERT_TRUE(neg_xyz_vec__ == neg_xyz_vec__.max(xyz_vec_));
 }
 
 /**
@@ -292,8 +292,8 @@ TEST_F(Vec3fTest_C, TestVec3fMax) {
  * vec.minComponent()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fMinComponent) {
-    ASSERT_TRUE(neg_xyz_vec.z == neg_xyz_vec.minComponent());
+TEST_F(Vec3fTest, TestVec3fMinComponent) {
+    ASSERT_TRUE(neg_xyz_vec__.z == neg_xyz_vec__.minComponent());
 }
 
 /**
@@ -302,8 +302,8 @@ TEST_F(Vec3fTest_C, TestVec3fMinComponent) {
  * vec.maxComponent()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fMaxComponent) {
-    ASSERT_TRUE(neg_xyz_vec.y == neg_xyz_vec.maxComponent());
+TEST_F(Vec3fTest, TestVec3fMaxComponent) {
+    ASSERT_TRUE(neg_xyz_vec__.y == neg_xyz_vec__.maxComponent());
 }
 
 /**
@@ -313,14 +313,14 @@ TEST_F(Vec3fTest_C, TestVec3fMaxComponent) {
  * dot = vne::math::Vec3f::dot(vec1, vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDot) {
-    ASSERT_EQ(0.0f, x_axis.dot(y_axis));
-    ASSERT_EQ(2.0f, xyz_vec.dot(x_axis));
-    ASSERT_EQ(2.5f, xyz_vec.dot(y_axis));
-    ASSERT_EQ(4.0f, xyz_vec.dot(z_axis));
-    ASSERT_EQ(8.5f, xyz_vec.dot(one_vec));
-    ASSERT_EQ(8.5f, vne::math::Vec3f::dot(xyz_vec, one_vec));
-    ASSERT_FLOAT_EQ(vne::math::halfPi<float>(), vne::math::acos(x_axis.dot(y_axis) / (x_axis.length() * y_axis.length())));
+TEST_F(Vec3fTest, TestVec3fDot) {
+    ASSERT_EQ(0.0f, x_axis_.dot(y_axis_));
+    ASSERT_EQ(2.0f, xyz_vec_.dot(x_axis_));
+    ASSERT_EQ(2.5f, xyz_vec_.dot(y_axis_));
+    ASSERT_EQ(4.0f, xyz_vec_.dot(z_axis_));
+    ASSERT_EQ(8.5f, xyz_vec_.dot(one_vec_));
+    ASSERT_EQ(8.5f, vne::math::Vec3f::dot(xyz_vec_, one_vec_));
+    ASSERT_FLOAT_EQ(vne::math::halfPi<float>(), vne::math::acos(x_axis_.dot(y_axis_) / (x_axis_.length() * y_axis_.length())));
 }
 
 /**
@@ -330,13 +330,13 @@ TEST_F(Vec3fTest_C, TestVec3fDot) {
  * cross = vne::math::Vec3f::cross(vec1, vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fCross) {
-    ASSERT_EQ(z_axis, x_axis.cross(y_axis));
-    ASSERT_EQ(z_axis, vne::math::Vec3f::cross(x_axis, y_axis));
-    ASSERT_EQ(glm::cross(x_axis, y_axis), vne::math::Vec3f::cross(x_axis, y_axis));
+TEST_F(Vec3fTest, TestVec3fCross) {
+    ASSERT_EQ(z_axis_, x_axis_.cross(y_axis_));
+    ASSERT_EQ(z_axis_, vne::math::Vec3f::cross(x_axis_, y_axis_));
+    ASSERT_EQ(glm::cross(x_axis_, y_axis_), vne::math::Vec3f::cross(x_axis_, y_axis_));
 
     vne::math::Vec3f test_vec{3.5f, 1.0f, 1.5f};
-    ASSERT_EQ(vne::math::Vec3f(-0.25f, 11.0f, -6.75f), vne::math::Vec3f::cross(xyz_vec, test_vec));
+    ASSERT_EQ(vne::math::Vec3f(-0.25f, 11.0f, -6.75f), vne::math::Vec3f::cross(xyz_vec_, test_vec));
 }
 
 /**
@@ -346,10 +346,10 @@ TEST_F(Vec3fTest_C, TestVec3fCross) {
  * dist = vne::math::Vec3f::distance(vec1, vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDistance) {
-    ASSERT_FLOAT_EQ(static_cast<float>(SQRT_TWO), vne::math::Vec3f::distance(x_point, y_point));
+TEST_F(Vec3fTest, TestVec3fDistance) {
+    ASSERT_FLOAT_EQ(static_cast<float>(SQRT_TWO), vne::math::Vec3f::distance(x_point_, y_point));
     ASSERT_FLOAT_EQ(3.9370039f, vne::math::Vec3f::distance(vne::math::Vec3f::zero(), xyz_point));
-    ASSERT_FLOAT_EQ(3.082207f, vne::math::Vec3f::distance(x_point, xyz_point));
+    ASSERT_FLOAT_EQ(3.082207f, vne::math::Vec3f::distance(x_point_, xyz_point));
     ASSERT_FLOAT_EQ(3.8078866f, xyz_point.distance(y_point));
 }
 
@@ -359,11 +359,11 @@ TEST_F(Vec3fTest_C, TestVec3fDistance) {
  * vec.rotate(axis, angle)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fRotate) {
+TEST_F(Vec3fTest, TestVec3fRotate) {
     vne::math::Vec3f test_vec{1.0f};
-    ASSERT_TRUE(vne::math::Vec3f(1.0f, -1.0f, 1.0f).areSame(test_vec.rotate(z_axis, -static_cast<float>(HALF_PI))));
-    ASSERT_TRUE(vne::math::Vec3f(-1.0f, 1.0f, 1.0f).areSame(test_vec.rotate(z_axis, static_cast<float>(HALF_PI))));
-    ASSERT_TRUE(vne::math::Vec3f(1.41421f, 1.0f, 0.0f).areSame(test_vec.rotate(y_axis, static_cast<float>(QUARTER_PI)), 1E-5f));
+    ASSERT_TRUE(vne::math::Vec3f(1.0f, -1.0f, 1.0f).areSame(test_vec.rotate(z_axis_, -static_cast<float>(HALF_PI))));
+    ASSERT_TRUE(vne::math::Vec3f(-1.0f, 1.0f, 1.0f).areSame(test_vec.rotate(z_axis_, static_cast<float>(HALF_PI))));
+    ASSERT_TRUE(vne::math::Vec3f(1.41421f, 1.0f, 0.0f).areSame(test_vec.rotate(y_axis_, static_cast<float>(QUARTER_PI)), 1E-5f));
 }
 
 /**
@@ -372,12 +372,12 @@ TEST_F(Vec3fTest_C, TestVec3fRotate) {
  * vec.reflect(normal)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fReflect) {
+TEST_F(Vec3fTest, TestVec3fReflect) {
     vne::math::Vec3f test_vec;
-    test_vec.x = -xyz_vec.x;
-    test_vec.y = xyz_vec.y;
-    test_vec.z = -xyz_vec.z;
-    ASSERT_TRUE(test_vec.areSame(-xyz_vec.reflect(y_axis)));
+    test_vec.x = -xyz_vec_.x;
+    test_vec.y = xyz_vec_.y;
+    test_vec.z = -xyz_vec_.z;
+    ASSERT_TRUE(test_vec.areSame(-xyz_vec_.reflect(y_axis_)));
 }
 
 /**
@@ -386,17 +386,17 @@ TEST_F(Vec3fTest_C, TestVec3fReflect) {
  * vec.refract(normal, mu)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fRefract) {
-    xyz_vec.normalize();
+TEST_F(Vec3fTest, TestVec3fRefract) {
+    xyz_vec_.normalize();
     vne::math::Vec3f test_vec;
-    test_vec.x = -xyz_vec.x;
-    test_vec.y = xyz_vec.y;
-    test_vec.z = -xyz_vec.z;
-    ASSERT_TRUE(test_vec.areSame(-xyz_vec.refract(y_axis, 1.0f)));
-    ASSERT_TRUE(y_axis.areSame(-xyz_vec.refract(y_axis, 0.0f)));
+    test_vec.x = -xyz_vec_.x;
+    test_vec.y = xyz_vec_.y;
+    test_vec.z = -xyz_vec_.z;
+    ASSERT_TRUE(test_vec.areSame(-xyz_vec_.refract(y_axis_, 1.0f)));
+    ASSERT_TRUE(y_axis_.areSame(-xyz_vec_.refract(y_axis_, 0.0f)));
     vne::math::Vec3f out_vec{-0.19518f, 0.899735f, -0.39036f};
-    vne::math::Vec3f direction = vne::math::Vec3f::normalized(xyz_vec);
-    ASSERT_TRUE(out_vec.areSame(-direction.refract(y_axis, 0.5f), 1E-5f));
+    vne::math::Vec3f direction = vne::math::Vec3f::normalized(xyz_vec_);
+    ASSERT_TRUE(out_vec.areSame(-direction.refract(y_axis_, 0.5f), 1E-5f));
 }
 
 /**
@@ -405,13 +405,13 @@ TEST_F(Vec3fTest_C, TestVec3fRefract) {
  * vec1.project(vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fProject) {
-    ASSERT_EQ(zero_vec, x_axis.project(y_axis));  // perpendicular vectors
-    ASSERT_EQ(vne::math::Vec3f(0.0f, xyz_vec.y, 0.0f), xyz_vec.project(y_axis));
+TEST_F(Vec3fTest, TestVec3fProject) {
+    ASSERT_EQ(zero_vec_, x_axis_.project(y_axis_));  // perpendicular vectors
+    ASSERT_EQ(vne::math::Vec3f(0.0f, xyz_vec_.y, 0.0f), xyz_vec_.project(y_axis_));
     // Second vector could be any vector ( normal is not compulsory )
-    ASSERT_EQ(vne::math::Vec3f(0, xyz_vec.y, 0.0f), xyz_vec.project(vne::math::Vec3f(0.0f, 3.0f, 0.0f)));
-    // Perpendicular vector of xyz_vec w.r.t. y_axis
-    ASSERT_EQ(vne::math::Vec3f(xyz_vec.x, 0.0f, xyz_vec.z), xyz_vec - xyz_vec.project(y_axis));
+    ASSERT_EQ(vne::math::Vec3f(0, xyz_vec_.y, 0.0f), xyz_vec_.project(vne::math::Vec3f(0.0f, 3.0f, 0.0f)));
+    // Perpendicular vector of xyz_vec_ w.r.t. y_axis_
+    ASSERT_EQ(vne::math::Vec3f(xyz_vec_.x, 0.0f, xyz_vec_.z), xyz_vec_ - xyz_vec_.project(y_axis_));
 }
 
 /**
@@ -420,10 +420,10 @@ TEST_F(Vec3fTest_C, TestVec3fProject) {
  * vec1.reject(vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fReject) {
-    // Perpendicular vector of xyz_vec w.r.t. y_axis
-    ASSERT_EQ(vne::math::Vec3f(xyz_vec.x, 0.0f, xyz_vec.z), xyz_vec - xyz_vec.project(y_axis));
-    ASSERT_EQ(vne::math::Vec3f(xyz_vec.x, 0.0f, xyz_vec.z), xyz_vec.reject(y_axis));
+TEST_F(Vec3fTest, TestVec3fReject) {
+    // Perpendicular vector of xyz_vec_ w.r.t. y_axis_
+    ASSERT_EQ(vne::math::Vec3f(xyz_vec_.x, 0.0f, xyz_vec_.z), xyz_vec_ - xyz_vec_.project(y_axis_));
+    ASSERT_EQ(vne::math::Vec3f(xyz_vec_.x, 0.0f, xyz_vec_.z), xyz_vec_.reject(y_axis_));
 }
 
 /**
@@ -432,12 +432,12 @@ TEST_F(Vec3fTest_C, TestVec3fReject) {
  * p.decomposeVec(q, proj, perp)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDecomposeVec) {
+TEST_F(Vec3fTest, TestVec3fDecomposeVec) {
     vne::math::Vec3f proj;
     vne::math::Vec3f perp;
-    xyz_vec.decomposeVec(y_axis, proj, perp);
-    ASSERT_EQ(vne::math::Vec3f(0, xyz_vec.y, 0.0f), proj);
-    ASSERT_EQ(vne::math::Vec3f(xyz_vec.x, 0.0f, xyz_vec.z), perp);
+    xyz_vec_.decomposeVec(y_axis_, proj, perp);
+    ASSERT_EQ(vne::math::Vec3f(0, xyz_vec_.y, 0.0f), proj);
+    ASSERT_EQ(vne::math::Vec3f(xyz_vec_.x, 0.0f, xyz_vec_.z), perp);
 }
 
 /**
@@ -446,12 +446,12 @@ TEST_F(Vec3fTest_C, TestVec3fDecomposeVec) {
  * p.perpendicular()
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fPerpendicular) {
-    ASSERT_EQ(z_axis, x_axis.perpendicular(y_axis));
-    ASSERT_EQ(x_axis, y_axis.perpendicular(z_axis));
-    ASSERT_EQ(y_axis, z_axis.perpendicular(x_axis));
-    ASSERT_EQ(-y_axis, x_axis.perpendicular(z_axis));
-    ASSERT_EQ(zero_vec, x_axis.perpendicular(zero_vec));
+TEST_F(Vec3fTest, TestVec3fPerpendicular) {
+    ASSERT_EQ(z_axis_, x_axis_.perpendicular(y_axis_));
+    ASSERT_EQ(x_axis_, y_axis_.perpendicular(z_axis_));
+    ASSERT_EQ(y_axis_, z_axis_.perpendicular(x_axis_));
+    ASSERT_EQ(-y_axis_, x_axis_.perpendicular(z_axis_));
+    ASSERT_EQ(zero_vec_, x_axis_.perpendicular(zero_vec_));
 }
 
 /**
@@ -460,12 +460,12 @@ TEST_F(Vec3fTest_C, TestVec3fPerpendicular) {
  * vec1.areSame(vec2, eps)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fAreSame) {
-    ASSERT_TRUE(rand_xyz_vec.areSame(vne::math::Vec3f(0.000034001f, 0.00005705f, 0.8750001f), 1E-5f));
-    ASSERT_FALSE(rand_xyz_vec.areSame(vne::math::Vec3f(0.000035f, 0.000056f, 0.874f)));
-    ASSERT_FALSE(equal_vec.areSame(vne::math::Vec3f(567.3453f)));
-    ASSERT_TRUE(equal_vec.areSame(vne::math::Vec3f(567.34503f)));
-    ASSERT_TRUE(equal_vec.areSame(vne::math::Vec3f(567.3453f), 1E-3f));
+TEST_F(Vec3fTest, TestVec3fAreSame) {
+    ASSERT_TRUE(rand_xyz_vec__.areSame(vne::math::Vec3f(0.000034001f, 0.00005705f, 0.8750001f), 1E-5f));
+    ASSERT_FALSE(rand_xyz_vec__.areSame(vne::math::Vec3f(0.000035f, 0.000056f, 0.874f)));
+    ASSERT_FALSE(equal_vec_.areSame(vne::math::Vec3f(567.3453f)));
+    ASSERT_TRUE(equal_vec_.areSame(vne::math::Vec3f(567.34503f)));
+    ASSERT_TRUE(equal_vec_.areSame(vne::math::Vec3f(567.3453f), 1E-3f));
 }
 
 /**
@@ -474,7 +474,7 @@ TEST_F(Vec3fTest_C, TestVec3fAreSame) {
  * vec1.areAligned(vec2, eps)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fAreAligned) {
+TEST_F(Vec3fTest, TestVec3fAreAligned) {
     ASSERT_FALSE(vne::math::Vec3f(1.0f).areSame(vne::math::Vec3f(2.0f)));
     ASSERT_TRUE(vne::math::Vec3f(1.0f).areAligned(vne::math::Vec3f(2.0f)));
     ASSERT_FALSE(vne::math::Vec3f(1.0f).areAligned(vne::math::Vec3f(2.05f, 2.0f, 2.0f)));
@@ -487,9 +487,9 @@ TEST_F(Vec3fTest_C, TestVec3fAreAligned) {
  * vec1.isZero(eps)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fIsZero) {
-    ASSERT_TRUE(zero_vec.isZero());
-    ASSERT_FALSE(rand_xyz_vec.isZero());
+TEST_F(Vec3fTest, TestVec3fIsZero) {
+    ASSERT_TRUE(zero_vec_.isZero());
+    ASSERT_FALSE(rand_xyz_vec__.isZero());
     ASSERT_FALSE(vne::math::Vec3f(1.0f).isZero(1E-5f));
 }
 
@@ -499,10 +499,10 @@ TEST_F(Vec3fTest_C, TestVec3fIsZero) {
  * vec1.isNormalized(eps)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fIsNormalized) {
-    ASSERT_TRUE(x_axis.isNormalized());
-    ASSERT_TRUE(y_axis.isNormalized());
-    ASSERT_FALSE(xyz_vec.isNormalized());
+TEST_F(Vec3fTest, TestVec3fIsNormalized) {
+    ASSERT_TRUE(x_axis_.isNormalized());
+    ASSERT_TRUE(y_axis_.isNormalized());
+    ASSERT_FALSE(xyz_vec_.isNormalized());
     ASSERT_TRUE(vne::math::Vec3f(static_cast<float>(SQRT_ONE_OVER_THREE)).isNormalized());
 }
 
@@ -513,9 +513,9 @@ TEST_F(Vec3fTest_C, TestVec3fIsNormalized) {
  * p1.isLinearDependent(p2, p3, eps)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fIsLinearDependent) {
-    ASSERT_FALSE(x_axis.isLinearDependent(y_axis));
-    ASSERT_FALSE(x_axis.isLinearDependent(z_axis));
+TEST_F(Vec3fTest, TestVec3fIsLinearDependent) {
+    ASSERT_FALSE(x_axis_.isLinearDependent(y_axis_));
+    ASSERT_FALSE(x_axis_.isLinearDependent(z_axis_));
     ASSERT_TRUE(vne::math::Vec3f(1.0f).isLinearDependent(vne::math::Vec3f(2.0f)));
     ASSERT_TRUE(vne::math::Vec3f(0.0f).isLinearDependent(vne::math::Vec3f(1.0f), vne::math::Vec3f(2.0f)));
 }
@@ -526,7 +526,7 @@ TEST_F(Vec3fTest_C, TestVec3fIsLinearDependent) {
  * vec.composeSpherical(rho, theta, phi)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fComposeSpherical) {
+TEST_F(Vec3fTest, TestVec3fComposeSpherical) {
     vne::math::Vec3f test_vec;
     vne::math::Vec3f out_vec{2.0f, static_cast<float>(2.0 * SQRT_THREE), static_cast<float>(4.0 * SQRT_THREE)};
     ASSERT_TRUE(out_vec.areSame(test_vec.composeSpherical(8.0f, vne::math::pi<float>() / 3.0f, vne::math::pi<float>() / 6.0f)));
@@ -538,7 +538,7 @@ TEST_F(Vec3fTest_C, TestVec3fComposeSpherical) {
  * vec.decomposeSpherical(&rho, &theta, &phi)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDecomposeSpherical) {
+TEST_F(Vec3fTest, TestVec3fDecomposeSpherical) {
     float rho;
     float theta;
     float phi;
@@ -561,7 +561,7 @@ TEST_F(Vec3fTest_C, TestVec3fDecomposeSpherical) {
  * vec.composeCylindrical(r, theta, z)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fComposeCylindrical) {
+TEST_F(Vec3fTest, TestVec3fComposeCylindrical) {
     vne::math::Vec3f test_vec;
     vne::math::Vec3f out_vec{-2.0f, static_cast<float>(2.0 * SQRT_THREE), -2.0f};
     ASSERT_TRUE(out_vec.areSame(test_vec.composeCylindrical(4.0f, vne::math::twoPi<float>() / 3.0f, -2.0f)));
@@ -573,7 +573,7 @@ TEST_F(Vec3fTest_C, TestVec3fComposeCylindrical) {
  * vec.decomposeCylindrical(&r, &theta, &z)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fDecomposeCylindrical) {
+TEST_F(Vec3fTest, TestVec3fDecomposeCylindrical) {
     float r;
     float theta;
     float z;
@@ -597,10 +597,10 @@ TEST_F(Vec3fTest_C, TestVec3fDecomposeCylindrical) {
  * p1.angle(p2, p3)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fAngle) {
-    ASSERT_TRUE(vne::math::areSame(vne::math::halfPi<float>(), x_axis.angle(y_axis)));
+TEST_F(Vec3fTest, TestVec3fAngle) {
+    ASSERT_TRUE(vne::math::areSame(vne::math::halfPi<float>(), x_axis_.angle(y_axis_)));
 
-    ASSERT_TRUE(vne::math::areSame(54.7356071f, vne::math::radToDeg(x_axis.angle(one_vec))));
+    ASSERT_TRUE(vne::math::areSame(54.7356071f, vne::math::radToDeg(x_axis_.angle(one_vec_))));
 
     ASSERT_TRUE(
         vne::math::areSame(vne::math::pi<float>() / 6.0f,
@@ -625,9 +625,9 @@ TEST_F(Vec3fTest_C, TestVec3fAngle) {
  * vec1.midPoint(vec2)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fMidPoint) {
-    ASSERT_EQ(vne::math::Vec3f(0.5f, 0.5f, 0.0f), vne::math::Vec3f::midPoint(x_axis, y_axis));
-    ASSERT_EQ(vne::math::Vec3f(0.5f, 0.5f, 0.0f), x_axis.midPoint(y_axis));
+TEST_F(Vec3fTest, TestVec3fMidPoint) {
+    ASSERT_EQ(vne::math::Vec3f(0.5f, 0.5f, 0.0f), vne::math::Vec3f::midPoint(x_axis_, y_axis_));
+    ASSERT_EQ(vne::math::Vec3f(0.5f, 0.5f, 0.0f), x_axis_.midPoint(y_axis_));
 }
 
 /**
@@ -637,147 +637,147 @@ TEST_F(Vec3fTest_C, TestVec3fMidPoint) {
  * vec1.lerp(vec2, t)
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fLerp) {
-    ASSERT_EQ(vne::math::Vec3f(0.5f, 0.5f, 0.0f), vne::math::Vec3f::lerp(x_axis, y_axis, 0.5f));
-    ASSERT_EQ(x_axis, vne::math::Vec3f::lerp(x_axis, y_axis, 0.0f));
-    ASSERT_EQ(y_axis, vne::math::Vec3f::lerp(x_axis, y_axis, 1.0f));
-    ASSERT_EQ(y_axis, x_axis.lerp(y_axis, 1.0f));
+TEST_F(Vec3fTest, TestVec3fLerp) {
+    ASSERT_EQ(vne::math::Vec3f(0.5f, 0.5f, 0.0f), vne::math::Vec3f::lerp(x_axis_, y_axis_, 0.5f));
+    ASSERT_EQ(x_axis_, vne::math::Vec3f::lerp(x_axis_, y_axis_, 0.0f));
+    ASSERT_EQ(y_axis_, vne::math::Vec3f::lerp(x_axis_, y_axis_, 1.0f));
+    ASSERT_EQ(y_axis_, x_axis_.lerp(y_axis_, 1.0f));
 }
 /**
  * Test Vec3f addition
  *
  */
-TEST_F(Vec3fTest_C, TestVec3fAddition) {
+TEST_F(Vec3fTest, TestVec3fAddition) {
     float scalar = 2.0f;
-    vne::math::Vec3f test_vec = zero_vec;
+    vne::math::Vec3f test_vec = zero_vec_;
 
     // 1. Test vector addition
-    ASSERT_EQ(glm::vec3(zero_vec) + glm::vec3(one_vec), glm::vec3(zero_vec + one_vec));
+    ASSERT_EQ(glm::vec3(zero_vec_) + glm::vec3(one_vec_), glm::vec3(zero_vec_ + one_vec_));
 
     // 2. Test += operator with a vector
-    test_vec += one_vec;
-    ASSERT_EQ(glm::vec3(zero_vec) + glm::vec3(1.0f), glm::vec3(test_vec));
+    test_vec += one_vec_;
+    ASSERT_EQ(glm::vec3(zero_vec_) + glm::vec3(1.0f), glm::vec3(test_vec));
 
     // 3. Test vector-scalar addition
-    ASSERT_EQ(glm::vec3(neg_xyz_vec) + glm::vec3(scalar), glm::vec3(neg_xyz_vec + scalar));
+    ASSERT_EQ(glm::vec3(neg_xyz_vec__) + glm::vec3(scalar), glm::vec3(neg_xyz_vec__ + scalar));
 
     // 4. Test += operator with a scalar
     test_vec += scalar;
-    ASSERT_EQ(glm::vec3(zero_vec + one_vec) + glm::vec3(scalar), glm::vec3(test_vec));
+    ASSERT_EQ(glm::vec3(zero_vec_ + one_vec_) + glm::vec3(scalar), glm::vec3(test_vec));
 
     // 5. Test chain addition of vector and scalar
-    ASSERT_EQ(glm::vec3(test_vec) + glm::vec3(xyz_vec) + glm::vec3(scalar), glm::vec3(test_vec + xyz_vec + scalar));
+    ASSERT_EQ(glm::vec3(test_vec) + glm::vec3(xyz_vec_) + glm::vec3(scalar), glm::vec3(test_vec + xyz_vec_ + scalar));
 
     // 6. Test chain addition with a random vector
-    ASSERT_EQ(glm::vec3(test_vec) + glm::vec3(xyz_vec) + glm::vec3(scalar) + glm::vec3(rand_xyz_vec),
-              glm::vec3(test_vec + xyz_vec + scalar + rand_xyz_vec));
+    ASSERT_EQ(glm::vec3(test_vec) + glm::vec3(xyz_vec_) + glm::vec3(scalar) + glm::vec3(rand_xyz_vec__),
+              glm::vec3(test_vec + xyz_vec_ + scalar + rand_xyz_vec__));
 }
 
 /**
  * Test Vec3f subtraction
  */
-TEST_F(Vec3fTest_C, TestVec3fSubtraction) {
+TEST_F(Vec3fTest, TestVec3fSubtraction) {
     float scalar = 2.45f;
-    vne::math::Vec3f test_vec = zero_vec;
+    vne::math::Vec3f test_vec = zero_vec_;
 
     // 1. Test vector subtraction
-    ASSERT_EQ(glm::vec3(neg_xyz_vec) - glm::vec3(one_vec), glm::vec3(neg_xyz_vec - one_vec));
+    ASSERT_EQ(glm::vec3(neg_xyz_vec__) - glm::vec3(one_vec_), glm::vec3(neg_xyz_vec__ - one_vec_));
 
     // 2. Test -= operator with a vector
-    test_vec -= neg_xyz_vec;
-    ASSERT_EQ(glm::vec3(zero_vec) - glm::vec3(neg_xyz_vec), glm::vec3(test_vec));
+    test_vec -= neg_xyz_vec__;
+    ASSERT_EQ(glm::vec3(zero_vec_) - glm::vec3(neg_xyz_vec__), glm::vec3(test_vec));
 
     // 3. Test vector-scalar subtraction
-    ASSERT_EQ(glm::vec3(neg_xyz_vec) - glm::vec3(scalar), glm::vec3(neg_xyz_vec - scalar));
+    ASSERT_EQ(glm::vec3(neg_xyz_vec__) - glm::vec3(scalar), glm::vec3(neg_xyz_vec__ - scalar));
 
     // 4. Test -= operator with a scalar
     test_vec -= scalar;
-    ASSERT_EQ(glm::vec3(zero_vec - neg_xyz_vec) - glm::vec3(scalar), glm::vec3(test_vec));
+    ASSERT_EQ(glm::vec3(zero_vec_ - neg_xyz_vec__) - glm::vec3(scalar), glm::vec3(test_vec));
 
     // 5. Test chain subtraction of vector and scalar
-    ASSERT_EQ(glm::vec3(test_vec) - glm::vec3(xyz_vec) + glm::vec3(scalar), glm::vec3(test_vec - xyz_vec + scalar));
+    ASSERT_EQ(glm::vec3(test_vec) - glm::vec3(xyz_vec_) + glm::vec3(scalar), glm::vec3(test_vec - xyz_vec_ + scalar));
 }
 
 /**
  * Test Vec3f multiplication
  */
-TEST_F(Vec3fTest_C, TestVec3fMultiplication) {
+TEST_F(Vec3fTest, TestVec3fMultiplication) {
     float scalar = 0.000045f;
-    vne::math::Vec3f test_vec = one_vec;
+    vne::math::Vec3f test_vec = one_vec_;
 
     // 1. Test vector multiplication
-    ASSERT_EQ(glm::vec3(xyz_vec) * glm::vec3(test_vec), glm::vec3(xyz_vec * test_vec));
+    ASSERT_EQ(glm::vec3(xyz_vec_) * glm::vec3(test_vec), glm::vec3(xyz_vec_ * test_vec));
 
     // 2. Test *= operator with a vector
-    test_vec *= xyz_vec;
-    ASSERT_EQ(glm::vec3(one_vec * xyz_vec), glm::vec3(test_vec));
+    test_vec *= xyz_vec_;
+    ASSERT_EQ(glm::vec3(one_vec_ * xyz_vec_), glm::vec3(test_vec));
 
     // 3. Test vector-scalar multiplication
     ASSERT_EQ(glm::vec3(test_vec) * scalar, glm::vec3(test_vec * scalar));
 
     // 4. Test *= operator with a scalar
     test_vec *= scalar;
-    ASSERT_EQ(glm::vec3(one_vec * xyz_vec * scalar), glm::vec3(test_vec));
+    ASSERT_EQ(glm::vec3(one_vec_ * xyz_vec_ * scalar), glm::vec3(test_vec));
 }
 
 /**
  * Test Vec3f division
  */
-TEST_F(Vec3fTest_C, TestVec3fDivision) {
+TEST_F(Vec3fTest, TestVec3fDivision) {
     float scalar = 45.345f;
-    vne::math::Vec3f test_vec = one_vec;
+    vne::math::Vec3f test_vec = one_vec_;
 
     // 1. Test vector division
-    ASSERT_EQ(glm::vec3(xyz_vec) / glm::vec3(test_vec), glm::vec3(xyz_vec / test_vec));
+    ASSERT_EQ(glm::vec3(xyz_vec_) / glm::vec3(test_vec), glm::vec3(xyz_vec_ / test_vec));
 
     // 2. Test /= operator with a vector
-    test_vec /= xyz_vec;
-    ASSERT_EQ(glm::vec3(one_vec / xyz_vec), glm::vec3(test_vec));
+    test_vec /= xyz_vec_;
+    ASSERT_EQ(glm::vec3(one_vec_ / xyz_vec_), glm::vec3(test_vec));
 
     // 3. Test vector-scalar division
     ASSERT_EQ(glm::vec3(test_vec) / scalar, glm::vec3(test_vec / scalar));
 
     // 4. Test /= operator with a scalar
     test_vec /= scalar;
-    ASSERT_EQ(glm::vec3(one_vec / xyz_vec / scalar), glm::vec3(test_vec));
+    ASSERT_EQ(glm::vec3(one_vec_ / xyz_vec_ / scalar), glm::vec3(test_vec));
 }
 
 /**
  * Test Vec3f comparison
  */
-TEST_F(Vec3fTest_C, TestVec3fComparison) {
-    vne::math::Vec3f test_vec_equal = xyz_vec;
-    vne::math::Vec3f test_vec_less = xyz_vec - 2.0f;
-    vne::math::Vec3f test_vec_greater = xyz_vec + 2.0f;
-    ASSERT_TRUE(xyz_vec > test_vec_less);
-    ASSERT_TRUE(xyz_vec < test_vec_greater);
-    ASSERT_TRUE(xyz_vec == test_vec_equal);
-    ASSERT_TRUE(xyz_vec != test_vec_less);
-    ASSERT_TRUE(xyz_vec != test_vec_greater);
+TEST_F(Vec3fTest, TestVec3fComparison) {
+    vne::math::Vec3f test_vec_equal = xyz_vec_;
+    vne::math::Vec3f test_vec_less = xyz_vec_ - 2.0f;
+    vne::math::Vec3f test_vec_greater = xyz_vec_ + 2.0f;
+    ASSERT_TRUE(xyz_vec_ > test_vec_less);
+    ASSERT_TRUE(xyz_vec_ < test_vec_greater);
+    ASSERT_TRUE(xyz_vec_ == test_vec_equal);
+    ASSERT_TRUE(xyz_vec_ != test_vec_less);
+    ASSERT_TRUE(xyz_vec_ != test_vec_greater);
 }
 
 /**
  * Test Vec3f assignment
  */
-TEST_F(Vec3fTest_C, TestVec3fAssignment) {
+TEST_F(Vec3fTest, TestVec3fAssignment) {
     vne::math::Vec3f test_vec;
-    ASSERT_EQ(xyz_vec, test_vec = xyz_vec);
+    ASSERT_EQ(xyz_vec_, test_vec = xyz_vec_);
 }
 
 /**
  * Test Vec3f specific component
  */
-TEST_F(Vec3fTest_C, TestVec3fComponent) {
+TEST_F(Vec3fTest, TestVec3fComponent) {
     float value;
-    ASSERT_EQ(xyz_vec.x, xyz_vec[0]);
-    ASSERT_EQ(xyz_vec.y, xyz_vec[1]);
-    ASSERT_EQ(xyz_vec.z, xyz_vec[2]);
-    ASSERT_EQ(xyz_vec.y, value = xyz_vec[1]);
+    ASSERT_EQ(xyz_vec_.x, xyz_vec_[0]);
+    ASSERT_EQ(xyz_vec_.y, xyz_vec_[1]);
+    ASSERT_EQ(xyz_vec_.z, xyz_vec_[2]);
+    ASSERT_EQ(xyz_vec_.y, value = xyz_vec_[1]);
 }
 
 /**
  * Test Vec3f inverted vector
  */
-TEST_F(Vec3fTest_C, TestVec3fInverted) {
-    ASSERT_EQ(-glm::vec3(xyz_vec), -xyz_vec);
+TEST_F(Vec3fTest, TestVec3fInverted) {
+    ASSERT_EQ(-glm::vec3(xyz_vec_), -xyz_vec_);
 }

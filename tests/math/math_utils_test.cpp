@@ -18,9 +18,9 @@
 
 #include "vertexnova/math/math_utils.h"
 
-using namespace VNE;
+using namespace vne;
 
-class MathUtilsTest_C : public ::testing::Test {
+class MathUtilsTest : public ::testing::Test {
     // Interface of test fixture base class
    protected:
     void SetUp() override {}
@@ -34,7 +34,7 @@ class MathUtilsTest_C : public ::testing::Test {
 /**
  * Test Math pi constants
  */
-TEST_F(MathUtilsTest_C, TestMathPIConstant) {
+TEST_F(MathUtilsTest, TestMathPIConstant) {
     ASSERT_FLOAT_EQ(glm::pi<float>(), vne::math::pi<float>());
     ASSERT_DOUBLE_EQ(glm::pi<double>(), vne::math::pi<double>());
     ASSERT_FLOAT_EQ(glm::two_pi<float>(), vne::math::twoPi<float>());
@@ -52,7 +52,7 @@ TEST_F(MathUtilsTest_C, TestMathPIConstant) {
 /**
  * Test Math GetEps<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathGetEps) {
+TEST_F(MathUtilsTest, TestMathGetEps) {
     ASSERT_EQ(0, vne::math::getEps<int>());
     ASSERT_EQ(0, vne::math::getEps<char>());
     ASSERT_EQ(vne::math::kFloatEpsilon, vne::math::getEps<float>());
@@ -66,7 +66,7 @@ TEST_F(MathUtilsTest_C, TestMathGetEps) {
 /**
  * Test vne::math::radToDeg<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathRadToDeg) {
+TEST_F(MathUtilsTest, TestMathRadToDeg) {
     ASSERT_FLOAT_EQ(glm::degrees(3.14f), vne::math::radToDeg<float>(3.14f));
     ASSERT_DOUBLE_EQ(glm::degrees(3.14), vne::math::radToDeg<double>(3.14));
     ASSERT_DOUBLE_EQ(glm::degrees(3.0), vne::math::radToDeg<double>(3));
@@ -79,7 +79,7 @@ TEST_F(MathUtilsTest_C, TestMathRadToDeg) {
 /**
  * Test vne::math::degToRad<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathDegToRad) {
+TEST_F(MathUtilsTest, TestMathDegToRad) {
     ASSERT_EQ(glm::radians(90.0f), vne::math::degToRad<float>(90));
     ASSERT_EQ(glm::radians(90.0f), vne::math::degToRad<float>(90.0f));
     ASSERT_EQ(glm::radians(90.0), vne::math::degToRad<double>(90));
@@ -91,7 +91,7 @@ TEST_F(MathUtilsTest_C, TestMathDegToRad) {
 /**
  * Test vne::math::abs<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathAbs) {
+TEST_F(MathUtilsTest, TestMathAbs) {
     ASSERT_EQ(glm::abs(-13), vne::math::abs(-13));
     ASSERT_EQ(13, vne::math::abs(-13));
     ASSERT_EQ(glm::abs(-14.98f), vne::math::abs(-14.98f));
@@ -103,7 +103,7 @@ TEST_F(MathUtilsTest_C, TestMathAbs) {
 /**
  * Test vne::math::sign<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSign) {
+TEST_F(MathUtilsTest, TestMathSign) {
     ASSERT_EQ(glm::sign(-23.5f), vne::math::sign(-23.5f));
     ASSERT_EQ(glm::sign(9), vne::math::sign(9));
     ASSERT_EQ(glm::sign(0.0), vne::math::sign(0.0));
@@ -113,7 +113,7 @@ TEST_F(MathUtilsTest_C, TestMathSign) {
 /**
  * Test vne::math::min<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathMin) {
+TEST_F(MathUtilsTest, TestMathMin) {
     // For two values
     ASSERT_EQ(glm::min(1, 3), vne::math::min<int>(1, 3));
     ASSERT_EQ(glm::min(4.0f, 3.1f), vne::math::min<float>(4.0f, 3.1f));
@@ -128,7 +128,7 @@ TEST_F(MathUtilsTest_C, TestMathMin) {
 /**
  * Test vne::math::max<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathMax) {
+TEST_F(MathUtilsTest, TestMathMax) {
     // For two values
     ASSERT_EQ(glm::max(1, 3), vne::math::max<int>(1, 3));
     ASSERT_EQ(glm::max(4.0f, 3.1f), vne::math::max<float>(4.0f, 3.1f));
@@ -144,7 +144,7 @@ TEST_F(MathUtilsTest_C, TestMathMax) {
 /**
  * Test vne::math::clamp<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathClamp) {
+TEST_F(MathUtilsTest, TestMathClamp) {
     ASSERT_EQ(glm::clamp(1, 2, 3), vne::math::clamp<int>(1, 2, 3));
     ASSERT_EQ(2, vne::math::clamp<int>(1, 2, 3));
     ASSERT_EQ(glm::clamp(4, 2, 3), vne::math::clamp<int>(4, 2, 3));
@@ -158,7 +158,7 @@ TEST_F(MathUtilsTest_C, TestMathClamp) {
 /**
  * Test vne::math::saturate<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSaturate) {
+TEST_F(MathUtilsTest, TestMathSaturate) {
     ASSERT_EQ(glm::clamp(-1, 0, 1), vne::math::saturate<int>(-1));
     ASSERT_EQ(glm::clamp(1, 0, 1), vne::math::saturate<int>(1));
     ASSERT_EQ(glm::clamp(4, 0, 1), vne::math::saturate<int>(4));
@@ -169,7 +169,7 @@ TEST_F(MathUtilsTest_C, TestMathSaturate) {
 /**
  * Test vne::math::arrangeMinMax<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathArrangeMinMax) {
+TEST_F(MathUtilsTest, TestMathArrangeMinMax) {
     int min_i = 3;
     int max_i = 1;
     vne::math::arrangeMinMax(&min_i, &max_i);
@@ -192,7 +192,7 @@ TEST_F(MathUtilsTest_C, TestMathArrangeMinMax) {
 /**
  * Test vne::math::isInBetween<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathIsInBetween) {
+TEST_F(MathUtilsTest, TestMathIsInBetween) {
     ASSERT_FALSE(vne::math::isInBetween(1, 2, 3));
     ASSERT_TRUE(vne::math::isInBetween(2, 1, 3));
     ASSERT_TRUE(vne::math::isInBetween(2, 3, 1));
@@ -203,7 +203,7 @@ TEST_F(MathUtilsTest_C, TestMathIsInBetween) {
 /**
  * Test vne::math::square<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSquare) {
+TEST_F(MathUtilsTest, TestMathSquare) {
     ASSERT_EQ(4, vne::math::square<int>(2));
     ASSERT_FLOAT_EQ(5.0625f, vne::math::square<float>(2.25f));
     ASSERT_DOUBLE_EQ(185.640625, vne::math::square<double>(13.625));
@@ -214,7 +214,7 @@ TEST_F(MathUtilsTest_C, TestMathSquare) {
 /**
  * Test vne::math::cube<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathCube) {
+TEST_F(MathUtilsTest, TestMathCube) {
     ASSERT_EQ(27, vne::math::cube<int>(3));
     ASSERT_EQ(216, vne::math::cube<int>(6));
     ASSERT_EQ(1111 * 1111 * 1111, vne::math::cube<long int>(1111));
@@ -225,7 +225,7 @@ TEST_F(MathUtilsTest_C, TestMathCube) {
 /**
  * Test vne::math::pow<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathPow) {
+TEST_F(MathUtilsTest, TestMathPow) {
     ASSERT_EQ(glm::pow(0.25f, 2), vne::math::pow<float>(0.25f, 2));
     ASSERT_EQ(glm::pow(625, 0.5f), vne::math::pow<float>(625, 0.5f));
     ASSERT_EQ(25.0f, vne::math::pow<float>(625, 0.5f));
@@ -235,7 +235,7 @@ TEST_F(MathUtilsTest_C, TestMathPow) {
 /**
  * Test vne::math::sqrt<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSqrt) {
+TEST_F(MathUtilsTest, TestMathSqrt) {
     ASSERT_FLOAT_EQ(0.0f, vne::math::sqrt<float>(0));
     ASSERT_NE(glm::sqrt(-1),
               vne::math::sqrt<float>(-1));  // compiler dependent test (NaN)
@@ -250,7 +250,7 @@ TEST_F(MathUtilsTest_C, TestMathSqrt) {
 /**
  * Test vne::math::invSqrt<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathInvSqrt) {
+TEST_F(MathUtilsTest, TestMathInvSqrt) {
     ASSERT_FLOAT_EQ(glm::inversesqrt(0.0f), vne::math::invSqrt<float>(0));
     ASSERT_TRUE(std::isnan(glm::inversesqrt(-1.0f)));
     ASSERT_TRUE(std::isnan(vne::math::invSqrt<float>(-1.0f)));
@@ -263,7 +263,7 @@ TEST_F(MathUtilsTest_C, TestMathInvSqrt) {
 /**
  * Test vne::math::areSame(...)
  */
-TEST_F(MathUtilsTest_C, TestMathAreSame) {
+TEST_F(MathUtilsTest, TestMathAreSame) {
     // Test for the float type values
     ASSERT_TRUE(vne::math::areSame(32.34f, 32.3400002f));
     ASSERT_TRUE(vne::math::areSame(32.34f, 32.3400002f, vne::math::kFloatEpsilon));
@@ -328,7 +328,7 @@ TEST_F(MathUtilsTest_C, TestMathAreSame) {
 /**
  * Test vne::math::isZero(...)
  */
-TEST_F(MathUtilsTest_C, TestMathIsZero) {
+TEST_F(MathUtilsTest, TestMathIsZero) {
     ASSERT_TRUE(vne::math::isZero(0.00000003f));
     ASSERT_TRUE(vne::math::isZero(0.00000003f, vne::math::kFloatEpsilon));
     ASSERT_FALSE(vne::math::isZero(0.00003f, vne::math::kFloatEpsilon));
@@ -349,7 +349,7 @@ TEST_F(MathUtilsTest_C, TestMathIsZero) {
 /**
  * Test vne::math::midPoint(...)
  */
-TEST_F(MathUtilsTest_C, TestMathMidPoint) {
+TEST_F(MathUtilsTest, TestMathMidPoint) {
     ASSERT_EQ(3, vne::math::midPoint(2, 4));
     ASSERT_EQ(3, vne::math::midPoint(2, 5));
     ASSERT_EQ(3, vne::math::midPoint(4, 2));
@@ -371,7 +371,7 @@ TEST_F(MathUtilsTest_C, TestMathMidPoint) {
 /**
  * Test vne::math::lerp<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathLerp) {
+TEST_F(MathUtilsTest, TestMathLerp) {
     ASSERT_EQ(15, static_cast<int>(vne::math::lerp(10.0f, 20.0f, 0.5f)));
     ASSERT_TRUE(vne::math::areSame(10.0f, vne::math::lerp(10.0f, 20.0f, 0.0f)));
     ASSERT_TRUE(vne::math::areSame(20.0f, vne::math::lerp(10.0f, 20.0f, 1.0f)));
@@ -380,7 +380,7 @@ TEST_F(MathUtilsTest_C, TestMathLerp) {
 /**
  * Test vne::math::biLerp<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathBiLerp) {
+TEST_F(MathUtilsTest, TestMathBiLerp) {
     ASSERT_FLOAT_EQ(1.5f, vne::math::biLerp(0.0f, 1.0f, 2.0f, 3.0f, 0.5f, 0.5f));
 }
 
@@ -391,7 +391,7 @@ TEST_F(MathUtilsTest_C, TestMathBiLerp) {
 /**
  * Test vne::math::floor<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathFloor) {
+TEST_F(MathUtilsTest, TestMathFloor) {
     ASSERT_FLOAT_EQ(2.0f, vne::math::floor<float>(2.7f));
     ASSERT_FLOAT_EQ(-3.0f, vne::math::floor<float>(-2.7f));
     ASSERT_FLOAT_EQ(-3.0f, vne::math::floor(-2.7f));
@@ -403,7 +403,7 @@ TEST_F(MathUtilsTest_C, TestMathFloor) {
 /**
  * Test vne::math::ceil<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathCeil) {
+TEST_F(MathUtilsTest, TestMathCeil) {
     ASSERT_FLOAT_EQ(3.0f, vne::math::ceil<float>(2.4f));
     ASSERT_FLOAT_EQ(-2.0f, vne::math::ceil<float>(-2.4f));
     ASSERT_FLOAT_EQ(-2.0f, vne::math::ceil(-2.4f));
@@ -415,7 +415,7 @@ TEST_F(MathUtilsTest_C, TestMathCeil) {
 /**
  * Test vne::math::trunc<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathTrunc) {
+TEST_F(MathUtilsTest, TestMathTrunc) {
     ASSERT_FLOAT_EQ(2.0f, vne::math::trunc<float>(2.7f));
     ASSERT_FLOAT_EQ(-2.0f, vne::math::trunc<float>(-2.9f));
     ASSERT_FLOAT_EQ(-2.0f, vne::math::trunc(-2.9f));
@@ -427,7 +427,7 @@ TEST_F(MathUtilsTest_C, TestMathTrunc) {
 /**
  * Test vne::math::round<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathRound) {
+TEST_F(MathUtilsTest, TestMathRound) {
     ASSERT_FLOAT_EQ(2.0f, vne::math::round<float>(2.3f));
     ASSERT_FLOAT_EQ(-2.0f, vne::math::round<float>(-2.3f));
     ASSERT_FLOAT_EQ(-2.0f, vne::math::round(-2.3f));
@@ -439,7 +439,7 @@ TEST_F(MathUtilsTest_C, TestMathRound) {
 /**
  * Test vne::math::roundMultipleOf<T>(...)
  */
-TEST_F(MathUtilsTest_C, TestMathRoundMultipleOf) {
+TEST_F(MathUtilsTest, TestMathRoundMultipleOf) {
     ASSERT_FLOAT_EQ(2.5f, vne::math::roundMultipleOf<float>(2.6f, 0.5f));
     ASSERT_FLOAT_EQ(3.0f, vne::math::roundMultipleOf<float>(2.8f, 0.5f));
     ASSERT_FLOAT_EQ(-2.5f, vne::math::roundMultipleOf<float>(-2.6f, 0.5f));
@@ -454,7 +454,7 @@ TEST_F(MathUtilsTest_C, TestMathRoundMultipleOf) {
 /**
  * Test vne::math::floatToInt(...)
  */
-TEST_F(MathUtilsTest_C, TestMathFloatToInt) {
+TEST_F(MathUtilsTest, TestMathFloatToInt) {
     ASSERT_EQ(1, vne::math::floatToInt(1.0f));
     ASSERT_EQ(13, vne::math::floatToInt(13.657f));
     ASSERT_EQ(0, vne::math::floatToInt(vne::math::kFloatEpsilon));
@@ -463,7 +463,7 @@ TEST_F(MathUtilsTest_C, TestMathFloatToInt) {
 /**
  * Test vne::math::modf(...)
  */
-TEST_F(MathUtilsTest_C, TestMathModf) {
+TEST_F(MathUtilsTest, TestMathModf) {
     float int_part, frac_part;
     frac_part = vne::math::modf(123.45f, &int_part);
     ASSERT_TRUE(vne::math::areSame(123.0f, int_part));
@@ -484,7 +484,7 @@ TEST_F(MathUtilsTest_C, TestMathModf) {
 /**
  * Test vne::math::isNaN(...)
  */
-TEST_F(MathUtilsTest_C, TestMathIsNaN) {
+TEST_F(MathUtilsTest, TestMathIsNaN) {
     ASSERT_TRUE(vne::math::isNaN(NAN));
     ASSERT_FALSE(vne::math::isNaN(INFINITY));
     // ASSERT_TRUE(vne::math::isNaN(0.0/0.0));
@@ -493,7 +493,7 @@ TEST_F(MathUtilsTest_C, TestMathIsNaN) {
 /**
  * Test vne::math::isInf(...)
  */
-TEST_F(MathUtilsTest_C, TestMathIsInf) {
+TEST_F(MathUtilsTest, TestMathIsInf) {
     ASSERT_FALSE(vne::math::isInf(NAN));
     ASSERT_TRUE(vne::math::isInf(INFINITY));
     // ASSERT_TRUE(vne::math::isInf(1.0/0.0));
@@ -502,7 +502,7 @@ TEST_F(MathUtilsTest_C, TestMathIsInf) {
 /**
  * Test vne::math::isNormal(...)
  */
-TEST_F(MathUtilsTest_C, TestMathIsNormal) {
+TEST_F(MathUtilsTest, TestMathIsNormal) {
     ASSERT_FALSE(vne::math::isNormal(NAN));
     ASSERT_FALSE(vne::math::isNormal(INFINITY));
     ASSERT_TRUE(vne::math::isNormal(1.0));
@@ -511,7 +511,7 @@ TEST_F(MathUtilsTest_C, TestMathIsNormal) {
 /**
  * Test vne::math::isFinite(...)
  */
-TEST_F(MathUtilsTest_C, TestMathIsFinite) {
+TEST_F(MathUtilsTest, TestMathIsFinite) {
     ASSERT_FALSE(vne::math::isFinite(NAN));
     ASSERT_FALSE(vne::math::isFinite(INFINITY));
     ASSERT_FALSE(vne::math::isFinite(vne::math::exp(800.0f)));
@@ -525,7 +525,7 @@ TEST_F(MathUtilsTest_C, TestMathIsFinite) {
 /**
  * Test vne::math::exp(...)
  */
-TEST_F(MathUtilsTest_C, TestMathExp) {
+TEST_F(MathUtilsTest, TestMathExp) {
     ASSERT_FLOAT_EQ(glm::exp(0.03f), vne::math::exp(0.03f));
     ASSERT_DOUBLE_EQ(glm::exp(1), vne::math::exp(1));
     ASSERT_DOUBLE_EQ(glm::exp('c'), vne::math::exp('c'));
@@ -537,7 +537,7 @@ TEST_F(MathUtilsTest_C, TestMathExp) {
 /**
  * Test vne::math::log(...)
  */
-TEST_F(MathUtilsTest_C, TestMathLog) {
+TEST_F(MathUtilsTest, TestMathLog) {
     ASSERT_FLOAT_EQ(glm::log(1.0f), vne::math::log(1.0f));
     ASSERT_FLOAT_EQ(glm::log(125.0f), vne::math::log(125.0f));
     ASSERT_DOUBLE_EQ(glm::log(0.0), vne::math::log(0.0));
@@ -547,7 +547,7 @@ TEST_F(MathUtilsTest_C, TestMathLog) {
 /**
  * Test vne::math::log2(...)
  */
-TEST_F(MathUtilsTest_C, TestMathLog2) {
+TEST_F(MathUtilsTest, TestMathLog2) {
     ASSERT_DOUBLE_EQ(glm::log2(65536.0), vne::math::log2(65536));
     ASSERT_DOUBLE_EQ(glm::log2(0.125), vne::math::log2(0.125));
     ASSERT_FLOAT_EQ(glm::log2(0.0f), vne::math::log2(0.0f));
@@ -556,7 +556,7 @@ TEST_F(MathUtilsTest_C, TestMathLog2) {
 /**
  * Test vne::math::log10(...)
  */
-TEST_F(MathUtilsTest_C, TestMathLog10) {
+TEST_F(MathUtilsTest, TestMathLog10) {
     ASSERT_DOUBLE_EQ(3, vne::math::log10(1000));
     ASSERT_FLOAT_EQ(-4, vne::math::log10(0.0001f));
     ASSERT_DOUBLE_EQ(-3, vne::math::log10(0.001));
@@ -567,7 +567,7 @@ TEST_F(MathUtilsTest_C, TestMathLog10) {
 /**
  * Test vne::math::logx(...)
  */
-TEST_F(MathUtilsTest_C, TestMathLogx) {
+TEST_F(MathUtilsTest, TestMathLogx) {
     ASSERT_DOUBLE_EQ(glm::log(1) / glm::log(2), vne::math::logx(1, 2));
     ASSERT_DOUBLE_EQ(glm::log(2) / glm::log(1), vne::math::logx(2, 1));
     ASSERT_DOUBLE_EQ(glm::log(2) / glm::log(0), vne::math::logx(2, 0));
@@ -585,7 +585,7 @@ TEST_F(MathUtilsTest_C, TestMathLogx) {
 /**
  * Test vne::math::sin(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSin) {
+TEST_F(MathUtilsTest, TestMathSin) {
     ASSERT_DOUBLE_EQ(0.5, static_cast<double>(vne::math::sin(vne::math::pi<float>() / 6.0f)));
     ASSERT_DOUBLE_EQ(1.0, static_cast<double>(vne::math::sin(vne::math::degToRad<float>(90.0f))));
     ASSERT_DOUBLE_EQ(glm::sin(3 * vne::math::pi<double>() / 4), vne::math::sin(3 * vne::math::pi<double>() / 4));
@@ -599,7 +599,7 @@ TEST_F(MathUtilsTest_C, TestMathSin) {
 /**
  * Test vne::math::asin(...)
  */
-TEST_F(MathUtilsTest_C, TestMathASin) {
+TEST_F(MathUtilsTest, TestMathASin) {
     ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::asin(1));
     ASSERT_FLOAT_EQ(0.0f, vne::math::asin(0.0f));
     ASSERT_DOUBLE_EQ(90, vne::math::radToDeg(vne::math::asin(1)));
@@ -610,7 +610,7 @@ TEST_F(MathUtilsTest_C, TestMathASin) {
 /**
  * Test vne::math::sinh(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSinh) {
+TEST_F(MathUtilsTest, TestMathSinh) {
     ASSERT_NEAR(1.175, vne::math::sinh(1), 1E-3);
     ASSERT_DOUBLE_EQ(glm::sinh(1), vne::math::sinh(1));
     ASSERT_DOUBLE_EQ(0, vne::math::sinh(0.0));
@@ -621,7 +621,7 @@ TEST_F(MathUtilsTest_C, TestMathSinh) {
 /**
  * Test vne::math::cos(...)
  */
-TEST_F(MathUtilsTest_C, TestMathCos) {
+TEST_F(MathUtilsTest, TestMathCos) {
     ASSERT_DOUBLE_EQ(0.5, vne::math::cos(vne::math::pi<double>() / 3));
     ASSERT_FLOAT_EQ(glm::cos(vne::math::halfPi<float>()),
                     vne::math::cos(vne::math::halfPi<float>()));  // value would not be exact zero
@@ -635,7 +635,7 @@ TEST_F(MathUtilsTest_C, TestMathCos) {
 /**
  * Test vne::math::acos(...)
  */
-TEST_F(MathUtilsTest_C, TestMathACos) {
+TEST_F(MathUtilsTest, TestMathACos) {
     ASSERT_DOUBLE_EQ(0, vne::math::acos(1));
     ASSERT_DOUBLE_EQ(vne::math::pi<double>(), vne::math::acos(-1));
     ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::acos(0));
@@ -646,7 +646,7 @@ TEST_F(MathUtilsTest_C, TestMathACos) {
 /**
  * Test vne::math::cosh(...)
  */
-TEST_F(MathUtilsTest_C, TestMathCosh) {
+TEST_F(MathUtilsTest, TestMathCosh) {
     ASSERT_NEAR(1.543, vne::math::cosh(1), 1E-3);
     ASSERT_DOUBLE_EQ(glm::cosh(1), vne::math::cosh(1));
     ASSERT_DOUBLE_EQ(vne::math::cosh(1), vne::math::cosh(-1));
@@ -660,7 +660,7 @@ TEST_F(MathUtilsTest_C, TestMathCosh) {
 /**
  * Test vne::math::sinCos(...)
  */
-TEST_F(MathUtilsTest_C, TestMathSinCos) {
+TEST_F(MathUtilsTest, TestMathSinCos) {
     float sin, cos;
     vne::math::sinCos(vne::math::halfPi<float>(), sin, cos);
     ASSERT_TRUE(vne::math::areSame(1.0f, sin));
@@ -677,7 +677,7 @@ TEST_F(MathUtilsTest_C, TestMathSinCos) {
 /**
  * Test vne::math::tan(...)
  */
-TEST_F(MathUtilsTest_C, TestMathTan) {
+TEST_F(MathUtilsTest, TestMathTan) {
     ASSERT_DOUBLE_EQ(1, vne::math::tan(vne::math::quarterPi<double>()));
     ASSERT_DOUBLE_EQ(-1, vne::math::tan(3 * vne::math::quarterPi<double>()));
     ASSERT_DOUBLE_EQ(1, vne::math::tan(5 * vne::math::quarterPi<double>()));
@@ -691,7 +691,7 @@ TEST_F(MathUtilsTest_C, TestMathTan) {
 /**
  * Test vne::math::atan(...)
  */
-TEST_F(MathUtilsTest_C, TestMathATan) {
+TEST_F(MathUtilsTest, TestMathATan) {
     ASSERT_DOUBLE_EQ(vne::math::quarterPi<double>(), vne::math::atan(1));
     ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::atan(vne::math::kDoubleInfinity));
     ASSERT_FLOAT_EQ(0, vne::math::atan(0.0f));
@@ -701,7 +701,7 @@ TEST_F(MathUtilsTest_C, TestMathATan) {
 /**
  * Test vne::math::atan2(...)
  */
-TEST_F(MathUtilsTest_C, TestMathATan2) {
+TEST_F(MathUtilsTest, TestMathATan2) {
     ASSERT_DOUBLE_EQ(1 * vne::math::quarterPi<double>(), vne::math::atan2(1, 1));     // Quad I
     ASSERT_DOUBLE_EQ(3 * vne::math::quarterPi<double>(), vne::math::atan2(1, -1));    // Quad II
     ASSERT_DOUBLE_EQ(-3 * vne::math::quarterPi<double>(), vne::math::atan2(-1, -1));  // Quad III
@@ -714,7 +714,7 @@ TEST_F(MathUtilsTest_C, TestMathATan2) {
 /**
  * Test vne::math::tanh(...)
  */
-TEST_F(MathUtilsTest_C, TestMathTanh) {
+TEST_F(MathUtilsTest, TestMathTanh) {
     ASSERT_NEAR(0.7615, vne::math::tanh(1), 1E-4);
     ASSERT_NEAR(-0.7615, vne::math::tanh(-1), 1E-4);
     ASSERT_DOUBLE_EQ(0, vne::math::tanh(0.0));
