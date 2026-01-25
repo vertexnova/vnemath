@@ -55,8 +55,13 @@ TEST_F(MathUtilsTest, TestMathPIConstant) {
  * Test Math Epsilon constants
  */
 TEST_F(MathUtilsTest, TestMathGetEps) {
-    ASSERT_EQ(vne::math::kEpsilon<float>, vne::math::kFloatEpsilon);
-    ASSERT_EQ(vne::math::kEpsilon<double>, vne::math::kDoubleEpsilon);
+    // kEpsilon<T> is a comparison tolerance for math operations (1e-6 for float, 1e-12 for double)
+    // kFloatEpsilon and kDoubleEpsilon are machine epsilon (std::numeric_limits<T>::epsilon())
+    // These are different concepts and should not be equal
+    ASSERT_FLOAT_EQ(vne::math::kEpsilon<float>, 1e-6f);
+    ASSERT_DOUBLE_EQ(vne::math::kEpsilon<double>, 1e-12);
+    ASSERT_FLOAT_EQ(vne::math::kFloatEpsilon, std::numeric_limits<float>::epsilon());
+    ASSERT_DOUBLE_EQ(vne::math::kDoubleEpsilon, std::numeric_limits<double>::epsilon());
 }
 
 ////////////////////////////////////////////////////////////////////////////
