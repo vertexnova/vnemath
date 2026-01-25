@@ -38,35 +38,35 @@ class Random<T, false> {
    public:
     using DistributorParam = typename std::uniform_real_distribution<T>::param_type;
 
-    Random() {
+    Random() noexcept {
         DistributorParam uid(T{0}, T{1});
         uniform_distribution_.param(uid);
     }
 
-    ~Random() = default;
+    ~Random() noexcept = default;
 
-    Random(uint32_t seed) {
+    explicit Random(uint32_t seed) noexcept {
         random_engine_.seed(seed);
         DistributorParam uid(T{0}, T{1});
         uniform_distribution_.param(uid);
     }
 
-    Random(T a, T b) {
+    Random(T a, T b) noexcept {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
         DistributorParam uid(a, b);
         uniform_distribution_.param(uid);
     }
 
-    Random(uint32_t seed, T a, T b) {
+    Random(uint32_t seed, T a, T b) noexcept {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
         random_engine_.seed(seed);
         DistributorParam uid(a, b);
         uniform_distribution_.param(uid);
     }
 
-    Random(const Random<T>& rhs) { setParam(rhs.getParam()); }
+    Random(const Random<T>& rhs) noexcept { setParam(rhs.getParam()); }
 
-    Random& operator=(const Random<T>& rhs) {
+    Random& operator=(const Random<T>& rhs) noexcept {
         if (&rhs == this)
             return *this;
         setParam(rhs.getParam());
@@ -76,9 +76,9 @@ class Random<T, false> {
     Random(Random<T>&&) = delete;
     Random& operator=(Random<T>&&) = delete;
 
-    T get() { return uniform_distribution_(random_engine_); }
+    [[nodiscard]] T get() noexcept { return uniform_distribution_(random_engine_); }
 
-    std::vector<T> get(size_t n) {
+    [[nodiscard]] std::vector<T> get(size_t n) {
         std::vector<T> rand_list(n, T{0});
         for (size_t i = 0; i < n; ++i) {
             rand_list[i] = uniform_distribution_(random_engine_);
@@ -86,17 +86,17 @@ class Random<T, false> {
         return rand_list;
     }
 
-    DistributorParam getParam() const { return uniform_distribution_.param(); }
-    void setParam(const DistributorParam& params) { uniform_distribution_.param(params); }
+    [[nodiscard]] DistributorParam getParam() const noexcept { return uniform_distribution_.param(); }
+    void setParam(const DistributorParam& params) noexcept { uniform_distribution_.param(params); }
 
-    void setMinMax(T a, T b) {
+    void setMinMax(T a, T b) noexcept {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
         DistributorParam uid(a, b);
         uniform_distribution_.param(uid);
     }
 
-    T getMin(void) { return uniform_distribution_.min(); }
-    T getMax(void) { return uniform_distribution_.max(); }
+    [[nodiscard]] T getMin() const noexcept { return uniform_distribution_.min(); }
+    [[nodiscard]] T getMax() const noexcept { return uniform_distribution_.max(); }
 
    private:
     RandEngine<T> random_engine_{std::random_device()()};
@@ -109,35 +109,35 @@ class Random<T, true> {
    public:
     using DistributorParam = typename std::uniform_int_distribution<T>::param_type;
 
-    Random() {
+    Random() noexcept {
         DistributorParam uid(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
         uniform_distribution_.param(uid);
     }
 
-    ~Random() = default;
+    ~Random() noexcept = default;
 
-    Random(uint32_t seed) {
+    explicit Random(uint32_t seed) noexcept {
         random_engine_.seed(seed);
         DistributorParam uid(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
         uniform_distribution_.param(uid);
     }
 
-    Random(T a, T b) {
+    Random(T a, T b) noexcept {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
         DistributorParam uid(a, b);
         uniform_distribution_.param(uid);
     }
 
-    Random(uint32_t seed, T a, T b) {
+    Random(uint32_t seed, T a, T b) noexcept {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
         random_engine_.seed(seed);
         DistributorParam uid(a, b);
         uniform_distribution_.param(uid);
     }
 
-    Random(const Random<T>& rhs) { setParam(rhs.getParam()); }
+    Random(const Random<T>& rhs) noexcept { setParam(rhs.getParam()); }
 
-    Random& operator=(const Random<T>& rhs) {
+    Random& operator=(const Random<T>& rhs) noexcept {
         if (&rhs == this)
             return *this;
         setParam(rhs.getParam());
@@ -147,9 +147,9 @@ class Random<T, true> {
     Random(Random<T>&&) = delete;
     Random& operator=(Random<T>&&) = delete;
 
-    T get() { return uniform_distribution_(random_engine_); }
+    [[nodiscard]] T get() noexcept { return uniform_distribution_(random_engine_); }
 
-    std::vector<T> get(size_t n) {
+    [[nodiscard]] std::vector<T> get(size_t n) {
         std::vector<T> rand_list(n, T{0});
         for (size_t i = 0; i < n; ++i) {
             rand_list[i] = uniform_distribution_(random_engine_);
@@ -157,17 +157,17 @@ class Random<T, true> {
         return rand_list;
     }
 
-    DistributorParam getParam() const { return uniform_distribution_.param(); }
-    void setParam(const DistributorParam& params) { uniform_distribution_.param(params); }
+    [[nodiscard]] DistributorParam getParam() const noexcept { return uniform_distribution_.param(); }
+    void setParam(const DistributorParam& params) noexcept { uniform_distribution_.param(params); }
 
-    void setMinMax(T a, T b) {
+    void setMinMax(T a, T b) noexcept {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
         DistributorParam uid(a, b);
         uniform_distribution_.param(uid);
     }
 
-    T getMin(void) { return uniform_distribution_.min(); }
-    T getMax(void) { return uniform_distribution_.max(); }
+    [[nodiscard]] T getMin() const noexcept { return uniform_distribution_.min(); }
+    [[nodiscard]] T getMax() const noexcept { return uniform_distribution_.max(); }
 
    private:
     RandEngine<T> random_engine_{std::random_device()()};

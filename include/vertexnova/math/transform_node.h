@@ -25,23 +25,23 @@ namespace vne::math {
 
 class TransformNode {
    public:
-    TransformNode();
-    ~TransformNode();
+    TransformNode() noexcept;
+    ~TransformNode() noexcept;
 
-    void setLocalTransform(const Mat4x4f& transform);
-    Mat4x4f getLocalTransform() const;
-    Mat4x4f getModelMatrix() const;
-    void setParent(TransformNode* parent);
-    TransformNode* getParent() const;
-    std::vector<TransformNode*> getChildren() const;
-    bool isRoot() const;
-    bool isLeaf() const;
-    size_t numChildren() const;
-    void addChild(TransformNode* child);
-    void removeChild(TransformNode* child);
-    void removeFromParent();
-    void updateRootTransform();
-    void composeTransform(const Mat4x4f& transform);
+    void setLocalTransform(const Mat4x4f& transform) noexcept;
+    [[nodiscard]] Mat4x4f getLocalTransform() const noexcept;
+    [[nodiscard]] Mat4x4f getModelMatrix() const noexcept;
+    void setParent(TransformNode* parent) noexcept;
+    [[nodiscard]] TransformNode* getParent() const noexcept;
+    [[nodiscard]] std::vector<TransformNode*> getChildren() const noexcept;
+    [[nodiscard]] bool isRoot() const noexcept;
+    [[nodiscard]] bool isLeaf() const noexcept;
+    [[nodiscard]] size_t numChildren() const noexcept;
+    void addChild(TransformNode* child) noexcept;
+    void removeChild(TransformNode* child) noexcept;
+    void removeFromParent() noexcept;
+    void updateRootTransform() noexcept;
+    void composeTransform(const Mat4x4f& transform) noexcept;
 
    private:
     Mat4x4f local_transform_;

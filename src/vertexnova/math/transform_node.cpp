@@ -18,13 +18,13 @@
 namespace vne::math {
 
 //------------------------------------------------------------------------------
-TransformNode::TransformNode()
+TransformNode::TransformNode() noexcept
     : local_transform_(Mat4x4f::identity())
     , root_transform_(Mat4x4f::identity())
     , parent_(nullptr) {}
 
 //------------------------------------------------------------------------------
-TransformNode::~TransformNode() {
+TransformNode::~TransformNode() noexcept {
     for (TransformNode* child : children_) {
         if (child) {
             child->setParent(nullptr);
@@ -33,22 +33,22 @@ TransformNode::~TransformNode() {
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::setLocalTransform(const Mat4x4f& transform) {
+void TransformNode::setLocalTransform(const Mat4x4f& transform) noexcept {
     local_transform_ = transform;
 }
 
 //------------------------------------------------------------------------------
-Mat4x4f TransformNode::getLocalTransform() const {
+Mat4x4f TransformNode::getLocalTransform() const noexcept {
     return local_transform_;
 }
 
 //------------------------------------------------------------------------------
-Mat4x4f TransformNode::getModelMatrix() const {
+Mat4x4f TransformNode::getModelMatrix() const noexcept {
     return root_transform_ * local_transform_;
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::setParent(TransformNode* parent) {
+void TransformNode::setParent(TransformNode* parent) noexcept {
     if (parent_) {
         parent_->removeChild(this);
     }
@@ -60,19 +60,19 @@ void TransformNode::setParent(TransformNode* parent) {
 }
 
 //------------------------------------------------------------------------------
-TransformNode* TransformNode::getParent() const {
+TransformNode* TransformNode::getParent() const noexcept {
     return parent_;
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::addChild(TransformNode* child) {
+void TransformNode::addChild(TransformNode* child) noexcept {
     if (child && std::find(children_.begin(), children_.end(), child) == children_.end()) {
         children_.push_back(child);
     }
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::removeChild(TransformNode* child) {
+void TransformNode::removeChild(TransformNode* child) noexcept {
     auto it = std::find(children_.begin(), children_.end(), child);
     if (it != children_.end()) {
         children_.erase(it);
@@ -83,7 +83,7 @@ void TransformNode::removeChild(TransformNode* child) {
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::removeFromParent() {
+void TransformNode::removeFromParent() noexcept {
     if (parent_) {
         parent_->removeChild(this);
         parent_ = nullptr;
@@ -91,27 +91,27 @@ void TransformNode::removeFromParent() {
 }
 
 //------------------------------------------------------------------------------
-std::vector<TransformNode*> TransformNode::getChildren() const {
+std::vector<TransformNode*> TransformNode::getChildren() const noexcept {
     return children_;
 }
 
 //------------------------------------------------------------------------------
-size_t TransformNode::numChildren() const {
+size_t TransformNode::numChildren() const noexcept {
     return children_.size();
 }
 
 //------------------------------------------------------------------------------
-bool TransformNode::isRoot() const {
+bool TransformNode::isRoot() const noexcept {
     return parent_ == nullptr;
 }
 
 //------------------------------------------------------------------------------
-bool TransformNode::isLeaf() const {
+bool TransformNode::isLeaf() const noexcept {
     return children_.empty();
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::updateRootTransform() {
+void TransformNode::updateRootTransform() noexcept {
     if (parent_) {
         root_transform_ = parent_->getModelMatrix();
     } else {
@@ -120,7 +120,7 @@ void TransformNode::updateRootTransform() {
 }
 
 //------------------------------------------------------------------------------
-void TransformNode::composeTransform(const Mat4x4f& transform) {
+void TransformNode::composeTransform(const Mat4x4f& transform) noexcept {
     local_transform_ = transform * local_transform_;
 }
 
