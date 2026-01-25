@@ -86,37 +86,37 @@ struct GraphicsApiTraits;
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eOpenGL> {
-    static constexpr ClipSpaceDepth depth = ClipSpaceDepth::eNegativeOneToOne;
-    static constexpr Handedness handedness = Handedness::eRight;
-    static constexpr bool flipY = false;
+    static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eNegativeOneToOne;
+    static constexpr Handedness kHandedness = Handedness::eRight;
+    static constexpr bool kFlipY = false;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eVulkan> {
-    static constexpr ClipSpaceDepth depth = ClipSpaceDepth::eZeroToOne;
-    static constexpr Handedness handedness = Handedness::eRight;
-    static constexpr bool flipY = true;
+    static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
+    static constexpr Handedness kHandedness = Handedness::eRight;
+    static constexpr bool kFlipY = true;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eMetal> {
-    static constexpr ClipSpaceDepth depth = ClipSpaceDepth::eZeroToOne;
-    static constexpr Handedness handedness = Handedness::eLeft;
-    static constexpr bool flipY = true;
+    static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
+    static constexpr Handedness kHandedness = Handedness::eLeft;
+    static constexpr bool kFlipY = true;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eDirectX> {
-    static constexpr ClipSpaceDepth depth = ClipSpaceDepth::eZeroToOne;
-    static constexpr Handedness handedness = Handedness::eLeft;
-    static constexpr bool flipY = false;
+    static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
+    static constexpr Handedness kHandedness = Handedness::eLeft;
+    static constexpr bool kFlipY = false;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
-    static constexpr ClipSpaceDepth depth = ClipSpaceDepth::eZeroToOne;
-    static constexpr Handedness handedness = Handedness::eRight;
-    static constexpr bool flipY = true;
+    static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
+    static constexpr Handedness kHandedness = Handedness::eRight;
+    static constexpr bool kFlipY = true;
 };
 
 // ============================================================================

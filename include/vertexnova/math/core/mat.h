@@ -575,62 +575,62 @@ class Mat {
     /**
      * @brief Creates a right-handed perspective matrix with [0,1] depth range.
      */
-    [[nodiscard]] static Mat perspectiveRH_ZO(T fovy, T aspect, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat perspectiveRH_ZO(T fovy, T aspect, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::perspectiveRH_ZO(fovy, aspect, zNear, zFar);
+        return glm::perspectiveRH_ZO(fovy, aspect, z_near, z_far);
     }
 
     /**
      * @brief Creates a right-handed perspective matrix with [-1,1] depth range.
      */
-    [[nodiscard]] static Mat perspectiveRH_NO(T fovy, T aspect, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat perspectiveRH_NO(T fovy, T aspect, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::perspectiveRH_NO(fovy, aspect, zNear, zFar);
+        return glm::perspectiveRH_NO(fovy, aspect, z_near, z_far);
     }
 
     /**
      * @brief Creates a left-handed perspective matrix with [0,1] depth range.
      */
-    [[nodiscard]] static Mat perspectiveLH_ZO(T fovy, T aspect, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat perspectiveLH_ZO(T fovy, T aspect, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::perspectiveLH_ZO(fovy, aspect, zNear, zFar);
+        return glm::perspectiveLH_ZO(fovy, aspect, z_near, z_far);
     }
 
     /**
      * @brief Creates a left-handed perspective matrix with [-1,1] depth range.
      */
-    [[nodiscard]] static Mat perspectiveLH_NO(T fovy, T aspect, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat perspectiveLH_NO(T fovy, T aspect, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::perspectiveLH_NO(fovy, aspect, zNear, zFar);
+        return glm::perspectiveLH_NO(fovy, aspect, z_near, z_far);
     }
 
     /**
      * @brief Creates a perspective matrix for the specified graphics API.
      * @param fovy Field of view in radians
      * @param aspect Aspect ratio (width / height)
-     * @param zNear Near clipping plane
-     * @param zFar Far clipping plane
+     * @param z_near Near clipping plane
+     * @param z_far Far clipping plane
      * @param api Target graphics API
      * @return The projection matrix
      */
     [[nodiscard]] static Mat perspective(
-        T fovy, T aspect, T zNear, T zFar, GraphicsApi api = GraphicsApi::eVulkan) noexcept
+        T fovy, T aspect, T z_near, T z_far, GraphicsApi api = GraphicsApi::eVulkan) noexcept
         requires(R == 4 && C == 4)
     {
-        bool leftHanded = getHandedness(api) == Handedness::eLeft;
-        bool zeroToOne = getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne;
+        bool left_handed = getHandedness(api) == Handedness::eLeft;
+        bool zero_to_one = getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne;
 
         Mat result;
-        if (leftHanded) {
-            result =
-                zeroToOne ? perspectiveLH_ZO(fovy, aspect, zNear, zFar) : perspectiveLH_NO(fovy, aspect, zNear, zFar);
+        if (left_handed) {
+            result = zero_to_one ? perspectiveLH_ZO(fovy, aspect, z_near, z_far)
+                                 : perspectiveLH_NO(fovy, aspect, z_near, z_far);
         } else {
-            result =
-                zeroToOne ? perspectiveRH_ZO(fovy, aspect, zNear, zFar) : perspectiveRH_NO(fovy, aspect, zNear, zFar);
+            result = zero_to_one ? perspectiveRH_ZO(fovy, aspect, z_near, z_far)
+                                 : perspectiveRH_NO(fovy, aspect, z_near, z_far);
         }
 
         // Apply Y-flip for APIs that need it (Vulkan, Metal, WebGPU)
@@ -644,56 +644,56 @@ class Mat {
     /**
      * @brief Creates a right-handed orthographic matrix with [0,1] depth range.
      */
-    [[nodiscard]] static Mat orthoRH_ZO(T left, T right, T bottom, T top, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat orthoRH_ZO(T left, T right, T bottom, T top, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::orthoRH_ZO(left, right, bottom, top, zNear, zFar);
+        return glm::orthoRH_ZO(left, right, bottom, top, z_near, z_far);
     }
 
     /**
      * @brief Creates a right-handed orthographic matrix with [-1,1] depth range.
      */
-    [[nodiscard]] static Mat orthoRH_NO(T left, T right, T bottom, T top, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat orthoRH_NO(T left, T right, T bottom, T top, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::orthoRH_NO(left, right, bottom, top, zNear, zFar);
+        return glm::orthoRH_NO(left, right, bottom, top, z_near, z_far);
     }
 
     /**
      * @brief Creates a left-handed orthographic matrix with [0,1] depth range.
      */
-    [[nodiscard]] static Mat orthoLH_ZO(T left, T right, T bottom, T top, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat orthoLH_ZO(T left, T right, T bottom, T top, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::orthoLH_ZO(left, right, bottom, top, zNear, zFar);
+        return glm::orthoLH_ZO(left, right, bottom, top, z_near, z_far);
     }
 
     /**
      * @brief Creates a left-handed orthographic matrix with [-1,1] depth range.
      */
-    [[nodiscard]] static Mat orthoLH_NO(T left, T right, T bottom, T top, T zNear, T zFar) noexcept
+    [[nodiscard]] static Mat orthoLH_NO(T left, T right, T bottom, T top, T z_near, T z_far) noexcept
         requires(R == 4 && C == 4)
     {
-        return glm::orthoLH_NO(left, right, bottom, top, zNear, zFar);
+        return glm::orthoLH_NO(left, right, bottom, top, z_near, z_far);
     }
 
     /**
      * @brief Creates an orthographic matrix for the specified graphics API.
      */
     [[nodiscard]] static Mat ortho(
-        T left, T right, T bottom, T top, T zNear, T zFar, GraphicsApi api = GraphicsApi::eVulkan) noexcept
+        T left, T right, T bottom, T top, T z_near, T z_far, GraphicsApi api = GraphicsApi::eVulkan) noexcept
         requires(R == 4 && C == 4)
     {
-        bool leftHanded = getHandedness(api) == Handedness::eLeft;
-        bool zeroToOne = getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne;
+        bool left_handed = getHandedness(api) == Handedness::eLeft;
+        bool zero_to_one = getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne;
 
         Mat result;
-        if (leftHanded) {
-            result = zeroToOne ? orthoLH_ZO(left, right, bottom, top, zNear, zFar)
-                               : orthoLH_NO(left, right, bottom, top, zNear, zFar);
+        if (left_handed) {
+            result = zero_to_one ? orthoLH_ZO(left, right, bottom, top, z_near, z_far)
+                                 : orthoLH_NO(left, right, bottom, top, z_near, z_far);
         } else {
-            result = zeroToOne ? orthoRH_ZO(left, right, bottom, top, zNear, zFar)
-                               : orthoRH_NO(left, right, bottom, top, zNear, zFar);
+            result = zero_to_one ? orthoRH_ZO(left, right, bottom, top, z_near, z_far)
+                                 : orthoRH_NO(left, right, bottom, top, z_near, z_far);
         }
 
         // Apply Y-flip for APIs that need it
