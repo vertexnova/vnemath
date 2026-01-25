@@ -144,44 +144,44 @@ Vec3f Quaternion::getAxis() const {
 
 //------------------------------------------------------------------------------
 Vec3f Quaternion::getXAxis() const {
-    float fTy = 2.0f * y;
-    float fTz = 2.0f * z;
-    float fTwy = fTy * w;
-    float fTwz = fTz * w;
-    float fTxy = fTy * x;
-    float fTxz = fTz * x;
-    float fTyy = fTy * y;
-    float fTzz = fTz * z;
+    float f_ty = 2.0f * y;
+    float f_tz = 2.0f * z;
+    float f_twy = f_ty * w;
+    float f_twz = f_tz * w;
+    float f_txy = f_ty * x;
+    float f_txz = f_tz * x;
+    float f_tyy = f_ty * y;
+    float f_tzz = f_tz * z;
 
-    return Vec3f(1.0f - (fTyy + fTzz), fTxy + fTwz, fTxz - fTwy);
+    return Vec3f(1.0f - (f_tyy + f_tzz), f_txy + f_twz, f_txz - f_twy);
 }
 
 //------------------------------------------------------------------------------
 Vec3f Quaternion::getYAxis() const {
-    float fTx = 2.0f * x;
-    float fTz = 2.0f * z;
-    float fTwx = fTx * w;
-    float fTwz = fTz * w;
-    float fTxy = fTx * y;
-    float fTyz = fTz * y;
-    float fTxx = fTx * x;
-    float fTzz = fTz * z;
+    float f_tx = 2.0f * x;
+    float f_tz = 2.0f * z;
+    float f_twx = f_tx * w;
+    float f_twz = f_tz * w;
+    float f_txy = f_tx * y;
+    float f_tyz = f_tz * y;
+    float f_txx = f_tx * x;
+    float f_tzz = f_tz * z;
 
-    return Vec3f(fTxy - fTwz, 1.0f - (fTxx + fTzz), fTyz + fTwx);
+    return Vec3f(f_txy - f_twz, 1.0f - (f_txx + f_tzz), f_tyz + f_twx);
 }
 
 //------------------------------------------------------------------------------
 Vec3f Quaternion::getZAxis() const {
-    float fTx = 2.0f * x;
-    float fTy = 2.0f * y;
-    float fTwx = fTx * w;
-    float fTwy = fTy * w;
-    float fTxz = fTx * z;
-    float fTyz = fTy * z;
-    float fTxx = fTx * x;
-    float fTyy = fTy * y;
+    float f_tx = 2.0f * x;
+    float f_ty = 2.0f * y;
+    float f_twx = f_tx * w;
+    float f_twy = f_ty * w;
+    float f_txz = f_tx * z;
+    float f_tyz = f_ty * z;
+    float f_txx = f_tx * x;
+    float f_tyy = f_ty * y;
 
-    return Vec3f(fTxz + fTwy, fTyz - fTwx, 1.0f - (fTxx + fTyy));
+    return Vec3f(f_txz + f_twy, f_tyz - f_twx, 1.0f - (f_txx + f_tyy));
 }
 
 //------------------------------------------------------------------------------

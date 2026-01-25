@@ -21,7 +21,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 namespace {
-constexpr uint32_t DIMENSION = 3;
+constexpr uint32_t kDimension = 3;
 }  // namespace
 
 namespace vne::math {
@@ -405,7 +405,7 @@ std::istream& operator>>(std::istream& is, Vec3f& vec) {
 
 //------------------------------------------------------------------------------
 uint32_t Vec3f::dim() {
-    return DIMENSION;
+    return kDimension;
 }
 
 //------------------------------------------------------------------------------

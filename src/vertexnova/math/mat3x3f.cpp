@@ -21,7 +21,7 @@
 #include <glm/gtx/transform.hpp>
 
 namespace {
-constexpr uint32_t LENGTH = 3;
+constexpr uint32_t kLength = 3;
 }  // namespace
 
 namespace vne::math {
@@ -213,7 +213,7 @@ std::ostream& operator<<(std::ostream& os, const Mat3x3f& mat) {
 
 //------------------------------------------------------------------------------
 uint32_t Mat3x3f::length() {
-    return LENGTH;
+    return kLength;
 }
 
 //------------------------------------------------------------------------------
