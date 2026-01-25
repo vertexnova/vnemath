@@ -228,7 +228,8 @@ TEST_F(Vec2fTest, TestVec2fCross) {
  */
 TEST_F(Vec2fTest, TestVec2fDistance) {
     ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::Vec2f::distance(x_point_, y_point_));
-    ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::Vec2f::distance(vne::math::Vec2f::zero(), xy_point__));
+    ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble),
+                    vne::math::Vec2f::distance(vne::math::Vec2f::zero(), xy_point__));
     ASSERT_FLOAT_EQ(1.0f, vne::math::Vec2f::distance(x_point_, xy_point__));
     ASSERT_FLOAT_EQ(1.0f, xy_point__.distance(y_point_));
 }
@@ -268,7 +269,7 @@ TEST_F(Vec2fTest, TestVec2fReflect) {
  *
  */
 TEST_F(Vec2fTest, TestVec2fRefract) {
-    xy_vec_.normalize();
+    (void)xy_vec_.normalize();  // Called for side effects (none) - original test behavior
     vne::math::Vec2f test_vec;
     test_vec.x = -xy_vec_.x;
     test_vec.y = xy_vec_.y;
@@ -392,8 +393,9 @@ TEST_F(Vec2fTest, TestVec2fIsNormalized) {
     ASSERT_TRUE(x_axis_.isNormalized());
     ASSERT_TRUE(y_axis_.isNormalized());
     ASSERT_FALSE(xy_vec_.isNormalized());
-    ASSERT_TRUE(
-        vne::math::Vec2f(static_cast<float>(vne::math::kSqrtOneOverTwoDouble), static_cast<float>(vne::math::kSqrtOneOverTwoDouble)).isNormalized());
+    ASSERT_TRUE(vne::math::Vec2f(static_cast<float>(vne::math::kSqrtOneOverTwoDouble),
+                                 static_cast<float>(vne::math::kSqrtOneOverTwoDouble))
+                    .isNormalized());
 }
 
 /**
@@ -404,7 +406,8 @@ TEST_F(Vec2fTest, TestVec2fIsNormalized) {
  */
 TEST_F(Vec2fTest, TestVec2fComposePolar) {
     vne::math::Vec2f test_vec;
-    ASSERT_TRUE(one_vec_.areSame(test_vec.composePolar(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::quarterPi<float>())));
+    ASSERT_TRUE(one_vec_.areSame(
+        test_vec.composePolar(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::quarterPi<float>())));
 }
 
 /**
@@ -440,12 +443,14 @@ TEST_F(Vec2fTest, TestVec2fAngle) {
     ASSERT_TRUE(vne::math::areSame(vne::math::quarterPi<float>(), one_vec_.angle()));
     ASSERT_TRUE(vne::math::areSame(vne::math::quarterPi<float>(), x_axis_.angle(one_vec_)));
 
-    ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f,
-                                   vne::math::Vec2f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f)
-                                       .angle(vne::math::Vec2f(1.0f, static_cast<float>(vne::math::kSqrtThreeDouble)))));
-    ASSERT_TRUE(vne::math::areSame(vne::math::twoPi<float>() / 3.0f,
-                                   vne::math::Vec2f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f)
-                                       .angle(vne::math::Vec2f(-static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f))));
+    ASSERT_TRUE(
+        vne::math::areSame(vne::math::pi<float>() / 6.0f,
+                           vne::math::Vec2f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f)
+                               .angle(vne::math::Vec2f(1.0f, static_cast<float>(vne::math::kSqrtThreeDouble)))));
+    ASSERT_TRUE(
+        vne::math::areSame(vne::math::twoPi<float>() / 3.0f,
+                           vne::math::Vec2f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f)
+                               .angle(vne::math::Vec2f(-static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f))));
     ASSERT_TRUE(vne::math::areSame((3.0f / 8.0f) * vne::math::twoPi<float>(),
                                    vne::math::Vec2f(1.0f, 1.0f).angle(vne::math::Vec2f(-2.0f, 0.0f))));
     ASSERT_TRUE(vne::math::areSame(3.0f * vne::math::halfPi<float>(),

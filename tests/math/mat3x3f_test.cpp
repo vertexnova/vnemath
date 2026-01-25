@@ -156,7 +156,6 @@ TEST_F(Mat3x3fTest, TestMat3x3fInverseTransposed) {
 
     vne::math::Mat3x3f inv_transpose = transform.inverseTransposed();
 
-    vne::math::Mat3x3f transpose = transform.transpose();
     EXPECT_EQ(vne::math::Vec3f(-2.0f, -1.0f, 2.0f), inv_transpose.getColumn(0));
     EXPECT_EQ(vne::math::Vec3f(1.0f, 2.0f / 3.0f, -1.0f), inv_transpose.getColumn(1));
     EXPECT_EQ(vne::math::Vec3f(2.0f, 1.0f, -1.0f), inv_transpose.getColumn(2));

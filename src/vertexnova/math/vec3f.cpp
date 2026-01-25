@@ -227,8 +227,8 @@ Vec3f Vec3f::midPoint(const Vec3f& point) const noexcept {
 //------------------------------------------------------------------------------
 Vec3f Vec3f::lerp(Vec3f& point, float factor) const noexcept {
     return {vne::math::lerp(x, point.x, factor),
-                 vne::math::lerp(y, point.y, factor),
-                 vne::math::lerp(z, point.z, factor)};
+            vne::math::lerp(y, point.y, factor),
+            vne::math::lerp(z, point.z, factor)};
 }
 
 //------------------------------------------------------------------------------

@@ -85,7 +85,10 @@ Mat4x4f Mat4x4f::transform(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f
 }
 
 //------------------------------------------------------------------------------
-Mat4x4f Mat4x4f::transform(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis, const Vec3f& offset) noexcept {
+Mat4x4f Mat4x4f::transform(const Vec3f& x_axis,
+                           const Vec3f& y_axis,
+                           const Vec3f& z_axis,
+                           const Vec3f& offset) noexcept {
     return Mat4x4f(Vec4f(x_axis, 0.0f), Vec4f(y_axis, 0.0f), Vec4f(z_axis, 0.0f), Vec4f(offset, 1.0f));
 }
 

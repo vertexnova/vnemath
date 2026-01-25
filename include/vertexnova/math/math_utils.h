@@ -476,7 +476,8 @@ template<typename T, typename U>
  * BiLinear interpolation
  */
 template<typename T, typename U>
-[[nodiscard]] inline constexpr T biLerp(const T& c00, const T& c10, const T& c01, const T& c11, const U& tx, const U& ty) {
+[[nodiscard]] inline constexpr T biLerp(
+    const T& c00, const T& c10, const T& c01, const T& c11, const U& tx, const U& ty) {
     T a = lerp(c00, c10, tx);
     T b = lerp(c01, c11, tx);
     return lerp(a, b, ty);
@@ -774,4 +775,3 @@ inline void sinCos(int x, double& sin_val, double& cos_val) {
 }
 
 }  // namespace vne::math
-

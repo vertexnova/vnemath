@@ -165,17 +165,17 @@ float Vec4f::angle(const Vec4f& p1, const Vec4f& p2) const noexcept {
 //------------------------------------------------------------------------------
 Vec4f Vec4f::midPoint(const Vec4f& point) const noexcept {
     return {vne::math::midPoint(x, point.x),
-                 vne::math::midPoint(y, point.y),
-                 vne::math::midPoint(z, point.z),
-                 vne::math::midPoint(w, point.w)};
+            vne::math::midPoint(y, point.y),
+            vne::math::midPoint(z, point.z),
+            vne::math::midPoint(w, point.w)};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::lerp(const Vec4f& point, float factor) const noexcept {
     return {vne::math::lerp(x, point.x, factor),
-                 vne::math::lerp(y, point.y, factor),
-                 vne::math::lerp(z, point.z, factor),
-                 vne::math::lerp(w, point.w, factor)};
+            vne::math::lerp(y, point.y, factor),
+            vne::math::lerp(z, point.z, factor),
+            vne::math::lerp(w, point.w, factor)};
 }
 
 //------------------------------------------------------------------------------
