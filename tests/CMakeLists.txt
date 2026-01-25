@@ -75,6 +75,10 @@ set(TEST_SOURCES
     math/geometry/aabb_test.cpp
     math/geometry/sphere_test.cpp
     math/geometry/frustum_test.cpp
+    # Core templated types tests
+    math/core/vec_test.cpp
+    math/core/mat_test.cpp
+    math/core/quat_test.cpp
     main.cpp
 )
 

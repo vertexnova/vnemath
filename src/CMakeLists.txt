@@ -36,6 +36,13 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/aabb.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/sphere.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/frustum.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/geometry.h
+    # Core templated types (header-only)
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/types.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/vec.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/mat.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/quat.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/core.h
 )
 
 # Define source files
