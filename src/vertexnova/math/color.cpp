@@ -410,4 +410,201 @@ std::istream& operator>>(std::istream& is, Color& color) {
     return is;
 }
 
+//------------------------------------------------------------------------------
+// Color Space Conversions
+//------------------------------------------------------------------------------
+
+namespace {
+// sRGB gamma constants
+constexpr float kSRGBLinearThreshold = 0.04045f;
+constexpr float kSRGBLinearScale = 12.92f;
+constexpr float kSRGBGammaOffset = 0.055f;
+constexpr float kSRGBGammaScale = 1.055f;
+constexpr float kSRGBGamma = 2.4f;
+
+// ITU-R BT.709 luminance coefficients
+constexpr float kLuminanceR = 0.2126f;
+constexpr float kLuminanceG = 0.7152f;
+constexpr float kLuminanceB = 0.0722f;
+
+// Helper: sRGB to linear for a single component
+inline float srgbToLinearComponent(float c) {
+    if (c <= kSRGBLinearThreshold) {
+        return c / kSRGBLinearScale;
+    }
+    return std::pow((c + kSRGBGammaOffset) / kSRGBGammaScale, kSRGBGamma);
+}
+
+// Helper: linear to sRGB for a single component
+inline float linearToSrgbComponent(float c) {
+    if (c <= 0.0031308f) {
+        return c * kSRGBLinearScale;
+    }
+    return kSRGBGammaScale * std::pow(c, 1.0f / kSRGBGamma) - kSRGBGammaOffset;
+}
+
+// Helper: HSL to RGB conversion helper
+inline float hslToRgbHelper(float p, float q, float t) {
+    if (t < 0.0f) t += 1.0f;
+    if (t > 1.0f) t -= 1.0f;
+    if (t < 1.0f / 6.0f) return p + (q - p) * 6.0f * t;
+    if (t < 0.5f) return q;
+    if (t < 2.0f / 3.0f) return p + (q - p) * (2.0f / 3.0f - t) * 6.0f;
+    return p;
+}
+}  // namespace
+
+//------------------------------------------------------------------------------
+Color Color::fromHSV(float h, float s, float v, float a) noexcept {
+    // Normalize hue to [0, 360)
+    h = std::fmod(h, 360.0f);
+    if (h < 0.0f) h += 360.0f;
+
+    s = vne::math::clamp(s, 0.0f, 1.0f);
+    v = vne::math::clamp(v, 0.0f, 1.0f);
+
+    float c = v * s;                       // Chroma
+    float x = c * (1.0f - std::abs(std::fmod(h / 60.0f, 2.0f) - 1.0f));
+    float m = v - c;
+
+    float r = 0.0f, g = 0.0f, b = 0.0f;
+
+    if (h < 60.0f) {
+        r = c; g = x; b = 0.0f;
+    } else if (h < 120.0f) {
+        r = x; g = c; b = 0.0f;
+    } else if (h < 180.0f) {
+        r = 0.0f; g = c; b = x;
+    } else if (h < 240.0f) {
+        r = 0.0f; g = x; b = c;
+    } else if (h < 300.0f) {
+        r = x; g = 0.0f; b = c;
+    } else {
+        r = c; g = 0.0f; b = x;
+    }
+
+    return {r + m, g + m, b + m, a};
+}
+
+//------------------------------------------------------------------------------
+Color Color::fromHSL(float h, float s, float l, float a) noexcept {
+    // Normalize hue to [0, 360)
+    h = std::fmod(h, 360.0f);
+    if (h < 0.0f) h += 360.0f;
+
+    s = vne::math::clamp(s, 0.0f, 1.0f);
+    l = vne::math::clamp(l, 0.0f, 1.0f);
+
+    if (vne::math::isZero(s)) {
+        // Achromatic (gray)
+        return {l, l, l, a};
+    }
+
+    float q = l < 0.5f ? l * (1.0f + s) : l + s - l * s;
+    float p = 2.0f * l - q;
+    float h_norm = h / 360.0f;
+
+    float r = hslToRgbHelper(p, q, h_norm + 1.0f / 3.0f);
+    float g = hslToRgbHelper(p, q, h_norm);
+    float b = hslToRgbHelper(p, q, h_norm - 1.0f / 3.0f);
+
+    return {r, g, b, a};
+}
+
+//------------------------------------------------------------------------------
+Vec3f Color::toHSV() const noexcept {
+    float max_val = vne::math::max(r_, vne::math::max(g_, b_));
+    float min_val = vne::math::min(r_, vne::math::min(g_, b_));
+    float delta = max_val - min_val;
+
+    float h = 0.0f;
+    float s = 0.0f;
+    float v = max_val;
+
+    if (!vne::math::isZero(delta)) {
+        s = delta / max_val;
+
+        if (vne::math::areSame(r_, max_val)) {
+            h = 60.0f * std::fmod((g_ - b_) / delta, 6.0f);
+        } else if (vne::math::areSame(g_, max_val)) {
+            h = 60.0f * ((b_ - r_) / delta + 2.0f);
+        } else {
+            h = 60.0f * ((r_ - g_) / delta + 4.0f);
+        }
+
+        if (h < 0.0f) h += 360.0f;
+    }
+
+    return {h, s, v};
+}
+
+//------------------------------------------------------------------------------
+Vec3f Color::toHSL() const noexcept {
+    float max_val = vne::math::max(r_, vne::math::max(g_, b_));
+    float min_val = vne::math::min(r_, vne::math::min(g_, b_));
+    float delta = max_val - min_val;
+
+    float h = 0.0f;
+    float s = 0.0f;
+    float l = (max_val + min_val) * 0.5f;
+
+    if (!vne::math::isZero(delta)) {
+        s = l > 0.5f ? delta / (2.0f - max_val - min_val)
+                     : delta / (max_val + min_val);
+
+        if (vne::math::areSame(r_, max_val)) {
+            h = 60.0f * std::fmod((g_ - b_) / delta, 6.0f);
+        } else if (vne::math::areSame(g_, max_val)) {
+            h = 60.0f * ((b_ - r_) / delta + 2.0f);
+        } else {
+            h = 60.0f * ((r_ - g_) / delta + 4.0f);
+        }
+
+        if (h < 0.0f) h += 360.0f;
+    }
+
+    return {h, s, l};
+}
+
+//------------------------------------------------------------------------------
+Color Color::toLinear() const noexcept {
+    return {srgbToLinearComponent(r_),
+            srgbToLinearComponent(g_),
+            srgbToLinearComponent(b_),
+            a_};
+}
+
+//------------------------------------------------------------------------------
+Color Color::toSRGB() const noexcept {
+    return {linearToSrgbComponent(r_),
+            linearToSrgbComponent(g_),
+            linearToSrgbComponent(b_),
+            a_};
+}
+
+//------------------------------------------------------------------------------
+Color Color::gammaCorrect(float gamma) const noexcept {
+    float inv_gamma = 1.0f / gamma;
+    return {std::pow(r_, inv_gamma),
+            std::pow(g_, inv_gamma),
+            std::pow(b_, inv_gamma),
+            a_};
+}
+
+//------------------------------------------------------------------------------
+float Color::luminance() const noexcept {
+    return kLuminanceR * r_ + kLuminanceG * g_ + kLuminanceB * b_;
+}
+
+//------------------------------------------------------------------------------
+Color Color::grayscale() const noexcept {
+    float lum = luminance();
+    return {lum, lum, lum, a_};
+}
+
+//------------------------------------------------------------------------------
+Color Color::inverted() const noexcept {
+    return {1.0f - r_, 1.0f - g_, 1.0f - b_, a_};
+}
+
 }  // namespace vne::math

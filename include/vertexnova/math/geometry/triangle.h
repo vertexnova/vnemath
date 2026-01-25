@@ -64,13 +64,13 @@ class Triangle {
      * @brief Computes the unit normal vector.
      * @return The normalized normal vector
      */
-    [[nodiscard]] Vec3f unitNormal() const noexcept { return normal().normalized(); }
+    [[nodiscard]] Vec3f unitNormal() const noexcept;
 
     /**
      * @brief Computes the area of the triangle.
      * @return The area (half the magnitude of the cross product)
      */
-    [[nodiscard]] float area() const noexcept { return normal().length() * 0.5f; }
+    [[nodiscard]] float area() const noexcept;
 
     /**
      * @brief Computes the centroid (center of mass).
@@ -82,7 +82,7 @@ class Triangle {
      * @brief Computes the perimeter of the triangle.
      * @return Sum of all edge lengths
      */
-    [[nodiscard]] float perimeter() const noexcept { return edge01().length() + edge12().length() + edge20().length(); }
+    [[nodiscard]] float perimeter() const noexcept;
 
     // ========================================================================
     // Edge Access
@@ -124,29 +124,7 @@ class Triangle {
      * @param point The point to compute coordinates for
      * @return Barycentric coordinates (u, v, w)
      */
-    [[nodiscard]] Vec3f barycentric(const Vec3f& point) const noexcept {
-        Vec3f e0 = edge01();
-        Vec3f e1 = edge02();
-        Vec3f e2 = point - v0;
-
-        float d00 = e0.dot(e0);
-        float d01 = e0.dot(e1);
-        float d11 = e1.dot(e1);
-        float d20 = e2.dot(e0);
-        float d21 = e2.dot(e1);
-
-        float denom = d00 * d11 - d01 * d01;
-        if (isZero(denom)) {
-            return Vec3f(1.0f / 3.0f);  // Degenerate triangle
-        }
-
-        float inv_denom = 1.0f / denom;
-        float v = (d11 * d20 - d01 * d21) * inv_denom;
-        float w = (d00 * d21 - d01 * d20) * inv_denom;
-        float u = 1.0f - v - w;
-
-        return Vec3f(u, v, w);
-    }
+    [[nodiscard]] Vec3f barycentric(const Vec3f& point) const noexcept;
 
     /**
      * @brief Interpolates a value using barycentric coordinates.
@@ -182,10 +160,7 @@ class Triangle {
      * @param epsilon Tolerance for edge cases
      * @return true if point is inside or on edge
      */
-    [[nodiscard]] bool contains(const Vec3f& point, float epsilon = kEpsilon<float>) const noexcept {
-        Vec3f bary = barycentric(point);
-        return bary.x() >= -epsilon && bary.y() >= -epsilon && bary.z() >= -epsilon;
-    }
+    [[nodiscard]] bool contains(const Vec3f& point, float epsilon = kEpsilon<float>) const noexcept;
 
     /**
      * @brief Checks if a 2D point is inside the triangle (XY plane projection).
@@ -194,9 +169,7 @@ class Triangle {
      * @param epsilon Tolerance
      * @return true if inside
      */
-    [[nodiscard]] bool contains2D(const Vec2f& point, float epsilon = kEpsilon<float>) const noexcept {
-        return contains(Vec3f(point.x(), point.y(), 0.0f), epsilon);
-    }
+    [[nodiscard]] bool contains2D(const Vec2f& point, float epsilon = kEpsilon<float>) const noexcept;
 
     // ========================================================================
     // Distance Queries
@@ -208,48 +181,17 @@ class Triangle {
      * @param point The query point
      * @return The closest point on the triangle
      */
-    [[nodiscard]] Vec3f closestPoint(const Vec3f& point) const noexcept {
-        // Check if point projects inside triangle
-        Vec3f bary = barycentric(point);
-
-        // If inside, project onto plane
-        if (bary.x() >= 0.0f && bary.y() >= 0.0f && bary.z() >= 0.0f) {
-            return pointFromBarycentric(bary);
-        }
-
-        // Otherwise, find closest point on edges
-        Vec3f closest = closestPointOnEdge(point, v0, v1);
-        float best_dist_sq = (point - closest).lengthSquared();
-
-        Vec3f candidate = closestPointOnEdge(point, v1, v2);
-        float dist_sq = (point - candidate).lengthSquared();
-        if (dist_sq < best_dist_sq) {
-            closest = candidate;
-            best_dist_sq = dist_sq;
-        }
-
-        candidate = closestPointOnEdge(point, v2, v0);
-        dist_sq = (point - candidate).lengthSquared();
-        if (dist_sq < best_dist_sq) {
-            closest = candidate;
-        }
-
-        return closest;
-    }
+    [[nodiscard]] Vec3f closestPoint(const Vec3f& point) const noexcept;
 
     /**
      * @brief Computes the distance from a point to the triangle.
      */
-    [[nodiscard]] float distanceToPoint(const Vec3f& point) const noexcept {
-        return (point - closestPoint(point)).length();
-    }
+    [[nodiscard]] float distanceToPoint(const Vec3f& point) const noexcept;
 
     /**
      * @brief Computes the squared distance from a point to the triangle.
      */
-    [[nodiscard]] float squaredDistanceToPoint(const Vec3f& point) const noexcept {
-        return (point - closestPoint(point)).lengthSquared();
-    }
+    [[nodiscard]] float squaredDistanceToPoint(const Vec3f& point) const noexcept;
 
     // ========================================================================
     // Validation
@@ -258,14 +200,12 @@ class Triangle {
     /**
      * @brief Checks if the triangle is degenerate (zero area).
      */
-    [[nodiscard]] bool isDegenerate(float epsilon = kEpsilon<float>) const noexcept {
-        return normal().lengthSquared() < epsilon * epsilon;
-    }
+    [[nodiscard]] bool isDegenerate(float epsilon = kEpsilon<float>) const noexcept;
 
     /**
      * @brief Checks if the triangle is valid (non-degenerate).
      */
-    [[nodiscard]] bool isValid(float epsilon = kEpsilon<float>) const noexcept { return !isDegenerate(epsilon); }
+    [[nodiscard]] bool isValid(float epsilon = kEpsilon<float>) const noexcept;
 
     // ========================================================================
     // Comparison
@@ -273,19 +213,13 @@ class Triangle {
 
     [[nodiscard]] bool operator==(const Triangle& other) const noexcept = default;
 
-    [[nodiscard]] bool areSame(const Triangle& other, float epsilon = kEpsilon<float>) const noexcept {
-        return v0.areSame(other.v0, epsilon) && v1.areSame(other.v1, epsilon) && v2.areSame(other.v2, epsilon);
-    }
+    [[nodiscard]] bool areSame(const Triangle& other, float epsilon = kEpsilon<float>) const noexcept;
 
    private:
     /**
      * @brief Helper: closest point on a line segment.
      */
-    [[nodiscard]] static Vec3f closestPointOnEdge(const Vec3f& point, const Vec3f& a, const Vec3f& b) noexcept {
-        Vec3f ab = b - a;
-        float t = clamp((point - a).dot(ab) / ab.dot(ab), 0.0f, 1.0f);
-        return a + ab * t;
-    }
+    [[nodiscard]] static Vec3f closestPointOnEdge(const Vec3f& point, const Vec3f& a, const Vec3f& b) noexcept;
 };
 
 }  // namespace vne::math

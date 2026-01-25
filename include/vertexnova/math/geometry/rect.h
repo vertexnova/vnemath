@@ -67,27 +67,17 @@ class Rect {
      * @param min_corner Minimum corner (top-left in screen coords)
      * @param max_corner Maximum corner (bottom-right in screen coords)
      */
-    [[nodiscard]] static constexpr Rect fromCorners(const Vec2f& min_corner, const Vec2f& max_corner) noexcept {
-        return Rect(min_corner.x(), min_corner.y(), max_corner.x() - min_corner.x(), max_corner.y() - min_corner.y());
-    }
+    [[nodiscard]] static Rect fromCorners(const Vec2f& min_corner, const Vec2f& max_corner) noexcept;
 
     /**
      * @brief Constructs a rectangle from center and half-extents.
      */
-    [[nodiscard]] static constexpr Rect fromCenterAndHalfExtents(const Vec2f& center,
-                                                                 const Vec2f& half_extents) noexcept {
-        return Rect(center.x() - half_extents.x(),
-                    center.y() - half_extents.y(),
-                    half_extents.x() * 2.0f,
-                    half_extents.y() * 2.0f);
-    }
+    [[nodiscard]] static Rect fromCenterAndHalfExtents(const Vec2f& center, const Vec2f& half_extents) noexcept;
 
     /**
      * @brief Constructs a rectangle from center and size.
      */
-    [[nodiscard]] static constexpr Rect fromCenterAndSize(const Vec2f& center, const Vec2f& size) noexcept {
-        return Rect(center.x() - size.x() * 0.5f, center.y() - size.y() * 0.5f, size.x(), size.y());
-    }
+    [[nodiscard]] static Rect fromCenterAndSize(const Vec2f& center, const Vec2f& size) noexcept;
 
     // ========================================================================
     // Accessors
@@ -274,10 +264,7 @@ class Rect {
 
     [[nodiscard]] constexpr bool operator==(const Rect& other) const noexcept = default;
 
-    [[nodiscard]] bool areSame(const Rect& other, float epsilon = kEpsilon<float>) const noexcept {
-        return approxEqual(x, other.x, epsilon) && approxEqual(y, other.y, epsilon)
-               && approxEqual(width, other.width, epsilon) && approxEqual(height, other.height, epsilon);
-    }
+    [[nodiscard]] bool areSame(const Rect& other, float epsilon = kEpsilon<float>) const noexcept;
 };
 
 }  // namespace vne::math

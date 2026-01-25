@@ -22,6 +22,15 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/random.h
+    # Interpolation and animation
+    ${VNE_INCLUDE_DIR}/vertexnova/math/easing.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/curves.h
+    # Procedural generation
+    ${VNE_INCLUDE_DIR}/vertexnova/math/noise.h
+    # Coordinate space utilities
+    ${VNE_INCLUDE_DIR}/vertexnova/math/projection_utils.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/transform_utils.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/viewport.h
     # Geometry headers
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/ray.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/plane.h
@@ -29,6 +38,13 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/sphere.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/frustum.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/geometry.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/triangle.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/capsule.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/obb.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/intersection.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/line.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/line_segment.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/rect.h
     # Core headers
     ${VNE_INCLUDE_DIR}/vertexnova/math/core/constants.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/core/math_utils.h
@@ -49,6 +65,12 @@ set(SOURCE_FILES
     vertexnova/math/geometry/aabb.cpp
     vertexnova/math/geometry/sphere.cpp
     vertexnova/math/geometry/frustum.cpp
+    vertexnova/math/geometry/rect.cpp
+    vertexnova/math/geometry/line.cpp
+    vertexnova/math/geometry/line_segment.cpp
+    vertexnova/math/geometry/triangle.cpp
+    vertexnova/math/geometry/obb.cpp
+    vertexnova/math/geometry/capsule.cpp
 )
 
 #==============================================================================

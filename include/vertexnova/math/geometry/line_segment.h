@@ -59,12 +59,12 @@ class LineSegment {
     /**
      * @brief Returns the normalized direction vector.
      */
-    [[nodiscard]] Vec3f normalizedDirection() const noexcept { return direction().normalized(); }
+    [[nodiscard]] Vec3f normalizedDirection() const noexcept;
 
     /**
      * @brief Returns the length of the segment.
      */
-    [[nodiscard]] float length() const noexcept { return direction().length(); }
+    [[nodiscard]] float length() const noexcept;
 
     /**
      * @brief Returns the squared length (faster, avoids sqrt).
@@ -99,17 +99,7 @@ class LineSegment {
      * @param point The query point
      * @return Closest point on the segment
      */
-    [[nodiscard]] Vec3f closestPoint(const Vec3f& point) const noexcept {
-        Vec3f dir = direction();
-        float len_sq = dir.lengthSquared();
-
-        if (isZero(len_sq)) {
-            return start;  // Degenerate segment
-        }
-
-        float t = clamp((point - start).dot(dir) / len_sq, 0.0f, 1.0f);
-        return getPoint(t);
-    }
+    [[nodiscard]] Vec3f closestPoint(const Vec3f& point) const noexcept;
 
     /**
      * @brief Finds the closest point and returns the parameter t.
@@ -118,32 +108,17 @@ class LineSegment {
      * @param out_t Output parameter t in [0,1]
      * @return Closest point on the segment
      */
-    [[nodiscard]] Vec3f closestPoint(const Vec3f& point, float& out_t) const noexcept {
-        Vec3f dir = direction();
-        float len_sq = dir.lengthSquared();
-
-        if (isZero(len_sq)) {
-            out_t = 0.0f;
-            return start;
-        }
-
-        out_t = clamp((point - start).dot(dir) / len_sq, 0.0f, 1.0f);
-        return getPoint(out_t);
-    }
+    [[nodiscard]] Vec3f closestPoint(const Vec3f& point, float& out_t) const noexcept;
 
     /**
      * @brief Computes the distance from a point to this segment.
      */
-    [[nodiscard]] float distanceToPoint(const Vec3f& point) const noexcept {
-        return (point - closestPoint(point)).length();
-    }
+    [[nodiscard]] float distanceToPoint(const Vec3f& point) const noexcept;
 
     /**
      * @brief Computes the squared distance from a point to this segment.
      */
-    [[nodiscard]] float squaredDistanceToPoint(const Vec3f& point) const noexcept {
-        return (point - closestPoint(point)).lengthSquared();
-    }
+    [[nodiscard]] float squaredDistanceToPoint(const Vec3f& point) const noexcept;
 
     // ========================================================================
     // Validation
@@ -152,14 +127,12 @@ class LineSegment {
     /**
      * @brief Checks if the segment is degenerate (zero length).
      */
-    [[nodiscard]] bool isDegenerate(float epsilon = kEpsilon<float>) const noexcept {
-        return lengthSquared() < epsilon * epsilon;
-    }
+    [[nodiscard]] bool isDegenerate(float epsilon = kEpsilon<float>) const noexcept;
 
     /**
      * @brief Checks if the segment is valid (non-zero length).
      */
-    [[nodiscard]] bool isValid(float epsilon = kEpsilon<float>) const noexcept { return !isDegenerate(epsilon); }
+    [[nodiscard]] bool isValid(float epsilon = kEpsilon<float>) const noexcept;
 
     // ========================================================================
     // Transformations
@@ -183,9 +156,7 @@ class LineSegment {
 
     [[nodiscard]] constexpr bool operator==(const LineSegment& other) const noexcept = default;
 
-    [[nodiscard]] bool areSame(const LineSegment& other, float epsilon = kEpsilon<float>) const noexcept {
-        return start.areSame(other.start, epsilon) && end.areSame(other.end, epsilon);
-    }
+    [[nodiscard]] bool areSame(const LineSegment& other, float epsilon = kEpsilon<float>) const noexcept;
 };
 
 }  // namespace vne::math

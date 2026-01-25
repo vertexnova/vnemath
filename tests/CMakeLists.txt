@@ -85,6 +85,8 @@ set(TEST_SOURCES
     math/geometry/line_segment_test.cpp
     math/geometry/line_test.cpp
     math/geometry/rect_test.cpp
+    math/geometry/obb_test.cpp
+    math/geometry/capsule_test.cpp
     math/statistic_test.cpp
     main.cpp
 )

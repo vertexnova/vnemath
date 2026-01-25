@@ -27,6 +27,18 @@
 #include "transform_node.h"
 #include "random.h"
 
+// Interpolation and animation
+#include "easing.h"
+#include "curves.h"
+
+// Procedural generation
+#include "noise.h"
+
+// Coordinate space utilities
+#include "projection_utils.h"
+#include "transform_utils.h"
+#include "viewport.h"
+
 // Geometry module includes
 #include "geometry/geometry.h"
 

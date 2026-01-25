@@ -18,10 +18,12 @@
  */
 
 #include "aabb.h"
+#include "capsule.h"
 #include "frustum.h"
 #include "intersection.h"
 #include "line.h"
 #include "line_segment.h"
+#include "obb.h"
 #include "plane.h"
 #include "ray.h"
 #include "rect.h"

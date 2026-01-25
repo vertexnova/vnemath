@@ -101,6 +101,91 @@ class Color {
     [[nodiscard]] Color lerp(const Color& color, float t) const noexcept;
 
    public:
+    /// @name Color Space Conversions
+    /// @{
+
+    /**
+     * @brief Creates a color from HSV (Hue, Saturation, Value)
+     * @param h Hue in degrees [0, 360)
+     * @param s Saturation [0, 1]
+     * @param v Value (brightness) [0, 1]
+     * @param a Alpha [0, 1] (default 1.0)
+     * @return The color in RGB
+     */
+    [[nodiscard]] static Color fromHSV(float h, float s, float v, float a = 1.0f) noexcept;
+
+    /**
+     * @brief Creates a color from HSL (Hue, Saturation, Lightness)
+     * @param h Hue in degrees [0, 360)
+     * @param s Saturation [0, 1]
+     * @param l Lightness [0, 1]
+     * @param a Alpha [0, 1] (default 1.0)
+     * @return The color in RGB
+     */
+    [[nodiscard]] static Color fromHSL(float h, float s, float l, float a = 1.0f) noexcept;
+
+    /**
+     * @brief Converts this color to HSV (Hue, Saturation, Value)
+     * @return Vec3f containing (hue [0,360), saturation [0,1], value [0,1])
+     */
+    [[nodiscard]] Vec3f toHSV() const noexcept;
+
+    /**
+     * @brief Converts this color to HSL (Hue, Saturation, Lightness)
+     * @return Vec3f containing (hue [0,360), saturation [0,1], lightness [0,1])
+     */
+    [[nodiscard]] Vec3f toHSL() const noexcept;
+
+    /**
+     * @brief Converts from sRGB to linear color space
+     *
+     * Applies the inverse sRGB transfer function (gamma correction).
+     * Use for converting textures to linear space for lighting calculations.
+     *
+     * @return Color in linear space
+     */
+    [[nodiscard]] Color toLinear() const noexcept;
+
+    /**
+     * @brief Converts from linear to sRGB color space
+     *
+     * Applies the sRGB transfer function.
+     * Use for converting linear colors for display.
+     *
+     * @return Color in sRGB space
+     */
+    [[nodiscard]] Color toSRGB() const noexcept;
+
+    /**
+     * @brief Applies gamma correction to this color
+     * @param gamma The gamma value (typically 2.2)
+     * @return Gamma-corrected color
+     */
+    [[nodiscard]] Color gammaCorrect(float gamma) const noexcept;
+
+    /**
+     * @brief Computes the luminance (perceived brightness) of this color
+     *
+     * Uses the ITU-R BT.709 coefficients for sRGB.
+     *
+     * @return Luminance value [0, 1]
+     */
+    [[nodiscard]] float luminance() const noexcept;
+
+    /**
+     * @brief Returns a grayscale version of this color
+     * @return Grayscale color (RGB = luminance)
+     */
+    [[nodiscard]] Color grayscale() const noexcept;
+
+    /**
+     * @brief Inverts this color (1 - component for RGB, alpha unchanged)
+     * @return Inverted color
+     */
+    [[nodiscard]] Color inverted() const noexcept;
+    /// @}
+
+   public:
     /** @brief Resets the color to black with full opacity (0, 0, 0, 1) */
     void reset() noexcept;
 
