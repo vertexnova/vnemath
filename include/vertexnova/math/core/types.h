@@ -303,6 +303,22 @@ inline constexpr float kEpsilon<float> = 1e-6f;
 template<>
 inline constexpr double kEpsilon<double> = 1e-12;
 
+/**
+ * @brief Returns default epsilon for any Arithmetic type.
+ *
+ * This helper is needed because MSVC evaluates default parameter expressions
+ * even when the requires clause would prevent the function from being instantiated.
+ * For floating-point types, returns kEpsilon<T>. For integral types, returns 0.
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T defaultEpsilon() noexcept {
+    if constexpr (FloatingPoint<T>) {
+        return kEpsilon<T>;
+    } else {
+        return T(0);
+    }
+}
+
 /// @brief Pi constant (templated)
 template<FloatingPoint T>
 inline constexpr T kPiT = T(3.14159265358979323846);

@@ -321,7 +321,7 @@ class Mat {
     /**
      * @brief Checks if two matrices are approximately equal.
      */
-    [[nodiscard]] constexpr bool approxEquals(const Mat& other, T epsilon = kEpsilon<T>) const noexcept {
+    [[nodiscard]] constexpr bool approxEquals(const Mat& other, T epsilon = defaultEpsilon<T>()) const noexcept {
         for (size_type c = 0; c < C; ++c) {
             if (!columns[c].approxEquals(other.columns[c], epsilon)) {
                 return false;

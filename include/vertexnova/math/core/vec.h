@@ -411,7 +411,7 @@ class Vec {
      * @param epsilon Tolerance for comparison
      * @return true if length is approximately 1
      */
-    [[nodiscard]] constexpr bool isNormalized(T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] constexpr bool isNormalized(T epsilon = defaultEpsilon<T>()) const noexcept
         requires FloatingPoint<T>
     {
         return approxEqual(lengthSquared(), T(1), epsilon);
@@ -623,7 +623,7 @@ class Vec {
      * @param epsilon Tolerance for comparison
      * @return true if approximately equal
      */
-    [[nodiscard]] constexpr bool approxEquals(const Vec& other, T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] constexpr bool approxEquals(const Vec& other, T epsilon = defaultEpsilon<T>()) const noexcept
         requires FloatingPoint<T>
     {
         for (size_type i = 0; i < N; ++i) {
@@ -647,7 +647,7 @@ class Vec {
      * @param epsilon Tolerance for comparison (absolute)
      * @return true if all components are within epsilon
      */
-    [[nodiscard]] constexpr bool areSame(const Vec& other, T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] constexpr bool areSame(const Vec& other, T epsilon = defaultEpsilon<T>()) const noexcept
         requires FloatingPoint<T>
     {
         return approxEquals(other, epsilon);
@@ -659,7 +659,7 @@ class Vec {
      * @param epsilon Tolerance for comparison
      * @return true if aligned
      */
-    [[nodiscard]] bool areAligned(const Vec& other, T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] bool areAligned(const Vec& other, T epsilon = defaultEpsilon<T>()) const noexcept
         requires FloatingPoint<T>
     {
         Vec n1 = normalized();
@@ -676,7 +676,7 @@ class Vec {
      * @param epsilon Tolerance for comparison (absolute)
      * @return true if all components are within epsilon of zero
      */
-    [[nodiscard]] constexpr bool isZero(T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] constexpr bool isZero(T epsilon = defaultEpsilon<T>()) const noexcept
         requires FloatingPoint<T>
     {
         for (size_type i = 0; i < N; ++i) {
@@ -690,7 +690,7 @@ class Vec {
     /**
      * @brief Checks if vectors are linearly dependent (parallel).
      */
-    [[nodiscard]] bool isLinearDependent(const Vec& other, T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] bool isLinearDependent(const Vec& other, T epsilon = defaultEpsilon<T>()) const noexcept
         requires FloatingPoint<T>
     {
         return areAligned(other, epsilon);
@@ -699,7 +699,7 @@ class Vec {
     /**
      * @brief Checks if three points are collinear (3D).
      */
-    [[nodiscard]] bool isLinearDependent(const Vec& p1, const Vec& p2, T epsilon = kEpsilon<T>) const noexcept
+    [[nodiscard]] bool isLinearDependent(const Vec& p1, const Vec& p2, T epsilon = defaultEpsilon<T>()) const noexcept
         requires(N == 3 && FloatingPoint<T>)
     {
         Vec v1 = p1 - *this;

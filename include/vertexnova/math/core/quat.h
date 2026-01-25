@@ -327,7 +327,7 @@ class Quat {
     /**
      * @brief Checks if this quaternion is normalized.
      */
-    [[nodiscard]] constexpr bool isNormalized(T epsilon = kEpsilon<T>) const noexcept {
+    [[nodiscard]] constexpr bool isNormalized(T epsilon = defaultEpsilon<T>()) const noexcept {
         return approxEqual(lengthSquared(), T(1), epsilon);
     }
 
@@ -507,7 +507,7 @@ class Quat {
     /**
      * @brief Checks if two quaternions are approximately equal.
      */
-    [[nodiscard]] constexpr bool approxEquals(const Quat& other, T epsilon = kEpsilon<T>) const noexcept {
+    [[nodiscard]] constexpr bool approxEquals(const Quat& other, T epsilon = defaultEpsilon<T>()) const noexcept {
         return approxEqual(x, other.x, epsilon) && approxEqual(y, other.y, epsilon) && approxEqual(z, other.z, epsilon)
                && approxEqual(w, other.w, epsilon);
     }
