@@ -7,6 +7,8 @@
  * ----------------------------------------------------------------------
  */
 
+#include "scene_object.h"
+
 #include "common/logging_guard.h"
 
 #include <vertexnova/math/core/core.h>
@@ -16,6 +18,7 @@
 
 using namespace vne::math;
 using vne::math::examples::LoggingGuard_C;
+using vne::math::examples::SceneObject;
 
 void demonstrateFrustumCreation() {
     VNE_LOG_INFO << "=== Frustum Creation ===";
@@ -114,10 +117,10 @@ void demonstrateSphereTesting() {
     VNE_LOG_INFO << "Testing spheres:";
     for (const auto& [name, sphere] : spheres) {
         bool intersects = frustum.intersects(sphere);
-        bool fullyInside = frustum.containsFully(sphere);
+        bool fully_inside = frustum.containsFully(sphere);
 
         std::string status;
-        if (fullyInside) {
+        if (fully_inside) {
             status = "FULLY INSIDE";
         } else if (intersects) {
             status = "INTERSECTS";
@@ -157,10 +160,10 @@ void demonstrateAABBTesting() {
     VNE_LOG_INFO << "Testing AABBs:";
     for (const auto& [name, aabb] : boxes) {
         bool intersects = frustum.intersects(aabb);
-        bool fullyInside = frustum.containsFully(aabb);
+        bool fully_inside = frustum.containsFully(aabb);
 
         std::string status;
-        if (fullyInside) {
+        if (fully_inside) {
             status = "FULLY INSIDE";
         } else if (intersects) {
             status = "INTERSECTS";
@@ -178,11 +181,6 @@ void demonstratePracticalCulling() {
     VNE_LOG_INFO << "=== Practical Culling Example ===";
 
     // Simulate a scene with many objects
-    struct SceneObject {
-        std::string name;
-        Aabb bounds;
-    };
-
     std::vector<SceneObject> scene = {
         {"Tree_1", Aabb(Vec3f(-2.0f, 0.0f, -15.0f), Vec3f(-1.0f, 5.0f, -14.0f))},
         {"Tree_2", Aabb(Vec3f(3.0f, 0.0f, -20.0f), Vec3f(4.0f, 5.0f, -19.0f))},

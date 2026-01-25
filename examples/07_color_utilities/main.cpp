@@ -7,6 +7,7 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/color_utils.h"
 #include "common/logging_guard.h"
 
 #include <vertexnova/math/color.h>
@@ -15,12 +16,8 @@
 #include <vector>
 
 using namespace vne::math;
+using vne::math::examples::logColor;
 using vne::math::examples::LoggingGuard_C;
-
-void logColor(const std::string& name, const Color& color) {
-    VNE_LOG_INFO << "  " << name << ": RGBA(" << color.r() << ", " << color.g() << ", " << color.b() << ", "
-                 << color.a() << ")";
-}
 
 void demonstrateColorCreation() {
     VNE_LOG_INFO << "=== Color Creation ===";

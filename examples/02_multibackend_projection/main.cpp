@@ -7,6 +7,7 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/graphics_utils.h"
 #include "common/logging_guard.h"
 
 #include <vertexnova/math/core/core.h>
@@ -14,28 +15,14 @@
 #include <string>
 
 using namespace vne::math;
+using vne::math::examples::apiName;
+using vne::math::examples::depthRangeName;
+using vne::math::examples::handednessName;
 using vne::math::examples::LoggingGuard_C;
 
-const char* apiName(GraphicsApi api) {
-    switch (api) {
-        case GraphicsApi::eOpenGL:
-            return "OpenGL";
-        case GraphicsApi::eVulkan:
-            return "Vulkan";
-        case GraphicsApi::eMetal:
-            return "Metal";
-        case GraphicsApi::eDirectX:
-            return "DirectX";
-        case GraphicsApi::eWebGPU:
-            return "WebGPU";
-        default:
-            return "Unknown";
-    }
-}
-
 void printApiInfo(GraphicsApi api) {
-    VNE_LOG_INFO << "  Depth Range: " << (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne ? "[0, 1]" : "[-1, 1]");
-    VNE_LOG_INFO << "  Handedness: " << (getHandedness(api) == Handedness::eLeft ? "Left-handed" : "Right-handed");
+    VNE_LOG_INFO << "  Depth Range: " << depthRangeName(api);
+    VNE_LOG_INFO << "  Handedness: " << handednessName(api);
     VNE_LOG_INFO << "  Y-Flip: " << (needsYFlip(api) ? "Yes" : "No");
 }
 
@@ -101,23 +88,23 @@ void demonstrateOrthographicMatrices() {
     // Compare OpenGL and Vulkan orthographic matrices
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "--- OpenGL Orthographic ---";
-    Mat4f orthoGL = Mat4f::ortho(left, right, bottom, top, z_near, z_far, GraphicsApi::eOpenGL);
-    VNE_LOG_INFO << orthoGL;
+    Mat4f ortho_gl = Mat4f::ortho(left, right, bottom, top, z_near, z_far, GraphicsApi::eOpenGL);
+    VNE_LOG_INFO << ortho_gl;
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "--- Vulkan Orthographic ---";
-    Mat4f orthoVK = Mat4f::ortho(left, right, bottom, top, z_near, z_far, GraphicsApi::eVulkan);
-    VNE_LOG_INFO << orthoVK;
+    Mat4f ortho_vk = Mat4f::ortho(left, right, bottom, top, z_near, z_far, GraphicsApi::eVulkan);
+    VNE_LOG_INFO << ortho_vk;
 
     // Transform a screen point
-    Vec4f screenPoint(960.0f, 540.0f, 0.0f, 1.0f);  // Center of screen
-    Vec4f ndcGL = orthoGL * screenPoint;
-    Vec4f ndcVK = orthoVK * screenPoint;
+    Vec4f screen_point(960.0f, 540.0f, 0.0f, 1.0f);  // Center of screen
+    Vec4f ndc_gl = ortho_gl * screen_point;
+    Vec4f ndc_vk = ortho_vk * screen_point;
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "Screen center (960, 540) in NDC:";
-    VNE_LOG_INFO << "  OpenGL: " << ndcGL;
-    VNE_LOG_INFO << "  Vulkan: " << ndcVK;
+    VNE_LOG_INFO << "  OpenGL: " << ndc_gl;
+    VNE_LOG_INFO << "  Vulkan: " << ndc_vk;
 }
 
 void demonstrateViewMatrix() {
@@ -136,25 +123,25 @@ void demonstrateViewMatrix() {
     VNE_LOG_INFO << "  Up: " << up;
 
     // Create view matrices for different APIs
-    Mat4f viewGL = Mat4f::lookAt(eye, target, up, GraphicsApi::eOpenGL);
-    Mat4f viewVK = Mat4f::lookAt(eye, target, up, GraphicsApi::eVulkan);
+    Mat4f view_gl = Mat4f::lookAt(eye, target, up, GraphicsApi::eOpenGL);
+    Mat4f view_vk = Mat4f::lookAt(eye, target, up, GraphicsApi::eVulkan);
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "--- OpenGL View Matrix ---";
-    VNE_LOG_INFO << viewGL;
+    VNE_LOG_INFO << view_gl;
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "--- Vulkan View Matrix ---";
-    VNE_LOG_INFO << viewVK;
+    VNE_LOG_INFO << view_vk;
 
     // Transform world origin to view space
-    Vec3f worldOrigin(0.0f, 0.0f, 0.0f);
-    Vec3f viewSpaceGL = viewGL.transformPoint(worldOrigin);
-    Vec3f viewSpaceVK = viewVK.transformPoint(worldOrigin);
+    Vec3f world_origin(0.0f, 0.0f, 0.0f);
+    Vec3f view_space_gl = view_gl.transformPoint(world_origin);
+    Vec3f view_space_vk = view_vk.transformPoint(world_origin);
 
     VNE_LOG_INFO << "World origin in view space:";
-    VNE_LOG_INFO << "  OpenGL: " << viewSpaceGL;
-    VNE_LOG_INFO << "  Vulkan: " << viewSpaceVK;
+    VNE_LOG_INFO << "  OpenGL: " << view_space_gl;
+    VNE_LOG_INFO << "  Vulkan: " << view_space_vk;
 }
 
 void demonstrateMVP() {
@@ -164,9 +151,9 @@ void demonstrateMVP() {
     // Model transform: cube at (5, 0, -5), rotated 45 degrees
     Vec3f position(5.0f, 0.0f, -5.0f);
     Quatf rotation = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(45.0f));
-    Vec3f scale(1.0f, 1.0f, 1.0f);
+    Vec3f scale_vec(1.0f, 1.0f, 1.0f);
 
-    Mat4f model = modelMatrix(position, rotation, scale);
+    Mat4f model = modelMatrix(position, rotation, scale_vec);
 
     // View: camera at (0, 5, 10) looking at origin
     Vec3f eye(0.0f, 5.0f, 10.0f);
@@ -179,7 +166,7 @@ void demonstrateMVP() {
     Mat4f proj = Mat4f::perspective(fov, aspect, 0.1f, 1000.0f, GraphicsApi::eVulkan);
 
     // Combine into MVP
-    Mat4f mvpMatrix = mvp(model, view, proj);
+    Mat4f mvp_matrix = mvp(model, view, proj);
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "Model Matrix:";
@@ -192,16 +179,16 @@ void demonstrateMVP() {
     VNE_LOG_INFO << proj;
 
     VNE_LOG_INFO << "MVP Matrix:";
-    VNE_LOG_INFO << mvpMatrix;
+    VNE_LOG_INFO << mvp_matrix;
 
     // Transform a vertex through the pipeline
-    Vec4f localVertex(0.0f, 1.0f, 0.0f, 1.0f);  // Top of unit cube
-    Vec4f clipSpace = mvpMatrix * localVertex;
-    Vec3f ndc(clipSpace.x() / clipSpace.w(), clipSpace.y() / clipSpace.w(), clipSpace.z() / clipSpace.w());
+    Vec4f local_vertex(0.0f, 1.0f, 0.0f, 1.0f);  // Top of unit cube
+    Vec4f clip_space = mvp_matrix * local_vertex;
+    Vec3f ndc(clip_space.x() / clip_space.w(), clip_space.y() / clip_space.w(), clip_space.z() / clip_space.w());
 
     VNE_LOG_INFO << "Vertex transformation:";
-    VNE_LOG_INFO << "  Local: " << localVertex;
-    VNE_LOG_INFO << "  Clip space: " << clipSpace;
+    VNE_LOG_INFO << "  Local: " << local_vertex;
+    VNE_LOG_INFO << "  Clip space: " << clip_space;
     VNE_LOG_INFO << "  NDC: " << ndc;
 }
 
@@ -213,7 +200,7 @@ void demonstrateApiSwitching() {
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "Simulating runtime API selection...";
 
-    auto renderScene = [](GraphicsApi api) {
+    auto render_scene = [](GraphicsApi api) {
         float fov = degToRad(60.0f);
         float aspect = 16.0f / 9.0f;
 
@@ -230,11 +217,11 @@ void demonstrateApiSwitching() {
     };
 
     // The same code works for any API
-    renderScene(GraphicsApi::eOpenGL);
-    renderScene(GraphicsApi::eVulkan);
-    renderScene(GraphicsApi::eMetal);
-    renderScene(GraphicsApi::eDirectX);
-    renderScene(GraphicsApi::eWebGPU);
+    render_scene(GraphicsApi::eOpenGL);
+    render_scene(GraphicsApi::eVulkan);
+    render_scene(GraphicsApi::eMetal);
+    render_scene(GraphicsApi::eDirectX);
+    render_scene(GraphicsApi::eWebGPU);
 }
 
 int main() {

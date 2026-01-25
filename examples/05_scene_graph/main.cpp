@@ -7,6 +7,7 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/graphics_utils.h"
 #include "common/logging_guard.h"
 
 #include <vertexnova/math/core/core.h>
@@ -16,11 +17,8 @@
 #include <vector>
 
 using namespace vne::math;
+using vne::math::examples::extractPosition;
 using vne::math::examples::LoggingGuard_C;
-
-Vec3f extractPosition(const Mat4f& matrix) {
-    return Vec3f(matrix[3][0], matrix[3][1], matrix[3][2]);
-}
 
 void demonstrateBasicHierarchy() {
     VNE_LOG_INFO << "=== Basic Parent-Child Hierarchy ===";
