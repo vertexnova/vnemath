@@ -26,78 +26,78 @@ namespace vne::math {
 
 class Quaternion : public glm::quat {
    public:
-    Quaternion();
-    Quaternion(const Vec4f& vec);
-    Quaternion(const Vec3f& vec);
-    Quaternion(float w_param, const Vec3f& vec);
-    Quaternion(float w_param, float x_param, float y_param, float z_param);
-    Quaternion(float pitch, float yaw, float roll);
-    Quaternion(const Mat4x4f& mat);
-    Quaternion(const glm::quat& q);
-    Quaternion(const Quaternion& other);
-    Quaternion& operator=(const Quaternion& quat);
+    Quaternion() noexcept;
+    Quaternion(const Vec4f& vec) noexcept;
+    Quaternion(const Vec3f& vec) noexcept;
+    Quaternion(float w_param, const Vec3f& vec) noexcept;
+    Quaternion(float w_param, float x_param, float y_param, float z_param) noexcept;
+    Quaternion(float pitch, float yaw, float roll) noexcept;
+    Quaternion(const Mat4x4f& mat) noexcept;
+    Quaternion(const glm::quat& q) noexcept;
+    Quaternion(const Quaternion& other) noexcept;
+    Quaternion& operator=(const Quaternion& quat) noexcept;
 
    public:
-    float getW() const;
-    Vec3f getVector() const;
+    [[nodiscard]] float getW() const noexcept;
+    [[nodiscard]] Vec3f getVector() const noexcept;
 
    public:
-    void setFromEulerAngles(float pitch, float yaw, float roll);
-    Vec3f getEulerAngles() const;
-    void setFromRotationMatrix(const Mat4x4f& mat);
-    void setFromAxisAngle(float angle, const Vec3f& axis);
-    Quaternion normalize() const;
-    Vec3f rotateVector(const Vec3f& vec) const;
-    void setIdentity();
-    void makeRotate(const Vec3f& from, const Vec3f& to);
-    void setAngleAndAxis(const float angle, const Vec3f& axis);
-    void getAngleAndAxis(float& angle, Vec3f& axis) const;
-    float getAngle() const;
-    Vec3f getAxis() const;
-    Vec3f getXAxis() const;
-    Vec3f getYAxis() const;
-    Vec3f getZAxis() const;
+    void setFromEulerAngles(float pitch, float yaw, float roll) noexcept;
+    [[nodiscard]] Vec3f getEulerAngles() const noexcept;
+    void setFromRotationMatrix(const Mat4x4f& mat) noexcept;
+    void setFromAxisAngle(float angle, const Vec3f& axis) noexcept;
+    [[nodiscard]] Quaternion normalize() const noexcept;
+    [[nodiscard]] Vec3f rotateVector(const Vec3f& vec) const noexcept;
+    void setIdentity() noexcept;
+    void makeRotate(const Vec3f& from, const Vec3f& to) noexcept;
+    void setAngleAndAxis(const float angle, const Vec3f& axis) noexcept;
+    void getAngleAndAxis(float& angle, Vec3f& axis) const noexcept;
+    [[nodiscard]] float getAngle() const noexcept;
+    [[nodiscard]] Vec3f getAxis() const noexcept;
+    [[nodiscard]] Vec3f getXAxis() const noexcept;
+    [[nodiscard]] Vec3f getYAxis() const noexcept;
+    [[nodiscard]] Vec3f getZAxis() const noexcept;
 
    public:
-    void clear();
-    Quaternion conjugate() const;
-    Quaternion inverse() const;
-    float dot(const Quaternion& quat) const;
-    float length() const;
-    float lengthSquared() const;
-    Quaternion slerp(const Quaternion& to, float factor) const;
+    void clear() noexcept;
+    [[nodiscard]] Quaternion conjugate() const noexcept;
+    [[nodiscard]] Quaternion inverse() const noexcept;
+    [[nodiscard]] float dot(const Quaternion& quat) const noexcept;
+    [[nodiscard]] float length() const noexcept;
+    [[nodiscard]] float lengthSquared() const noexcept;
+    [[nodiscard]] Quaternion slerp(const Quaternion& to, float factor) const noexcept;
 
    public:
-    Quaternion& operator*=(const float& scalar);
-    Quaternion& operator/=(const float& scalar);
-    Quaternion& operator+=(const Quaternion& quat);
-    Quaternion& operator-=(const Quaternion& quat);
-    Quaternion& operator*=(const Quaternion& quat);
-    Quaternion operator*(const float& scalar) const;
-    Quaternion operator/(const float& scalar) const;
-    Quaternion operator+(const Quaternion& quat) const;
-    Quaternion operator-(const Quaternion& quat) const;
-    Quaternion operator*(const Quaternion& quat) const;
-    bool operator==(const Quaternion& quat) const;
-    bool operator!=(const Quaternion& quat) const;
-    Quaternion operator+() const;
-    Quaternion operator-() const;
-    float& operator[](uint32_t index);
-    float operator[](uint32_t index) const;
+    Quaternion& operator*=(const float& scalar) noexcept;
+    Quaternion& operator/=(const float& scalar) noexcept;
+    Quaternion& operator+=(const Quaternion& quat) noexcept;
+    Quaternion& operator-=(const Quaternion& quat) noexcept;
+    Quaternion& operator*=(const Quaternion& quat) noexcept;
+    [[nodiscard]] Quaternion operator*(const float& scalar) const noexcept;
+    [[nodiscard]] Quaternion operator/(const float& scalar) const noexcept;
+    [[nodiscard]] Quaternion operator+(const Quaternion& quat) const noexcept;
+    [[nodiscard]] Quaternion operator-(const Quaternion& quat) const noexcept;
+    [[nodiscard]] Quaternion operator*(const Quaternion& quat) const noexcept;
+    [[nodiscard]] bool operator==(const Quaternion& quat) const noexcept;
+    [[nodiscard]] bool operator!=(const Quaternion& quat) const noexcept;
+    [[nodiscard]] Quaternion operator+() const noexcept;
+    [[nodiscard]] Quaternion operator-() const noexcept;
+    [[nodiscard]] float& operator[](uint32_t index) noexcept;
+    [[nodiscard]] float operator[](uint32_t index) const noexcept;
 
-    friend Quaternion operator*(float scalar, const Quaternion& quat);
-    friend Vec3f operator*(const Quaternion& quat, const Vec3f& vec);
-    friend Vec3f operator*(const Vec3f& vec, const Quaternion& quat);
+    friend Quaternion operator*(float scalar, const Quaternion& quat) noexcept;
+    friend Vec3f operator*(const Quaternion& quat, const Vec3f& vec) noexcept;
+    friend Vec3f operator*(const Vec3f& vec, const Quaternion& quat) noexcept;
 
    public:
     friend std::ostream& operator<<(std::ostream& os, const Quaternion& quat);
 
    public:
-    static Quaternion slerp(const Quaternion& from, const Quaternion& to, float factor);
-    static Quaternion normalize(const Quaternion& quat);
-    static Quaternion conjugate(const Quaternion& quat);
-    static Quaternion inverse(const Quaternion& quat);
-    static float dot(const Quaternion& quat1, const Quaternion& quat2);
+    [[nodiscard]] static Quaternion slerp(const Quaternion& from, const Quaternion& to, float factor) noexcept;
+    [[nodiscard]] static Quaternion normalize(const Quaternion& quat) noexcept;
+    [[nodiscard]] static Quaternion conjugate(const Quaternion& quat) noexcept;
+    [[nodiscard]] static Quaternion inverse(const Quaternion& quat) noexcept;
+    [[nodiscard]] static float dot(const Quaternion& quat1, const Quaternion& quat2) noexcept;
 };
 
 // Legacy type alias for backward compatibility
