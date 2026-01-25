@@ -70,6 +70,10 @@ set(TEST_SOURCES
     math/math_utils_test.cpp
     math/angle_utils_test.cpp
     math/easing_test.cpp
+    # New feature tests
+    math/curves_test.cpp
+    math/noise_test.cpp
+    math/transform_utils_test.cpp
     # Multi-backend graphics API tests
     math/graphics_api_test.cpp
     math/camera_test.cpp

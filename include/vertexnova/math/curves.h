@@ -17,6 +17,28 @@
 namespace vne::math {
 
 // ============================================================================
+// Internal lerp helper that works for both scalars and vectors
+// ============================================================================
+
+namespace detail {
+
+// For scalars
+template<typename T>
+[[nodiscard]] constexpr auto curveLerp(const T& a, const T& b, float t) noexcept
+    -> std::enable_if_t<std::is_arithmetic_v<T>, T> {
+    return a + (b - a) * t;
+}
+
+// For Vec types (has lerp member function)
+template<typename T>
+[[nodiscard]] constexpr auto curveLerp(const T& a, const T& b, float t) noexcept
+    -> std::enable_if_t<!std::is_arithmetic_v<T>, T> {
+    return a.lerp(b, t);
+}
+
+}  // namespace detail
+
+// ============================================================================
 // Bezier Curves
 // ============================================================================
 
@@ -30,7 +52,7 @@ namespace vne::math {
  */
 template<typename T>
 [[nodiscard]] constexpr T bezierLinear(const T& p0, const T& p1, float t) noexcept {
-    return lerp(p0, p1, t);
+    return detail::curveLerp(p0, p1, t);
 }
 
 /**
@@ -364,16 +386,16 @@ inline void bezierCubicSplit(const T& p0,
                               std::array<T, 4>& left,
                               std::array<T, 4>& right) noexcept {
     // First level
-    T q0 = lerp(p0, p1, t);
-    T q1 = lerp(p1, p2, t);
-    T q2 = lerp(p2, p3, t);
+    T q0 = detail::curveLerp(p0, p1, t);
+    T q1 = detail::curveLerp(p1, p2, t);
+    T q2 = detail::curveLerp(p2, p3, t);
 
     // Second level
-    T r0 = lerp(q0, q1, t);
-    T r1 = lerp(q1, q2, t);
+    T r0 = detail::curveLerp(q0, q1, t);
+    T r1 = detail::curveLerp(q1, q2, t);
 
     // Third level (split point)
-    T s = lerp(r0, r1, t);
+    T s = detail::curveLerp(r0, r1, t);
 
     // Left curve
     left[0] = p0;

@@ -440,3 +440,296 @@ TEST_F(ColorTest, TestColorStreamInWithoutAlpha) {
     ss >> test;
     EXPECT_EQ(clr, test);
 }
+
+// ============================================================================
+// HSV Conversion Tests
+// ============================================================================
+
+TEST_F(ColorTest, TestFromHSV_Red) {
+    vne::math::Color color = vne::math::Color::fromHSV(0.0f, 1.0f, 1.0f);
+    EXPECT_NEAR(color.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSV_Green) {
+    vne::math::Color color = vne::math::Color::fromHSV(120.0f, 1.0f, 1.0f);
+    EXPECT_NEAR(color.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSV_Blue) {
+    vne::math::Color color = vne::math::Color::fromHSV(240.0f, 1.0f, 1.0f);
+    EXPECT_NEAR(color.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSV_Yellow) {
+    vne::math::Color color = vne::math::Color::fromHSV(60.0f, 1.0f, 1.0f);
+    EXPECT_NEAR(color.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSV_White) {
+    vne::math::Color color = vne::math::Color::fromHSV(0.0f, 0.0f, 1.0f);
+    EXPECT_NEAR(color.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSV_Black) {
+    vne::math::Color color = vne::math::Color::fromHSV(0.0f, 0.0f, 0.0f);
+    EXPECT_NEAR(color.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSV_WithAlpha) {
+    vne::math::Color color = vne::math::Color::fromHSV(0.0f, 1.0f, 1.0f, 0.5f);
+    EXPECT_NEAR(color.a(), 0.5f, 0.01f);
+}
+
+TEST_F(ColorTest, TestToHSV_Red) {
+    vne::math::Color red(1.0f, 0.0f, 0.0f);
+    vne::math::Vec3f hsv = red.toHSV();
+    EXPECT_NEAR(hsv.x(), 0.0f, 1.0f);  // Hue
+    EXPECT_NEAR(hsv.y(), 1.0f, 0.01f); // Saturation
+    EXPECT_NEAR(hsv.z(), 1.0f, 0.01f); // Value
+}
+
+TEST_F(ColorTest, TestToHSV_Green) {
+    vne::math::Color green(0.0f, 1.0f, 0.0f);
+    vne::math::Vec3f hsv = green.toHSV();
+    EXPECT_NEAR(hsv.x(), 120.0f, 1.0f);
+    EXPECT_NEAR(hsv.y(), 1.0f, 0.01f);
+    EXPECT_NEAR(hsv.z(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestToHSV_Blue) {
+    vne::math::Color blue(0.0f, 0.0f, 1.0f);
+    vne::math::Vec3f hsv = blue.toHSV();
+    EXPECT_NEAR(hsv.x(), 240.0f, 1.0f);
+    EXPECT_NEAR(hsv.y(), 1.0f, 0.01f);
+    EXPECT_NEAR(hsv.z(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestHSV_RoundTrip) {
+    vne::math::Color original(0.8f, 0.3f, 0.6f);
+    vne::math::Vec3f hsv = original.toHSV();
+    vne::math::Color reconstructed = vne::math::Color::fromHSV(hsv.x(), hsv.y(), hsv.z());
+    
+    EXPECT_NEAR(original.r(), reconstructed.r(), 0.01f);
+    EXPECT_NEAR(original.g(), reconstructed.g(), 0.01f);
+    EXPECT_NEAR(original.b(), reconstructed.b(), 0.01f);
+}
+
+// ============================================================================
+// HSL Conversion Tests
+// ============================================================================
+
+TEST_F(ColorTest, TestFromHSL_Red) {
+    vne::math::Color color = vne::math::Color::fromHSL(0.0f, 1.0f, 0.5f);
+    EXPECT_NEAR(color.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSL_Green) {
+    vne::math::Color color = vne::math::Color::fromHSL(120.0f, 1.0f, 0.5f);
+    EXPECT_NEAR(color.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSL_Blue) {
+    vne::math::Color color = vne::math::Color::fromHSL(240.0f, 1.0f, 0.5f);
+    EXPECT_NEAR(color.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSL_White) {
+    vne::math::Color color = vne::math::Color::fromHSL(0.0f, 0.0f, 1.0f);
+    EXPECT_NEAR(color.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSL_Black) {
+    vne::math::Color color = vne::math::Color::fromHSL(0.0f, 0.0f, 0.0f);
+    EXPECT_NEAR(color.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestFromHSL_Gray) {
+    vne::math::Color color = vne::math::Color::fromHSL(0.0f, 0.0f, 0.5f);
+    EXPECT_NEAR(color.r(), 0.5f, 0.01f);
+    EXPECT_NEAR(color.g(), 0.5f, 0.01f);
+    EXPECT_NEAR(color.b(), 0.5f, 0.01f);
+}
+
+TEST_F(ColorTest, TestToHSL_Red) {
+    vne::math::Color red(1.0f, 0.0f, 0.0f);
+    vne::math::Vec3f hsl = red.toHSL();
+    EXPECT_NEAR(hsl.x(), 0.0f, 1.0f);   // Hue
+    EXPECT_NEAR(hsl.y(), 1.0f, 0.01f);  // Saturation
+    EXPECT_NEAR(hsl.z(), 0.5f, 0.01f);  // Lightness
+}
+
+TEST_F(ColorTest, TestHSL_RoundTrip) {
+    vne::math::Color original(0.8f, 0.3f, 0.6f);
+    vne::math::Vec3f hsl = original.toHSL();
+    vne::math::Color reconstructed = vne::math::Color::fromHSL(hsl.x(), hsl.y(), hsl.z());
+    
+    EXPECT_NEAR(original.r(), reconstructed.r(), 0.01f);
+    EXPECT_NEAR(original.g(), reconstructed.g(), 0.01f);
+    EXPECT_NEAR(original.b(), reconstructed.b(), 0.01f);
+}
+
+// ============================================================================
+// Gamma Correction Tests
+// ============================================================================
+
+TEST_F(ColorTest, TestToLinear_Black) {
+    vne::math::Color black(0.0f, 0.0f, 0.0f);
+    vne::math::Color linear = black.toLinear();
+    EXPECT_NEAR(linear.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(linear.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(linear.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestToLinear_White) {
+    vne::math::Color white(1.0f, 1.0f, 1.0f);
+    vne::math::Color linear = white.toLinear();
+    EXPECT_NEAR(linear.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(linear.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(linear.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestToLinear_MidGray) {
+    // sRGB mid-gray (0.5) converts to roughly 0.214 in linear
+    vne::math::Color srgb(0.5f, 0.5f, 0.5f);
+    vne::math::Color linear = srgb.toLinear();
+    EXPECT_LT(linear.r(), 0.5f);  // Linear should be darker
+    EXPECT_GT(linear.r(), 0.1f);
+}
+
+TEST_F(ColorTest, TestToSRGB_Black) {
+    vne::math::Color black(0.0f, 0.0f, 0.0f);
+    vne::math::Color srgb = black.toSRGB();
+    EXPECT_NEAR(srgb.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(srgb.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(srgb.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestToSRGB_White) {
+    vne::math::Color white(1.0f, 1.0f, 1.0f);
+    vne::math::Color srgb = white.toSRGB();
+    EXPECT_NEAR(srgb.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(srgb.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(srgb.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestGamma_RoundTrip) {
+    vne::math::Color original(0.7f, 0.3f, 0.9f);
+    vne::math::Color linear = original.toLinear();
+    vne::math::Color back = linear.toSRGB();
+    
+    EXPECT_NEAR(original.r(), back.r(), 0.01f);
+    EXPECT_NEAR(original.g(), back.g(), 0.01f);
+    EXPECT_NEAR(original.b(), back.b(), 0.01f);
+}
+
+TEST_F(ColorTest, TestGammaCorrect) {
+    vne::math::Color color(0.5f, 0.5f, 0.5f);
+    vne::math::Color corrected = color.gammaCorrect(2.2f);
+    
+    // Gamma correction should make the color brighter
+    EXPECT_GT(corrected.r(), 0.5f);
+    EXPECT_LT(corrected.r(), 1.0f);
+}
+
+// ============================================================================
+// Luminance Tests
+// ============================================================================
+
+TEST_F(ColorTest, TestLuminance_Black) {
+    vne::math::Color black(0.0f, 0.0f, 0.0f);
+    EXPECT_NEAR(black.luminance(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestLuminance_White) {
+    vne::math::Color white(1.0f, 1.0f, 1.0f);
+    EXPECT_NEAR(white.luminance(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestLuminance_GreenBrightest) {
+    vne::math::Color red(1.0f, 0.0f, 0.0f);
+    vne::math::Color green(0.0f, 1.0f, 0.0f);
+    vne::math::Color blue(0.0f, 0.0f, 1.0f);
+    
+    // Green should have highest luminance (0.7152)
+    EXPECT_GT(green.luminance(), red.luminance());
+    EXPECT_GT(green.luminance(), blue.luminance());
+}
+
+// ============================================================================
+// Grayscale Tests
+// ============================================================================
+
+TEST_F(ColorTest, TestGrayscale) {
+    vne::math::Color color(0.8f, 0.2f, 0.5f);
+    vne::math::Color gray = color.grayscale();
+    
+    // All RGB components should be equal
+    EXPECT_FLOAT_EQ(gray.r(), gray.g());
+    EXPECT_FLOAT_EQ(gray.g(), gray.b());
+    
+    // Should be equal to luminance
+    EXPECT_NEAR(gray.r(), color.luminance(), 0.01f);
+    
+    // Alpha should be preserved
+    EXPECT_FLOAT_EQ(gray.a(), color.a());
+}
+
+// ============================================================================
+// Inverted Tests
+// ============================================================================
+
+TEST_F(ColorTest, TestInverted_Black) {
+    vne::math::Color black(0.0f, 0.0f, 0.0f);
+    vne::math::Color inverted = black.inverted();
+    
+    EXPECT_NEAR(inverted.r(), 1.0f, 0.01f);
+    EXPECT_NEAR(inverted.g(), 1.0f, 0.01f);
+    EXPECT_NEAR(inverted.b(), 1.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestInverted_White) {
+    vne::math::Color white(1.0f, 1.0f, 1.0f);
+    vne::math::Color inverted = white.inverted();
+    
+    EXPECT_NEAR(inverted.r(), 0.0f, 0.01f);
+    EXPECT_NEAR(inverted.g(), 0.0f, 0.01f);
+    EXPECT_NEAR(inverted.b(), 0.0f, 0.01f);
+}
+
+TEST_F(ColorTest, TestInverted_PreservesAlpha) {
+    vne::math::Color color(0.5f, 0.5f, 0.5f, 0.7f);
+    vne::math::Color inverted = color.inverted();
+    
+    EXPECT_FLOAT_EQ(inverted.a(), 0.7f);
+}
+
+TEST_F(ColorTest, TestInverted_DoubleInversion) {
+    vne::math::Color original(0.3f, 0.6f, 0.9f);
+    vne::math::Color double_inverted = original.inverted().inverted();
+    
+    EXPECT_NEAR(original.r(), double_inverted.r(), 0.01f);
+    EXPECT_NEAR(original.g(), double_inverted.g(), 0.01f);
+    EXPECT_NEAR(original.b(), double_inverted.b(), 0.01f);
+}

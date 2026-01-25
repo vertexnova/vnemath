@@ -1,16 +1,62 @@
 # VneMath
 
-A high-performance, cross-platform C++ math library for game engines and 3D applications.
+<p align="center">
+  <strong>A high-performance, cross-platform C++ math library for game engines and 3D applications</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/C%2B%2B-20-blue.svg" alt="C++ Standard"/>
+  <img src="https://img.shields.io/badge/license-Apache%202.0-green.svg" alt="License"/>
+</p>
+
+---
+
+## About
+
+**VneMath** is a comprehensive math library designed for real-time graphics applications, game engines, and 3D tools. It provides templated vector, matrix, and quaternion types along with a rich set of geometry primitives, intersection tests, and procedural generation utilities.
+
+This library is part of [VertexNova](https://github.com/vertexnova) — a multi-backend game/graphics engine built from scratch.
 
 ## Features
 
-- **Vector Types**: Vec2f, Vec3f, Vec4f with comprehensive operations
-- **Matrix Types**: Mat3x3f, Mat4x4f with transformation utilities
-- **Quaternion**: Full quaternion support for 3D rotations
-- **Color**: RGBA color representation with utilities
-- **Transform Node**: Hierarchical transformation system for scene graphs
-- **Random**: Template-based random number generation using Mersenne Twister
-- **Math Utilities**: Trigonometry, interpolation, and common math functions
+### Core Types
+- **Vectors**: `Vec2f`, `Vec3f`, `Vec4f` (and double/int variants)
+- **Matrices**: `Mat2f`, `Mat3f`, `Mat4f` with full transformation support
+- **Quaternions**: `Quatf`, `Quatd` for rotation representation
+- **Color**: RGBA color with HSV/HSL conversions and gamma correction
+
+### Geometry Primitives
+- **Basic**: Ray, Plane, Line, LineSegment, Rect
+- **Bounding Volumes**: AABB, Sphere, OBB (Oriented Bounding Box), Capsule
+- **Complex**: Triangle, Frustum
+
+### Intersection Testing
+- Ray-Plane, Ray-Sphere, Ray-AABB, Ray-Triangle (Möller–Trumbore)
+- Frustum culling for visibility determination
+- Fast boolean intersection tests for culling
+
+### Interpolation & Animation
+- **Easing Functions**: smoothstep, smootherstep, and 30+ easing curves
+- **Bezier Curves**: Quadratic, Cubic with derivatives and arc length
+- **Splines**: Catmull-Rom (passes through points), Hermite (tangent control), B-spline
+- **Spring Physics**: Critical damping and exponential decay
+
+### Procedural Generation
+- **Perlin Noise**: 1D, 2D, 3D gradient noise
+- **Simplex Noise**: Faster, fewer artifacts
+- **Fractal Brownian Motion**: Multi-octave layered noise
+- **Turbulence & Ridged Noise**: For fire, smoke, mountains
+
+### Coordinate Spaces
+- **Projection Utilities**: project, unproject, screenToWorldRay
+- **Transform Decomposition**: Extract TRS from matrices, smooth interpolation
+- **Multi-Backend Support**: OpenGL, Vulkan, Metal, DirectX, WebGPU
+
+### Utilities
+- Angle normalization and interpolation (with wraparound handling)
+- Random number generation (Mersenne Twister based)
+- GPU-aligned types for shader uniform buffers
+- Statistics (running mean, variance, standard deviation)
 
 ## Requirements
 
@@ -19,31 +65,14 @@ A high-performance, cross-platform C++ math library for game engines and 3D appl
 
 ## Dependencies (Git Submodules)
 
-Dependencies are organized into two categories:
-
-### Third-Party Libraries (`external/`)
-
-| Dependency | Version | Description |
-|------------|---------|-------------|
-| GLM | 1.0.1 | OpenGL Mathematics library |
-| Google Test | 1.14.0 | Unit testing framework |
-
-### VertexNova Libraries (`libs/`)
-
-| Library | Version | Description |
-|---------|---------|-------------|
-| VneCommon | v1.0.0 | Common utilities (macros, platform detection) |
-| VneLogging | v1.0.0 | VertexNova logging library |
-
-### CMake Modules (`cmake/vnecmake/`)
-
-| Module | Description |
-|--------|-------------|
-| VneCMake | Shared CMake modules for VertexNova projects |
+| Category | Dependency | Version | Description |
+|----------|------------|---------|-------------|
+| External | GLM | 1.0.1 | OpenGL Mathematics library |
+| External | Google Test | 1.14.0 | Unit testing framework |
+| Libs | VneCommon | 1.0.0 | Common utilities and macros |
+| Libs | VneLogging | 1.0.0 | Logging library |
 
 ### Initializing Submodules
-
-After cloning the repository, initialize the submodules:
 
 ```bash
 git submodule update --init --recursive
@@ -51,33 +80,30 @@ git submodule update --init --recursive
 
 ## Supported Platforms
 
-- macOS (Clang)
-- Linux (GCC/Clang)
-- Windows (MSVC)
-- iOS
-- Android
-- Web (Emscripten)
+| Platform | Status | Compiler |
+|----------|--------|----------|
+| macOS | Tested | Clang, Apple Clang |
+| Linux | Tested | GCC 9+, Clang 10+ |
+| Windows | Tested | MSVC 2019+ |
+| iOS | Supported | Xcode toolchain |
+| Android | Supported | NDK r21+ |
+| Web | Supported | Emscripten |
 
 ## Building
 
-### Quick Start (macOS)
+### Quick Start
 
 ```bash
-./scripts/build_macos.sh -t Debug -a configure_and_build
-```
+# Clone with submodules
+git clone --recursive https://github.com/vertexnova/vnemath.git
+cd vnemath
 
-### Quick Start (Linux)
+# Build
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 
-```bash
-./scripts/build_linux.sh -t Debug -a configure_and_build
-```
-
-### Manual CMake Build
-
-```bash
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON ..
-make -j$(nproc)
+# Run tests
+./build/bin/TestVneMath
 ```
 
 ### Build Options
@@ -86,116 +112,222 @@ make -j$(nproc)
 |--------|---------|-------------|
 | `BUILD_TESTS` | ON | Build the test suite |
 | `BUILD_EXAMPLES` | OFF | Build example programs |
-| `ENABLE_COVERAGE` | OFF | Enable code coverage reporting |
-| `ENABLE_CPPCHECK` | OFF | Enable cppcheck static analysis |
-| `ENABLE_CLANG_TIDY` | OFF | Enable clang-tidy static analysis |
+| `ENABLE_COVERAGE` | OFF | Enable code coverage |
+| `ENABLE_CPPCHECK` | OFF | Enable cppcheck analysis |
+| `ENABLE_CLANG_TIDY` | OFF | Enable clang-tidy analysis |
 
-## Usage
+### Build Examples
 
-### Basic Example
+```bash
+cmake -B build -DBUILD_EXAMPLES=ON
+cmake --build build
+./build/bin/examples/example_01_hello_math
+```
+
+## Quick Start Examples
+
+### Vectors and Matrices
 
 ```cpp
 #include <vertexnova/math/math.h>
+using namespace vne::math;
 
-using namespace VNE::Math;
+// Vectors
+Vec3f position(10.0f, 20.0f, 30.0f);
+Vec3f direction = Vec3f::forward();
+float length = position.length();
+Vec3f normalized = position.normalized();
 
-int main() {
-    // Vectors
-    Vec3f_C a(1.0f, 2.0f, 3.0f);
-    Vec3f_C b(4.0f, 5.0f, 6.0f);
-    
-    float dot = a.Dot(b);
-    Vec3f_C cross = a.Cross(b);
-    Vec3f_C normalized = a.Normalize();
-    
-    // Matrices
-    Mat4x4f_C transform = Mat4x4f_C::Identity();
-    transform = Mat4x4f_C::Translate(Vec3f_C(10.0f, 0.0f, 0.0f));
-    transform = transform * Mat4x4f_C::RotateY(DegToRad(45.0f));
-    
-    // Quaternions
-    Quaternion_C rotation;
-    rotation.SetFromAxisAngle(DegToRad(90.0f), Vec3f_C::Up());
-    Vec3f_C rotated = rotation.RotateVector(Vec3f_C::Forward());
-    
-    // Colors
-    Color_C red = Color_C::RED;
-    Color_C blended = red.Lerp(Color_C::BLUE, 0.5f);
-    
-    return 0;
+// Matrices
+Mat4f transform = Mat4f::translate(position) 
+                * Mat4f::rotateY(degToRad(45.0f))
+                * Mat4f::scale(Vec3f(2.0f));
+
+Vec3f transformed = transform.transformPoint(Vec3f::zero());
+
+// Quaternions
+Quatf rotation = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(90.0f));
+Vec3f rotated = rotation.rotate(Vec3f::forward());
+```
+
+### Geometry and Intersection
+
+```cpp
+#include <vertexnova/math/geometry/geometry.h>
+
+// Ray casting
+Ray ray(camera_pos, ray_direction);
+Sphere sphere(center, radius);
+
+RayHit hit = intersect(ray, sphere);
+if (hit.valid()) {
+    Vec3f hit_point = hit.point;
+    Vec3f hit_normal = hit.normal;
+}
+
+// Frustum culling
+Frustum frustum = Frustum::fromMatrix(view_proj);
+if (frustum.contains(aabb)) {
+    // Object is visible
 }
 ```
 
-### CMake Integration
+### Curves and Animation
+
+```cpp
+#include <vertexnova/math/curves.h>
+
+// Cubic Bezier curve
+Vec3f p0(0, 0, 0), p1(1, 2, 0), p2(3, 2, 0), p3(4, 0, 0);
+Vec3f point = bezierCubic(p0, p1, p2, p3, t);
+Vec3f tangent = bezierCubicDerivative(p0, p1, p2, p3, t);
+
+// Catmull-Rom spline (passes through control points)
+Vec3f waypoint = catmullRom(prev, start, end, next, t);
+
+// Easing functions
+float eased = ease(EaseType::eQuadInOut, t);
+float smooth = smoothstep(0.0f, 1.0f, t);
+```
+
+### Procedural Noise
+
+```cpp
+#include <vertexnova/math/noise.h>
+
+// Perlin noise
+float height = perlin(x * 0.1f, z * 0.1f);
+
+// Fractal Brownian Motion
+float terrain = fbm(Vec2f(x, z) * 0.01f, 6);  // 6 octaves
+
+// Ridged noise for mountains
+float mountain = ridged(Vec2f(x, z) * 0.02f, 4);
+```
+
+### Transform Decomposition
+
+```cpp
+#include <vertexnova/math/transform_utils.h>
+
+// Compose matrix from TRS
+Mat4f matrix = compose(translation, rotation, scale);
+
+// Decompose matrix to TRS
+TransformComponents tc = decompose(matrix);
+Vec3f pos = tc.translation;
+Quatf rot = tc.rotation;
+Vec3f scl = tc.scale;
+
+// Smooth transform interpolation
+Mat4f blended = lerpTransform(matrix_a, matrix_b, 0.5f);
+```
+
+### Color Utilities
+
+```cpp
+#include <vertexnova/math/color.h>
+
+// Create from HSV/HSL
+Color sunset = Color::fromHSV(30.0f, 0.8f, 1.0f);  // Orange
+Color sky = Color::fromHSL(200.0f, 0.6f, 0.7f);    // Light blue
+
+// Gamma correction
+Color linear = srgb_color.toLinear();   // For lighting calculations
+Color display = linear.toSRGB();         // For display
+
+// Luminance and grayscale
+float brightness = color.luminance();
+Color gray = color.grayscale();
+```
+
+## Examples
+
+| Example | Description |
+|---------|-------------|
+| [01_hello_math](examples/01_hello_math) | Basic vectors, matrices, quaternions |
+| [02_multibackend_projection](examples/02_multibackend_projection) | Graphics API-specific projections |
+| [03_camera_controller](examples/03_camera_controller) | FPS and orbital cameras |
+| [04_frustum_culling](examples/04_frustum_culling) | Visibility testing |
+| [05_scene_graph](examples/05_scene_graph) | Hierarchical transforms |
+| [06_ray_intersection](examples/06_ray_intersection) | Ray casting with geometry |
+| [07_color_utilities](examples/07_color_utilities) | Color manipulation |
+| [08_gpu_buffer_alignment](examples/08_gpu_buffer_alignment) | Shader-compatible types |
+| [09_easing_intersection](examples/09_easing_intersection) | Easing and ray tests |
+| [10_curves_animation](examples/10_curves_animation) | Bezier and spline curves |
+| [11_noise_generation](examples/11_noise_generation) | Procedural noise |
+| [12_transform_decomposition](examples/12_transform_decomposition) | Matrix TRS decomposition |
+
+## CMake Integration
+
+### As Subdirectory
 
 ```cmake
-find_package(VneMath REQUIRED)
+add_subdirectory(external/vnemath)
 target_link_libraries(your_target PRIVATE vne::math)
 ```
 
-Or using FetchContent:
+### With FetchContent
 
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
     vnemath
-    GIT_REPOSITORY https://github.com/yourusername/vnemath.git
+    GIT_REPOSITORY https://github.com/vertexnova/vnemath.git
     GIT_TAG main
 )
 FetchContent_MakeAvailable(vnemath)
 target_link_libraries(your_target PRIVATE vne::math)
 ```
 
-## Running Tests
+### With find_package
 
-```bash
-cd build
-ctest --output-on-failure
-```
-
-Or using the build script:
-
-```bash
-./scripts/build_macos.sh -a test
+```cmake
+find_package(VneMath REQUIRED)
+target_link_libraries(your_target PRIVATE vne::math)
 ```
 
 ## Project Structure
 
 ```
 vnemath/
-├── CMakeLists.txt              # Root CMake configuration
-├── cmake/                      # CMake modules
-│   ├── ProjectSetup.cmake
-│   ├── ProjectWarnings.cmake
-│   └── ...
-├── configs/
-│   └── config.h.in             # CMake-configured header
-├── include/vertexnova/         # Public headers
-│   ├── math/
-│   │   ├── math.h              # Main include
-│   │   ├── vec2f.h
-│   │   ├── vec3f.h
-│   │   ├── vec4f.h
-│   │   ├── mat3x3f.h
-│   │   ├── mat4x4f.h
-│   │   ├── quaternion.h
-│   │   ├── color.h
-│   │   ├── transform_node.h
-│   │   ├── random.h
-│   │   ├── constants.h
-│   │   └── math_utils.h
-│   └── utils/
-│       └── macros.h
-├── src/vertexnova/math/        # Implementation
-├── tests/                      # Test suite
-├── scripts/                    # Build scripts
-└── external/                   # Third-party dependencies
+├── include/vertexnova/math/
+│   ├── core/                    # Vec, Mat, Quat, types
+│   ├── geometry/                # Primitives and intersection
+│   ├── color.h                  # RGBA with HSV/HSL/gamma
+│   ├── easing.h                 # Smoothstep and easing curves
+│   ├── curves.h                 # Bezier and splines
+│   ├── noise.h                  # Perlin, Simplex, fBm
+│   ├── projection_utils.h       # Screen/world conversions
+│   ├── transform_utils.h        # TRS decomposition
+│   └── math.h                   # Main include
+├── src/                         # Implementation files
+├── tests/                       # Unit tests (695 tests)
+├── examples/                    # Example programs (12 examples)
+└── cmake/                       # CMake modules
+```
+
+## Running Tests
+
+```bash
+# Build and run all tests
+cmake --build build --target TestVneMath
+./build/bin/TestVneMath
+
+# Run specific test suite
+./build/bin/TestVneMath --gtest_filter="NoiseTest.*"
 ```
 
 ## License
 
-Apache License 2.0 - See [LICENSE](LICENSE) for details.
+Apache License 2.0 — See [LICENSE](LICENSE) for details.
 
 ## Author
 
 Ajeet Singh Yadav (yadav.ajeetsingh2020@gmail.com)
+
+---
+
+<p align="center">
+  Part of the <a href="https://github.com/vertexnova">VertexNova</a> project
+</p>
