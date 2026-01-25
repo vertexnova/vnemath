@@ -71,6 +71,7 @@ set(TEST_SOURCES
     # Multi-backend graphics API tests
     math/graphics_api_test.cpp
     math/camera_test.cpp
+    math/gpu_types_test.cpp
     # Geometry tests
     math/geometry/ray_test.cpp
     math/geometry/plane_test.cpp
