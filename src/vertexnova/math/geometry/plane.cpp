@@ -26,8 +26,8 @@ Plane::Plane(float normal_x, float normal_y, float normal_z, float d) noexcept
     , d(d) {}
 
 Plane::Plane(const Vec4f& normal_and_dist) noexcept
-    : normal(normal_and_dist.x, normal_and_dist.y, normal_and_dist.z)
-    , d(normal_and_dist.w) {}
+    : normal(normal_and_dist.x(), normal_and_dist.y(), normal_and_dist.z())
+    , d(normal_and_dist.w()) {}
 
 Plane::Plane(const Vec3f& p0, const Vec3f& p1, const Vec3f& p2) noexcept {
     *this = fromPoints(p0, p1, p2);
@@ -77,15 +77,15 @@ void Plane::translate(const Vec3f& offset) noexcept {
 }
 
 void Plane::transform(const Mat3x3f& transform) noexcept {
-    normal = transform.inverseTransposed() * Vec3f(normal);
+    normal = transform.inverseTranspose() * normal;
     normalize();
 }
 
 void Plane::transform(const Mat4x4f& transform) noexcept {
-    Vec4f plane_vector(normal.x, normal.y, normal.z, d);
-    Vec4f transformed = transform.inverseTransposed() * plane_vector;
-    normal = Vec3f(transformed.x, transformed.y, transformed.z);
-    d = transformed.w;
+    Vec4f plane_vector(normal, d);
+    Vec4f transformed = transform.inverseTranspose() * plane_vector;
+    normal = transformed.xyz();
+    d = transformed.w();
     normalize();
 }
 

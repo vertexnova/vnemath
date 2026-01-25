@@ -17,8 +17,7 @@
 
 // Project includes
 #include "vertexnova/math/constants.h"
-#include "vertexnova/math/mat3x3f.h"
-#include "vertexnova/math/mat4x4f.h"
+#include "vertexnova/math/core/mat.h"
 #include "vertexnova/math/core/vec.h"
 
 // Standard library includes

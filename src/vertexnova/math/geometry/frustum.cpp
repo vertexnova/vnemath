@@ -12,9 +12,9 @@
 // Project includes
 #include "vertexnova/math/geometry/frustum.h"
 
+#include "vertexnova/math/core/mat.h"
 #include "vertexnova/math/geometry/aabb.h"
 #include "vertexnova/math/geometry/sphere.h"
-#include "vertexnova/math/mat4x4f.h"
 
 namespace vne::math {
 
@@ -84,9 +84,9 @@ bool Frustum::intersects(const Aabb& aabb) const noexcept {
     for (const Plane* plane : planes) {
         // Find the positive vertex (p-vertex) - the corner furthest in the direction of the normal
         Vec3f p_vertex;
-        p_vertex.x = (plane->normal.x >= 0) ? aabb.max().x : aabb.min().x;
-        p_vertex.y = (plane->normal.y >= 0) ? aabb.max().y : aabb.min().y;
-        p_vertex.z = (plane->normal.z >= 0) ? aabb.max().z : aabb.min().z;
+        p_vertex.x() = (plane->normal.x() >= 0) ? aabb.max().x() : aabb.min().x();
+        p_vertex.y() = (plane->normal.y() >= 0) ? aabb.max().y() : aabb.min().y();
+        p_vertex.z() = (plane->normal.z() >= 0) ? aabb.max().z() : aabb.min().z();
 
         // If the p-vertex is outside, the entire AABB is outside
         if (plane->signedDistance(p_vertex) < 0) {

@@ -21,8 +21,6 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/math.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/constants.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/math_utils.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/mat3x3f.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/mat4x4f.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/random.h
@@ -43,8 +41,6 @@ set(INCLUDE_FILES
 
 # Define source files
 set(SOURCE_FILES
-    vertexnova/math/mat3x3f.cpp
-    vertexnova/math/mat4x4f.cpp
     vertexnova/math/color.cpp
     vertexnova/math/transform_node.cpp
     # Geometry sources

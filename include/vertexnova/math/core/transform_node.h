@@ -16,7 +16,7 @@
  */
 
 // Project includes
-#include "vertexnova/math/core/mat.h"
+#include "vertexnova/math/core/mat4x4f.h"
 
 // Standard library includes
 #include <vector>

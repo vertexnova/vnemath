@@ -59,8 +59,11 @@ endif()
 #==============================================================================
 
 set(TEST_SOURCES
-    math/mat3x3f_test.cpp
-    math/mat4x4f_test.cpp
+    # Core templated types tests
+    math/core/vec_test.cpp
+    math/core/mat_test.cpp
+    math/core/quat_test.cpp
+    # Other math tests
     math/color_test.cpp
     math/transform_node_test.cpp
     math/random_test.cpp
@@ -71,10 +74,6 @@ set(TEST_SOURCES
     math/geometry/aabb_test.cpp
     math/geometry/sphere_test.cpp
     math/geometry/frustum_test.cpp
-    # Core templated types tests
-    math/core/vec_test.cpp
-    math/core/mat_test.cpp
-    math/core/quat_test.cpp
     main.cpp
 )
 

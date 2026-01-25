@@ -16,8 +16,7 @@
  */
 
 // Project includes
-#include "constants.h"
-#include "core/vec.h"
+#include "vertexnova/math/vec3f.h"
 
 // Third-party library includes
 #include <glm/mat3x3.hpp>

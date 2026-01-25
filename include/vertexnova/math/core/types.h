@@ -268,6 +268,10 @@ using Mat4 = Mat<T, 4, 4>;
 
 using Mat4f = Mat4<float>;
 using Mat4d = Mat4<double>;
+
+// Backward-compatible aliases (matching old class names)
+using Mat3x3f = Mat3f;
+using Mat4x4f = Mat4f;
 /// @}
 
 // ============================================================================

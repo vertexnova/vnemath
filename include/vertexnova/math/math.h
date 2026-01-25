@@ -17,27 +17,22 @@
  * This file includes all the math module headers for convenient access.
  */
 
+// Core templated types (Vec, Mat, Quat)
+#include "core/core.h"
+
 // Math module includes
 #include "constants.h"
 #include "math_utils.h"
-#include "mat3x3f.h"
-#include "mat4x4f.h"
 #include "color.h"
 #include "transform_node.h"
 #include "random.h"
-
-// Core templated types (Vec, Mat, Quat)
-#include "core/core.h"
 
 // Geometry module includes
 #include "geometry/geometry.h"
 
 namespace vne::math {
 
-// Type aliases for backward compatibility
+// Type alias for backward compatibility
 using Quaternion = Quatf;
-using Vec2f = Vec<float, 2>;
-using Vec3f = Vec<float, 3>;
-using Vec4f = Vec<float, 4>;
 
 }  // namespace vne::math

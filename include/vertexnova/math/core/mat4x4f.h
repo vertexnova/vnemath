@@ -16,8 +16,9 @@
  */
 
 // Project includes
-#include "mat3x3f.h"
-#include "core/vec.h"
+#include "vertexnova/math/core/mat3x3f.h"
+#include "vertexnova/math/vec3f.h"
+#include "vertexnova/math/vec4f.h"
 
 // Third-party library includes
 #include <glm/mat4x4.hpp>
@@ -27,7 +28,14 @@
 
 namespace vne::math {
 
-// Note: Handedness enum is defined in core/types.h
+/**
+ * @enum Handedness
+ * @brief Specifies the coordinate system handedness
+ */
+enum class Handedness {
+    eLeft = 0,  ///< Left-handed coordinate system
+    eRight = 1  ///< Right-handed coordinate system
+};
 
 /**
  * @class Mat4x4f

@@ -23,7 +23,6 @@
 
 // Forward declarations
 namespace vne::math {
-class Mat4x4f;
 class Aabb;
 class Sphere;
 }  // namespace vne::math
