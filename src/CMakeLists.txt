@@ -1,0 +1,122 @@
+#==============================================================================
+# Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
+# Licensed under the Apache License, Version 2.0 (the "License")
+#
+# Author:    Ajeet Singh Yadav
+# Created:   January 2025
+#
+# Autodoc:   yes
+#==============================================================================
+
+cmake_minimum_required(VERSION 3.16)
+
+project(vnemath)
+
+#==============================================================================
+#                              Source and Headers                              #
+#==============================================================================
+
+# Define header files
+set(INCLUDE_FILES
+    ${VNE_INCLUDE_DIR}/vertexnova/math/math.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/constants.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/math_utils.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/vec2f.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/vec3f.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/vec4f.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/mat3x3f.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/mat4x4f.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/quaternion.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/random.h
+)
+
+# Define source files
+set(SOURCE_FILES
+    vertexnova/math/vec2f.cpp
+    vertexnova/math/vec3f.cpp
+    vertexnova/math/vec4f.cpp
+    vertexnova/math/mat3x3f.cpp
+    vertexnova/math/mat4x4f.cpp
+    vertexnova/math/quaternion.cpp
+    vertexnova/math/color.cpp
+    vertexnova/math/transform_node.cpp
+)
+
+#==============================================================================
+#                                 Library                                      #
+#==============================================================================
+
+# Create a library from the source and header files
+add_library(vnemath STATIC ${SOURCE_FILES} ${INCLUDE_FILES})
+
+# Alias for the library
+add_library(vne::math ALIAS vnemath)
+
+# Set include directories for the library
+target_include_directories(vnemath
+    PUBLIC
+        $<BUILD_INTERFACE:${VNE_INCLUDE_DIR}>
+        $<BUILD_INTERFACE:${VNE_SRC_DIR}>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+        $<INSTALL_INTERFACE:include>
+)
+
+# Link against interface libraries
+target_link_libraries(vnemath
+    PRIVATE
+        vne::math::Warnings
+        vne::math::BuildSettings
+)
+
+#==============================================================================
+#                          Third-Party Libraries Setup                          #
+#==============================================================================
+
+# Link against GLM (use header-only interface if available)
+if(TARGET glm::glm-header-only)
+    target_link_libraries(vnemath PUBLIC glm::glm-header-only)
+elseif(TARGET glm::glm)
+    target_link_libraries(vnemath PUBLIC glm::glm)
+elseif(TARGET glm)
+    target_link_libraries(vnemath PUBLIC glm)
+endif()
+
+# Enable experimental features in GLM
+target_compile_definitions(vnemath
+    PUBLIC
+        GLM_ENABLE_EXPERIMENTAL
+        GLM_FORCE_DEPTH_ZERO_TO_ONE  # For Vulkan/Metal NDC z-range [0,1]
+)
+
+#==============================================================================
+#                          VneCommon Integration                               #
+#==============================================================================
+
+# Link against VneCommon
+if(TARGET vne::common)
+    target_link_libraries(vnemath PUBLIC vne::common)
+    message(STATUS "VneMath: Linked against vne::common")
+endif()
+
+#==============================================================================
+#                          VneLogging Integration                              #
+#==============================================================================
+
+# Link against VneLogging if available
+if(TARGET vne::logging)
+    target_link_libraries(vnemath PUBLIC vne::logging)
+    message(STATUS "VneMath: Linked against vne::logging")
+elseif(TARGET vnelogging)
+    target_link_libraries(vnemath PUBLIC vnelogging)
+    message(STATUS "VneMath: Linked against vnelogging")
+endif()
+
+#==============================================================================
+#                          Platform-specific linking                           #
+#==============================================================================
+
+if(NOT WIN32)
+    target_link_libraries(vnemath PRIVATE pthread)
+endif()

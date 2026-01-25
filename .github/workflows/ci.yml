@@ -1,0 +1,142 @@
+# ----------------------------------------------------------------------
+# Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
+# Licensed under the Apache License, Version 2.0 (the "License")
+#
+# Author:    Ajeet Singh Yadav
+# Created:   January 2025
+#
+# Autodoc:   yes
+# ----------------------------------------------------------------------
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+        include:
+          - compiler: gcc
+            c_compiler: gcc
+            cpp_compiler: g++
+          - compiler: clang
+            c_compiler: clang
+            cpp_compiler: clang++
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+          -DBUILD_TESTS=ON
+
+    - name: Build
+      run: cmake --build build --config Release --parallel
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake lcov
+
+    - name: Configure CMake with Coverage
+      run: |
+        cmake -B build -S . \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_C_COMPILER=gcc \
+          -DCMAKE_CXX_COMPILER=g++ \
+          -DBUILD_TESTS=ON \
+          -DENABLE_COVERAGE=ON
+
+    - name: Build
+      run: cmake --build build --config Debug --parallel
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure
+
+    - name: Generate Coverage Report
+      run: |
+        lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch,unused
+        lcov --remove coverage.info '/usr/*' '*/tests/*' '*/external/*' '*/libs/*' '*/_deps/*' '*/googletest/*' '*/googlemock/*' --output-file coverage.info --ignore-errors mismatch,unused
+        lcov --list coverage.info --ignore-errors mismatch,unused
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN_VNE_MATH }}
+        slug: vertexnova/vnemath
+        files: ./coverage.info
+        fail_ci_if_error: false
+        verbose: true
+
+  macos:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DBUILD_TESTS=ON
+
+    - name: Build
+      run: cmake --build build --config Release --parallel
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure
+
+  windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DBUILD_TESTS=ON
+
+    - name: Build
+      run: cmake --build build --config Release --parallel
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure -C Release
