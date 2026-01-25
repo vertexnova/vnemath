@@ -7,6 +7,8 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/logging_guard.h"
+
 #include <vertexnova/math/color.h>
 #include <vertexnova/math/core/types.h>
 
@@ -15,6 +17,7 @@
 #include <vector>
 
 using namespace vne::math;
+using vne::math::examples::LoggingGuard_C;
 
 void printColor(const std::string& name, const Color& color) {
     std::cout << "  " << name << ": RGBA(" << color.r() << ", " << color.g() << ", "
@@ -209,6 +212,8 @@ void demonstratePracticalExamples() {
 }
 
 int main() {
+    LoggingGuard_C logging_guard;
+
     std::cout << std::fixed << std::setprecision(3);
     std::cout << "VneMath Example: Color Utilities" << std::endl;
     std::cout << "=================================\n" << std::endl;

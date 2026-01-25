@@ -7,6 +7,8 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/logging_guard.h"
+
 #include <vertexnova/math/core/core.h>
 #include <vertexnova/math/transform_node.h>
 
@@ -16,6 +18,7 @@
 #include <vector>
 
 using namespace vne::math;
+using vne::math::examples::LoggingGuard_C;
 
 Vec3f extractPosition(const Mat4f& matrix) {
     return Vec3f(matrix[3][0], matrix[3][1], matrix[3][2]);
@@ -187,6 +190,8 @@ void demonstrateMultipleChildren() {
 }
 
 int main() {
+    LoggingGuard_C logging_guard;
+
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "VneMath Example: Scene Graph" << std::endl;
     std::cout << "============================\n" << std::endl;

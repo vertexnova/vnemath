@@ -7,12 +7,15 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/logging_guard.h"
+
 #include <vertexnova/math/core/core.h>
 
 #include <iostream>
 #include <iomanip>
 
 using namespace vne::math;
+using vne::math::examples::LoggingGuard_C;
 
 // =============================================================================
 // FPS Camera - First Person Shooter style
@@ -281,6 +284,8 @@ void demonstrateCameraInterpolation() {
 }
 
 int main() {
+    LoggingGuard_C logging_guard;
+
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "VneMath Example: Camera Controller" << std::endl;
     std::cout << "===================================\n" << std::endl;

@@ -7,6 +7,8 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/logging_guard.h"
+
 #include <vertexnova/math/core/core.h>
 
 #include <iostream>
@@ -14,6 +16,7 @@
 #include <string>
 
 using namespace vne::math;
+using vne::math::examples::LoggingGuard_C;
 
 const char* apiName(GraphicsApi api) {
     switch (api) {
@@ -225,6 +228,8 @@ void demonstrateApiSwitching() {
 }
 
 int main() {
+    LoggingGuard_C logging_guard;
+
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "VneMath Example: Multi-Backend Projection" << std::endl;
     std::cout << "==========================================\n" << std::endl;

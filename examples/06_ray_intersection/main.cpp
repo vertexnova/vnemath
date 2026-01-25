@@ -7,6 +7,8 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/logging_guard.h"
+
 #include <vertexnova/math/core/core.h>
 #include <vertexnova/math/geometry/geometry.h>
 
@@ -16,6 +18,7 @@
 #include <optional>
 
 using namespace vne::math;
+using vne::math::examples::LoggingGuard_C;
 
 void demonstrateRayBasics() {
     std::cout << "=== Ray Basics ===" << std::endl;
@@ -232,6 +235,8 @@ void demonstrateMousePicking() {
 }
 
 int main() {
+    LoggingGuard_C logging_guard;
+
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "VneMath Example: Ray Intersection" << std::endl;
     std::cout << "==================================\n" << std::endl;

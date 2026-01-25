@@ -7,6 +7,8 @@
  * ----------------------------------------------------------------------
  */
 
+#include "common/logging_guard.h"
+
 #include <vertexnova/math/core/core.h>
 #include <vertexnova/math/geometry/geometry.h>
 
@@ -15,6 +17,7 @@
 #include <vector>
 
 using namespace vne::math;
+using vne::math::examples::LoggingGuard_C;
 
 void demonstrateFrustumCreation() {
     std::cout << "=== Frustum Creation ===" << std::endl;
@@ -221,6 +224,8 @@ void demonstratePracticalCulling() {
 }
 
 int main() {
+    LoggingGuard_C logging_guard;
+
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "VneMath Example: Frustum Culling" << std::endl;
     std::cout << "=================================\n" << std::endl;
