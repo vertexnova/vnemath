@@ -19,8 +19,6 @@ project(vnemath)
 # Define header files
 set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/math.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/constants.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/math_utils.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/random.h
@@ -31,7 +29,9 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/sphere.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/frustum.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/geometry.h
-    # Core templated types (header-only)
+    # Core headers
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/constants.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/core/math_utils.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/core/types.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/core/vec.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/core/mat.h
