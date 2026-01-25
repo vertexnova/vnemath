@@ -15,10 +15,18 @@
  * @brief Core type definitions, concepts, and traits for the math library.
  *
  * This file provides:
- * - GraphicsApi enum for runtime API selection
+ * - GraphicsApi enums and traits for runtime API selection
  * - C++20 concepts for type constraints
  * - Forward declarations for core math types
- * - Common type aliases
+ * - Type aliases for vectors, matrices, and quaternions
+ * - Core constants and utility functions required by templated types
+ *
+ * This file contains essential constants (kEpsilon, kPiT) and utility
+ * functions (clamp, lerp, approxEqual, degToRad) that are required by
+ * vec.h, mat.h, and quat.h templates.
+ *
+ * For additional math utilities, see math_utils.h
+ * For non-templated constants, see constants.h
  */
 
 #include <cstddef>
@@ -282,10 +290,10 @@ using Quatf = Quat<float>;
 using Quatd = Quat<double>;
 
 // ============================================================================
-// Constants (Templated versions - use different names to avoid conflict with constants.h)
+// Core Math Constants (Required by vec.h, mat.h, quat.h)
 // ============================================================================
 
-/// @brief Default epsilon for floating-point comparisons
+/// @brief Default epsilon for floating-point comparisons (templated)
 template<FloatingPoint T>
 inline constexpr T kEpsilon = T(1e-6);
 
@@ -307,6 +315,14 @@ inline constexpr T kTwoPiT = T(2) * kPiT<T>;
 template<FloatingPoint T>
 inline constexpr T kHalfPiT = kPiT<T> / T(2);
 
+/// @brief One over Pi (templated)
+template<FloatingPoint T>
+inline constexpr T kOneOverPiT = T(1) / kPiT<T>;
+
+/// @brief One over Two times Pi (templated)
+template<FloatingPoint T>
+inline constexpr T kOneOverTwoPiT = T(1) / (T(2) * kPiT<T>);
+
 /// @brief Degrees to radians conversion factor (templated)
 template<FloatingPoint T>
 inline constexpr T kDegToRadT = kPiT<T> / T(180);
@@ -316,7 +332,7 @@ template<FloatingPoint T>
 inline constexpr T kRadToDegT = T(180) / kPiT<T>;
 
 // ============================================================================
-// Utility Functions
+// Core Utility Functions (Required by vec.h, mat.h, quat.h)
 // ============================================================================
 
 /**

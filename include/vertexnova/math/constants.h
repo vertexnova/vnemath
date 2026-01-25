@@ -12,10 +12,18 @@
 
 /**
  * @file constants.h
- * @brief Contains numeric math constants and limits.
+ * @brief Non-templated numeric math constants and limits.
  *
- * This file provides commonly used mathematical constants in both
- * float and double precision, as well as numeric limits.
+ * This file provides commonly used mathematical constants as
+ * concrete float and double values, as well as numeric limits.
+ *
+ * For templated constants that work with any floating-point type,
+ * use the kPiT<T>, kEpsilon<T>, etc. templates in math_utils.h
+ *
+ * Use this file when:
+ * - You need specific float or double constants (kPi, kPiDouble)
+ * - You need numeric limits (kFloatMax, kDoubleEpsilon, etc.)
+ * - You're working with non-template code
  */
 
 // System library includes

@@ -37,28 +37,26 @@ class MathUtilsTest : public ::testing::Test {
  * Test Math pi constants
  */
 TEST_F(MathUtilsTest, TestMathPIConstant) {
-    ASSERT_FLOAT_EQ(glm::pi<float>(), vne::math::pi<float>());
-    ASSERT_DOUBLE_EQ(glm::pi<double>(), vne::math::pi<double>());
-    ASSERT_FLOAT_EQ(glm::two_pi<float>(), vne::math::twoPi<float>());
-    ASSERT_DOUBLE_EQ(glm::two_pi<double>(), vne::math::twoPi<double>());
-    ASSERT_FLOAT_EQ(glm::half_pi<float>(), vne::math::halfPi<float>());
-    ASSERT_DOUBLE_EQ(glm::half_pi<double>(), vne::math::halfPi<double>());
+    ASSERT_FLOAT_EQ(glm::pi<float>(), vne::math::kPiT<float>);
+    ASSERT_DOUBLE_EQ(glm::pi<double>(), vne::math::kPiT<double>);
+    ASSERT_FLOAT_EQ(glm::two_pi<float>(), vne::math::kTwoPiT<float>);
+    ASSERT_DOUBLE_EQ(glm::two_pi<double>(), vne::math::kTwoPiT<double>);
+    ASSERT_FLOAT_EQ(glm::half_pi<float>(), vne::math::kHalfPiT<float>);
+    ASSERT_DOUBLE_EQ(glm::half_pi<double>(), vne::math::kHalfPiT<double>);
     ASSERT_FLOAT_EQ(glm::quarter_pi<float>(), vne::math::quarterPi<float>());
     ASSERT_DOUBLE_EQ(glm::quarter_pi<double>(), vne::math::quarterPi<double>());
-    ASSERT_FLOAT_EQ(glm::one_over_pi<float>(), vne::math::oneOverPi<float>());
-    ASSERT_DOUBLE_EQ(glm::one_over_pi<double>(), vne::math::oneOverPi<double>());
-    ASSERT_FLOAT_EQ(glm::one_over_two_pi<float>(), vne::math::oneOverTwoPi<float>());
-    ASSERT_DOUBLE_EQ(glm::one_over_two_pi<double>(), vne::math::oneOverTwoPi<double>());
+    ASSERT_FLOAT_EQ(glm::one_over_pi<float>(), vne::math::kOneOverPiT<float>);
+    ASSERT_DOUBLE_EQ(glm::one_over_pi<double>(), vne::math::kOneOverPiT<double>);
+    ASSERT_FLOAT_EQ(glm::one_over_two_pi<float>(), vne::math::kOneOverTwoPiT<float>);
+    ASSERT_DOUBLE_EQ(glm::one_over_two_pi<double>(), vne::math::kOneOverTwoPiT<double>);
 }
 
 /**
- * Test Math GetEps<T>(...)
+ * Test Math Epsilon constants
  */
 TEST_F(MathUtilsTest, TestMathGetEps) {
-    ASSERT_EQ(0, vne::math::getEps<int>());
-    ASSERT_EQ(0, vne::math::getEps<char>());
-    ASSERT_EQ(vne::math::kFloatEpsilon, vne::math::getEps<float>());
-    ASSERT_EQ(vne::math::kDoubleEpsilon, vne::math::getEps<double>());
+    ASSERT_EQ(vne::math::kEpsilon<float>, vne::math::kFloatEpsilon);
+    ASSERT_EQ(vne::math::kEpsilon<double>, vne::math::kDoubleEpsilon);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -72,9 +70,9 @@ TEST_F(MathUtilsTest, TestMathRadToDeg) {
     ASSERT_FLOAT_EQ(glm::degrees(3.14f), vne::math::radToDeg<float>(3.14f));
     ASSERT_DOUBLE_EQ(glm::degrees(3.14), vne::math::radToDeg<double>(3.14));
     ASSERT_DOUBLE_EQ(glm::degrees(3.0), vne::math::radToDeg<double>(3));
-    ASSERT_FLOAT_EQ(glm::degrees(glm::two_pi<float>()), vne::math::radToDeg<float>(vne::math::twoPi<float>()));
-    ASSERT_FLOAT_EQ(360, vne::math::radToDeg<float>(vne::math::twoPi<float>()));
-    ASSERT_DOUBLE_EQ(360.0, static_cast<double>(vne::math::radToDeg<float>(vne::math::twoPi<float>())));
+    ASSERT_FLOAT_EQ(glm::degrees(glm::two_pi<float>()), vne::math::radToDeg<float>(vne::math::kTwoPiT<float>));
+    ASSERT_FLOAT_EQ(360, vne::math::radToDeg<float>(vne::math::kTwoPiT<float>));
+    ASSERT_DOUBLE_EQ(360.0, static_cast<double>(vne::math::radToDeg<float>(vne::math::kTwoPiT<float>)));
     ASSERT_NEAR(static_cast<double>(glm::degrees(1.57f)), static_cast<double>(vne::math::radToDeg<float>(1.57f)), 1E-4);
 }
 
@@ -596,10 +594,10 @@ TEST_F(MathUtilsTest, TestMathLogx) {
  * Test vne::math::sin(...)
  */
 TEST_F(MathUtilsTest, TestMathSin) {
-    ASSERT_DOUBLE_EQ(0.5, static_cast<double>(vne::math::sin(vne::math::pi<float>() / 6.0f)));
+    ASSERT_DOUBLE_EQ(0.5, static_cast<double>(vne::math::sin(vne::math::kPiT<float> / 6.0f)));
     ASSERT_DOUBLE_EQ(1.0, static_cast<double>(vne::math::sin(vne::math::degToRad<float>(90.0f))));
-    ASSERT_DOUBLE_EQ(glm::sin(3 * vne::math::pi<double>() / 4), vne::math::sin(3 * vne::math::pi<double>() / 4));
-    ASSERT_NE(-0.707, vne::math::sin(3 * vne::math::pi<double>() / 4));
+    ASSERT_DOUBLE_EQ(glm::sin(3 * vne::math::kPiT<double> / 4), vne::math::sin(3 * vne::math::kPiT<double> / 4));
+    ASSERT_NE(-0.707, vne::math::sin(3 * vne::math::kPiT<double> / 4));
     ASSERT_DOUBLE_EQ(0, vne::math::sin(0));
     ASSERT_DOUBLE_EQ(-0, vne::math::sin(-0));
     ASSERT_NE(glm::sin(vne::math::kDoubleInfinity),
@@ -610,10 +608,10 @@ TEST_F(MathUtilsTest, TestMathSin) {
  * Test vne::math::asin(...)
  */
 TEST_F(MathUtilsTest, TestMathASin) {
-    ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::asin(1));
+    ASSERT_DOUBLE_EQ(vne::math::kHalfPiT<double>, vne::math::asin(1));
     ASSERT_FLOAT_EQ(0.0f, vne::math::asin(0.0f));
     ASSERT_DOUBLE_EQ(90, vne::math::radToDeg(vne::math::asin(1)));
-    ASSERT_DOUBLE_EQ(vne::math::quarterPi<double>(), vne::math::asin(vne::math::invSqrt<double>(2)));
+    ASSERT_DOUBLE_EQ(vne::math::kQuarterPiT<double>, vne::math::asin(vne::math::invSqrt<double>(2)));
     ASSERT_NE(glm::asin(1.1f), vne::math::asin(1.1f));  // NaN test
 }
 
@@ -632,10 +630,10 @@ TEST_F(MathUtilsTest, TestMathSinh) {
  * Test vne::math::cos(...)
  */
 TEST_F(MathUtilsTest, TestMathCos) {
-    ASSERT_DOUBLE_EQ(0.5, vne::math::cos(vne::math::pi<double>() / 3));
-    ASSERT_FLOAT_EQ(glm::cos(vne::math::halfPi<float>()),
-                    vne::math::cos(vne::math::halfPi<float>()));  // value would not be exact zero
-    ASSERT_NEAR(-0.707, vne::math::cos(-3.0 * (vne::math::pi<double>() / 4.0)), 1E-3);
+    ASSERT_DOUBLE_EQ(0.5, vne::math::cos(vne::math::kPiT<double> / 3));
+    ASSERT_FLOAT_EQ(glm::cos(vne::math::kHalfPiT<float>),
+                    vne::math::cos(vne::math::kHalfPiT<float>));  // value would not be exact zero
+    ASSERT_NEAR(-0.707, vne::math::cos(-3.0 * (vne::math::kPiT<double> / 4.0)), 1E-3);
     ASSERT_DOUBLE_EQ(1, vne::math::cos(0));
     ASSERT_DOUBLE_EQ(1, vne::math::cos(-0));
     ASSERT_NE(glm::cos(vne::math::kDoubleInfinity),
@@ -647,8 +645,8 @@ TEST_F(MathUtilsTest, TestMathCos) {
  */
 TEST_F(MathUtilsTest, TestMathACos) {
     ASSERT_DOUBLE_EQ(0, vne::math::acos(1));
-    ASSERT_DOUBLE_EQ(vne::math::pi<double>(), vne::math::acos(-1));
-    ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::acos(0));
+    ASSERT_DOUBLE_EQ(vne::math::kPiT<double>, vne::math::acos(-1));
+    ASSERT_DOUBLE_EQ(vne::math::kHalfPiT<double>, vne::math::acos(0));
     ASSERT_FLOAT_EQ(60.0f, vne::math::radToDeg(vne::math::acos(0.5f)));
     ASSERT_NE(glm::cos(1.1), vne::math::acos(1.1));  // NaN test
 }
@@ -672,7 +670,7 @@ TEST_F(MathUtilsTest, TestMathCosh) {
  */
 TEST_F(MathUtilsTest, TestMathSinCos) {
     float sin, cos;
-    vne::math::sinCos(vne::math::halfPi<float>(), sin, cos);
+    vne::math::sinCos(vne::math::kHalfPiT<float>, sin, cos);
     ASSERT_TRUE(vne::math::areSame(1.0f, sin));
     ASSERT_TRUE(vne::math::areSame(0.0f, cos));
     double s, c;
@@ -688,10 +686,10 @@ TEST_F(MathUtilsTest, TestMathSinCos) {
  * Test vne::math::tan(...)
  */
 TEST_F(MathUtilsTest, TestMathTan) {
-    ASSERT_DOUBLE_EQ(1, vne::math::tan(vne::math::quarterPi<double>()));
-    ASSERT_DOUBLE_EQ(-1, vne::math::tan(3 * vne::math::quarterPi<double>()));
-    ASSERT_DOUBLE_EQ(1, vne::math::tan(5 * vne::math::quarterPi<double>()));
-    ASSERT_DOUBLE_EQ(-1, vne::math::tan(7 * vne::math::quarterPi<double>()));
+    ASSERT_DOUBLE_EQ(1, vne::math::tan(vne::math::kQuarterPiT<double>));
+    ASSERT_DOUBLE_EQ(-1, vne::math::tan(3 * vne::math::kQuarterPiT<double>));
+    ASSERT_DOUBLE_EQ(1, vne::math::tan(5 * vne::math::kQuarterPiT<double>));
+    ASSERT_DOUBLE_EQ(-1, vne::math::tan(7 * vne::math::kQuarterPiT<double>));
     ASSERT_FLOAT_EQ(0, vne::math::tan(0.0f));
     ASSERT_FLOAT_EQ(0, vne::math::tan(-0.0f));
     ASSERT_NE(glm::tan(vne::math::kFloatInfinity),
@@ -702,8 +700,8 @@ TEST_F(MathUtilsTest, TestMathTan) {
  * Test vne::math::atan(...)
  */
 TEST_F(MathUtilsTest, TestMathATan) {
-    ASSERT_DOUBLE_EQ(vne::math::quarterPi<double>(), vne::math::atan(1));
-    ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::atan(vne::math::kDoubleInfinity));
+    ASSERT_DOUBLE_EQ(vne::math::kQuarterPiT<double>, vne::math::atan(1));
+    ASSERT_DOUBLE_EQ(vne::math::kHalfPiT<double>, vne::math::atan(vne::math::kDoubleInfinity));
     ASSERT_FLOAT_EQ(0, vne::math::atan(0.0f));
     ASSERT_FLOAT_EQ(-0, vne::math::atan(-0.0f));
 }
@@ -713,12 +711,12 @@ TEST_F(MathUtilsTest, TestMathATan) {
  */
 TEST_F(MathUtilsTest, TestMathATan2) {
     ASSERT_DOUBLE_EQ(1 * vne::math::quarterPi<double>(), vne::math::atan2(1, 1));     // Quad I
-    ASSERT_DOUBLE_EQ(3 * vne::math::quarterPi<double>(), vne::math::atan2(1, -1));    // Quad II
-    ASSERT_DOUBLE_EQ(-3 * vne::math::quarterPi<double>(), vne::math::atan2(-1, -1));  // Quad III
-    ASSERT_DOUBLE_EQ(-1 * vne::math::quarterPi<double>(), vne::math::atan2(-1, 1));   // Quad IV
+    ASSERT_DOUBLE_EQ(3 * vne::math::kQuarterPiT<double>, vne::math::atan2(1, -1));    // Quad II
+    ASSERT_DOUBLE_EQ(-3 * vne::math::kQuarterPiT<double>, vne::math::atan2(-1, -1));  // Quad III
+    ASSERT_DOUBLE_EQ(-1 * vne::math::kQuarterPiT<double>, vne::math::atan2(-1, 1));   // Quad IV
     ASSERT_FLOAT_EQ(0, vne::math::atan2(0.0f, 0.0f));
-    ASSERT_FLOAT_EQ(vne::math::pi<float>(), vne::math::atan2(0.0f, -0.0f));
-    ASSERT_DOUBLE_EQ(vne::math::halfPi<double>(), vne::math::atan2(7.0, 0.0));
+    ASSERT_FLOAT_EQ(vne::math::kPiT<float>, vne::math::atan2(0.0f, -0.0f));
+    ASSERT_DOUBLE_EQ(vne::math::kHalfPiT<double>, vne::math::atan2(7.0, 0.0));
 }
 
 /**

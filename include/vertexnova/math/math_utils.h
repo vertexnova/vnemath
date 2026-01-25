@@ -13,9 +13,21 @@
 /**
  * @file math_utils.h
  *
- * @brief Provides a collection of mathematical utilities, including basic
- * operations, interpolations, exponential functions, power functions, and
- * trigonometric functions.
+ * @brief Provides a collection of mathematical utilities.
+ *
+ * This file contains:
+ * - Additional templated math constants (kQuarterPiT)
+ * - Legacy constant accessor functions (pi(), twoPi(), etc.) for backward compatibility
+ * - Basic math operations (min, max, abs, sign, sqrt)
+ * - Advanced comparison functions (areSame, isZero)
+ * - Interpolation functions (saturate, midPoint)
+ * - Exponential, power, and trigonometric functions
+ *
+ * Note: Core constants (kEpsilon, kPiT, kHalfPiT) and basic utilities
+ * (clamp, lerp, approxEqual, degToRad) are in core/types.h as they're
+ * required by the templated vec/mat/quat classes.
+ *
+ * For non-templated constants, use constants.h
  */
 
 // Project includes
@@ -28,64 +40,21 @@
 
 namespace vne::math {
 
-/**
- * @brief Returns the constant π (pi) for the given type.
- *
- * @return Value of π
- */
-template<typename T>
-[[nodiscard]] inline constexpr T pi() noexcept;
+// ============================================================================
+// Additional Templated Constants
+// ============================================================================
 
-template<>
-[[nodiscard]] inline constexpr float pi<float>() noexcept {
-    return kPi;
-}
+/// @brief Quarter Pi (templated) - supplemental constant
+template<FloatingPoint T>
+inline constexpr T kQuarterPiT = kPiT<T> / T(4);
 
-template<>
-[[nodiscard]] inline constexpr double pi<double>() noexcept {
-    return kPiDouble;
-}
-
-/**
- * @brief Returns the constant 2π (two pi) for the given type.
- *
- * @return Value of 2π
- */
-template<typename T>
-[[nodiscard]] inline constexpr T twoPi() noexcept;
-
-template<>
-[[nodiscard]] inline constexpr float twoPi<float>() noexcept {
-    return kTwoPi;
-}
-
-template<>
-[[nodiscard]] inline constexpr double twoPi<double>() noexcept {
-    return kTwoPiDouble;
-}
-
-/**
- * @brief Returns the constant π/2 (pi over two) for the given type.
- *
- * @return Value of π/2
- */
-template<typename T>
-[[nodiscard]] inline constexpr T halfPi() noexcept;
-
-template<>
-[[nodiscard]] inline constexpr float halfPi<float>() noexcept {
-    return kHalfPi;
-}
-
-template<>
-[[nodiscard]] inline constexpr double halfPi<double>() noexcept {
-    return kHalfPiDouble;
-}
+// ============================================================================
+// Legacy Constant Accessor Functions (for backward compatibility)
+// ============================================================================
 
 /**
  * @brief Returns the constant π/4 (pi over four) for the given type.
- *
- * @return Value of π/4
+ * @deprecated Use kQuarterPiT<T> template constant instead.
  */
 template<typename T>
 [[nodiscard]] inline constexpr T quarterPi() noexcept;
@@ -98,62 +67,6 @@ template<>
 template<>
 [[nodiscard]] inline constexpr double quarterPi<double>() noexcept {
     return kQuarterPiDouble;
-}
-
-/**
- * @brief Returns the constant 1/π (one over pi) for the given type.
- *
- * @return Value of 1/π
- */
-template<typename T>
-[[nodiscard]] inline constexpr T oneOverPi() noexcept;
-
-template<>
-[[nodiscard]] inline constexpr float oneOverPi<float>() noexcept {
-    return kOneOverPi;
-}
-
-template<>
-[[nodiscard]] inline constexpr double oneOverPi<double>() noexcept {
-    return kOneOverPiDouble;
-}
-
-/**
- * @brief Returns the constant 1/(2π) (one over two pi) for the given type.
- *
- * @return Value of 1/(2π)
- */
-template<typename T>
-[[nodiscard]] inline constexpr T oneOverTwoPi() noexcept;
-
-template<>
-[[nodiscard]] inline constexpr float oneOverTwoPi<float>() noexcept {
-    return kOneOverTwoPi;
-}
-
-template<>
-[[nodiscard]] inline constexpr double oneOverTwoPi<double>() noexcept {
-    return kOneOverTwoPiDouble;
-}
-
-/**
- * @brief Returns the epsilon value for the given type.
- *
- * @return Epsilon value.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T getEps() noexcept {
-    return static_cast<T>(0);
-}
-
-template<>
-[[nodiscard]] inline constexpr float getEps<float>() noexcept {
-    return kFloatEpsilon;
-}
-
-template<>
-[[nodiscard]] inline constexpr double getEps<double>() noexcept {
-    return kDoubleEpsilon;
 }
 
 ////////////////////////////////////////////////////////////////////////////
