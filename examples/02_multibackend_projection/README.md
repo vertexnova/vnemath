@@ -1,6 +1,6 @@
 # 02 - Multi-Backend Projection
 
-Demonstrates the key feature of vnemath: creating projection and view matrices
+Demonstrates the key feature of VertexNova Math: creating projection and view matrices
 for different graphics APIs with a single, unified interface.
 
 ## What This Example Demonstrates

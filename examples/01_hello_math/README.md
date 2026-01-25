@@ -1,6 +1,6 @@
 # 01 - Hello Math
 
-Basic introduction to the vnemath library.
+Basic introduction to the VertexNova Math library.
 
 ## What This Example Demonstrates
 

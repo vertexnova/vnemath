@@ -1,4 +1,8 @@
-# VneMath
+# VertexNova Math
+
+<p align="center">
+  <img src="icons/vertexnova_logo_medallion_with_text.svg" alt="VertexNova Math" width="320"/>
+</p>
 
 <p align="center">
   <strong>A high-performance, cross-platform C++ math library for game engines and 3D applications</strong>
@@ -13,7 +17,7 @@
 
 ## About
 
-**VneMath** is a comprehensive math library designed for real-time graphics applications, game engines, and 3D tools. It provides templated vector, matrix, and quaternion types along with a rich set of geometry primitives, intersection tests, and procedural generation utilities.
+**VertexNova Math** (vnemath) is a comprehensive math library designed for real-time graphics applications, game engines, and 3D tools. It provides templated vector, matrix, and quaternion types along with a rich set of geometry primitives, intersection tests, and procedural generation utilities.
 
 This library is part of [VertexNova](https://github.com/vertexnova) — a multi-backend game/graphics engine built from scratch.
 
@@ -69,8 +73,8 @@ This library is part of [VertexNova](https://github.com/vertexnova) — a multi-
 |----------|------------|---------|-------------|
 | External | GLM | 1.0.1 | OpenGL Mathematics library |
 | External | Google Test | 1.14.0 | Unit testing framework |
-| Libs | VneCommon | 1.0.0 | Common utilities and macros |
-| Libs | VneLogging | 1.0.0 | Logging library |
+| Libs | VertexNova Common | 1.0.0 | Common utilities and macros |
+| Libs | VertexNova Logging | 1.0.0 | Logging library |
 
 ### Initializing Submodules
 
