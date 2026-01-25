@@ -635,7 +635,17 @@ class Vec {
     }
 
     /**
-     * @brief Checks if two vectors are approximately equal (alias for approxEquals).
+     * @brief Checks if two vectors are approximately equal.
+     *
+     * This is an alias for approxEquals() and uses absolute epsilon comparison.
+     *
+     * @note This differs from the scalar areSame() in math_utils.h which uses
+     *       relative epsilon. For vectors, absolute epsilon is typically more
+     *       appropriate as vector components are usually in a known range.
+     *
+     * @param other The other vector
+     * @param epsilon Tolerance for comparison (absolute)
+     * @return true if all components are within epsilon
      */
     [[nodiscard]] constexpr bool areSame(const Vec& other, T epsilon = kEpsilon<T>) const noexcept
         requires FloatingPoint<T>
@@ -660,8 +670,14 @@ class Vec {
 
     /**
      * @brief Checks if this vector is approximately zero.
-     * @param epsilon Tolerance for comparison
-     * @return true if all components are near zero
+     *
+     * Uses absolute epsilon comparison for each component.
+     *
+     * @note This uses approxZero() (absolute epsilon) rather than the
+     *       isZero() from math_utils.h (relative epsilon).
+     *
+     * @param epsilon Tolerance for comparison (absolute)
+     * @return true if all components are within epsilon of zero
      */
     [[nodiscard]] constexpr bool isZero(T epsilon = kEpsilon<T>) const noexcept
         requires FloatingPoint<T>

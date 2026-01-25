@@ -337,6 +337,9 @@ inline constexpr T kRadToDegT = T(180) / kPiT<T>;
 
 /**
  * @brief Converts degrees to radians.
+ * @tparam T Floating-point type
+ * @param degrees Angle in degrees
+ * @return Angle in radians
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr T degToRad(T degrees) noexcept {
@@ -345,6 +348,9 @@ template<FloatingPoint T>
 
 /**
  * @brief Converts radians to degrees.
+ * @tparam T Floating-point type
+ * @param radians Angle in radians
+ * @return Angle in degrees
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr T radToDeg(T radians) noexcept {
@@ -352,7 +358,21 @@ template<FloatingPoint T>
 }
 
 /**
- * @brief Checks if two values are approximately equal.
+ * @brief Checks if two values are approximately equal using absolute epsilon.
+ *
+ * Uses absolute epsilon comparison: |a - b| <= epsilon
+ *
+ * This is suitable for values expected to be in a small range (e.g., 0-1).
+ * For comparing values that may be large, consider using areSame() from
+ * math_utils.h which uses relative epsilon comparison.
+ *
+ * @tparam T Floating-point type
+ * @param a First value
+ * @param b Second value
+ * @param epsilon Tolerance (default: kEpsilon<T>)
+ * @return true if |a - b| <= epsilon
+ *
+ * @see areSame() in math_utils.h for relative epsilon comparison
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr bool approxEqual(T a, T b, T epsilon = kEpsilon<T>) noexcept {
@@ -361,7 +381,19 @@ template<FloatingPoint T>
 }
 
 /**
- * @brief Checks if a value is approximately zero.
+ * @brief Checks if a value is approximately zero using absolute epsilon.
+ *
+ * Uses absolute epsilon comparison: |value| <= epsilon
+ *
+ * For comparing values that may be large, consider using isZero() from
+ * math_utils.h which uses relative epsilon comparison.
+ *
+ * @tparam T Floating-point type
+ * @param value The value to check
+ * @param epsilon Tolerance (default: kEpsilon<T>)
+ * @return true if |value| <= epsilon
+ *
+ * @see isZero() in math_utils.h for relative epsilon comparison
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr bool approxZero(T value, T epsilon = kEpsilon<T>) noexcept {
@@ -370,6 +402,11 @@ template<FloatingPoint T>
 
 /**
  * @brief Clamps a value between min and max.
+ * @tparam T Arithmetic type
+ * @param value The value to clamp
+ * @param min_val Minimum bound
+ * @param max_val Maximum bound
+ * @return Clamped value
  */
 template<Arithmetic T>
 [[nodiscard]] constexpr T clamp(T value, T min_val, T max_val) noexcept {
@@ -378,6 +415,14 @@ template<Arithmetic T>
 
 /**
  * @brief Linear interpolation between two values.
+ *
+ * Computes a + t * (b - a) for t in [0, 1].
+ *
+ * @tparam T Floating-point type
+ * @param a Start value (returned when t = 0)
+ * @param b End value (returned when t = 1)
+ * @param t Interpolation factor [0, 1]
+ * @return Interpolated value
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr T lerp(T a, T b, T t) noexcept {

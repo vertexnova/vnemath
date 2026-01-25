@@ -17,15 +17,18 @@
  *
  * This file contains:
  * - Additional templated math constants (kQuarterPiT)
- * - Legacy constant accessor functions (pi(), twoPi(), etc.) for backward compatibility
+ * - Legacy constant accessor functions (quarterPi(), etc.) for backward compatibility
  * - Basic math operations (min, max, abs, sign, sqrt)
- * - Advanced comparison functions (areSame, isZero)
- * - Interpolation functions (saturate, midPoint)
+ * - Robust comparison functions (areSame, isZero) using relative epsilon
+ * - Interpolation functions (saturate, midPoint, biLerp)
  * - Exponential, power, and trigonometric functions
  *
- * Note: Core constants (kEpsilon, kPiT, kHalfPiT) and basic utilities
- * (clamp, lerp, approxEqual, degToRad) are in core/types.h as they're
- * required by the templated vec/mat/quat classes.
+ * Comparison function notes:
+ * - areSame/isZero: Use relative epsilon - better for large values
+ * - approxEqual/approxZero (in types.h): Use absolute epsilon - better for small values
+ *
+ * Core utilities (clamp, lerp, approxEqual, degToRad) are in core/types.h
+ * as they're required by the templated vec/mat/quat classes.
  *
  * For non-templated constants, use constants.h
  */
@@ -188,8 +191,29 @@ template<typename T>
     return static_cast<T>(1) / std::sqrt(val);
 }
 
+// ============================================================================
+// Robust Comparison Functions (Relative Epsilon)
+// ============================================================================
+
 /**
- * Checks whether two values are "close enough" to one another.
+ * @brief Checks whether two values are "close enough" using relative epsilon.
+ *
+ * For floating-point types, uses: |val1 - val2| <= eps * max(1, |val1|, |val2|)
+ * This makes the comparison scale with the magnitude of the values,
+ * which is more appropriate for large numbers.
+ *
+ * For integral types, uses exact equality (eps is ignored).
+ *
+ * @note For small values near zero (0-1 range), approxEqual() from types.h
+ *       may be more appropriate as it uses absolute epsilon.
+ *
+ * @tparam T Value type
+ * @param val1 First value
+ * @param val2 Second value
+ * @param eps Relative epsilon tolerance
+ * @return true if values are close enough
+ *
+ * @see approxEqual() in types.h for absolute epsilon comparison
  */
 template<typename T>
 [[nodiscard]] inline constexpr bool areSameImpl(const T& val1, const T& val2, T eps) {
@@ -242,7 +266,22 @@ template<>
 }
 
 /**
- * Checks whether the given value is "close enough" to zero.
+ * @brief Checks whether the given value is "close enough" to zero using relative epsilon.
+ *
+ * For floating-point types, uses: |val| < eps * max(1, |val|)
+ * This is the zero-check counterpart to areSame().
+ *
+ * For integral types, uses exact comparison with zero (eps is ignored).
+ *
+ * @note For small values, approxZero() from types.h may be more appropriate
+ *       as it uses absolute epsilon.
+ *
+ * @tparam T Value type
+ * @param val The value to check
+ * @param eps Relative epsilon tolerance
+ * @return true if value is close enough to zero
+ *
+ * @see approxZero() in types.h for absolute epsilon comparison
  */
 template<typename T>
 [[nodiscard]] inline constexpr bool isZeroImpl(const T& val, T eps = static_cast<T>(0)) {
@@ -341,27 +380,26 @@ template<>
     return a / 2 + b / 2;
 }
 
-/**
- * Linear interpolation
- */
-template<typename T, typename U>
-[[nodiscard]] inline constexpr T lerp(const T& a, const T& b, const U& t) {
-    if ((a <= static_cast<T>(0) && b >= static_cast<T>(0)) || (a >= static_cast<T>(0) && b <= static_cast<T>(0))) {
-        return a * static_cast<T>(1 - t) + b * static_cast<T>(t);
-    }
-    if (t == static_cast<U>(1)) {
-        return b;
-    }
-    const T x = a + static_cast<T>(t * (b - a));
-    return (t > static_cast<U>(1)) == (b > a) ? std::max(b, x) : std::min(b, x);
-}
+// Note: lerp(a, b, t) is defined in core/types.h
 
 /**
- * BiLinear interpolation
+ * @brief BiLinear interpolation.
+ *
+ * Interpolates between four corner values using two interpolation factors.
+ * Uses lerp from types.h internally.
+ *
+ * @tparam T Floating-point type for values
+ * @param c00 Value at (0, 0)
+ * @param c10 Value at (1, 0)
+ * @param c01 Value at (0, 1)
+ * @param c11 Value at (1, 1)
+ * @param tx Interpolation factor in x direction [0, 1]
+ * @param ty Interpolation factor in y direction [0, 1]
+ * @return Bilinearly interpolated value
  */
-template<typename T, typename U>
+template<FloatingPoint T>
 [[nodiscard]] inline constexpr T biLerp(
-    const T& c00, const T& c10, const T& c01, const T& c11, const U& tx, const U& ty) {
+    const T& c00, const T& c10, const T& c01, const T& c11, const T& tx, const T& ty) {
     T a = lerp(c00, c10, tx);
     T b = lerp(c01, c11, tx);
     return lerp(a, b, ty);
