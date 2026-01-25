@@ -12,159 +12,173 @@
 #include <vertexnova/math/color.h>
 #include <vertexnova/math/core/types.h>
 
-#include <iostream>
-#include <iomanip>
 #include <vector>
 
 using namespace vne::math;
 using vne::math::examples::LoggingGuard_C;
 
-void printColor(const std::string& name, const Color& color) {
-    std::cout << "  " << name << ": RGBA(" << color.r() << ", " << color.g() << ", "
-              << color.b() << ", " << color.a() << ")" << std::endl;
+void logColor(const std::string& name, const Color& color) {
+    VNE_LOG_INFO << "  " << name << ": RGBA(" << color.r() << ", " << color.g() << ", " << color.b()
+                 << ", " << color.a() << ")";
 }
 
 void demonstrateColorCreation() {
-    std::cout << "=== Color Creation ===" << std::endl;
+    VNE_LOG_INFO << "=== Color Creation ===";
 
     // From RGBA floats (0-1 range)
     Color red(1.0f, 0.0f, 0.0f, 1.0f);
     Color green(0.0f, 1.0f, 0.0f, 1.0f);
     Color blue(0.0f, 0.0f, 1.0f, 1.0f);
 
-    std::cout << "\nFrom RGBA floats:" << std::endl;
-    printColor("Red", red);
-    printColor("Green", green);
-    printColor("Blue", blue);
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "From RGBA floats:";
+    logColor("Red", red);
+    logColor("Green", green);
+    logColor("Blue", blue);
 
     // With transparency
     Color semi_transparent(1.0f, 0.0f, 0.0f, 0.5f);
-    printColor("Semi-transparent red", semi_transparent);
+    logColor("Semi-transparent red", semi_transparent);
 
     // Default constructor (black)
     Color default_color;
-    printColor("Default (black)", default_color);
+    logColor("Default (black)", default_color);
 }
 
 void demonstratePredefinedColors() {
-    std::cout << "\n=== Predefined Colors ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Predefined Colors ===";
 
-    std::cout << "\nBasic colors:" << std::endl;
-    printColor("White", Color::kWhite);
-    printColor("Black", Color::kBlack);
-    printColor("Red", Color::kRed);
-    printColor("Green", Color::kGreen);
-    printColor("Blue", Color::kBlue);
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Basic colors:";
+    logColor("White", Color::kWhite);
+    logColor("Black", Color::kBlack);
+    logColor("Red", Color::kRed);
+    logColor("Green", Color::kGreen);
+    logColor("Blue", Color::kBlue);
 
-    std::cout << "\nSecondary colors:" << std::endl;
-    printColor("Yellow", Color::kYellow);
-    printColor("Cyan", Color::kCyan);
-    printColor("Magenta", Color::kMagenta);
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Secondary colors:";
+    logColor("Yellow", Color::kYellow);
+    logColor("Cyan", Color::kCyan);
+    logColor("Magenta", Color::kMagenta);
 
-    std::cout << "\nOther colors:" << std::endl;
-    printColor("Gray", Color::kGray);
-    printColor("LightBlue", Color::kLightBlue);
-    printColor("DarkBlue", Color::kDarkBlue);
-    printColor("Maroon", Color::kMaroon);
-    printColor("Brown", Color::kBrown);
-    printColor("Beige", Color::kBeige);
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Other colors:";
+    logColor("Gray", Color::kGray);
+    logColor("LightBlue", Color::kLightBlue);
+    logColor("DarkBlue", Color::kDarkBlue);
+    logColor("Maroon", Color::kMaroon);
+    logColor("Brown", Color::kBrown);
+    logColor("Beige", Color::kBeige);
 }
 
 void demonstrateColorLerp() {
-    std::cout << "\n=== Color Interpolation (Lerp) ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Color Interpolation (Lerp) ===";
 
     Color start = Color::kRed;
     Color end = Color::kBlue;
 
-    std::cout << "\nGradient from Red to Blue:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Gradient from Red to Blue:";
     for (float t = 0.0f; t <= 1.0f; t += 0.25f) {
         Color blended = start.lerp(end, t);
-        std::cout << "  t=" << t << ": RGBA(" << blended.r() << ", " << blended.g()
-                  << ", " << blended.b() << ", " << blended.a() << ")" << std::endl;
+        VNE_LOG_INFO << "  t=" << t << ": RGBA(" << blended.r() << ", " << blended.g() << ", "
+                     << blended.b() << ", " << blended.a() << ")";
     }
 
     // Fade out animation
-    std::cout << "\nFade out (Red to Transparent):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Fade out (Red to Transparent):";
     Color opaque = Color::kRed;
     Color transparent(1.0f, 0.0f, 0.0f, 0.0f);
     for (float t = 0.0f; t <= 1.0f; t += 0.25f) {
         Color faded = opaque.lerp(transparent, t);
-        std::cout << "  t=" << t << ": alpha=" << faded.a() << std::endl;
+        VNE_LOG_INFO << "  t=" << t << ": alpha=" << faded.a();
     }
 }
 
 void demonstrateColorArithmetic() {
-    std::cout << "\n=== Color Arithmetic ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Color Arithmetic ===";
 
     Color base(0.5f, 0.5f, 0.5f, 1.0f);  // Gray
 
     // Scalar operations
-    std::cout << "\nScalar operations on Gray (0.5, 0.5, 0.5):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Scalar operations on Gray (0.5, 0.5, 0.5):";
     Color darkened = base * 0.5f;
     Color brightened = base * 1.5f;
-    printColor("Darkened (*0.5)", darkened);
-    printColor("Brightened (*1.5)", brightened);
+    logColor("Darkened (*0.5)", darkened);
+    logColor("Brightened (*1.5)", brightened);
 
     // Color addition (additive blending)
-    std::cout << "\nAdditive blending:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Additive blending:";
     Color dim_red(0.3f, 0.0f, 0.0f, 1.0f);
     Color dim_green(0.0f, 0.3f, 0.0f, 1.0f);
     Color combined = dim_red + dim_green;
-    printColor("Dim Red + Dim Green", combined);
+    logColor("Dim Red + Dim Green", combined);
 
     // Color multiplication (multiplicative blending)
-    std::cout << "\nMultiplicative blending (light filtering):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Multiplicative blending (light filtering):";
     Color white_light = Color::kWhite;
     Color red_filter(1.0f, 0.0f, 0.0f, 1.0f);
     Color filtered = white_light * red_filter;
-    printColor("White through Red filter", filtered);
+    logColor("White through Red filter", filtered);
 
     Color yellow_light = Color::kYellow;
     Color blue_filter = Color::kBlue;
     Color yellow_through_blue = yellow_light * blue_filter;
-    printColor("Yellow through Blue filter", yellow_through_blue);
+    logColor("Yellow through Blue filter", yellow_through_blue);
 }
 
 void demonstrateColorComparison() {
-    std::cout << "\n=== Color Comparison ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Color Comparison ===";
 
     Color a(0.5f, 0.5f, 0.5f, 1.0f);
     Color b(0.5f, 0.5f, 0.5f, 1.0f);
     Color c(0.6f, 0.5f, 0.5f, 1.0f);
 
-    std::cout << "\nColor A: ";
-    printColor("", a);
-    std::cout << "Color B: ";
-    printColor("", b);
-    std::cout << "Color C: ";
-    printColor("", c);
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Color A: RGBA(" << a.r() << ", " << a.g() << ", " << a.b() << ", " << a.a() << ")";
+    VNE_LOG_INFO << "Color B: RGBA(" << b.r() << ", " << b.g() << ", " << b.b() << ", " << b.a() << ")";
+    VNE_LOG_INFO << "Color C: RGBA(" << c.r() << ", " << c.g() << ", " << c.b() << ", " << c.a() << ")";
 
-    std::cout << "\nExact comparison:" << std::endl;
-    std::cout << "  A == B: " << (a == b ? "true" : "false") << std::endl;
-    std::cout << "  A == C: " << (a == c ? "true" : "false") << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Exact comparison:";
+    VNE_LOG_INFO << "  A == B: " << (a == b ? "true" : "false");
+    VNE_LOG_INFO << "  A == C: " << (a == c ? "true" : "false");
 
-    std::cout << "\nApproximate comparison (areSame):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Approximate comparison (areSame):";
     Color almost_a(0.5f + 0.00001f, 0.5f, 0.5f, 1.0f);
-    std::cout << "  A areSame almost_A: " << (a.areSame(almost_a) ? "true" : "false") << std::endl;
+    VNE_LOG_INFO << "  A areSame almost_A: " << (a.areSame(almost_a) ? "true" : "false");
 }
 
 void demonstratePracticalExamples() {
-    std::cout << "\n=== Practical Examples ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Practical Examples ===";
 
     // UI button states
-    std::cout << "\nUI Button color states:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "UI Button color states:";
     Color button_normal(0.2f, 0.4f, 0.8f, 1.0f);
-    Color button_hover = button_normal * 1.2f;  // Brighten on hover
-    Color button_pressed = button_normal * 0.8f;  // Darken on press
+    Color button_hover = button_normal * 1.2f;                       // Brighten on hover
+    Color button_pressed = button_normal * 0.8f;                     // Darken on press
     Color button_disabled = button_normal.lerp(Color::kGray, 0.7f);  // Gray out
 
-    printColor("Normal", button_normal);
-    printColor("Hover", button_hover);
-    printColor("Pressed", button_pressed);
-    printColor("Disabled", button_disabled);
+    logColor("Normal", button_normal);
+    logColor("Hover", button_hover);
+    logColor("Pressed", button_pressed);
+    logColor("Disabled", button_disabled);
 
     // Health bar gradient
-    std::cout << "\nHealth bar gradient (full to empty):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Health bar gradient (full to empty):";
     Color healthy = Color::kGreen;
     Color warning = Color::kYellow;
     Color critical = Color::kRed;
@@ -180,24 +194,19 @@ void demonstratePracticalExamples() {
             float t = (0.5f - health) * 2.0f;  // 0 at health=0.5, 1 at health=0
             bar_color = warning.lerp(critical, t);
         }
-        std::cout << "  Health " << static_cast<int>(health * 100) << "%: RGB("
-                  << bar_color.r() << ", " << bar_color.g() << ", " << bar_color.b() << ")"
-                  << std::endl;
+        VNE_LOG_INFO << "  Health " << static_cast<int>(health * 100) << "%: RGB(" << bar_color.r()
+                     << ", " << bar_color.g() << ", " << bar_color.b() << ")";
     }
 
     // Day/night cycle sky color
-    std::cout << "\nDay/Night sky transition:" << std::endl;
-    Color day_sky(0.529f, 0.808f, 0.922f, 1.0f);    // Light blue
-    Color sunset_sky(1.0f, 0.5f, 0.0f, 1.0f);       // Orange
-    Color night_sky(0.05f, 0.05f, 0.15f, 1.0f);     // Dark blue
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Day/Night sky transition:";
+    Color day_sky(0.529f, 0.808f, 0.922f, 1.0f);   // Light blue
+    Color sunset_sky(1.0f, 0.5f, 0.0f, 1.0f);      // Orange
+    Color night_sky(0.05f, 0.05f, 0.15f, 1.0f);    // Dark blue
 
     std::vector<std::pair<std::string, float>> times = {
-        {"Noon", 0.0f},
-        {"Afternoon", 0.25f},
-        {"Sunset", 0.5f},
-        {"Dusk", 0.75f},
-        {"Night", 1.0f}
-    };
+        {"Noon", 0.0f}, {"Afternoon", 0.25f}, {"Sunset", 0.5f}, {"Dusk", 0.75f}, {"Night", 1.0f}};
 
     for (const auto& [name, t] : times) {
         Color sky;
@@ -206,17 +215,16 @@ void demonstratePracticalExamples() {
         } else {
             sky = sunset_sky.lerp(night_sky, (t - 0.5f) * 2.0f);
         }
-        std::cout << "  " << name << ": RGB(" << sky.r() << ", " << sky.g() << ", "
-                  << sky.b() << ")" << std::endl;
+        VNE_LOG_INFO << "  " << name << ": RGB(" << sky.r() << ", " << sky.g() << ", " << sky.b() << ")";
     }
 }
 
 int main() {
     LoggingGuard_C logging_guard;
 
-    std::cout << std::fixed << std::setprecision(3);
-    std::cout << "VneMath Example: Color Utilities" << std::endl;
-    std::cout << "=================================\n" << std::endl;
+    VNE_LOG_INFO << "VneMath Example: Color Utilities";
+    VNE_LOG_INFO << "=================================";
+    VNE_LOG_INFO << "";
 
     demonstrateColorCreation();
     demonstratePredefinedColors();
@@ -225,6 +233,7 @@ int main() {
     demonstrateColorComparison();
     demonstratePracticalExamples();
 
-    std::cout << "\n=== Done ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Done ===";
     return 0;
 }

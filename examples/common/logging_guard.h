@@ -9,7 +9,20 @@
 
 #include <vertexnova/logging/logging.h>
 
+#include <iomanip>
+#include <sstream>
+
+// Create a logger category for examples
+CREATE_VNE_LOGGER_CATEGORY("vnemath.examples")
+
 namespace vne::math::examples {
+
+// Helper to format floating point output for logging
+inline std::string fmtFloat(int precision = 4) {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(precision);
+    return oss.str();
+}
 
 /**
  * @class LoggingGuard_C

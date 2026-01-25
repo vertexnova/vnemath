@@ -12,15 +12,13 @@
 #include <vertexnova/math/core/core.h>
 #include <vertexnova/math/geometry/geometry.h>
 
-#include <iostream>
-#include <iomanip>
 #include <vector>
 
 using namespace vne::math;
 using vne::math::examples::LoggingGuard_C;
 
 void demonstrateFrustumCreation() {
-    std::cout << "=== Frustum Creation ===" << std::endl;
+    VNE_LOG_INFO << "=== Frustum Creation ===";
 
     // Create camera matrices
     Vec3f eye(0.0f, 5.0f, 10.0f);
@@ -37,23 +35,26 @@ void demonstrateFrustumCreation() {
     Frustum frustum;
     frustum.extractFromMatrix(vp);
 
-    std::cout << "\nCamera setup:" << std::endl;
-    std::cout << "  Eye: " << eye << std::endl;
-    std::cout << "  Target: " << target << std::endl;
-    std::cout << "  FOV: 60 degrees" << std::endl;
-    std::cout << "  Near: 0.1, Far: 100" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Camera setup:";
+    VNE_LOG_INFO << "  Eye: " << eye;
+    VNE_LOG_INFO << "  Target: " << target;
+    VNE_LOG_INFO << "  FOV: 60 degrees";
+    VNE_LOG_INFO << "  Near: 0.1, Far: 100";
 
-    std::cout << "\nFrustum planes extracted successfully." << std::endl;
-    std::cout << "  Left plane normal: " << frustum.leftPlane().normal << std::endl;
-    std::cout << "  Right plane normal: " << frustum.rightPlane().normal << std::endl;
-    std::cout << "  Top plane normal: " << frustum.topPlane().normal << std::endl;
-    std::cout << "  Bottom plane normal: " << frustum.bottomPlane().normal << std::endl;
-    std::cout << "  Near plane normal: " << frustum.nearPlane().normal << std::endl;
-    std::cout << "  Far plane normal: " << frustum.farPlane().normal << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Frustum planes extracted successfully.";
+    VNE_LOG_INFO << "  Left plane normal: " << frustum.leftPlane().normal;
+    VNE_LOG_INFO << "  Right plane normal: " << frustum.rightPlane().normal;
+    VNE_LOG_INFO << "  Top plane normal: " << frustum.topPlane().normal;
+    VNE_LOG_INFO << "  Bottom plane normal: " << frustum.bottomPlane().normal;
+    VNE_LOG_INFO << "  Near plane normal: " << frustum.nearPlane().normal;
+    VNE_LOG_INFO << "  Far plane normal: " << frustum.farPlane().normal;
 }
 
 void demonstratePointTesting() {
-    std::cout << "\n=== Point Testing ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Point Testing ===";
 
     // Create a frustum looking down -Z axis
     Vec3f eye(0.0f, 0.0f, 0.0f);
@@ -77,16 +78,17 @@ void demonstratePointTesting() {
         {"Origin (behind near)", Vec3f(0.0f, 0.0f, 0.0f)},
     };
 
-    std::cout << "\nTesting points (camera at origin looking -Z):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Testing points (camera at origin looking -Z):";
     for (const auto& [name, point] : points) {
         bool inside = frustum.contains(point);
-        std::cout << "  " << name << ": " << point
-                  << " -> " << (inside ? "INSIDE" : "OUTSIDE") << std::endl;
+        VNE_LOG_INFO << "  " << name << ": " << point << " -> " << (inside ? "INSIDE" : "OUTSIDE");
     }
 }
 
 void demonstrateSphereTesting() {
-    std::cout << "\n=== Sphere Testing ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Sphere Testing ===";
 
     // Create frustum
     Vec3f eye(0.0f, 0.0f, 0.0f);
@@ -108,7 +110,8 @@ void demonstrateSphereTesting() {
         {"Large sphere (contains frustum)", Sphere(Vec3f(0.0f, 0.0f, -50.0f), 200.0f)},
     };
 
-    std::cout << "\nTesting spheres:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Testing spheres:";
     for (const auto& [name, sphere] : spheres) {
         bool intersects = frustum.intersects(sphere);
         bool fullyInside = frustum.containsFully(sphere);
@@ -122,13 +125,14 @@ void demonstrateSphereTesting() {
             status = "OUTSIDE";
         }
 
-        std::cout << "  " << name << ": center=" << sphere.center()
-                  << " r=" << sphere.radius() << " -> " << status << std::endl;
+        VNE_LOG_INFO << "  " << name << ": center=" << sphere.center() << " r=" << sphere.radius()
+                     << " -> " << status;
     }
 }
 
 void demonstrateAABBTesting() {
-    std::cout << "\n=== AABB Testing ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== AABB Testing ===";
 
     // Create frustum
     Vec3f eye(0.0f, 0.0f, 0.0f);
@@ -150,7 +154,8 @@ void demonstrateAABBTesting() {
         {"Large box (contains camera)", Aabb(Vec3f(-50.0f, -50.0f, -100.0f), Vec3f(50.0f, 50.0f, 50.0f))},
     };
 
-    std::cout << "\nTesting AABBs:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Testing AABBs:";
     for (const auto& [name, aabb] : boxes) {
         bool intersects = frustum.intersects(aabb);
         bool fullyInside = frustum.containsFully(aabb);
@@ -164,14 +169,14 @@ void demonstrateAABBTesting() {
             status = "OUTSIDE";
         }
 
-        std::cout << "  " << name << ":" << std::endl;
-        std::cout << "    min=" << aabb.min() << " max=" << aabb.max()
-                  << " -> " << status << std::endl;
+        VNE_LOG_INFO << "  " << name << ":";
+        VNE_LOG_INFO << "    min=" << aabb.min() << " max=" << aabb.max() << " -> " << status;
     }
 }
 
 void demonstratePracticalCulling() {
-    std::cout << "\n=== Practical Culling Example ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Practical Culling Example ===";
 
     // Simulate a scene with many objects
     struct SceneObject {
@@ -199,36 +204,38 @@ void demonstratePracticalCulling() {
     Frustum frustum;
     frustum.extractFromMatrix(vp);
 
-    std::cout << "\nScene has " << scene.size() << " objects." << std::endl;
-    std::cout << "Camera at " << eye << " looking at " << target << std::endl;
-    std::cout << "\nCulling results:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Scene has " << scene.size() << " objects.";
+    VNE_LOG_INFO << "Camera at " << eye << " looking at " << target;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Culling results:";
 
     int visible_count = 0;
     int culled_count = 0;
 
     for (const auto& obj : scene) {
         if (frustum.intersects(obj.bounds)) {
-            std::cout << "  [VISIBLE] " << obj.name << std::endl;
+            VNE_LOG_INFO << "  [VISIBLE] " << obj.name;
             visible_count++;
         } else {
-            std::cout << "  [CULLED]  " << obj.name << std::endl;
+            VNE_LOG_INFO << "  [CULLED]  " << obj.name;
             culled_count++;
         }
     }
 
-    std::cout << "\nSummary:" << std::endl;
-    std::cout << "  Visible: " << visible_count << std::endl;
-    std::cout << "  Culled: " << culled_count << std::endl;
-    std::cout << "  Draw call reduction: "
-              << (culled_count * 100 / static_cast<int>(scene.size())) << "%" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Summary:";
+    VNE_LOG_INFO << "  Visible: " << visible_count;
+    VNE_LOG_INFO << "  Culled: " << culled_count;
+    VNE_LOG_INFO << "  Draw call reduction: " << (culled_count * 100 / static_cast<int>(scene.size())) << "%";
 }
 
 int main() {
     LoggingGuard_C logging_guard;
 
-    std::cout << std::fixed << std::setprecision(4);
-    std::cout << "VneMath Example: Frustum Culling" << std::endl;
-    std::cout << "=================================\n" << std::endl;
+    VNE_LOG_INFO << "VneMath Example: Frustum Culling";
+    VNE_LOG_INFO << "=================================";
+    VNE_LOG_INFO << "";
 
     demonstrateFrustumCreation();
     demonstratePointTesting();
@@ -236,6 +243,7 @@ int main() {
     demonstrateAABBTesting();
     demonstratePracticalCulling();
 
-    std::cout << "\n=== Done ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Done ===";
     return 0;
 }

@@ -11,9 +11,6 @@
 
 #include <vertexnova/math/core/core.h>
 
-#include <iostream>
-#include <iomanip>
-
 using namespace vne::math;
 using vne::math::examples::LoggingGuard_C;
 
@@ -182,79 +179,92 @@ class OrbitalCamera {
 };
 
 void demonstrateFPSCamera() {
-    std::cout << "=== FPS Camera ===" << std::endl;
+    VNE_LOG_INFO << "=== FPS Camera ===";
 
     FPSCamera camera(Vec3f(0.0f, 2.0f, 5.0f));
 
-    std::cout << "\nInitial state:" << std::endl;
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
-    std::cout << "  Front: " << camera.getFront() << std::endl;
-    std::cout << "  Right: " << camera.getRight() << std::endl;
-    std::cout << "  Up: " << camera.getUp() << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Initial state:";
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
+    VNE_LOG_INFO << "  Front: " << camera.getFront();
+    VNE_LOG_INFO << "  Right: " << camera.getRight();
+    VNE_LOG_INFO << "  Up: " << camera.getUp();
 
-    std::cout << "\nView Matrix (Vulkan):" << std::endl;
-    std::cout << camera.getViewMatrix(GraphicsApi::eVulkan) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "View Matrix (Vulkan):";
+    VNE_LOG_INFO << camera.getViewMatrix(GraphicsApi::eVulkan);
 
     // Simulate mouse look - turn 45 degrees right
-    std::cout << "After looking right 45 degrees:" << std::endl;
+    VNE_LOG_INFO << "After looking right 45 degrees:";
     camera.processMouseMovement(450.0f, 0.0f);  // 45 deg with 0.1 sensitivity
-    std::cout << "  Front: " << camera.getFront() << std::endl;
+    VNE_LOG_INFO << "  Front: " << camera.getFront();
 
     // Simulate WASD movement - move forward
-    std::cout << "\nAfter moving forward for 1 second:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "After moving forward for 1 second:";
     camera.processKeyboard(true, false, false, false, 1.0f);
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
 
     // Simulate strafing right
-    std::cout << "\nAfter strafing right for 1 second:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "After strafing right for 1 second:";
     camera.processKeyboard(false, false, false, true, 1.0f);
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
 
-    std::cout << "\nFinal View Matrix:" << std::endl;
-    std::cout << camera.getViewMatrix(GraphicsApi::eVulkan) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Final View Matrix:";
+    VNE_LOG_INFO << camera.getViewMatrix(GraphicsApi::eVulkan);
 }
 
 void demonstrateOrbitalCamera() {
-    std::cout << "\n=== Orbital Camera ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Orbital Camera ===";
 
     OrbitalCamera camera(Vec3f::zero(), 10.0f);
 
-    std::cout << "\nInitial state:" << std::endl;
-    std::cout << "  Target: " << camera.getTarget() << std::endl;
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
-    std::cout << "  Distance: " << camera.getDistance() << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Initial state:";
+    VNE_LOG_INFO << "  Target: " << camera.getTarget();
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
+    VNE_LOG_INFO << "  Distance: " << camera.getDistance();
 
-    std::cout << "\nView Matrix (Vulkan):" << std::endl;
-    std::cout << camera.getViewMatrix(GraphicsApi::eVulkan) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "View Matrix (Vulkan):";
+    VNE_LOG_INFO << camera.getViewMatrix(GraphicsApi::eVulkan);
 
     // Orbit around the target
-    std::cout << "After orbiting 90 degrees horizontally:" << std::endl;
+    VNE_LOG_INFO << "After orbiting 90 degrees horizontally:";
     camera.orbit(90.0f, 0.0f);
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
 
     // Orbit vertically
-    std::cout << "\nAfter increasing elevation by 30 degrees:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "After increasing elevation by 30 degrees:";
     camera.orbit(0.0f, 30.0f);
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
 
     // Zoom in
-    std::cout << "\nAfter zooming in (distance - 5):" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "After zooming in (distance - 5):";
     camera.zoom(5.0f);
-    std::cout << "  Distance: " << camera.getDistance() << std::endl;
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
+    VNE_LOG_INFO << "  Distance: " << camera.getDistance();
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
 
     // Pan the target
-    std::cout << "\nAfter panning target right by 2 units:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "After panning target right by 2 units:";
     camera.pan(2.0f, 0.0f);
-    std::cout << "  Target: " << camera.getTarget() << std::endl;
-    std::cout << "  Position: " << camera.getPosition() << std::endl;
+    VNE_LOG_INFO << "  Target: " << camera.getTarget();
+    VNE_LOG_INFO << "  Position: " << camera.getPosition();
 
-    std::cout << "\nFinal View Matrix:" << std::endl;
-    std::cout << camera.getViewMatrix(GraphicsApi::eVulkan) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Final View Matrix:";
+    VNE_LOG_INFO << camera.getViewMatrix(GraphicsApi::eVulkan);
 }
 
 void demonstrateCameraInterpolation() {
-    std::cout << "\n=== Camera Interpolation (Smooth Transitions) ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Camera Interpolation (Smooth Transitions) ===";
 
     // Two camera positions to interpolate between
     Vec3f startPos(0.0f, 5.0f, 10.0f);
@@ -263,37 +273,41 @@ void demonstrateCameraInterpolation() {
     Quatf startRot = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(0.0f));
     Quatf endRot = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(90.0f));
 
-    std::cout << "\nStart:" << std::endl;
-    std::cout << "  Position: " << startPos << std::endl;
-    std::cout << "  Rotation: " << startRot << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Start:";
+    VNE_LOG_INFO << "  Position: " << startPos;
+    VNE_LOG_INFO << "  Rotation: " << startRot;
 
-    std::cout << "\nEnd:" << std::endl;
-    std::cout << "  Position: " << endPos << std::endl;
-    std::cout << "  Rotation: " << endRot << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "End:";
+    VNE_LOG_INFO << "  Position: " << endPos;
+    VNE_LOG_INFO << "  Rotation: " << endRot;
 
     // Interpolate at different t values
-    std::cout << "\nInterpolation:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Interpolation:";
     for (float t = 0.0f; t <= 1.0f; t += 0.25f) {
         Vec3f pos = startPos.lerp(endPos, t);
         Quatf rot = Quatf::slerp(startRot, endRot, t);
 
-        std::cout << "  t=" << t << ":" << std::endl;
-        std::cout << "    Position: " << pos << std::endl;
-        std::cout << "    Rotation angle: " << radToDeg(rot.angle()) << " degrees" << std::endl;
+        VNE_LOG_INFO << "  t=" << t << ":";
+        VNE_LOG_INFO << "    Position: " << pos;
+        VNE_LOG_INFO << "    Rotation angle: " << radToDeg(rot.angle()) << " degrees";
     }
 }
 
 int main() {
     LoggingGuard_C logging_guard;
 
-    std::cout << std::fixed << std::setprecision(4);
-    std::cout << "VneMath Example: Camera Controller" << std::endl;
-    std::cout << "===================================\n" << std::endl;
+    VNE_LOG_INFO << "VneMath Example: Camera Controller";
+    VNE_LOG_INFO << "===================================";
+    VNE_LOG_INFO << "";
 
     demonstrateFPSCamera();
     demonstrateOrbitalCamera();
     demonstrateCameraInterpolation();
 
-    std::cout << "\n=== Done ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Done ===";
     return 0;
 }

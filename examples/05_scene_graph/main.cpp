@@ -12,8 +12,6 @@
 #include <vertexnova/math/core/core.h>
 #include <vertexnova/math/transform_node.h>
 
-#include <iostream>
-#include <iomanip>
 #include <memory>
 #include <vector>
 
@@ -25,7 +23,7 @@ Vec3f extractPosition(const Mat4f& matrix) {
 }
 
 void demonstrateBasicHierarchy() {
-    std::cout << "=== Basic Parent-Child Hierarchy ===" << std::endl;
+    VNE_LOG_INFO << "=== Basic Parent-Child Hierarchy ===";
 
     TransformNode parent;
     TransformNode child;
@@ -39,23 +37,27 @@ void demonstrateBasicHierarchy() {
     // Set child at local position (0, 5, 0) relative to parent
     child.setLocalTransform(Mat4f::translate(Vec3f(0.0f, 5.0f, 0.0f)));
 
-    std::cout << "\nParent local position: " << extractPosition(parent.getLocalTransform()) << std::endl;
-    std::cout << "Parent world position: " << extractPosition(parent.getModelMatrix()) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Parent local position: " << extractPosition(parent.getLocalTransform());
+    VNE_LOG_INFO << "Parent world position: " << extractPosition(parent.getModelMatrix());
 
-    std::cout << "\nChild local position: " << extractPosition(child.getLocalTransform()) << std::endl;
-    std::cout << "Child world position: " << extractPosition(child.getModelMatrix()) << std::endl;
-    std::cout << "  (Expected: (10, 5, 0) = parent + child local)" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Child local position: " << extractPosition(child.getLocalTransform());
+    VNE_LOG_INFO << "Child world position: " << extractPosition(child.getModelMatrix());
+    VNE_LOG_INFO << "  (Expected: (10, 5, 0) = parent + child local)";
 
     // Move parent - child should follow
-    std::cout << "\nMoving parent to (20, 0, 0)..." << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Moving parent to (20, 0, 0)...";
     parent.setLocalTransform(Mat4f::translate(Vec3f(20.0f, 0.0f, 0.0f)));
 
-    std::cout << "Child world position: " << extractPosition(child.getModelMatrix()) << std::endl;
-    std::cout << "  (Expected: (20, 5, 0))" << std::endl;
+    VNE_LOG_INFO << "Child world position: " << extractPosition(child.getModelMatrix());
+    VNE_LOG_INFO << "  (Expected: (20, 5, 0))";
 }
 
 void demonstrateRobotArm() {
-    std::cout << "\n=== Robot Arm Example ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Robot Arm Example ===";
 
     // Create a simple robot arm: base -> shoulder -> elbow -> wrist
     TransformNode base;
@@ -79,34 +81,38 @@ void demonstrateRobotArm() {
     elbow.setLocalTransform(Mat4f::translate(Vec3f(0.0f, forearm_length, 0.0f)));
     wrist.setLocalTransform(Mat4f::translate(Vec3f(0.0f, hand_length, 0.0f)));
 
-    std::cout << "\nInitial pose (arm straight up):" << std::endl;
-    std::cout << "  Base: " << extractPosition(base.getModelMatrix()) << std::endl;
-    std::cout << "  Shoulder: " << extractPosition(shoulder.getModelMatrix()) << std::endl;
-    std::cout << "  Elbow: " << extractPosition(elbow.getModelMatrix()) << std::endl;
-    std::cout << "  Wrist: " << extractPosition(wrist.getModelMatrix()) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Initial pose (arm straight up):";
+    VNE_LOG_INFO << "  Base: " << extractPosition(base.getModelMatrix());
+    VNE_LOG_INFO << "  Shoulder: " << extractPosition(shoulder.getModelMatrix());
+    VNE_LOG_INFO << "  Elbow: " << extractPosition(elbow.getModelMatrix());
+    VNE_LOG_INFO << "  Wrist: " << extractPosition(wrist.getModelMatrix());
 
     // Rotate shoulder 90 degrees forward (around X)
-    std::cout << "\nRotating shoulder 90 degrees forward..." << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Rotating shoulder 90 degrees forward...";
     Mat4f shoulder_rotate = Mat4f::rotateX(degToRad(-90.0f));
     Mat4f shoulder_translate = Mat4f::translate(Vec3f(0.0f, shoulder_length, 0.0f));
     shoulder.setLocalTransform(shoulder_translate * shoulder_rotate);
 
-    std::cout << "  Shoulder: " << extractPosition(shoulder.getModelMatrix()) << std::endl;
-    std::cout << "  Elbow: " << extractPosition(elbow.getModelMatrix()) << std::endl;
-    std::cout << "  Wrist: " << extractPosition(wrist.getModelMatrix()) << std::endl;
+    VNE_LOG_INFO << "  Shoulder: " << extractPosition(shoulder.getModelMatrix());
+    VNE_LOG_INFO << "  Elbow: " << extractPosition(elbow.getModelMatrix());
+    VNE_LOG_INFO << "  Wrist: " << extractPosition(wrist.getModelMatrix());
 
     // Bend elbow 45 degrees
-    std::cout << "\nBending elbow 45 degrees..." << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Bending elbow 45 degrees...";
     Mat4f elbow_rotate = Mat4f::rotateX(degToRad(-45.0f));
     Mat4f elbow_translate = Mat4f::translate(Vec3f(0.0f, forearm_length, 0.0f));
     elbow.setLocalTransform(elbow_translate * elbow_rotate);
 
-    std::cout << "  Elbow: " << extractPosition(elbow.getModelMatrix()) << std::endl;
-    std::cout << "  Wrist: " << extractPosition(wrist.getModelMatrix()) << std::endl;
+    VNE_LOG_INFO << "  Elbow: " << extractPosition(elbow.getModelMatrix());
+    VNE_LOG_INFO << "  Wrist: " << extractPosition(wrist.getModelMatrix());
 }
 
 void demonstrateSolarSystem() {
-    std::cout << "\n=== Solar System Example ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Solar System Example ===";
 
     // Sun at center, Earth orbits Sun, Moon orbits Earth
     TransformNode sun;
@@ -120,7 +126,8 @@ void demonstrateSolarSystem() {
     float earth_orbit = 10.0f;
     float moon_orbit = 2.0f;
 
-    std::cout << "\nSimulating orbital positions over time:" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Simulating orbital positions over time:";
 
     for (int frame = 0; frame <= 4; frame++) {
         float time = frame * 0.25f;  // 0 to 1 over 4 frames
@@ -137,15 +144,17 @@ void demonstrateSolarSystem() {
         Mat4f moon_offset = Mat4f::translate(Vec3f(moon_orbit, 0.0f, 0.0f));
         moon.setLocalTransform(moon_orbit_mat * moon_offset);
 
-        std::cout << "\n  Time " << time << ":" << std::endl;
-        std::cout << "    Sun: " << extractPosition(sun.getModelMatrix()) << std::endl;
-        std::cout << "    Earth: " << extractPosition(earth.getModelMatrix()) << std::endl;
-        std::cout << "    Moon: " << extractPosition(moon.getModelMatrix()) << std::endl;
+        VNE_LOG_INFO << "";
+        VNE_LOG_INFO << "  Time " << time << ":";
+        VNE_LOG_INFO << "    Sun: " << extractPosition(sun.getModelMatrix());
+        VNE_LOG_INFO << "    Earth: " << extractPosition(earth.getModelMatrix());
+        VNE_LOG_INFO << "    Moon: " << extractPosition(moon.getModelMatrix());
     }
 }
 
 void demonstrateMultipleChildren() {
-    std::cout << "\n=== Multiple Children (Vehicle) ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Multiple Children (Vehicle) ===";
 
     // Car body with 4 wheels
     TransformNode car_body;
@@ -170,37 +179,40 @@ void demonstrateMultipleChildren() {
     wheel_bl.setLocalTransform(Mat4f::translate(Vec3f(-wheel_x, wheel_y, wheel_z_back)));
     wheel_br.setLocalTransform(Mat4f::translate(Vec3f(wheel_x, wheel_y, wheel_z_back)));
 
-    std::cout << "\nCar at origin:" << std::endl;
-    std::cout << "  Body: " << extractPosition(car_body.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel FL: " << extractPosition(wheel_fl.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel FR: " << extractPosition(wheel_fr.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel BL: " << extractPosition(wheel_bl.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel BR: " << extractPosition(wheel_br.getModelMatrix()) << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Car at origin:";
+    VNE_LOG_INFO << "  Body: " << extractPosition(car_body.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel FL: " << extractPosition(wheel_fl.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel FR: " << extractPosition(wheel_fr.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel BL: " << extractPosition(wheel_bl.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel BR: " << extractPosition(wheel_br.getModelMatrix());
 
     // Move and rotate the car
-    std::cout << "\nMoving car to (10, 0, 5) and rotating 45 degrees..." << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "Moving car to (10, 0, 5) and rotating 45 degrees...";
     Mat4f car_transform = Mat4f::translate(Vec3f(10.0f, 0.0f, 5.0f)) * Mat4f::rotateY(degToRad(45.0f));
     car_body.setLocalTransform(car_transform);
 
-    std::cout << "  Body: " << extractPosition(car_body.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel FL: " << extractPosition(wheel_fl.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel FR: " << extractPosition(wheel_fr.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel BL: " << extractPosition(wheel_bl.getModelMatrix()) << std::endl;
-    std::cout << "  Wheel BR: " << extractPosition(wheel_br.getModelMatrix()) << std::endl;
+    VNE_LOG_INFO << "  Body: " << extractPosition(car_body.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel FL: " << extractPosition(wheel_fl.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel FR: " << extractPosition(wheel_fr.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel BL: " << extractPosition(wheel_bl.getModelMatrix());
+    VNE_LOG_INFO << "  Wheel BR: " << extractPosition(wheel_br.getModelMatrix());
 }
 
 int main() {
     LoggingGuard_C logging_guard;
 
-    std::cout << std::fixed << std::setprecision(4);
-    std::cout << "VneMath Example: Scene Graph" << std::endl;
-    std::cout << "============================\n" << std::endl;
+    VNE_LOG_INFO << "VneMath Example: Scene Graph";
+    VNE_LOG_INFO << "============================";
+    VNE_LOG_INFO << "";
 
     demonstrateBasicHierarchy();
     demonstrateRobotArm();
     demonstrateSolarSystem();
     demonstrateMultipleChildren();
 
-    std::cout << "\n=== Done ===" << std::endl;
+    VNE_LOG_INFO << "";
+    VNE_LOG_INFO << "=== Done ===";
     return 0;
 }
