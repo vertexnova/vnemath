@@ -16,6 +16,11 @@
 
 namespace vne::math {
 
+namespace {
+constexpr float kHalf = 0.5f;
+constexpr float kSurfaceAreaMultiplier = 2.0f;
+}  // namespace
+
 Aabb::Aabb() noexcept
     : min_(kFloatMax, kFloatMax, kFloatMax)
     , max_(-kFloatMax, -kFloatMax, -kFloatMax) {}
@@ -25,12 +30,12 @@ Aabb::Aabb(const Vec3f& min, const Vec3f& max) noexcept
     , max_(max) {}
 
 Aabb Aabb::fromCenterAndHalfExtents(const Vec3f& center, const Vec3f& half_extents) noexcept {
-    return Aabb(center - half_extents, center + half_extents);
+    return {center - half_extents, center + half_extents};
 }
 
 Aabb Aabb::fromCenterAndSize(const Vec3f& center, const Vec3f& size) noexcept {
-    Vec3f half = size * 0.5f;
-    return Aabb(center - half, center + half);
+    Vec3f half = size * kHalf;
+    return {center - half, center + half};
 }
 
 void Aabb::setMin(const Vec3f& min) noexcept {
@@ -50,7 +55,7 @@ const Vec3f& Aabb::max() const noexcept {
 }
 
 Vec3f Aabb::center() const noexcept {
-    return (min_ + max_) * 0.5f;
+    return (min_ + max_) * kHalf;
 }
 
 Vec3f Aabb::size() const noexcept {
@@ -58,7 +63,7 @@ Vec3f Aabb::size() const noexcept {
 }
 
 Vec3f Aabb::halfExtents() const noexcept {
-    return (max_ - min_) * 0.5f;
+    return (max_ - min_) * kHalf;
 }
 
 float Aabb::volume() const noexcept {
@@ -68,13 +73,11 @@ float Aabb::volume() const noexcept {
 
 float Aabb::surfaceArea() const noexcept {
     Vec3f s = size();
-    return 2.0f * (s.x() * s.y() + s.y() * s.z() + s.z() * s.x());
+    return kSurfaceAreaMultiplier * (s.x() * s.y() + s.y() * s.z() + s.z() * s.x());
 }
 
 Vec3f Aabb::corner(uint32_t index) const noexcept {
-    return Vec3f((index & 1) ? max_.x() : min_.x(),
-                 (index & 2) ? max_.y() : min_.y(),
-                 (index & 4) ? max_.z() : min_.z());
+    return {(index & 1) ? max_.x() : min_.x(), (index & 2) ? max_.y() : min_.y(), (index & 4) ? max_.z() : min_.z()};
 }
 
 void Aabb::expand(const Vec3f& point) noexcept {
@@ -131,9 +134,9 @@ bool Aabb::intersects(const Aabb& other) const noexcept {
 }
 
 Vec3f Aabb::closestPoint(const Vec3f& point) const noexcept {
-    return Vec3f(clamp(point.x(), min_.x(), max_.x()),
-                 clamp(point.y(), min_.y(), max_.y()),
-                 clamp(point.z(), min_.z(), max_.z()));
+    return {clamp(point.x(), min_.x(), max_.x()),
+            clamp(point.y(), min_.y(), max_.y()),
+            clamp(point.z(), min_.z(), max_.z())};
 }
 
 float Aabb::squaredDistanceToPoint(const Vec3f& point) const noexcept {

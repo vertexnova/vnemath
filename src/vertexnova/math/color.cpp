@@ -107,10 +107,10 @@ bool Color::isZero(float eps) const noexcept {
 
 //------------------------------------------------------------------------------
 Color Color::lerp(const Color& color, float t) const noexcept {
-    return Color(vne::math::lerp(r_, color.r_, t),
-                 vne::math::lerp(g_, color.g_, t),
-                 vne::math::lerp(b_, color.b_, t),
-                 vne::math::lerp(a_, color.a_, t));
+    return {vne::math::lerp(r_, color.r_, t),
+            vne::math::lerp(g_, color.g_, t),
+            vne::math::lerp(b_, color.b_, t),
+            vne::math::lerp(a_, color.a_, t)};
 }
 
 //------------------------------------------------------------------------------
@@ -307,42 +307,42 @@ Color& Color::operator/=(const Color& color) noexcept {
 
 //------------------------------------------------------------------------------
 Color Color::operator+(float scalar) const noexcept {
-    return Color(r_ + scalar, g_ + scalar, b_ + scalar, a_ + scalar);
+    return {r_ + scalar, g_ + scalar, b_ + scalar, a_ + scalar};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator-(float scalar) const noexcept {
-    return Color(r_ - scalar, g_ - scalar, b_ - scalar, a_ - scalar);
+    return {r_ - scalar, g_ - scalar, b_ - scalar, a_ - scalar};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator*(float scalar) const noexcept {
-    return Color(r_ * scalar, g_ * scalar, b_ * scalar, a_ * scalar);
+    return {r_ * scalar, g_ * scalar, b_ * scalar, a_ * scalar};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator/(float scalar) const noexcept {
-    return Color(r_ / scalar, g_ / scalar, b_ / scalar, a_ / scalar);
+    return {r_ / scalar, g_ / scalar, b_ / scalar, a_ / scalar};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator+(const Color& color) const noexcept {
-    return Color(r_ + color.r_, g_ + color.g_, b_ + color.b_, a_ + color.a_);
+    return {r_ + color.r_, g_ + color.g_, b_ + color.b_, a_ + color.a_};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator-(const Color& color) const noexcept {
-    return Color(r_ - color.r_, g_ - color.g_, b_ - color.b_, a_ - color.a_);
+    return {r_ - color.r_, g_ - color.g_, b_ - color.b_, a_ - color.a_};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator*(const Color& color) const noexcept {
-    return Color(r_ * color.r_, g_ * color.g_, b_ * color.b_, a_ * color.a_);
+    return {r_ * color.r_, g_ * color.g_, b_ * color.b_, a_ * color.a_};
 }
 
 //------------------------------------------------------------------------------
 Color Color::operator/(const Color& color) const noexcept {
-    return Color(r_ / color.r_, g_ / color.g_, b_ / color.b_, a_ / color.a_);
+    return {r_ / color.r_, g_ / color.g_, b_ / color.b_, a_ / color.a_};
 }
 
 //------------------------------------------------------------------------------

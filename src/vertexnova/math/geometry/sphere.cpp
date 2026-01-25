@@ -16,6 +16,13 @@
 
 namespace vne::math {
 
+namespace {
+constexpr float kHalf = 0.5f;
+constexpr float kDiameterMultiplier = 2.0f;
+constexpr float kVolumeFactor = 4.0f / 3.0f;
+constexpr float kSurfaceAreaFactor = 4.0f;
+}  // namespace
+
 Sphere::Sphere() noexcept
     : center_(Vec3f::zero())
     , radius_(-1.0f) {}
@@ -41,17 +48,17 @@ float Sphere::radius() const noexcept {
 }
 
 float Sphere::diameter() const noexcept {
-    return radius_ * 2.0f;
+    return radius_ * kDiameterMultiplier;
 }
 
 float Sphere::volume() const noexcept {
     // V = 4/3 * pi * r^3
-    return (4.0f / 3.0f) * kPi * radius_ * radius_ * radius_;
+    return kVolumeFactor * kPi * radius_ * radius_ * radius_;
 }
 
 float Sphere::surfaceArea() const noexcept {
     // A = 4 * pi * r^2
-    return 4.0f * kPi * radius_ * radius_;
+    return kSurfaceAreaFactor * kPi * radius_ * radius_;
 }
 
 void Sphere::expand(const Vec3f& point) noexcept {
@@ -66,7 +73,7 @@ void Sphere::expand(const Vec3f& point) noexcept {
 
     if (dist > radius_) {
         // Expand sphere to include point
-        float new_radius = (radius_ + dist) * 0.5f;
+        float new_radius = (radius_ + dist) * kHalf;
         float move_dist = new_radius - radius_;
         if (dist > kFloatEpsilon) {
             center_ += (delta / dist) * move_dist;
@@ -90,7 +97,7 @@ void Sphere::expand(const Sphere& other) noexcept {
     float total_radius = dist + other.radius_;
 
     if (total_radius > radius_) {
-        float new_radius = (radius_ + total_radius) * 0.5f;
+        float new_radius = (radius_ + total_radius) * kHalf;
         if (dist > kFloatEpsilon) {
             float move_dist = new_radius - radius_;
             center_ += (delta / dist) * move_dist;

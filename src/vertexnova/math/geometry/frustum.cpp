@@ -18,6 +18,10 @@
 
 namespace vne::math {
 
+namespace {
+constexpr uint32_t kAabbCornerCount = 8;
+}  // namespace
+
 void Frustum::extractFromMatrix(const Mat4x4f& mat) noexcept {
     // Gribb/Hartmann plane extraction method
     // Reference: http://www.cs.otago.ac.nz/postgrads/alexis/planeExtraction.pdf
@@ -120,7 +124,7 @@ bool Frustum::containsFully(const Sphere& sphere) const noexcept {
 
 bool Frustum::containsFully(const Aabb& aabb) const noexcept {
     // Check all 8 corners of the AABB
-    for (uint32_t i = 0; i < 8; ++i) {
+    for (uint32_t i = 0; i < kAabbCornerCount; ++i) {
         if (!contains(aabb.corner(i))) {
             return false;
         }
