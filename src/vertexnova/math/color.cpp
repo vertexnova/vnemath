@@ -9,10 +9,12 @@
  * ----------------------------------------------------------------------
  */
 
-// Project includes
+// Corresponding header
 #include "vertexnova/math/color.h"
-#include "vertexnova/math/math_utils.h"
+
+// Project headers
 #include "vertexnova/common/macros.h"
+#include "vertexnova/math/math_utils.h"
 
 namespace vne::math {
 

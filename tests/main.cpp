@@ -9,7 +9,10 @@
  * ----------------------------------------------------------------------
  */
 
+// Testing framework
 #include <gtest/gtest.h>
+
+// Project headers
 #include <vertexnova/logging/logging.h>
 
 namespace {

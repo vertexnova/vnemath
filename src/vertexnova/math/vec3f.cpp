@@ -9,14 +9,14 @@
  * ----------------------------------------------------------------------
  */
 
-// Project includes
+// Corresponding header
 #include "vertexnova/math/vec3f.h"
+
+// Project headers
+#include "vertexnova/common/macros.h"
 #include "vertexnova/math/math_utils.h"
 
-// Common library includes
-#include "vertexnova/common/macros.h"
-
-// Third-party library includes
+// Third-party headers
 #include <glm/gtx/projection.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 

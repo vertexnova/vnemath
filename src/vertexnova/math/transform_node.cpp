@@ -9,8 +9,11 @@
  * ----------------------------------------------------------------------
  */
 
-// Project includes
+// Corresponding header
 #include "vertexnova/math/transform_node.h"
+
+// System headers
+#include <algorithm>
 
 namespace vne::math {
 

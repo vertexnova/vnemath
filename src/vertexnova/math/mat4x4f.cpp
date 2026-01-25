@@ -9,15 +9,17 @@
  * ----------------------------------------------------------------------
  */
 
-// Project includes
+// Corresponding header
 #include "vertexnova/math/mat4x4f.h"
+
+// Project headers
 #include "vertexnova/common/macros.h"
 #include "vertexnova/math/math_utils.h"
 
-// Third-party library includes
-#include <glm/gtx/matrix_decompose.hpp>
+// Third-party headers
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/transform.hpp>
 
 namespace vne::math {

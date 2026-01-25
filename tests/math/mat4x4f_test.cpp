@@ -9,10 +9,12 @@
  * ----------------------------------------------------------------------
  */
 
+// Testing framework
 #include <gtest/gtest.h>
 
-#include "vertexnova/math/math_utils.h"
+// Project headers
 #include "vertexnova/math/mat4x4f.h"
+#include "vertexnova/math/math_utils.h"
 
 using namespace vne;
 

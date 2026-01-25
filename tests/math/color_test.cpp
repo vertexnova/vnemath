@@ -9,8 +9,10 @@
  * ----------------------------------------------------------------------
  */
 
+// Testing framework
 #include <gtest/gtest.h>
 
+// Project headers
 #include "vertexnova/math/color.h"
 
 using namespace vne;

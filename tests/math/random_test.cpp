@@ -9,10 +9,17 @@
  * ----------------------------------------------------------------------
  */
 
+// Testing framework
 #include <gtest/gtest.h>
+
+// Project headers
 #include "vertexnova/math/random.h"
+
+// System headers
+#include <memory>
+
+// Third-party headers
 #include <glm/glm.hpp>
-#include <memory>  // for std::unique_ptr
 
 using namespace vne;
 

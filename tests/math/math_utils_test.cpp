@@ -9,14 +9,16 @@
  * ----------------------------------------------------------------------
  */
 
+// Testing framework
 #include <gtest/gtest.h>
 
-// note: please include math_utils below to gtest.h
+// Project headers
+#include "vertexnova/math/math_utils.h"
+
+// Third-party headers
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/extended_min_max.hpp>
-
-#include "vertexnova/math/math_utils.h"
 
 using namespace vne;
 

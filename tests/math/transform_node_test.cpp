@@ -9,8 +9,10 @@
  * ----------------------------------------------------------------------
  */
 
+// Testing framework
 #include <gtest/gtest.h>
 
+// Project headers
 #include "vertexnova/math/math_utils.h"
 #include "vertexnova/math/transform_node.h"
 
