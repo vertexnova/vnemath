@@ -19,6 +19,11 @@
 
 #include "aabb.h"
 #include "frustum.h"
+#include "intersection.h"
+#include "line.h"
+#include "line_segment.h"
 #include "plane.h"
 #include "ray.h"
+#include "rect.h"
 #include "sphere.h"
+#include "triangle.h"

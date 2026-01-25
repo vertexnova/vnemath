@@ -82,6 +82,10 @@ set(TEST_SOURCES
     math/geometry/frustum_test.cpp
     math/geometry/culling_test.cpp
     math/geometry/intersection_test.cpp
+    math/geometry/line_segment_test.cpp
+    math/geometry/line_test.cpp
+    math/geometry/rect_test.cpp
+    math/statistic_test.cpp
     main.cpp
 )
 
