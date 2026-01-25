@@ -14,7 +14,7 @@
 #include "vertexnova/math/geometry/aabb.h"
 #include "vertexnova/math/geometry/frustum.h"
 #include "vertexnova/math/geometry/sphere.h"
-#include "vertexnova/math/mat4x4f.h"
+#include "vertexnova/math/core/mat4x4f.h"
 #include "vertexnova/math/math_utils.h"
 
 namespace vne::math {

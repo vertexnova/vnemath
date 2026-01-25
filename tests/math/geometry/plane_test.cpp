@@ -106,9 +106,9 @@ TEST_F(PlaneTest, ClosestPoint) {
     Vec3f point(3.0f, 4.0f, 7.0f);
     Vec3f closest = xy_plane_.closestPoint(point);
 
-    EXPECT_NEAR(closest.x, 3.0f, kFloatEpsilon);
-    EXPECT_NEAR(closest.y, 4.0f, kFloatEpsilon);
-    EXPECT_NEAR(closest.z, 0.0f, kFloatEpsilon);
+    EXPECT_NEAR(closest.x(), 3.0f, kFloatEpsilon);
+    EXPECT_NEAR(closest.y(), 4.0f, kFloatEpsilon);
+    EXPECT_NEAR(closest.z(), 0.0f, kFloatEpsilon);
 }
 
 TEST_F(PlaneTest, PointOnPlane) {

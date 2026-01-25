@@ -20,6 +20,7 @@
 
 // Project includes
 #include "constants.h"
+#include "vertexnova/math/core/types.h"
 #include "vertexnova/common/macros.h"
 
 // System library includes
@@ -136,28 +137,6 @@ template<>
 }
 
 /**
- * @brief Converts radians to degrees.
- *
- * @param angle Angle in radians.
- * @return Angle in degrees.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T radToDeg(const T& angle) noexcept {
-    return angle * (static_cast<T>(180) * oneOverPi<T>());
-}
-
-/**
- * @brief Converts degrees to radians.
- *
- * @param angle Angle in degrees.
- * @return Angle in radians.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T degToRad(const T& angle) noexcept {
-    return angle * (pi<T>() / static_cast<T>(180));
-}
-
-/**
  * @brief Returns the epsilon value for the given type.
  *
  * @return Epsilon value.
@@ -227,14 +206,6 @@ template<typename T>
 template<typename T>
 [[nodiscard]] inline constexpr T max(const T& val1, const T& val2, const T& val3) {
     return max(max(val1, val2), val3);
-}
-
-/**
- * Clamps a value between a pair of boundary values.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T clamp(const T& val, const T& lower, const T& upper) {
-    return min(upper, max(val, lower));
 }
 
 /**
