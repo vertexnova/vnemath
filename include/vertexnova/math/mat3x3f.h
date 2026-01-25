@@ -28,68 +28,68 @@ namespace vne::math {
 
 class Mat3x3f : public glm::mat3 {
    public:
-    Mat3x3f();
-    ~Mat3x3f();
-    Mat3x3f(const Vec3f& col0, const Vec3f& col1, const Vec3f& col2);
-    explicit Mat3x3f(const glm::mat3& other);
-    Mat3x3f(const Mat3x3f& other);
-    explicit Mat3x3f(float scalar);
-    Mat3x3f(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2);
-    Mat3x3f& operator=(const Mat3x3f& other);
+    Mat3x3f() noexcept;
+    ~Mat3x3f() noexcept = default;
+    Mat3x3f(const Vec3f& col0, const Vec3f& col1, const Vec3f& col2) noexcept;
+    explicit Mat3x3f(const glm::mat3& other) noexcept;
+    Mat3x3f(const Mat3x3f& other) noexcept;
+    explicit Mat3x3f(float scalar) noexcept;
+    Mat3x3f(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2) noexcept;
+    Mat3x3f& operator=(const Mat3x3f& other) noexcept;
 
    public:
-    Mat3x3f rotationMatrix(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis);
+    [[nodiscard]] Mat3x3f rotationMatrix(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis) noexcept;
 
    public:
-    float determinant() const;
-    float trace() const;
-    Mat3x3f transpose() const;
-    Mat3x3f inverse() const;
-    Mat3x3f normalMatrix() const;
-    Mat3x3f inverseTransposed() const;
+    [[nodiscard]] float determinant() const noexcept;
+    [[nodiscard]] float trace() const noexcept;
+    [[nodiscard]] Mat3x3f transpose() const noexcept;
+    [[nodiscard]] Mat3x3f inverse() const noexcept;
+    [[nodiscard]] Mat3x3f normalMatrix() const noexcept;
+    [[nodiscard]] Mat3x3f inverseTransposed() const noexcept;
 
    public:
-    Vec3f getColumn(uint32_t idx) const;
-    Vec3f getRow(uint32_t idx) const;
-    Vec3f xAxis() const;
-    Vec3f yAxis() const;
-    Vec3f zAxis() const;
+    [[nodiscard]] Vec3f getColumn(uint32_t idx) const noexcept;
+    [[nodiscard]] Vec3f getRow(uint32_t idx) const noexcept;
+    [[nodiscard]] Vec3f xAxis() const noexcept;
+    [[nodiscard]] Vec3f yAxis() const noexcept;
+    [[nodiscard]] Vec3f zAxis() const noexcept;
 
    public:
-    bool areSame(const Mat3x3f& other, float eps = kFloatEpsilon) const;
-    bool isOrthogonal(float eps = kFloatEpsilon) const;
+    [[nodiscard]] bool areSame(const Mat3x3f& other, float eps = kFloatEpsilon) const noexcept;
+    [[nodiscard]] bool isOrthogonal(float eps = kFloatEpsilon) const noexcept;
 
    public:
-    Mat3x3f operator+(const Mat3x3f& other) const;
-    Mat3x3f& operator+=(const Mat3x3f& other);
-    Mat3x3f operator-(const Mat3x3f& other) const;
-    Mat3x3f& operator-=(const Mat3x3f& other);
-    Mat3x3f operator*(const Mat3x3f& other) const;
-    Mat3x3f& operator*=(const Mat3x3f& other);
-    Mat3x3f operator*(float scalar) const;
-    Mat3x3f& operator*=(float scalar);
-    Mat3x3f operator/(float scalar) const;
-    Mat3x3f& operator/=(float scalar);
+    [[nodiscard]] Mat3x3f operator+(const Mat3x3f& other) const noexcept;
+    Mat3x3f& operator+=(const Mat3x3f& other) noexcept;
+    [[nodiscard]] Mat3x3f operator-(const Mat3x3f& other) const noexcept;
+    Mat3x3f& operator-=(const Mat3x3f& other) noexcept;
+    [[nodiscard]] Mat3x3f operator*(const Mat3x3f& other) const noexcept;
+    Mat3x3f& operator*=(const Mat3x3f& other) noexcept;
+    [[nodiscard]] Mat3x3f operator*(float scalar) const noexcept;
+    Mat3x3f& operator*=(float scalar) noexcept;
+    [[nodiscard]] Mat3x3f operator/(float scalar) const noexcept;
+    Mat3x3f& operator/=(float scalar) noexcept;
 
    public:
     friend std::ostream& operator<<(std::ostream& os, const Mat3x3f& mat);
 
    public:
-    static uint32_t length();
-    static Mat3x3f identity();
-    static Mat3x3f zero();
-    static Mat3x3f lerp(const Mat3x3f& from, const Mat3x3f& to, float t);
-    static Mat3x3f rotate(float angle, const Vec3f& axis);
-    static Mat3x3f rotateX(float angle);
-    static Mat3x3f rotateY(float angle);
-    static Mat3x3f rotateZ(float angle);
-    static Mat3x3f rotateXYZ(float x_angle, float y_angle, float z_angle);
-    static Mat3x3f rotateXYZ(float angle);
-    static Mat3x3f rotateZYX(float x_angle, float y_angle, float z_angle);
-    static Mat3x3f rotateZYX(float angle);
-    static Mat3x3f scale(const Vec3f& scale);
-    static Mat3x3f scale(float sx, float sy, float sz);
-    static Mat3x3f scale(float s);
+    [[nodiscard]] static uint32_t length() noexcept;
+    [[nodiscard]] static Mat3x3f identity() noexcept;
+    [[nodiscard]] static Mat3x3f zero() noexcept;
+    [[nodiscard]] static Mat3x3f lerp(const Mat3x3f& from, const Mat3x3f& to, float t) noexcept;
+    [[nodiscard]] static Mat3x3f rotate(float angle, const Vec3f& axis) noexcept;
+    [[nodiscard]] static Mat3x3f rotateX(float angle) noexcept;
+    [[nodiscard]] static Mat3x3f rotateY(float angle) noexcept;
+    [[nodiscard]] static Mat3x3f rotateZ(float angle) noexcept;
+    [[nodiscard]] static Mat3x3f rotateXYZ(float x_angle, float y_angle, float z_angle) noexcept;
+    [[nodiscard]] static Mat3x3f rotateXYZ(float angle) noexcept;
+    [[nodiscard]] static Mat3x3f rotateZYX(float x_angle, float y_angle, float z_angle) noexcept;
+    [[nodiscard]] static Mat3x3f rotateZYX(float angle) noexcept;
+    [[nodiscard]] static Mat3x3f scale(const Vec3f& scale) noexcept;
+    [[nodiscard]] static Mat3x3f scale(float sx, float sy, float sz) noexcept;
+    [[nodiscard]] static Mat3x3f scale(float s) noexcept;
 };
 
 // Legacy type alias for backward compatibility

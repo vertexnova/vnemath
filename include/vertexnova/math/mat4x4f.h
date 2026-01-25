@@ -32,14 +32,14 @@ enum class Handedness { eLeft = 0, eRight = 1 };
 
 class Mat4x4f : public glm::mat4 {
    public:
-    Mat4x4f();
-    ~Mat4x4f();
-    Mat4x4f(const Vec4f& col0, const Vec4f& col1, const Vec4f& col2, const Vec4f& col3);
-    Mat4x4f(const glm::mat4& other);
-    Mat4x4f(const Mat4x4f& other);
-    Mat4x4f(const glm::mat3& other);
-    Mat4x4f(const Mat3x3f& other);
-    Mat4x4f(float scalar);
+    Mat4x4f() noexcept;
+    ~Mat4x4f() noexcept = default;
+    Mat4x4f(const Vec4f& col0, const Vec4f& col1, const Vec4f& col2, const Vec4f& col3) noexcept;
+    Mat4x4f(const glm::mat4& other) noexcept;
+    Mat4x4f(const Mat4x4f& other) noexcept;
+    Mat4x4f(const glm::mat3& other) noexcept;
+    Mat4x4f(const Mat3x3f& other) noexcept;
+    Mat4x4f(float scalar) noexcept;
     Mat4x4f(float x0,
             float y0,
             float z0,
@@ -55,80 +55,80 @@ class Mat4x4f : public glm::mat4 {
             float x3,
             float y3,
             float z3,
-            float w3);
-    Mat4x4f& operator=(const Mat4x4f& other);
+            float w3) noexcept;
+    Mat4x4f& operator=(const Mat4x4f& other) noexcept;
 
    public:
-    Mat4x4f transform(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis);
-    Mat4x4f transform(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis, const Vec3f& offset);
-    Mat4x4f transform(const Vec3f& forward, const Vec3f& up);
-    Mat4x4f transform(const Vec3f& trans);
+    [[nodiscard]] Mat4x4f transform(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis) noexcept;
+    [[nodiscard]] Mat4x4f transform(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis, const Vec3f& offset) noexcept;
+    [[nodiscard]] Mat4x4f transform(const Vec3f& forward, const Vec3f& up) noexcept;
+    [[nodiscard]] Mat4x4f transform(const Vec3f& trans) noexcept;
 
    public:
-    float determinant() const;
-    Mat4x4f transpose() const;
-    Mat4x4f inverse() const;
-    Mat4x4f normalMatrix() const;
-    Mat4x4f inverseTransposed() const;
+    [[nodiscard]] float determinant() const noexcept;
+    [[nodiscard]] Mat4x4f transpose() const noexcept;
+    [[nodiscard]] Mat4x4f inverse() const noexcept;
+    [[nodiscard]] Mat4x4f normalMatrix() const noexcept;
+    [[nodiscard]] Mat4x4f inverseTransposed() const noexcept;
 
    public:
-    Vec4f getColumn(uint32_t idx) const;
-    Vec4f getRow(uint32_t idx) const;
-    Vec3f xAxis() const;
-    Vec3f yAxis() const;
-    Vec3f zAxis() const;
-    Vec3f translation() const;
-    Handedness handedness();
+    [[nodiscard]] Vec4f getColumn(uint32_t idx) const noexcept;
+    [[nodiscard]] Vec4f getRow(uint32_t idx) const noexcept;
+    [[nodiscard]] Vec3f xAxis() const noexcept;
+    [[nodiscard]] Vec3f yAxis() const noexcept;
+    [[nodiscard]] Vec3f zAxis() const noexcept;
+    [[nodiscard]] Vec3f translation() const noexcept;
+    [[nodiscard]] Handedness handedness() noexcept;
 
    public:
-    Vec3f transformVector(const Vec3f& vec) const;
-    Vec3f transformPoint(const Vec3f& point) const;
-    Vec3f transformNormal(const Vec3f& normal) const;
+    [[nodiscard]] Vec3f transformVector(const Vec3f& vec) const noexcept;
+    [[nodiscard]] Vec3f transformPoint(const Vec3f& point) const noexcept;
+    [[nodiscard]] Vec3f transformNormal(const Vec3f& normal) const noexcept;
 
    public:
-    bool areSame(const Mat4x4f& other, float eps = kFloatEpsilon) const;
-    bool isOrthogonal(float eps = kFloatEpsilon) const;
+    [[nodiscard]] bool areSame(const Mat4x4f& other, float eps = kFloatEpsilon) const noexcept;
+    [[nodiscard]] bool isOrthogonal(float eps = kFloatEpsilon) const noexcept;
 
    public:
-    Mat4x4f operator+(const Mat4x4f& other) const;
-    Mat4x4f& operator+=(const Mat4x4f& other);
-    Mat4x4f operator-(const Mat4x4f& other) const;
-    Mat4x4f& operator-=(const Mat4x4f& other);
-    Mat4x4f operator*(const Mat4x4f& other) const;
-    Mat4x4f& operator*=(const Mat4x4f& other);
-    Mat4x4f operator*(float scalar) const;
-    Mat4x4f& operator*=(float scalar);
-    Mat4x4f operator/(float scalar) const;
-    Mat4x4f& operator/=(float scalar);
+    [[nodiscard]] Mat4x4f operator+(const Mat4x4f& other) const noexcept;
+    Mat4x4f& operator+=(const Mat4x4f& other) noexcept;
+    [[nodiscard]] Mat4x4f operator-(const Mat4x4f& other) const noexcept;
+    Mat4x4f& operator-=(const Mat4x4f& other) noexcept;
+    [[nodiscard]] Mat4x4f operator*(const Mat4x4f& other) const noexcept;
+    Mat4x4f& operator*=(const Mat4x4f& other) noexcept;
+    [[nodiscard]] Mat4x4f operator*(float scalar) const noexcept;
+    Mat4x4f& operator*=(float scalar) noexcept;
+    [[nodiscard]] Mat4x4f operator/(float scalar) const noexcept;
+    Mat4x4f& operator/=(float scalar) noexcept;
 
    public:
     friend std::ostream& operator<<(std::ostream& os, const Mat4x4f& other);
 
    public:
-    static uint32_t length();
-    static Mat4x4f identity();
-    static Mat4x4f zero();
-    static Mat4x4f lerp(const Mat4x4f& from, const Mat4x4f& to, float t);
+    [[nodiscard]] static uint32_t length() noexcept;
+    [[nodiscard]] static Mat4x4f identity() noexcept;
+    [[nodiscard]] static Mat4x4f zero() noexcept;
+    [[nodiscard]] static Mat4x4f lerp(const Mat4x4f& from, const Mat4x4f& to, float t) noexcept;
 
    public:
-    static Mat4x4f rotate(float angle, const Vec3f& axis);
-    static Mat4x4f rotateX(float angle);
-    static Mat4x4f rotateY(float angle);
-    static Mat4x4f rotateZ(float angle);
-    static Mat4x4f rotateXYZ(float x_angle, float y_angle, float z_angle);
-    static Mat4x4f rotateXYZ(float angle);
-    static Mat4x4f rotateZYX(float x_angle, float y_angle, float z_angle);
-    static Mat4x4f rotateZYX(float angle);
-    static Mat4x4f translate(const Vec3f& trans);
-    static Mat4x4f translate(float tx, float ty, float tz);
-    static Mat4x4f translate(float t);
-    static Mat4x4f scale(const Vec3f& scale);
-    static Mat4x4f scale(float sx, float sy, float sz);
-    static Mat4x4f scale(float s);
-    static Mat4x4f lookAt(const Vec3f& eye, const Vec3f& center, const Vec3f& up);
-    static Mat4x4f frustum(float left, float right, float bottom, float top, float z_near, float z_far);
-    static Mat4x4f perspective(float fovy, float aspect_ratio, float z_near, float z_far);
-    static Mat4x4f ortho(float left, float right, float bottom, float top, float z_near, float z_far);
+    [[nodiscard]] static Mat4x4f rotate(float angle, const Vec3f& axis) noexcept;
+    [[nodiscard]] static Mat4x4f rotateX(float angle) noexcept;
+    [[nodiscard]] static Mat4x4f rotateY(float angle) noexcept;
+    [[nodiscard]] static Mat4x4f rotateZ(float angle) noexcept;
+    [[nodiscard]] static Mat4x4f rotateXYZ(float x_angle, float y_angle, float z_angle) noexcept;
+    [[nodiscard]] static Mat4x4f rotateXYZ(float angle) noexcept;
+    [[nodiscard]] static Mat4x4f rotateZYX(float x_angle, float y_angle, float z_angle) noexcept;
+    [[nodiscard]] static Mat4x4f rotateZYX(float angle) noexcept;
+    [[nodiscard]] static Mat4x4f translate(const Vec3f& trans) noexcept;
+    [[nodiscard]] static Mat4x4f translate(float tx, float ty, float tz) noexcept;
+    [[nodiscard]] static Mat4x4f translate(float t) noexcept;
+    [[nodiscard]] static Mat4x4f scale(const Vec3f& scale) noexcept;
+    [[nodiscard]] static Mat4x4f scale(float sx, float sy, float sz) noexcept;
+    [[nodiscard]] static Mat4x4f scale(float s) noexcept;
+    [[nodiscard]] static Mat4x4f lookAt(const Vec3f& eye, const Vec3f& center, const Vec3f& up) noexcept;
+    [[nodiscard]] static Mat4x4f frustum(float left, float right, float bottom, float top, float z_near, float z_far) noexcept;
+    [[nodiscard]] static Mat4x4f perspective(float fovy, float aspect_ratio, float z_near, float z_far) noexcept;
+    [[nodiscard]] static Mat4x4f ortho(float left, float right, float bottom, float top, float z_near, float z_far) noexcept;
 };
 
 // Legacy type aliases for backward compatibility
