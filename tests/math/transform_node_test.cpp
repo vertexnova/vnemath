@@ -115,7 +115,7 @@ TEST_F(TransformNodeTest_C, DestructorTest) {
     {
         vne::math::TransformNode parent;
         vne::math::TransformNode* child = new vne::math::TransformNode();
-        child->SetParent(&parent);
+        child->setParent(&parent);
 
         // Verify parent has one child before destruction
         EXPECT_EQ(parent.numChildren(), 1);

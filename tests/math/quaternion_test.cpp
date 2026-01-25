@@ -437,7 +437,7 @@ TEST_F(QuaternionTest_C, TestQuaternionNormalizeStatic) {
 TEST_F(QuaternionTest_C, TestQuaternionConjugateStatic) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
-    vne::math::Quaternion conjugated_quat = vne::math::Quaternion::Conjugate(quat);
+    vne::math::Quaternion conjugated_quat = vne::math::Quaternion::conjugate(quat);
     EXPECT_EQ(vne::math::Quaternion(2.0f, -3.0f, -4.0f, -5.0f), conjugated_quat);
 }
 
@@ -447,7 +447,7 @@ TEST_F(QuaternionTest_C, TestQuaternionConjugateStatic) {
 TEST_F(QuaternionTest_C, TestQuaternionInverseStatic) {
     vne::math::Quaternion quat{2.0f, 3.0f, 4.0f, 5.0f};
 
-    vne::math::Quaternion inverse_quat = vne::math::Quaternion::Inverse(quat);
+    vne::math::Quaternion inverse_quat = vne::math::Quaternion::inverse(quat);
     EXPECT_EQ(quat.conjugate() / quat.lengthSquared(), inverse_quat);
 }
 

@@ -184,13 +184,13 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fInverseTransposed) {
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fHandness) {
     vne::math::Mat4x4f result = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
-    EXPECT_EQ(vne::math::Handness_TP::LEFT, result.handedness());
+    EXPECT_EQ(vne::math::Handedness::eLeft, result.handedness());
 
     result = vne::math::Mat4x4f(vne::math::Vec4f(0.9f, -0.0f, 0.3f, 0.0f),
                              vne::math::Vec4f(0.2f, 0.9f, -0.4f, 0.0f),
                              vne::math::Vec4f(-0.3f, 0.5f, 0.8f, 0.0f),
                              vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
-    EXPECT_EQ(vne::math::Handness_TP::RIGHT, result.handedness());
+    EXPECT_EQ(vne::math::Handedness::eRight, result.handedness());
 }
 
 /**
