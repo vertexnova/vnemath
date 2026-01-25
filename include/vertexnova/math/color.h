@@ -20,7 +20,6 @@
 
 namespace vne::math {
 
-
 class Color {
    public:
     Color();
@@ -115,6 +114,4 @@ class Color {
     static const Color GREY;
 };
 
-
 }  // namespace vne::math
-

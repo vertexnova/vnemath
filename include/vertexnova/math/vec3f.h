@@ -33,15 +33,24 @@ namespace vne::math {
 
 class Vec3f : public glm::vec3 {
    public:
-    Vec3f() : glm::vec3(0.0f) {};
-    Vec3f(float x_value, float y_value, float z_value) : glm::vec3(x_value, y_value, z_value) {};
-    Vec3f(const float xyz) : glm::vec3(xyz) {};
-    Vec3f(const Vec3f& v) : glm::vec3(v) {};
-    Vec3f(const glm::vec3& v) : glm::vec3(v.x, v.y, v.z) {};
-    Vec3f(const Vec2f& v) : glm::vec3(v.x, v.y, 0.0f) {};
-    Vec3f(const glm::vec2& v) : glm::vec3(v.x, v.y, 0.0f) {};
-    Vec3f(const Vec2f& v, float z_value) : glm::vec3(v, z_value) {};
-    Vec3f(const glm::vec2& v, float z_value) : glm::vec3(v, z_value) {};
+    Vec3f()
+        : glm::vec3(0.0f) {};
+    Vec3f(float x_value, float y_value, float z_value)
+        : glm::vec3(x_value, y_value, z_value) {};
+    Vec3f(const float xyz)
+        : glm::vec3(xyz) {};
+    Vec3f(const Vec3f& v)
+        : glm::vec3(v) {};
+    Vec3f(const glm::vec3& v)
+        : glm::vec3(v.x, v.y, v.z) {};
+    Vec3f(const Vec2f& v)
+        : glm::vec3(v.x, v.y, 0.0f) {};
+    Vec3f(const glm::vec2& v)
+        : glm::vec3(v.x, v.y, 0.0f) {};
+    Vec3f(const Vec2f& v, float z_value)
+        : glm::vec3(v, z_value) {};
+    Vec3f(const glm::vec2& v, float z_value)
+        : glm::vec3(v, z_value) {};
 
     Vec2f xy();
 

@@ -26,7 +26,6 @@ constexpr uint32_t DIMENSION = 3;
 
 namespace vne::math {
 
-
 //------------------------------------------------------------------------------
 Vec2f Vec3f::xy() {
     return Vec2f(x, y);
@@ -227,7 +226,9 @@ Vec3f Vec3f::midPoint(const Vec3f& point) const {
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::lerp(Vec3f& point, float factor) const {
-    return Vec3f(vne::math::lerp(x, point.x, factor), vne::math::lerp(y, point.y, factor), vne::math::lerp(z, point.z, factor));
+    return Vec3f(vne::math::lerp(x, point.x, factor),
+                 vne::math::lerp(y, point.y, factor),
+                 vne::math::lerp(z, point.z, factor));
 }
 
 //------------------------------------------------------------------------------
@@ -508,6 +509,5 @@ Vec3f Vec3f::lerp(const Vec3f& p1, const Vec3f& p2, float t) {
     out.z = vne::math::lerp(p1.z, p2.z, t);
     return out;
 }
-
 
 }  // namespace vne::math

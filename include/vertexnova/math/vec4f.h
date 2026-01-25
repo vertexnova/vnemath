@@ -28,18 +28,28 @@ namespace vne::math {
 
 class Vec4f : public glm::vec4 {
    public:
-    Vec4f() : glm::vec4(0.0f) {}
+    Vec4f()
+        : glm::vec4(0.0f) {}
     Vec4f(float x_value, float y_value, float z_value, float w_value)
         : glm::vec4(x_value, y_value, z_value, w_value) {}
-    Vec4f(float xyzw) : glm::vec4(xyzw) {}
-    Vec4f(const Vec4f& v) : glm::vec4(v) {}
-    Vec4f(const glm::vec4& v) : glm::vec4(v.x, v.y, v.z, v.w) {}
-    Vec4f(const Vec3f& v) : glm::vec4(v.x, v.y, v.z, 0.0f) {}
-    Vec4f(const glm::vec3& v) : glm::vec4(v.x, v.y, v.z, 0.0f) {}
-    Vec4f(const Vec2f& v) : glm::vec4(v.x, v.y, 0.0f, 0.0f) {}
-    Vec4f(const glm::vec2& v) : glm::vec4(v.x, v.y, 0.0f, 0.0f) {}
-    Vec4f(const Vec3f& v, float w_value) : glm::vec4(v, w_value) {}
-    Vec4f(const glm::vec3& v, float w_value) : glm::vec4(v, w_value) {}
+    Vec4f(float xyzw)
+        : glm::vec4(xyzw) {}
+    Vec4f(const Vec4f& v)
+        : glm::vec4(v) {}
+    Vec4f(const glm::vec4& v)
+        : glm::vec4(v.x, v.y, v.z, v.w) {}
+    Vec4f(const Vec3f& v)
+        : glm::vec4(v.x, v.y, v.z, 0.0f) {}
+    Vec4f(const glm::vec3& v)
+        : glm::vec4(v.x, v.y, v.z, 0.0f) {}
+    Vec4f(const Vec2f& v)
+        : glm::vec4(v.x, v.y, 0.0f, 0.0f) {}
+    Vec4f(const glm::vec2& v)
+        : glm::vec4(v.x, v.y, 0.0f, 0.0f) {}
+    Vec4f(const Vec3f& v, float w_value)
+        : glm::vec4(v, w_value) {}
+    Vec4f(const glm::vec3& v, float w_value)
+        : glm::vec4(v, w_value) {}
 
     Vec3f xyz();
     Vec2f xy();

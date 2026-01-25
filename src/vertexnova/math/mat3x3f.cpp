@@ -26,7 +26,6 @@ constexpr uint32_t LENGTH = 3;
 
 namespace vne::math {
 
-
 //------------------------------------------------------------------------------
 Mat3x3f::Mat3x3f()
     : glm::mat3() {}
@@ -112,9 +111,10 @@ bool Mat3x3f::areSame(const Mat3x3f& other, float eps) const {
 
 //------------------------------------------------------------------------------
 bool Mat3x3f::isOrthogonal(float eps) const {
-    return vne::math::areSame(xAxis().lengthSquare(), 1.0f, eps) && vne::math::areSame(yAxis().lengthSquare(), 1.0f, eps)
-           && vne::math::areSame(zAxis().lengthSquare(), 1.0f, eps) && vne::math::isZero(xAxis().dot(yAxis()), eps) && vne::math::isZero(yAxis().dot(zAxis()), eps)
-           && vne::math::isZero(zAxis().dot(xAxis()), eps);
+    return vne::math::areSame(xAxis().lengthSquare(), 1.0f, eps)
+           && vne::math::areSame(yAxis().lengthSquare(), 1.0f, eps)
+           && vne::math::areSame(zAxis().lengthSquare(), 1.0f, eps) && vne::math::isZero(xAxis().dot(yAxis()), eps)
+           && vne::math::isZero(yAxis().dot(zAxis()), eps) && vne::math::isZero(zAxis().dot(xAxis()), eps);
 }
 
 //------------------------------------------------------------------------------
@@ -289,6 +289,5 @@ Mat3x3f Mat3x3f::scale(float sx, float sy, float sz) {
 Mat3x3f Mat3x3f::scale(float s) {
     return Mat3x3f(glm::scale(Vec3f(s)));
 }
-
 
 }  // namespace vne::math

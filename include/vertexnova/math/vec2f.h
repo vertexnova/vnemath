@@ -35,11 +35,16 @@ namespace vne::math {
  */
 class Vec2f : public glm::vec2 {
    public:
-    Vec2f() : glm::vec2(0.0f, 0.0f) {}
-    Vec2f(float x_value, float y_value) : glm::vec2(x_value, y_value) {}
-    Vec2f(const float xy) : glm::vec2(xy, xy) {}
-    Vec2f(const Vec2f& v) : glm::vec2(v) {}
-    Vec2f(const glm::vec2& v) : glm::vec2(v.x, v.y) {}
+    Vec2f()
+        : glm::vec2(0.0f, 0.0f) {}
+    Vec2f(float x_value, float y_value)
+        : glm::vec2(x_value, y_value) {}
+    Vec2f(const float xy)
+        : glm::vec2(xy, xy) {}
+    Vec2f(const Vec2f& v)
+        : glm::vec2(v) {}
+    Vec2f(const glm::vec2& v)
+        : glm::vec2(v.x, v.y) {}
 
    public:
     float* getPtr();

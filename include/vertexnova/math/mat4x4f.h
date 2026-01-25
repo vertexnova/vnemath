@@ -28,10 +28,7 @@
 
 namespace vne::math {
 
-enum class Handedness {
-    eLeft = 0,
-    eRight = 1
-};
+enum class Handedness { eLeft = 0, eRight = 1 };
 
 class Mat4x4f : public glm::mat4 {
    public:
@@ -43,8 +40,22 @@ class Mat4x4f : public glm::mat4 {
     Mat4x4f(const glm::mat3& other);
     Mat4x4f(const Mat3x3f& other);
     Mat4x4f(float scalar);
-    Mat4x4f(float x0, float y0, float z0, float w0, float x1, float y1, float z1, float w1,
-            float x2, float y2, float z2, float w2, float x3, float y3, float z3, float w3);
+    Mat4x4f(float x0,
+            float y0,
+            float z0,
+            float w0,
+            float x1,
+            float y1,
+            float z1,
+            float w1,
+            float x2,
+            float y2,
+            float z2,
+            float w2,
+            float x3,
+            float y3,
+            float z3,
+            float w3);
     Mat4x4f& operator=(const Mat4x4f& other);
 
    public:

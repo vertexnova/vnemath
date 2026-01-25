@@ -59,7 +59,8 @@ TEST_F(QuaternionTest, TestQuaternionConstructors) {
     EXPECT_EQ(0.0f, quat4.y);
     EXPECT_EQ(1.0f, quat4.z);
 
-    vne::math::Quaternion quat5 = vne::math::Quaternion(vne::math::quarterPi<float>(), vne::math::Vec3f(0.0f, 1.0f, 0.0f));
+    vne::math::Quaternion quat5 =
+        vne::math::Quaternion(vne::math::quarterPi<float>(), vne::math::Vec3f(0.0f, 1.0f, 0.0f));
     EXPECT_TRUE(vne::math::areSame(0.785398f, quat5.w, 1E-5f));
     EXPECT_EQ(0.0f, quat5.x);
     EXPECT_EQ(1.0f, quat5.y);
@@ -341,7 +342,8 @@ TEST_F(QuaternionTest, TestQuaternionEulerAngles) {
  * Test Quaternion SetFromRotationMatrix()
  */
 TEST_F(QuaternionTest, TestQuaternionSetFromRotationMatrix) {
-    vne::math::Mat4x4f rotation_matrix = vne::math::Mat4x4f::rotate(vne::math::pi<float>() / 2, vne::math::Vec3f(1.0f, 0.0f, 0.0f));
+    vne::math::Mat4x4f rotation_matrix =
+        vne::math::Mat4x4f::rotate(vne::math::pi<float>() / 2, vne::math::Vec3f(1.0f, 0.0f, 0.0f));
 
     vne::math::Quaternion quat;
     quat.setFromRotationMatrix(rotation_matrix);

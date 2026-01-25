@@ -22,7 +22,6 @@
 
 namespace vne::math {
 
-
 //------------------------------------------------------------------------------
 Mat4x4f::Mat4x4f()
     : glm::mat4() {}
@@ -56,21 +55,21 @@ Mat4x4f::Mat4x4f(float scalar)
 
 //------------------------------------------------------------------------------
 Mat4x4f::Mat4x4f(float x0,
-                     float y0,
-                     float z0,
-                     float w0,
-                     float x1,
-                     float y1,
-                     float z1,
-                     float w1,
-                     float x2,
-                     float y2,
-                     float z2,
-                     float w2,
-                     float x3,
-                     float y3,
-                     float z3,
-                     float w3)
+                 float y0,
+                 float z0,
+                 float w0,
+                 float x1,
+                 float y1,
+                 float z1,
+                 float w1,
+                 float x2,
+                 float y2,
+                 float z2,
+                 float w2,
+                 float x3,
+                 float y3,
+                 float z3,
+                 float w3)
     : glm::mat4(x0, y0, z0, w0, x1, y1, z1, w1, x2, y2, z2, w2, x3, y3, z3, w3) {}
 
 //------------------------------------------------------------------------------
@@ -102,7 +101,10 @@ Mat4x4f Mat4x4f::transform(const Vec3f& forward, const Vec3f& up) {
 
 //------------------------------------------------------------------------------
 Mat4x4f Mat4x4f::transform(const Vec3f& offset) {
-    return Mat4x4f(Vec4f(1.0f, 0.0f, 0.0f, 0.0f), Vec4f(0.0f, 1.0f, 0.0f, 0.0f), Vec4f(0.0f, 0.0f, 1.0f, 0.0f), Vec4f(offset, 1.0f));
+    return Mat4x4f(Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
+                   Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                   Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                   Vec4f(offset, 1.0f));
 }
 
 //------------------------------------------------------------------------------
@@ -148,7 +150,8 @@ bool Mat4x4f::areSame(const Mat4x4f& other, float eps) const {
 bool Mat4x4f::isOrthogonal(float eps) const {
     if (vne::math::areSame(xAxis().lengthSquare(), 1.0f, eps) && vne::math::areSame(yAxis().lengthSquare(), 1.0f, eps)
         && vne::math::areSame(zAxis().lengthSquare(), 1.0f, eps)) {
-        if (vne::math::isZero(xAxis().dot(yAxis()), eps) && vne::math::isZero(yAxis().dot(zAxis()), eps) && vne::math::isZero(zAxis().dot(xAxis()), eps)) {
+        if (vne::math::isZero(xAxis().dot(yAxis()), eps) && vne::math::isZero(yAxis().dot(zAxis()), eps)
+            && vne::math::isZero(zAxis().dot(xAxis()), eps)) {
             return true;
         }
     }
@@ -288,7 +291,8 @@ Vec3f Mat4x4f::transformNormal(const Vec3f& normal) const {
 
 //------------------------------------------------------------------------------
 std::ostream& operator<<(std::ostream& os, const Mat4x4f& mat) {
-    os << "[" << mat.getColumn(0) << "," << "\n " << mat.getColumn(1) << "," << "\n " << mat.getColumn(2) << "," << "\n " << mat.getColumn(3) << "]";
+    os << "[" << mat.getColumn(0) << "," << "\n " << mat.getColumn(1) << "," << "\n " << mat.getColumn(2) << ","
+       << "\n " << mat.getColumn(3) << "]";
 
     return os;
 }
@@ -421,6 +425,5 @@ Mat4x4f Mat4x4f::ortho(float left, float right, float bottom, float top, float z
 
     return glm::ortho(left, right, bottom, top, z_near, z_far);
 }
-
 
 }  // namespace vne::math

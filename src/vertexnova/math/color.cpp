@@ -16,7 +16,6 @@
 
 namespace vne::math {
 
-
 const Color Color::WHITE = Color(1.0f, 1.0f, 1.0f);
 const Color Color::BLACK = Color(0.0f, 0.0f, 0.0f);
 const Color Color::RED = Color(1.0f, 0.0f, 0.0f);
@@ -98,7 +97,8 @@ const float* Color::GetPtr() const {
 
 //------------------------------------------------------------------------------
 bool Color::AreSame(const Color& color, float eps) const {
-    return vne::math::areSame(r, color.r, eps) && vne::math::areSame(g, color.g, eps) && vne::math::areSame(b, color.b, eps) && vne::math::areSame(a, color.a, eps);
+    return vne::math::areSame(r, color.r, eps) && vne::math::areSame(g, color.g, eps)
+           && vne::math::areSame(b, color.b, eps) && vne::math::areSame(a, color.a, eps);
 }
 
 //------------------------------------------------------------------------------
@@ -108,7 +108,10 @@ bool Color::IsZero(float eps) const {
 
 //------------------------------------------------------------------------------
 Color Color::Lerp(const Color& color, float t) const {
-    return Color(vne::math::lerp(r, color.r, t), vne::math::lerp(g, color.g, t), vne::math::lerp(b, color.b, t), vne::math::lerp(a, color.a, t));
+    return Color(vne::math::lerp(r, color.r, t),
+                 vne::math::lerp(g, color.g, t),
+                 vne::math::lerp(b, color.b, t),
+                 vne::math::lerp(a, color.a, t));
 }
 
 //------------------------------------------------------------------------------
@@ -407,6 +410,5 @@ std::istream& operator>>(std::istream& is, Color& color) {
     }
     return is;
 }
-
 
 }  // namespace vne::math

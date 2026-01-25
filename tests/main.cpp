@@ -36,9 +36,7 @@ class LoggingGuard {
         vne::log::Logging::configureLogger(config);
     }
 
-    ~LoggingGuard() {
-        vne::log::Logging::shutdown();
-    }
+    ~LoggingGuard() { vne::log::Logging::shutdown(); }
 
     // Non-copyable
     LoggingGuard(const LoggingGuard&) = delete;

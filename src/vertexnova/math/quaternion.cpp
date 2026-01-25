@@ -19,7 +19,6 @@
 
 namespace vne::math {
 
-
 //------------------------------------------------------------------------------
 Quaternion::Quaternion()
     : glm::quat(1.0f, 0.0f, 0.0f, 0.0f) {}
@@ -288,7 +287,8 @@ Quaternion Quaternion::operator-(const Quaternion& quat) const {
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator*(const Quaternion& quat) const {
     float w_param = (this->w * quat.w) - Vec3f::dot(this->getVector(), quat.getVector());
-    Vec3f vec = Vec3f::cross(this->getVector(), quat.getVector()) + (this->getVector() * quat.w) + (quat.getVector() * this->w);
+    Vec3f vec =
+        Vec3f::cross(this->getVector(), quat.getVector()) + (this->getVector() * quat.w) + (quat.getVector() * this->w);
 
     return Quaternion(w_param, vec);
 }
@@ -372,6 +372,5 @@ Quaternion Quaternion::inverse(const Quaternion& quat) {
 float Quaternion::dot(const Quaternion& quat1, const Quaternion& quat2) {
     return quat1.dot(quat2);
 }
-
 
 }  // namespace vne::math

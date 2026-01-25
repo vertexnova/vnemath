@@ -199,7 +199,8 @@ TEST_F(Vec2fTest, TestVec2fDot) {
     ASSERT_EQ(4.0f, xy_vec_.dot(y_axis_));
     ASSERT_EQ(7.0f, xy_vec_.dot(one_vec_));
     ASSERT_EQ(7.0f, vne::math::Vec2f::dot(xy_vec_, one_vec_));
-    ASSERT_FLOAT_EQ(vne::math::halfPi<float>(), vne::math::acos(x_axis_.dot(y_axis_) / (x_axis_.length() * y_axis_.length())));
+    ASSERT_FLOAT_EQ(vne::math::halfPi<float>(),
+                    vne::math::acos(x_axis_.dot(y_axis_) / (x_axis_.length() * y_axis_.length())));
 }
 
 /**
@@ -212,7 +213,8 @@ TEST_F(Vec2fTest, TestVec2fDot) {
 TEST_F(Vec2fTest, TestVec2fCross) {
     ASSERT_EQ(1.0f, x_axis_.cross(y_axis_));
     ASSERT_EQ(1.0f, vne::math::Vec2f::cross(x_axis_, y_axis_));
-    ASSERT_EQ(glm::cross(glm::vec3(x_axis_, 0.0f), glm::vec3(y_axis_, 0.0f)).z, vne::math::Vec2f::cross(x_axis_, y_axis_));
+    ASSERT_EQ(glm::cross(glm::vec3(x_axis_, 0.0f), glm::vec3(y_axis_, 0.0f)).z,
+              vne::math::Vec2f::cross(x_axis_, y_axis_));
 }
 
 /**
@@ -388,7 +390,8 @@ TEST_F(Vec2fTest, TestVec2fIsNormalized) {
     ASSERT_TRUE(x_axis_.isNormalized());
     ASSERT_TRUE(y_axis_.isNormalized());
     ASSERT_FALSE(xy_vec_.isNormalized());
-    ASSERT_TRUE(vne::math::Vec2f(static_cast<float>(SQRT_ONE_OVER_TWO), static_cast<float>(SQRT_ONE_OVER_TWO)).isNormalized());
+    ASSERT_TRUE(
+        vne::math::Vec2f(static_cast<float>(SQRT_ONE_OVER_TWO), static_cast<float>(SQRT_ONE_OVER_TWO)).isNormalized());
 }
 
 /**
@@ -436,13 +439,19 @@ TEST_F(Vec2fTest, TestVec2fAngle) {
     ASSERT_TRUE(vne::math::areSame(vne::math::quarterPi<float>(), x_axis_.angle(one_vec_)));
 
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f,
-                              vne::math::Vec2f(static_cast<float>(SQRT_THREE), 1.0f).angle(vne::math::Vec2f(1.0f, static_cast<float>(SQRT_THREE)))));
+                                   vne::math::Vec2f(static_cast<float>(SQRT_THREE), 1.0f)
+                                       .angle(vne::math::Vec2f(1.0f, static_cast<float>(SQRT_THREE)))));
     ASSERT_TRUE(vne::math::areSame(vne::math::twoPi<float>() / 3.0f,
-                              vne::math::Vec2f(static_cast<float>(SQRT_THREE), 1.0f).angle(vne::math::Vec2f(-static_cast<float>(SQRT_THREE), 1.0f))));
-    ASSERT_TRUE(vne::math::areSame((3.0f / 8.0f) * vne::math::twoPi<float>(), vne::math::Vec2f(1.0f, 1.0f).angle(vne::math::Vec2f(-2.0f, 0.0f))));
-    ASSERT_TRUE(vne::math::areSame(3.0f * vne::math::halfPi<float>(), vne::math::Vec2f(1.0f, 1.0f).angle(vne::math::Vec2f(1.0f, -1.0f))));
+                                   vne::math::Vec2f(static_cast<float>(SQRT_THREE), 1.0f)
+                                       .angle(vne::math::Vec2f(-static_cast<float>(SQRT_THREE), 1.0f))));
+    ASSERT_TRUE(vne::math::areSame((3.0f / 8.0f) * vne::math::twoPi<float>(),
+                                   vne::math::Vec2f(1.0f, 1.0f).angle(vne::math::Vec2f(-2.0f, 0.0f))));
+    ASSERT_TRUE(vne::math::areSame(3.0f * vne::math::halfPi<float>(),
+                                   vne::math::Vec2f(1.0f, 1.0f).angle(vne::math::Vec2f(1.0f, -1.0f))));
 
-    ASSERT_TRUE(vne::math::areSame(3.0f * vne::math::halfPi<float>(), vne::math::Vec2f(2.0f, 0.0f).angle(vne::math::Vec2f(4.0f, 2.0f), vne::math::Vec2f(4.0f, -2.0f))));
+    ASSERT_TRUE(vne::math::areSame(
+        3.0f * vne::math::halfPi<float>(),
+        vne::math::Vec2f(2.0f, 0.0f).angle(vne::math::Vec2f(4.0f, 2.0f), vne::math::Vec2f(4.0f, -2.0f))));
 }
 
 /**
@@ -499,7 +508,8 @@ TEST_F(Vec2fTest, TestVec2fAddition) {
 
     // 6. Chain operations with random vector
     vne::math::Vec2f final_vec = test_vec + xy_vec_ + scalar + rand_xy_vec__;
-    ASSERT_EQ(glm::vec2(test_vec) + glm::vec2(xy_vec_) + glm::vec2(scalar, scalar) + glm::vec2(rand_xy_vec__), glm::vec2(final_vec));
+    ASSERT_EQ(glm::vec2(test_vec) + glm::vec2(xy_vec_) + glm::vec2(scalar, scalar) + glm::vec2(rand_xy_vec__),
+              glm::vec2(final_vec));
 }
 
 /**
@@ -524,7 +534,8 @@ TEST_F(Vec2fTest, TestVec2fSubtraction) {
     ASSERT_EQ(glm::vec2(zero_vec_) - glm::vec2(neg_xy_vec__) - glm::vec2(scalar, scalar), glm::vec2(test_vec));
 
     // 5. Subtract xy_vec_ and add scalar to test_vec
-    ASSERT_EQ(glm::vec2(test_vec) - glm::vec2(xy_vec_) + glm::vec2(scalar, scalar), glm::vec2(test_vec - xy_vec_ + scalar));
+    ASSERT_EQ(glm::vec2(test_vec) - glm::vec2(xy_vec_) + glm::vec2(scalar, scalar),
+              glm::vec2(test_vec - xy_vec_ + scalar));
 }
 
 /**

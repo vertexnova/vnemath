@@ -80,10 +80,14 @@ TEST_F(Mat3x3fTest, TestMat3x3fXYZAxes) {
  *
  */
 TEST_F(Mat3x3fTest, TestMat3x3fDeterminant) {
-    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(2.0f, 2.0f, 1.0f), vne::math::Vec3f(-3.0f, 0.0f, 4.0f), vne::math::Vec3f(1.0f, -1.0f, 5.0f));
+    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(2.0f, 2.0f, 1.0f),
+                                                vne::math::Vec3f(-3.0f, 0.0f, 4.0f),
+                                                vne::math::Vec3f(1.0f, -1.0f, 5.0f));
     EXPECT_EQ(49.0f, out.determinant());
 
-    out = vne::math::Mat3x3f(vne::math::Vec3f(1.0f, -3.0f, 2.0f), vne::math::Vec3f(3.0f, -1.0f, 3.0f), vne::math::Vec3f(2.0f, -3.0f, 1.0f));
+    out = vne::math::Mat3x3f(vne::math::Vec3f(1.0f, -3.0f, 2.0f),
+                             vne::math::Vec3f(3.0f, -1.0f, 3.0f),
+                             vne::math::Vec3f(2.0f, -3.0f, 1.0f));
     EXPECT_EQ(-15.0f, out.determinant());
 }
 
@@ -94,7 +98,9 @@ TEST_F(Mat3x3fTest, TestMat3x3fDeterminant) {
  *
  */
 TEST_F(Mat3x3fTest, TestMat3x3fTrace) {
-    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(-5.0f, 1.0f, -3.0f), vne::math::Vec3f(0.0f, 2.0f, 4.0f), vne::math::Vec3f(-1.0f, -1.0f, 1.0f));
+    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(-5.0f, 1.0f, -3.0f),
+                                                vne::math::Vec3f(0.0f, 2.0f, 4.0f),
+                                                vne::math::Vec3f(-1.0f, -1.0f, 1.0f));
     EXPECT_EQ(-40.0f, out.determinant());
     EXPECT_EQ(-2.0f, out.trace());
 }
@@ -106,7 +112,9 @@ TEST_F(Mat3x3fTest, TestMat3x3fTrace) {
  *
  */
 TEST_F(Mat3x3fTest, TestMat3x3fTranspose) {
-    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(3.0f, 4.0f, 3.0f), vne::math::Vec3f(2.0f, 0.0f, 0.0f), vne::math::Vec3f(0.0f, 1.0f, 2.0f));
+    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(3.0f, 4.0f, 3.0f),
+                                                vne::math::Vec3f(2.0f, 0.0f, 0.0f),
+                                                vne::math::Vec3f(0.0f, 1.0f, 2.0f));
     vne::math::Mat3x3f trans = out.transpose();
 
     EXPECT_EQ(out.getColumn(0), trans.getRow(0));
@@ -121,7 +129,9 @@ TEST_F(Mat3x3fTest, TestMat3x3fTranspose) {
  *
  */
 TEST_F(Mat3x3fTest, TestMat3x3fInverse) {
-    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(3.0f, 2.0f, 0.0f), vne::math::Vec3f(0.0f, 0.0f, 1.0f), vne::math::Vec3f(2.0f, -2.0f, 1.0f));
+    vne::math::Mat3x3f out = vne::math::Mat3x3f(vne::math::Vec3f(3.0f, 2.0f, 0.0f),
+                                                vne::math::Vec3f(0.0f, 0.0f, 1.0f),
+                                                vne::math::Vec3f(2.0f, -2.0f, 1.0f));
 
     EXPECT_EQ(10.0f, out.determinant());
     vne::math::Mat3x3f inv = out.inverse();
@@ -138,7 +148,9 @@ TEST_F(Mat3x3fTest, TestMat3x3fInverse) {
  *
  */
 TEST_F(Mat3x3fTest, TestMat3x3fInverseTransposed) {
-    vne::math::Mat3x3f transform = vne::math::Mat3x3f(vne::math::Vec3f(-1.0f, 3.0f, 1.0f), vne::math::Vec3f(-3.0f, 6.0f, 0.0f), vne::math::Vec3f(1.0f, 0.0f, 1.0f));
+    vne::math::Mat3x3f transform = vne::math::Mat3x3f(vne::math::Vec3f(-1.0f, 3.0f, 1.0f),
+                                                      vne::math::Vec3f(-3.0f, 6.0f, 0.0f),
+                                                      vne::math::Vec3f(1.0f, 0.0f, 1.0f));
 
     vne::math::Mat3x3f inv_transpose = transform.inverseTransposed();
 
@@ -287,7 +299,9 @@ TEST_F(Mat3x3fTest, TestMat3x3fZero) {
 TEST_F(Mat3x3fTest, TestMat3x3fLerp) {
     vne::math::Mat3x3f from = mat;
     vne::math::Mat3x3f to = mat3;
-    EXPECT_EQ(vne::math::Mat3x3f(vne::math::Vec3f(1.0f, 2.0f, 1.5f), vne::math::Vec3f(4.0f, 2.5f, 2.5f), vne::math::Vec3f(4.5f, 4.0f, 5.0f)),
+    EXPECT_EQ(vne::math::Mat3x3f(vne::math::Vec3f(1.0f, 2.0f, 1.5f),
+                                 vne::math::Vec3f(4.0f, 2.5f, 2.5f),
+                                 vne::math::Vec3f(4.5f, 4.0f, 5.0f)),
               vne::math::Mat3x3f::lerp(from, to, 0.5f));
 }
 
@@ -377,8 +391,12 @@ TEST_F(Mat3x3fTest, TestMat3x3fRotate) {
     out[2][1] = static_cast<float>(SQRT_ONE_OVER_TWO);
     out[0][2] = -1.0f;
 
-    EXPECT_TRUE(out.areSame(vne::math::Mat3x3f::rotateXYZ(vne::math::quarterPi<float>(), vne::math::halfPi<float>(), vne::math::pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat3x3f::rotateXYZ(vne::math::quarterPi<float>(),
+                                                          vne::math::halfPi<float>(),
+                                                          vne::math::pi<float>())));
 
-    vne::math::Mat3x3f out1 = vne::math::Mat3x3f::rotateZYX(vne::math::quarterPi<float>(), vne::math::halfPi<float>(), vne::math::pi<float>());
+    vne::math::Mat3x3f out1 = vne::math::Mat3x3f::rotateZYX(vne::math::quarterPi<float>(),
+                                                            vne::math::halfPi<float>(),
+                                                            vne::math::pi<float>());
     EXPECT_FALSE(out.areSame(out1));
 }

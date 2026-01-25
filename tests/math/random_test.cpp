@@ -82,7 +82,8 @@ TEST_F(RandomTest, TestRealRandomGet) {
  */
 TEST_F(RandomTest, TestRealRandomExceptions) {
 #ifdef _DEBUG
-    ASSERT_DEATH(std::make_unique<vne::math::Random<float>>(upper_f_, lower_f_), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(std::make_unique<vne::math::Random<float>>(upper_f_, lower_f_),
+                 ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
     ASSERT_DEATH(std::make_unique<vne::math::Random<float>>(seed_, upper_f_, lower_f_),
                  ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
 #endif  // _DEBUG
@@ -134,7 +135,8 @@ TEST_F(RandomTest, TestRealRandomGetAndSetMinMax) {
     EXPECT_EQ(30.0f, rand_withseed_->getMin());
     EXPECT_EQ(30.0f, rand_withseed_->getMax());
 #ifdef _DEBUG
-    ASSERT_DEATH(rand_withseed_->setMinMax(50.0f, 40.0f), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(rand_withseed_->setMinMax(50.0f, 40.0f),
+                 ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
 #endif  // _DEBUG
 }
 
@@ -192,8 +194,10 @@ TEST_F(RandomTest, TestIntegerRandomGetList) {
  */
 TEST_F(RandomTest, TestIntegerRandomExceptions) {
 #ifdef _DEBUG
-    ASSERT_DEATH(std::make_unique<vne::math::Random<int>>(upper_i_, lower_i_), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
-    ASSERT_DEATH(std::make_unique<vne::math::Random<int>>(seed_, upper_i_, lower_i_), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(std::make_unique<vne::math::Random<int>>(upper_i_, lower_i_),
+                 ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(std::make_unique<vne::math::Random<int>>(seed_, upper_i_, lower_i_),
+                 ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
 #endif  // _DEBUG
 }
 

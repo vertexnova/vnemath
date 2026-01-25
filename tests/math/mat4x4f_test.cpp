@@ -20,9 +20,40 @@ class Mat4x4fTest : public ::testing::Test {
     // Interface of test fixture base class
    protected:
     void SetUp() override {
-        mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
-        mat2 = vne::math::Mat4x4f(-14.0f, -20.0f, -26.0f, -32.0f, -8.0f, -10.0f, -12.0f, -14.0f, -2.0f, 0.0f, 2.0f, 4.0f, 4.0f, 10.0f, 16.0f, 22.0f);
-        mat3 = vne::math::Mat4x4f(2.0f, 3.0f, 1.0f, 5.0f, 1.0f, 0.0f, 3.0f, 1.0f, 0.0f, 2.0f, -3.0f, 2.0f, 0.0f, 2.0f, 3.0f, 1.0f);
+        mat = vne::math::Mat4x4f(0.0f,
+                                 1.0f,
+                                 2.0f,
+                                 3.0f,
+                                 4.0f,
+                                 5.0f,
+                                 6.0f,
+                                 7.0f,
+                                 8.0f,
+                                 9.0f,
+                                 10.0f,
+                                 11.0f,
+                                 12.0f,
+                                 13.0f,
+                                 14.0f,
+                                 15.0f);
+        mat2 = vne::math::Mat4x4f(-14.0f,
+                                  -20.0f,
+                                  -26.0f,
+                                  -32.0f,
+                                  -8.0f,
+                                  -10.0f,
+                                  -12.0f,
+                                  -14.0f,
+                                  -2.0f,
+                                  0.0f,
+                                  2.0f,
+                                  4.0f,
+                                  4.0f,
+                                  10.0f,
+                                  16.0f,
+                                  22.0f);
+        mat3 = vne::math::
+            Mat4x4f(2.0f, 3.0f, 1.0f, 5.0f, 1.0f, 0.0f, 3.0f, 1.0f, 0.0f, 2.0f, -3.0f, 2.0f, 0.0f, 2.0f, 3.0f, 1.0f);
     }
 
     void TearDown() override {}
@@ -40,7 +71,10 @@ class Mat4x4fTest : public ::testing::Test {
  *
  */
 TEST_F(Mat4x4fTest, TestMat4x4fColumn) {
-    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f),
+                                                vne::math::Vec4f(2.0f),
+                                                vne::math::Vec4f(3.0f),
+                                                vne::math::Vec4f(4.0f));
     EXPECT_EQ(vne::math::Vec4f(1.0f), out.getColumn(0));
     EXPECT_EQ(vne::math::Vec4f(2.0f), out.getColumn(1));
     EXPECT_EQ(vne::math::Vec4f(3.0f), out.getColumn(2));
@@ -76,7 +110,10 @@ TEST_F(Mat4x4fTest, TestMat4x4fRow) {
  *
  */
 TEST_F(Mat4x4fTest, TestMat4x4fXYZAxes) {
-    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f),
+                                                vne::math::Vec4f(2.0f),
+                                                vne::math::Vec4f(3.0f),
+                                                vne::math::Vec4f(4.0f));
     EXPECT_EQ(vne::math::Vec3f(1.0f), out.xAxis());
     EXPECT_EQ(vne::math::Vec3f(2.0f), out.yAxis());
     EXPECT_EQ(vne::math::Vec3f(3.0f), out.zAxis());
@@ -91,27 +128,27 @@ TEST_F(Mat4x4fTest, TestMat4x4fXYZAxes) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fDeterminant) {
     vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(3.0f, 4.0f, 3.0f, 9.0f),
-                                          vne::math::Vec4f(2.0f, 0.0f, 0.0f, 2.0f),
-                                          vne::math::Vec4f(0.0f, 1.0f, 2.0f, 3.0f),
-                                          vne::math::Vec4f(1.0f, 2.0f, 1.0f, 1.0f));
+                                                vne::math::Vec4f(2.0f, 0.0f, 0.0f, 2.0f),
+                                                vne::math::Vec4f(0.0f, 1.0f, 2.0f, 3.0f),
+                                                vne::math::Vec4f(1.0f, 2.0f, 1.0f, 1.0f));
     EXPECT_EQ(24.0f, out.determinant());
 
     out = vne::math::Mat4x4f(vne::math::Vec4f(4.0f, 0.0f, 0.0f, 0.0f),
-                          vne::math::Vec4f(3.0f, 1.0f, -1.0f, 3.0f),
-                          vne::math::Vec4f(2.0f, -3.0f, 3.0f, 1.0f),
-                          vne::math::Vec4f(2.0f, 3.0f, 3.0f, 1.0f));
+                             vne::math::Vec4f(3.0f, 1.0f, -1.0f, 3.0f),
+                             vne::math::Vec4f(2.0f, -3.0f, 3.0f, 1.0f),
+                             vne::math::Vec4f(2.0f, 3.0f, 3.0f, 1.0f));
     EXPECT_EQ(-240.0f, out.determinant());
 
     out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 4.0f, 0.0f, 1.0f),
-                          vne::math::Vec4f(2.0f, 7.0f, 0.0f, 2.0f),
-                          vne::math::Vec4f(6.0f, 3.0f, 0.0f, 2.0f),
-                          vne::math::Vec4f(6.0f, 2.0f, 0.0f, 9.0f));
+                             vne::math::Vec4f(2.0f, 7.0f, 0.0f, 2.0f),
+                             vne::math::Vec4f(6.0f, 3.0f, 0.0f, 2.0f),
+                             vne::math::Vec4f(6.0f, 2.0f, 0.0f, 9.0f));
     EXPECT_EQ(0.0f, out.determinant());  // 3rd row is a zero vector
 
     out = vne::math::Mat4x4f(vne::math::Vec4f(2.0f, 6.0f, 0.0f, 1.0f),
-                          vne::math::Vec4f(1.0f, 7.0f, 6.0f, 2.0f),
-                          vne::math::Vec4f(2.0f, 6.0f, 0.0f, 1.0f),
-                          vne::math::Vec4f(3.0f, 9.0f, 0.0f, 4.0f));
+                             vne::math::Vec4f(1.0f, 7.0f, 6.0f, 2.0f),
+                             vne::math::Vec4f(2.0f, 6.0f, 0.0f, 1.0f),
+                             vne::math::Vec4f(3.0f, 9.0f, 0.0f, 4.0f));
     EXPECT_EQ(0.0f, out.determinant());  // 1st and 3rd columns are equal
 }
 
@@ -123,9 +160,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fDeterminant) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fTranspose) {
     vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(3.0f, 4.0f, 3.0f, 9.0f),
-                                          vne::math::Vec4f(2.0f, 0.0f, 0.0f, 2.0f),
-                                          vne::math::Vec4f(0.0f, 1.0f, 2.0f, 3.0f),
-                                          vne::math::Vec4f(1.0f, 2.0f, 1.0f, 1.0f));
+                                                vne::math::Vec4f(2.0f, 0.0f, 0.0f, 2.0f),
+                                                vne::math::Vec4f(0.0f, 1.0f, 2.0f, 3.0f),
+                                                vne::math::Vec4f(1.0f, 2.0f, 1.0f, 1.0f));
     vne::math::Mat4x4f trans = out.transpose();
 
     EXPECT_EQ(out.getColumn(0), trans.getRow(0));
@@ -142,9 +179,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fTranspose) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fInverse) {
     vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 1.0f, 1.0f, -1.0f),
-                                          vne::math::Vec4f(1.0f, 1.0f, -1.0f, 1.0f),
-                                          vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f),
-                                          vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
+                                                vne::math::Vec4f(1.0f, 1.0f, -1.0f, 1.0f),
+                                                vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f),
+                                                vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
 
     EXPECT_EQ(-16.0f, out.determinant());
     vne::math::Mat4x4f inv = out.inverse();
@@ -163,9 +200,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fInverse) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fInverseTransposed) {
     vne::math::Mat4x4f transform = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 1.0f, 1.0f, -1.0f),
-                                                vne::math::Vec4f(1.0f, 1.0f, -1.0f, 1.0f),
-                                                vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f),
-                                                vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
+                                                      vne::math::Vec4f(1.0f, 1.0f, -1.0f, 1.0f),
+                                                      vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f),
+                                                      vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
 
     vne::math::Mat4x4f inv_transpose = transform.inverseTransposed();
 
@@ -183,13 +220,16 @@ TEST_F(Mat4x4fTest, TestMat4x4fInverseTransposed) {
  *
  */
 TEST_F(Mat4x4fTest, TestMat4x4fHandness) {
-    vne::math::Mat4x4f result = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
+    vne::math::Mat4x4f result = vne::math::Mat4x4f(vne::math::Vec4f(1.0f),
+                                                   vne::math::Vec4f(2.0f),
+                                                   vne::math::Vec4f(3.0f),
+                                                   vne::math::Vec4f(4.0f));
     EXPECT_EQ(vne::math::Handedness::eLeft, result.handedness());
 
     result = vne::math::Mat4x4f(vne::math::Vec4f(0.9f, -0.0f, 0.3f, 0.0f),
-                             vne::math::Vec4f(0.2f, 0.9f, -0.4f, 0.0f),
-                             vne::math::Vec4f(-0.3f, 0.5f, 0.8f, 0.0f),
-                             vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+                                vne::math::Vec4f(0.2f, 0.9f, -0.4f, 0.0f),
+                                vne::math::Vec4f(-0.3f, 0.5f, 0.8f, 0.0f),
+                                vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
     EXPECT_EQ(vne::math::Handedness::eRight, result.handedness());
 }
 
@@ -201,9 +241,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fHandness) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fTransformPoint) {
     vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
-                                          vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
-                                          vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
-                                          vne::math::Vec4f(2.0f, 2.0f, 2.0f, 1.0f));
+                                                vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                                                vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                                                vne::math::Vec4f(2.0f, 2.0f, 2.0f, 1.0f));
 
     vne::math::Vec3f point = vne::math::Vec3f(2.0f, 3.0f, 1.0f);
 
@@ -218,9 +258,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fTransformPoint) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fTransformVector) {
     vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
-                                          vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
-                                          vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
-                                          vne::math::Vec4f(2.0f, 2.0f, 2.0f, 1.0f));
+                                                vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                                                vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                                                vne::math::Vec4f(2.0f, 2.0f, 2.0f, 1.0f));
 
     vne::math::Vec3f vector = vne::math::Vec3f(2.0f, 3.0f, 1.0f);
 
@@ -239,9 +279,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fTransformVector) {
 TEST_F(Mat4x4fTest, TestMat4x4fTransformNormal) {
     // Identity matrix
     vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
-                                          vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
-                                          vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
-                                          vne::math::Vec4f(2.0f, 3.0f, 4.0f, 1.0f));
+                                                vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                                                vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                                                vne::math::Vec4f(2.0f, 3.0f, 4.0f, 1.0f));
 
     vne::math::Vec3f normal = vne::math::Vec3f(0.0f, 0.0f, 1.0f);
 
@@ -252,17 +292,17 @@ TEST_F(Mat4x4fTest, TestMat4x4fTransformNormal) {
 
     // Only Rotational matrix
     out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
-                          vne::math::Vec4f(0.0f, 0.866f, 0.5f, 0.0f),
-                          vne::math::Vec4f(0.0f, -0.5f, 0.866f, 0.0f),
-                          vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+                             vne::math::Vec4f(0.0f, 0.866f, 0.5f, 0.0f),
+                             vne::math::Vec4f(0.0f, -0.5f, 0.866f, 0.0f),
+                             vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
     vne::math::Vec3f normal_out = vne::math::Vec3f(0.0f, -0.5f, 0.866f);
     EXPECT_TRUE(normal_out.areSame(out.transformNormal(normal), 1E-3f));
 
     // Scaling only
     out = vne::math::Mat4x4f(vne::math::Vec4f(2.0f, 0.0f, 0.0f, 0.0f),
-                          vne::math::Vec4f(0.0f, 4.0f, 0.0f, 0.0f),
-                          vne::math::Vec4f(0.0f, 0.0f, 5.0f, 0.0f),
-                          vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+                             vne::math::Vec4f(0.0f, 4.0f, 0.0f, 0.0f),
+                             vne::math::Vec4f(0.0f, 0.0f, 5.0f, 0.0f),
+                             vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
     normal = vne::math::Vec3f(0.0f, 0.6f, 0.8f);
     normal_out = vne::math::Vec3f(0, 0.683941f, 0.729537f);
     EXPECT_TRUE(normal_out.areSame(out.transformNormal(normal), 1E-5f));
@@ -287,8 +327,10 @@ TEST_F(Mat4x4fTest, TestMat4x4fStreamOut) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fIdentity) {
     vne::math::Mat4x4f mat4 = vne::math::Mat4x4f();
-    EXPECT_EQ(vne::math::Mat4x4f(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f),
-              vne::math::Mat4x4f::identity());
+    EXPECT_EQ(
+        vne::math::
+            Mat4x4f(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f),
+        vne::math::Mat4x4f::identity());
 }
 
 /**
@@ -311,9 +353,9 @@ TEST_F(Mat4x4fTest, TestMat4x4fLerp) {
     vne::math::Mat4x4f from = mat;
     vne::math::Mat4x4f to = mat3;
     EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 2.0f, 1.5f, 4.0f),
-                              vne::math::Vec4f(2.5f, 2.5f, 4.5f, 4.0f),
-                              vne::math::Vec4f(4.0f, 5.5f, 3.5f, 6.5f),
-                              vne::math::Vec4f(6.0f, 7.5f, 8.5f, 8.0f)),
+                                 vne::math::Vec4f(2.5f, 2.5f, 4.5f, 4.0f),
+                                 vne::math::Vec4f(4.0f, 5.5f, 3.5f, 6.5f),
+                                 vne::math::Vec4f(6.0f, 7.5f, 8.5f, 8.0f)),
               vne::math::Mat4x4f::lerp(from, to, 0.5f));
 }
 
@@ -329,16 +371,31 @@ TEST_F(Mat4x4fTest, TestMat4x4fLerp) {
 TEST_F(Mat4x4fTest, TestMat4x4fTransform) {
     vne::math::Mat4x4f out;
 
-    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f::zAxis(), vne::math::Vec4f(1.0f, 2.0f, 3.0f, 1.0f)),
-              out.transform(vne::math::Vec3f::xAxis(), vne::math::Vec3f::yAxis(), vne::math::Vec3f::zAxis(), vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(),
+                                 vne::math::Vec4f::yAxis(),
+                                 vne::math::Vec4f::zAxis(),
+                                 vne::math::Vec4f(1.0f, 2.0f, 3.0f, 1.0f)),
+              out.transform(vne::math::Vec3f::xAxis(),
+                            vne::math::Vec3f::yAxis(),
+                            vne::math::Vec3f::zAxis(),
+                            vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
 
-    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f::zAxis(), vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f)),
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(),
+                                 vne::math::Vec4f::yAxis(),
+                                 vne::math::Vec4f::zAxis(),
+                                 vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f)),
               out.transform(vne::math::Vec3f::xAxis(), vne::math::Vec3f::yAxis(), vne::math::Vec3f::zAxis()));
 
-    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::zAxis(), vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f)),
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::zAxis(),
+                                 vne::math::Vec4f::xAxis(),
+                                 vne::math::Vec4f::yAxis(),
+                                 vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f)),
               out.transform(vne::math::Vec3f::forward(), vne::math::Vec3f::up()));
 
-    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f::zAxis(), vne::math::Vec4f(1.0f, 2.0f, 3.0f, 1.0f)),
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(),
+                                 vne::math::Vec4f::yAxis(),
+                                 vne::math::Vec4f::zAxis(),
+                                 vne::math::Vec4f(1.0f, 2.0f, 3.0f, 1.0f)),
               out.transform(vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
 }
 
@@ -440,9 +497,13 @@ TEST_F(Mat4x4fTest, TestMat4x4fRotate) {
     out[2][1] = static_cast<float>(SQRT_ONE_OVER_TWO);
     out[0][2] = -1.0f;
     out[3][3] = 1.0f;
-    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateXYZ(vne::math::quarterPi<float>(), vne::math::halfPi<float>(), vne::math::pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateXYZ(vne::math::quarterPi<float>(),
+                                                          vne::math::halfPi<float>(),
+                                                          vne::math::pi<float>())));
 
-    vne::math::Mat4x4f out1 = vne::math::Mat4x4f::rotateZYX(vne::math::quarterPi<float>(), vne::math::halfPi<float>(), vne::math::pi<float>());
+    vne::math::Mat4x4f out1 = vne::math::Mat4x4f::rotateZYX(vne::math::quarterPi<float>(),
+                                                            vne::math::halfPi<float>(),
+                                                            vne::math::pi<float>());
     EXPECT_FALSE(out.areSame(out1));
 }
 
@@ -527,8 +588,8 @@ TEST_F(Mat4x4fTest, TestMat4x4fPerspective) {
     vne::math::Mat4x4f out = vne::math::Mat4x4f::perspective(fovy, aspect_ratio, z_near, z_far);
 
     float tangent = vne::math::tan(fovy / 2.0f);  // tangent of half fovy
-    float height = z_near * tangent;         // half height of near plane
-    float width = height * aspect_ratio;     // half width of near plane
+    float height = z_near * tangent;              // half height of near plane
+    float width = height * aspect_ratio;          // half width of near plane
 
     float left = -width;
     float right = width;
@@ -611,7 +672,23 @@ TEST_F(Mat4x4fTest, TestMat4x4fOrtho) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fAddition) {
     vne::math::Mat4x4f result = mat + mat3;
-    EXPECT_EQ(result, vne::math::Mat4x4f(2.0f, 4.0f, 3.0f, 8.0f, 5.0f, 5.0f, 9.0f, 8.0f, 8.0f, 11.0f, 7.0f, 13.0f, 12.0f, 15.0f, 17.0f, 16.0f));
+    EXPECT_EQ(result,
+              vne::math::Mat4x4f(2.0f,
+                                 4.0f,
+                                 3.0f,
+                                 8.0f,
+                                 5.0f,
+                                 5.0f,
+                                 9.0f,
+                                 8.0f,
+                                 8.0f,
+                                 11.0f,
+                                 7.0f,
+                                 13.0f,
+                                 12.0f,
+                                 15.0f,
+                                 17.0f,
+                                 16.0f));
 }
 
 /**
@@ -621,7 +698,23 @@ TEST_F(Mat4x4fTest, TestMat4x4fAddition) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fAdditionAssignment) {
     mat += mat3;
-    EXPECT_EQ(mat, vne::math::Mat4x4f(2.0f, 4.0f, 3.0f, 8.0f, 5.0f, 5.0f, 9.0f, 8.0f, 8.0f, 11.0f, 7.0f, 13.0f, 12.0f, 15.0f, 17.0f, 16.0f));
+    EXPECT_EQ(mat,
+              vne::math::Mat4x4f(2.0f,
+                                 4.0f,
+                                 3.0f,
+                                 8.0f,
+                                 5.0f,
+                                 5.0f,
+                                 9.0f,
+                                 8.0f,
+                                 8.0f,
+                                 11.0f,
+                                 7.0f,
+                                 13.0f,
+                                 12.0f,
+                                 15.0f,
+                                 17.0f,
+                                 16.0f));
 }
 
 /**
@@ -631,7 +724,23 @@ TEST_F(Mat4x4fTest, TestMat4x4fAdditionAssignment) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fSubtraction) {
     vne::math::Mat4x4f result = mat - mat3;
-    EXPECT_EQ(result, vne::math::Mat4x4f(-2.0f, -2.0f, 1.0f, -2.0f, 3.0f, 5.0f, 3.0f, 6.0f, 8.0f, 7.0f, 13.0f, 9.0f, 12.0f, 11.0f, 11.0f, 14.0f));
+    EXPECT_EQ(result,
+              vne::math::Mat4x4f(-2.0f,
+                                 -2.0f,
+                                 1.0f,
+                                 -2.0f,
+                                 3.0f,
+                                 5.0f,
+                                 3.0f,
+                                 6.0f,
+                                 8.0f,
+                                 7.0f,
+                                 13.0f,
+                                 9.0f,
+                                 12.0f,
+                                 11.0f,
+                                 11.0f,
+                                 14.0f));
 }
 
 /**
@@ -641,7 +750,23 @@ TEST_F(Mat4x4fTest, TestMat4x4fSubtraction) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fSubtractionAssignment) {
     mat -= mat3;
-    EXPECT_EQ(mat, vne::math::Mat4x4f(-2.0f, -2.0f, 1.0f, -2.0f, 3.0f, 5.0f, 3.0f, 6.0f, 8.0f, 7.0f, 13.0f, 9.0f, 12.0f, 11.0f, 11.0f, 14.0f));
+    EXPECT_EQ(mat,
+              vne::math::Mat4x4f(-2.0f,
+                                 -2.0f,
+                                 1.0f,
+                                 -2.0f,
+                                 3.0f,
+                                 5.0f,
+                                 3.0f,
+                                 6.0f,
+                                 8.0f,
+                                 7.0f,
+                                 13.0f,
+                                 9.0f,
+                                 12.0f,
+                                 11.0f,
+                                 11.0f,
+                                 14.0f));
 }
 
 /**
@@ -652,7 +777,22 @@ TEST_F(Mat4x4fTest, TestMat4x4fSubtractionAssignment) {
 TEST_F(Mat4x4fTest, TestMat4x4fMultiplication) {
     vne::math::Mat4x4f result = mat * mat3;
     EXPECT_EQ(result,
-              vne::math::Mat4x4f(80.0f, 91.0f, 102.0f, 113.0f, 36.0f, 41.0f, 46.0f, 51.0f, 8.0f, 9.0f, 10.0f, 11.0f, 44.0f, 50.0f, 56.0f, 62.0f));
+              vne::math::Mat4x4f(80.0f,
+                                 91.0f,
+                                 102.0f,
+                                 113.0f,
+                                 36.0f,
+                                 41.0f,
+                                 46.0f,
+                                 51.0f,
+                                 8.0f,
+                                 9.0f,
+                                 10.0f,
+                                 11.0f,
+                                 44.0f,
+                                 50.0f,
+                                 56.0f,
+                                 62.0f));
 }
 
 /**
@@ -662,7 +802,23 @@ TEST_F(Mat4x4fTest, TestMat4x4fMultiplication) {
  */
 TEST_F(Mat4x4fTest, TestMat4x4fMultiplicationAssignment) {
     mat *= mat3;
-    EXPECT_EQ(mat, vne::math::Mat4x4f(80.0f, 91.0f, 102.0f, 113.0f, 36.0f, 41.0f, 46.0f, 51.0f, 8.0f, 9.0f, 10.0f, 11.0f, 44.0f, 50.0f, 56.0f, 62.0f));
+    EXPECT_EQ(mat,
+              vne::math::Mat4x4f(80.0f,
+                                 91.0f,
+                                 102.0f,
+                                 113.0f,
+                                 36.0f,
+                                 41.0f,
+                                 46.0f,
+                                 51.0f,
+                                 8.0f,
+                                 9.0f,
+                                 10.0f,
+                                 11.0f,
+                                 44.0f,
+                                 50.0f,
+                                 56.0f,
+                                 62.0f));
 }
 
 /**
@@ -680,10 +836,27 @@ TEST_F(Mat4x4fTest, TestMat4x4fAssignment) {
  * mat * scalar
  */
 TEST_F(Mat4x4fTest, TestMat4x4fMultiplicationByScalar) {
-    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::
+        Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
     vne::math::Mat4x4f result = local_mat * scalar;
-    EXPECT_EQ(result, vne::math::Mat4x4f(0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f));
+    EXPECT_EQ(result,
+              vne::math::Mat4x4f(0.0f,
+                                 2.0f,
+                                 4.0f,
+                                 6.0f,
+                                 8.0f,
+                                 10.0f,
+                                 12.0f,
+                                 14.0f,
+                                 16.0f,
+                                 18.0f,
+                                 20.0f,
+                                 22.0f,
+                                 24.0f,
+                                 26.0f,
+                                 28.0f,
+                                 30.0f));
 }
 
 /**
@@ -692,10 +865,27 @@ TEST_F(Mat4x4fTest, TestMat4x4fMultiplicationByScalar) {
  * mat *= scalar
  */
 TEST_F(Mat4x4fTest, TestMat4x4fMultiplicationAssignmentByScalar) {
-    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::
+        Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
     local_mat *= scalar;
-    EXPECT_EQ(local_mat, vne::math::Mat4x4f(0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f));
+    EXPECT_EQ(local_mat,
+              vne::math::Mat4x4f(0.0f,
+                                 2.0f,
+                                 4.0f,
+                                 6.0f,
+                                 8.0f,
+                                 10.0f,
+                                 12.0f,
+                                 14.0f,
+                                 16.0f,
+                                 18.0f,
+                                 20.0f,
+                                 22.0f,
+                                 24.0f,
+                                 26.0f,
+                                 28.0f,
+                                 30.0f));
 }
 
 /**
@@ -704,10 +894,14 @@ TEST_F(Mat4x4fTest, TestMat4x4fMultiplicationAssignmentByScalar) {
  * mat / scalar
  */
 TEST_F(Mat4x4fTest, TestMat4x4fDivisionByScalar) {
-    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::
+        Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
     vne::math::Mat4x4f result = local_mat / scalar;
-    EXPECT_EQ(result, vne::math::Mat4x4f(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
+    EXPECT_EQ(
+        result,
+        vne::math::
+            Mat4x4f(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
 }
 
 /**
@@ -716,8 +910,12 @@ TEST_F(Mat4x4fTest, TestMat4x4fDivisionByScalar) {
  * mat /= scalar
  */
 TEST_F(Mat4x4fTest, TestMat4x4fDivisionAssignmentByScalar) {
-    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::
+        Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
     local_mat /= scalar;
-    EXPECT_EQ(local_mat, vne::math::Mat4x4f(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
+    EXPECT_EQ(
+        local_mat,
+        vne::math::
+            Mat4x4f(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
 }

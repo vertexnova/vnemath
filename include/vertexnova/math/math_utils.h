@@ -788,116 +788,331 @@ constexpr float FLOAT_MAX = vne::math::kFloatMax;
 constexpr double DOUBLE_MAX = vne::math::kDoubleMax;
 
 // Template functions
-template<typename T> inline constexpr T Pi() noexcept { return vne::math::pi<T>(); }
-template<typename T> inline constexpr T TwoPi() noexcept { return vne::math::twoPi<T>(); }
-template<typename T> inline constexpr T HalfPi() noexcept { return vne::math::halfPi<T>(); }
-template<typename T> inline constexpr T QuarterPi() noexcept { return vne::math::quarterPi<T>(); }
-template<typename T> inline constexpr T OneOverPi() noexcept { return vne::math::oneOverPi<T>(); }
-template<typename T> inline constexpr T OneOverTwoPi() noexcept { return vne::math::oneOverTwoPi<T>(); }
-template<typename T> inline constexpr T RadToDeg(const T& angle) noexcept { return vne::math::radToDeg(angle); }
-template<typename T> inline constexpr T DegToRad(const T& angle) noexcept { return vne::math::degToRad(angle); }
-template<typename T> inline constexpr T GetEps() noexcept { return vne::math::getEps<T>(); }
+template<typename T>
+inline constexpr T Pi() noexcept {
+    return vne::math::pi<T>();
+}
+template<typename T>
+inline constexpr T TwoPi() noexcept {
+    return vne::math::twoPi<T>();
+}
+template<typename T>
+inline constexpr T HalfPi() noexcept {
+    return vne::math::halfPi<T>();
+}
+template<typename T>
+inline constexpr T QuarterPi() noexcept {
+    return vne::math::quarterPi<T>();
+}
+template<typename T>
+inline constexpr T OneOverPi() noexcept {
+    return vne::math::oneOverPi<T>();
+}
+template<typename T>
+inline constexpr T OneOverTwoPi() noexcept {
+    return vne::math::oneOverTwoPi<T>();
+}
+template<typename T>
+inline constexpr T RadToDeg(const T& angle) noexcept {
+    return vne::math::radToDeg(angle);
+}
+template<typename T>
+inline constexpr T DegToRad(const T& angle) noexcept {
+    return vne::math::degToRad(angle);
+}
+template<typename T>
+inline constexpr T GetEps() noexcept {
+    return vne::math::getEps<T>();
+}
 
 // Basic operations
-template<typename T> inline constexpr T Abs(const T& val) { return vne::math::abs(val); }
-template<typename T> inline constexpr T Sign(const T& val, T eps = static_cast<T>(0)) { return vne::math::sign(val, eps); }
-template<typename T> inline constexpr T Min(const T& val1, const T& val2) { return vne::math::min(val1, val2); }
-template<typename T> inline constexpr T Max(const T& val1, const T& val2) { return vne::math::max(val1, val2); }
-template<typename T> inline constexpr T Min(const T& val1, const T& val2, const T& val3) { return vne::math::min(val1, val2, val3); }
-template<typename T> inline constexpr T Max(const T& val1, const T& val2, const T& val3) { return vne::math::max(val1, val2, val3); }
-template<typename T> inline constexpr T Clamp(const T& val, const T& lower, const T& upper) { return vne::math::clamp(val, lower, upper); }
-template<typename T> inline constexpr T Saturate(const T& val) { return vne::math::saturate(val); }
-template<typename T> inline void ArrangeMinMax(T* val1, T* val2) { vne::math::arrangeMinMax(val1, val2); }
-template<typename T> inline bool IsInBetween(T val, T min_val, T max_val, T eps = static_cast<T>(0)) { return vne::math::isInBetween(val, min_val, max_val, eps); }
-template<typename T> inline constexpr T Square(const T& val) { return vne::math::square(val); }
-template<typename T> inline constexpr T Cube(const T& val) { return vne::math::cube(val); }
-template<typename T> inline constexpr T Pow(const T& base, T exponent) { return vne::math::pow(base, exponent); }
-template<typename T> inline constexpr T Sqrt(const T& val) { return vne::math::sqrt(val); }
-template<typename T> inline constexpr T InvSqrt(const T& val) { return vne::math::invSqrt(val); }
+template<typename T>
+inline constexpr T Abs(const T& val) {
+    return vne::math::abs(val);
+}
+template<typename T>
+inline constexpr T Sign(const T& val, T eps = static_cast<T>(0)) {
+    return vne::math::sign(val, eps);
+}
+template<typename T>
+inline constexpr T Min(const T& val1, const T& val2) {
+    return vne::math::min(val1, val2);
+}
+template<typename T>
+inline constexpr T Max(const T& val1, const T& val2) {
+    return vne::math::max(val1, val2);
+}
+template<typename T>
+inline constexpr T Min(const T& val1, const T& val2, const T& val3) {
+    return vne::math::min(val1, val2, val3);
+}
+template<typename T>
+inline constexpr T Max(const T& val1, const T& val2, const T& val3) {
+    return vne::math::max(val1, val2, val3);
+}
+template<typename T>
+inline constexpr T Clamp(const T& val, const T& lower, const T& upper) {
+    return vne::math::clamp(val, lower, upper);
+}
+template<typename T>
+inline constexpr T Saturate(const T& val) {
+    return vne::math::saturate(val);
+}
+template<typename T>
+inline void ArrangeMinMax(T* val1, T* val2) {
+    vne::math::arrangeMinMax(val1, val2);
+}
+template<typename T>
+inline bool IsInBetween(T val, T min_val, T max_val, T eps = static_cast<T>(0)) {
+    return vne::math::isInBetween(val, min_val, max_val, eps);
+}
+template<typename T>
+inline constexpr T Square(const T& val) {
+    return vne::math::square(val);
+}
+template<typename T>
+inline constexpr T Cube(const T& val) {
+    return vne::math::cube(val);
+}
+template<typename T>
+inline constexpr T Pow(const T& base, T exponent) {
+    return vne::math::pow(base, exponent);
+}
+template<typename T>
+inline constexpr T Sqrt(const T& val) {
+    return vne::math::sqrt(val);
+}
+template<typename T>
+inline constexpr T InvSqrt(const T& val) {
+    return vne::math::invSqrt(val);
+}
 
 // AreSame and IsZero
-inline bool AreSame(float val1, float val2, float eps = FLOAT_EPSILON) { return vne::math::areSame(val1, val2, eps); }
-inline bool AreSame(double val1, double val2, double eps = DOUBLE_EPSILON) { return vne::math::areSame(val1, val2, eps); }
-inline constexpr bool AreSame(int val1, int val2, int eps = 0) { return vne::math::areSame(val1, val2, eps); }
-inline bool IsZero(float val, float eps = FLOAT_EPSILON) { return vne::math::isZero(val, eps); }
-inline bool IsZero(double val, double eps = DOUBLE_EPSILON) { return vne::math::isZero(val, eps); }
-inline constexpr bool IsZero(int val, int eps = 0) { return vne::math::isZero(val, eps); }
+inline bool AreSame(float val1, float val2, float eps = FLOAT_EPSILON) {
+    return vne::math::areSame(val1, val2, eps);
+}
+inline bool AreSame(double val1, double val2, double eps = DOUBLE_EPSILON) {
+    return vne::math::areSame(val1, val2, eps);
+}
+inline constexpr bool AreSame(int val1, int val2, int eps = 0) {
+    return vne::math::areSame(val1, val2, eps);
+}
+inline bool IsZero(float val, float eps = FLOAT_EPSILON) {
+    return vne::math::isZero(val, eps);
+}
+inline bool IsZero(double val, double eps = DOUBLE_EPSILON) {
+    return vne::math::isZero(val, eps);
+}
+inline constexpr bool IsZero(int val, int eps = 0) {
+    return vne::math::isZero(val, eps);
+}
 
 // Interpolation
-inline int MidPoint(const int a, const int b) { return vne::math::midPoint(a, b); }
-inline float MidPoint(const float a, const float b) { return vne::math::midPoint(a, b); }
-inline double MidPoint(const double a, const double b) { return vne::math::midPoint(a, b); }
-template<typename T, typename U> inline constexpr T Lerp(const T& a, const T& b, const U& t) { return vne::math::lerp(a, b, t); }
-template<typename T, typename U> inline constexpr T BiLerp(const T& c00, const T& c10, const T& c01, const T& c11, const U& tx, const U& ty) { return vne::math::biLerp(c00, c10, c01, c11, tx, ty); }
+inline int MidPoint(const int a, const int b) {
+    return vne::math::midPoint(a, b);
+}
+inline float MidPoint(const float a, const float b) {
+    return vne::math::midPoint(a, b);
+}
+inline double MidPoint(const double a, const double b) {
+    return vne::math::midPoint(a, b);
+}
+template<typename T, typename U>
+inline constexpr T Lerp(const T& a, const T& b, const U& t) {
+    return vne::math::lerp(a, b, t);
+}
+template<typename T, typename U>
+inline constexpr T BiLerp(const T& c00, const T& c10, const T& c01, const T& c11, const U& tx, const U& ty) {
+    return vne::math::biLerp(c00, c10, c01, c11, tx, ty);
+}
 
 // Rounding
-template<typename T> inline T Floor(T val) { return vne::math::floor(val); }
-template<typename T> inline T Ceil(T val) { return vne::math::ceil(val); }
-template<typename T> inline T Trunc(T val) { return vne::math::trunc(val); }
-template<typename T> inline T Round(T val) { return vne::math::round(val); }
-template<typename T> inline T RoundMultipleOf(T val, T multiple) { return vne::math::roundMultipleOf(val, multiple); }
-constexpr inline int FloatToInt(float val) { return vne::math::floatToInt(val); }
-inline float Modf(float x, float* iptr) { return vne::math::modf(x, iptr); }
-inline double Modf(double x, double* iptr) { return vne::math::modf(x, iptr); }
+template<typename T>
+inline T Floor(T val) {
+    return vne::math::floor(val);
+}
+template<typename T>
+inline T Ceil(T val) {
+    return vne::math::ceil(val);
+}
+template<typename T>
+inline T Trunc(T val) {
+    return vne::math::trunc(val);
+}
+template<typename T>
+inline T Round(T val) {
+    return vne::math::round(val);
+}
+template<typename T>
+inline T RoundMultipleOf(T val, T multiple) {
+    return vne::math::roundMultipleOf(val, multiple);
+}
+constexpr inline int FloatToInt(float val) {
+    return vne::math::floatToInt(val);
+}
+inline float Modf(float x, float* iptr) {
+    return vne::math::modf(x, iptr);
+}
+inline double Modf(double x, double* iptr) {
+    return vne::math::modf(x, iptr);
+}
 
 // Classification
-inline bool IsNaN(float x) { return vne::math::isNaN(x); }
-inline bool IsNaN(double x) { return vne::math::isNaN(x); }
-inline bool IsInf(float x) { return vne::math::isInf(x); }
-inline bool IsInf(double x) { return vne::math::isInf(x); }
-inline bool IsNormal(float x) { return vne::math::isNormal(x); }
-inline bool IsNormal(double x) { return vne::math::isNormal(x); }
-inline bool IsFinite(float x) { return vne::math::isFinite(x); }
-inline bool IsFinite(double x) { return vne::math::isFinite(x); }
+inline bool IsNaN(float x) {
+    return vne::math::isNaN(x);
+}
+inline bool IsNaN(double x) {
+    return vne::math::isNaN(x);
+}
+inline bool IsInf(float x) {
+    return vne::math::isInf(x);
+}
+inline bool IsInf(double x) {
+    return vne::math::isInf(x);
+}
+inline bool IsNormal(float x) {
+    return vne::math::isNormal(x);
+}
+inline bool IsNormal(double x) {
+    return vne::math::isNormal(x);
+}
+inline bool IsFinite(float x) {
+    return vne::math::isFinite(x);
+}
+inline bool IsFinite(double x) {
+    return vne::math::isFinite(x);
+}
 
 // Exponential
-inline float Exp(float x) { return vne::math::exp(x); }
-inline double Exp(double x) { return vne::math::exp(x); }
-inline double Exp(int x) { return vne::math::exp(x); }
-inline float Log(float x) { return vne::math::log(x); }
-inline double Log(double x) { return vne::math::log(x); }
-inline double Log(int x) { return vne::math::log(x); }
-inline float Log2(float x) { return vne::math::log2(x); }
-inline double Log2(double x) { return vne::math::log2(x); }
-inline double Log2(int x) { return vne::math::log2(x); }
-inline float Log10(float x) { return vne::math::log10(x); }
-inline double Log10(double x) { return vne::math::log10(x); }
-inline double Log10(int x) { return vne::math::log10(x); }
-inline float Logx(float x, float b) { return vne::math::logx(x, b); }
-inline double Logx(double x, double b) { return vne::math::logx(x, b); }
+inline float Exp(float x) {
+    return vne::math::exp(x);
+}
+inline double Exp(double x) {
+    return vne::math::exp(x);
+}
+inline double Exp(int x) {
+    return vne::math::exp(x);
+}
+inline float Log(float x) {
+    return vne::math::log(x);
+}
+inline double Log(double x) {
+    return vne::math::log(x);
+}
+inline double Log(int x) {
+    return vne::math::log(x);
+}
+inline float Log2(float x) {
+    return vne::math::log2(x);
+}
+inline double Log2(double x) {
+    return vne::math::log2(x);
+}
+inline double Log2(int x) {
+    return vne::math::log2(x);
+}
+inline float Log10(float x) {
+    return vne::math::log10(x);
+}
+inline double Log10(double x) {
+    return vne::math::log10(x);
+}
+inline double Log10(int x) {
+    return vne::math::log10(x);
+}
+inline float Logx(float x, float b) {
+    return vne::math::logx(x, b);
+}
+inline double Logx(double x, double b) {
+    return vne::math::logx(x, b);
+}
 
 // Trigonometric
-inline float Sin(float x) { return vne::math::sin(x); }
-inline double Sin(double x) { return vne::math::sin(x); }
-inline double Sin(int x) { return vne::math::sin(x); }
-inline float ASin(float x) { return vne::math::asin(x); }
-inline double ASin(double x) { return vne::math::asin(x); }
-inline float Sinh(float x) { return vne::math::sinh(x); }
-inline double Sinh(double x) { return vne::math::sinh(x); }
-inline float Cos(float x) { return vne::math::cos(x); }
-inline double Cos(double x) { return vne::math::cos(x); }
-inline double Cos(int x) { return vne::math::cos(x); }
-inline float ACos(float x) { return vne::math::acos(x); }
-inline double ACos(double x) { return vne::math::acos(x); }
-inline float Cosh(float x) { return vne::math::cosh(x); }
-inline double Cosh(double x) { return vne::math::cosh(x); }
-inline void SinCos(float x, float& s, float& c) { vne::math::sinCos(x, s, c); }
-inline void SinCos(double x, double& s, double& c) { vne::math::sinCos(x, s, c); }
-inline float Tan(float x) { return vne::math::tan(x); }
-inline double Tan(double x) { return vne::math::tan(x); }
-inline double Tan(int x) { return vne::math::tan(x); }
-inline float ATan(float x) { return vne::math::atan(x); }
-inline double ATan(double x) { return vne::math::atan(x); }
-inline float ATan2(float y, float x) { return vne::math::atan2(y, x); }
-inline double ATan2(double y, double x) { return vne::math::atan2(y, x); }
-inline float Tanh(float x) { return vne::math::tanh(x); }
-inline double Tanh(double x) { return vne::math::tanh(x); }
+inline float Sin(float x) {
+    return vne::math::sin(x);
+}
+inline double Sin(double x) {
+    return vne::math::sin(x);
+}
+inline double Sin(int x) {
+    return vne::math::sin(x);
+}
+inline float ASin(float x) {
+    return vne::math::asin(x);
+}
+inline double ASin(double x) {
+    return vne::math::asin(x);
+}
+inline float Sinh(float x) {
+    return vne::math::sinh(x);
+}
+inline double Sinh(double x) {
+    return vne::math::sinh(x);
+}
+inline float Cos(float x) {
+    return vne::math::cos(x);
+}
+inline double Cos(double x) {
+    return vne::math::cos(x);
+}
+inline double Cos(int x) {
+    return vne::math::cos(x);
+}
+inline float ACos(float x) {
+    return vne::math::acos(x);
+}
+inline double ACos(double x) {
+    return vne::math::acos(x);
+}
+inline float Cosh(float x) {
+    return vne::math::cosh(x);
+}
+inline double Cosh(double x) {
+    return vne::math::cosh(x);
+}
+inline void SinCos(float x, float& s, float& c) {
+    vne::math::sinCos(x, s, c);
+}
+inline void SinCos(double x, double& s, double& c) {
+    vne::math::sinCos(x, s, c);
+}
+inline float Tan(float x) {
+    return vne::math::tan(x);
+}
+inline double Tan(double x) {
+    return vne::math::tan(x);
+}
+inline double Tan(int x) {
+    return vne::math::tan(x);
+}
+inline float ATan(float x) {
+    return vne::math::atan(x);
+}
+inline double ATan(double x) {
+    return vne::math::atan(x);
+}
+inline float ATan2(float y, float x) {
+    return vne::math::atan2(y, x);
+}
+inline double ATan2(double y, double x) {
+    return vne::math::atan2(y, x);
+}
+inline float Tanh(float x) {
+    return vne::math::tanh(x);
+}
+inline double Tanh(double x) {
+    return vne::math::tanh(x);
+}
 
 // Legacy template aliases
 template<typename T>
-inline constexpr bool are_same(const T& val1, const T& val2, T eps) { return vne::math::areSameImpl(val1, val2, eps); }
+inline constexpr bool are_same(const T& val1, const T& val2, T eps) {
+    return vne::math::areSameImpl(val1, val2, eps);
+}
 template<typename T>
-inline constexpr bool is_zero(const T& val, T eps = static_cast<T>(0)) { return vne::math::isZeroImpl(val, eps); }
+inline constexpr bool is_zero(const T& val, T eps = static_cast<T>(0)) {
+    return vne::math::isZeroImpl(val, eps);
+}
 
 }  // namespace Math
 }  // namespace VNE

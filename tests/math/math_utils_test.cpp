@@ -197,7 +197,10 @@ TEST_F(MathUtilsTest, TestMathIsInBetween) {
     ASSERT_TRUE(vne::math::isInBetween(2, 1, 3));
     ASSERT_TRUE(vne::math::isInBetween(2, 3, 1));
     ASSERT_TRUE(vne::math::isInBetween(0.0834f, 0.0f, 1.0f));
-    ASSERT_TRUE(vne::math::isInBetween(vne::math::kDoubleMax, vne::math::kDoubleMin, vne::math::kDoubleInfinity, vne::math::kDoubleEpsilon));
+    ASSERT_TRUE(vne::math::isInBetween(vne::math::kDoubleMax,
+                                       vne::math::kDoubleMin,
+                                       vne::math::kDoubleInfinity,
+                                       vne::math::kDoubleEpsilon));
 }
 
 /**
@@ -318,7 +321,8 @@ TEST_F(MathUtilsTest, TestMathAreSame) {
     // Test for the unsigned long
     unsigned long val1_ul = 29873ul;
     unsigned long val2_ul = static_cast<unsigned long>(-22);  // This will result in a large positive number
-    unsigned long val3_ul = 4294967274ul;                     // This is the unsigned long equivalent of -22 when using 32-bit unsigned long
+    unsigned long val3_ul =
+        4294967274ul;  // This is the unsigned long equivalent of -22 when using 32-bit unsigned long
 
     ASSERT_TRUE(vne::math::areSame(val1_ul, val1_ul));
     ASSERT_TRUE(vne::math::areSame(val1_ul, val1_ul, val3_ul));
@@ -359,12 +363,16 @@ TEST_F(MathUtilsTest, TestMathMidPoint) {
     ASSERT_EQ(500000000, vne::math::midPoint(-1000000000, 2000000000));
     ASSERT_EQ(30, vne::math::midPoint(25, 35));
     ASSERT_FLOAT_EQ(30, vne::math::midPoint(25.0f, 35.0f));
-    ASSERT_FLOAT_EQ(vne::math::kFloatMin + vne::math::kFloatMax / 2, vne::math::midPoint(vne::math::kFloatMin, vne::math::kFloatMax));
-    ASSERT_FLOAT_EQ(vne::math::kFloatMin + vne::math::kFloatMax / 2, vne::math::midPoint(vne::math::kFloatMax, vne::math::kFloatMin));
+    ASSERT_FLOAT_EQ(vne::math::kFloatMin + vne::math::kFloatMax / 2,
+                    vne::math::midPoint(vne::math::kFloatMin, vne::math::kFloatMax));
+    ASSERT_FLOAT_EQ(vne::math::kFloatMin + vne::math::kFloatMax / 2,
+                    vne::math::midPoint(vne::math::kFloatMax, vne::math::kFloatMin));
     ASSERT_FLOAT_EQ(vne::math::kFloatMax, vne::math::midPoint(vne::math::kFloatMax, vne::math::kFloatMax));
     ASSERT_DOUBLE_EQ(30, vne::math::midPoint(25.0, 35.0));
-    ASSERT_DOUBLE_EQ(vne::math::kDoubleMin + vne::math::kDoubleMax / 2, vne::math::midPoint(vne::math::kDoubleMin, vne::math::kDoubleMax));
-    ASSERT_DOUBLE_EQ(vne::math::kDoubleMin + vne::math::kDoubleMax / 2, vne::math::midPoint(vne::math::kDoubleMax, vne::math::kDoubleMin));
+    ASSERT_DOUBLE_EQ(vne::math::kDoubleMin + vne::math::kDoubleMax / 2,
+                     vne::math::midPoint(vne::math::kDoubleMin, vne::math::kDoubleMax));
+    ASSERT_DOUBLE_EQ(vne::math::kDoubleMin + vne::math::kDoubleMax / 2,
+                     vne::math::midPoint(vne::math::kDoubleMax, vne::math::kDoubleMin));
     ASSERT_DOUBLE_EQ(vne::math::kDoubleMax, vne::math::midPoint(vne::math::kDoubleMax, vne::math::kDoubleMax));
 }
 

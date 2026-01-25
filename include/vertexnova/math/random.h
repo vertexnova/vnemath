@@ -67,7 +67,8 @@ class Random<T, false> {
     Random(const Random<T>& rhs) { setParam(rhs.getParam()); }
 
     Random& operator=(const Random<T>& rhs) {
-        if (&rhs == this) return *this;
+        if (&rhs == this)
+            return *this;
         setParam(rhs.getParam());
         return *this;
     }
@@ -137,7 +138,8 @@ class Random<T, true> {
     Random(const Random<T>& rhs) { setParam(rhs.getParam()); }
 
     Random& operator=(const Random<T>& rhs) {
-        if (&rhs == this) return *this;
+        if (&rhs == this)
+            return *this;
         setParam(rhs.getParam());
         return *this;
     }

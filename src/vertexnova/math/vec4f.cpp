@@ -22,7 +22,6 @@
 
 namespace vne::math {
 
-
 // Constructors
 // Vec4f::Vec4f(const Plane_C& plane)
 //     : glm::vec4(plane.normal, plane.d) {}
@@ -131,7 +130,8 @@ void Vec4f::decomposeVec(const Vec4f& v, Vec4f& proj, Vec4f& perp) const {
 
 //------------------------------------------------------------------------------
 bool Vec4f::areSame(const Vec4f& v, float eps) const {
-    return vne::math::areSame(x, v.x, eps) && vne::math::areSame(y, v.y, eps) && vne::math::areSame(z, v.z, eps) && vne::math::areSame(w, v.w, eps);
+    return vne::math::areSame(x, v.x, eps) && vne::math::areSame(y, v.y, eps) && vne::math::areSame(z, v.z, eps)
+           && vne::math::areSame(w, v.w, eps);
 }
 
 //------------------------------------------------------------------------------
@@ -141,7 +141,8 @@ bool Vec4f::areAligned(const Vec4f& v, float eps) const {
 
 //------------------------------------------------------------------------------
 bool Vec4f::isZero(float eps) const {
-    return vne::math::isZero(x, eps) && vne::math::isZero(y, eps) && vne::math::isZero(z, eps) && vne::math::isZero(w, eps);
+    return vne::math::isZero(x, eps) && vne::math::isZero(y, eps) && vne::math::isZero(z, eps)
+           && vne::math::isZero(w, eps);
 }
 
 //------------------------------------------------------------------------------
@@ -162,12 +163,18 @@ float Vec4f::angle(const Vec4f& p1, const Vec4f& p2) const {
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::midPoint(const Vec4f& point) const {
-    return Vec4f(vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y), vne::math::midPoint(z, point.z), vne::math::midPoint(w, point.w));
+    return Vec4f(vne::math::midPoint(x, point.x),
+                 vne::math::midPoint(y, point.y),
+                 vne::math::midPoint(z, point.z),
+                 vne::math::midPoint(w, point.w));
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::lerp(const Vec4f& point, float factor) const {
-    return Vec4f(vne::math::lerp(x, point.x, factor), vne::math::lerp(y, point.y, factor), vne::math::lerp(z, point.z, factor), vne::math::lerp(w, point.w, factor));
+    return Vec4f(vne::math::lerp(x, point.x, factor),
+                 vne::math::lerp(y, point.y, factor),
+                 vne::math::lerp(z, point.z, factor),
+                 vne::math::lerp(w, point.w, factor));
 }
 
 //------------------------------------------------------------------------------
@@ -421,6 +428,5 @@ Vec4f Vec4f::lerp(const Vec4f& p1, const Vec4f& p2, float factor) {
     out.w = vne::math::lerp(p1.w, p2.w, factor);
     return out;
 }
-
 
 }  // namespace vne::math

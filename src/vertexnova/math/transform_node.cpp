@@ -14,7 +14,6 @@
 
 namespace vne::math {
 
-
 //------------------------------------------------------------------------------
 TransformNode::TransformNode()
     : local_transform_(Mat4x4f::identity())
@@ -121,6 +120,5 @@ void TransformNode::updateRootTransform() {
 void TransformNode::composeTransform(const Mat4x4f& transform) {
     local_transform_ = transform * local_transform_;
 }
-
 
 }  // namespace vne::math
