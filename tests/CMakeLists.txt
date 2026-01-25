@@ -22,9 +22,9 @@ endif()
 # Setup Google Test
 #==============================================================================
 
-# Use external googletest submodule (v1.14.0)
+# Use external googletest submodule (v1.17.0)
 if(EXISTS "${CMAKE_SOURCE_DIR}/external/googletest/CMakeLists.txt")
-    message(STATUS "Using Google Test from external/googletest (v1.14.0)")
+    message(STATUS "Using Google Test from external/googletest (v1.17.0)")
     add_subdirectory(${CMAKE_SOURCE_DIR}/external/googletest ${CMAKE_BINARY_DIR}/external/googletest)
     include(GoogleTest)
     set(GTEST_LIBRARIES gtest_main gmock)
@@ -46,7 +46,7 @@ else()
         FetchContent_Declare(
             googletest
             GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG        v1.14.0
+            GIT_TAG        v1.17.0
         )
         FetchContent_MakeAvailable(googletest)
         set(GTEST_LIBRARIES gtest_main gmock)

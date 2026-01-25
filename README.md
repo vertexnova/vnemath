@@ -217,8 +217,8 @@ static_assert(isStd140Compatible<MyUniform>());
 
 | Category | Dependency | Version | Description |
 |----------|------------|---------|-------------|
-| External | GLM | 1.0.1 | OpenGL Mathematics library |
-| External | Google Test | 1.14.0 | Unit testing framework |
+| External | GLM | 1.1.0 | OpenGL Mathematics library |
+| External | Google Test | 1.17.0 | Unit testing framework |
 | Libs | VertexNova Common | 1.0.0 | Common utilities and macros |
 | Libs | VertexNova Logging | 1.0.0 | Logging library |
 
