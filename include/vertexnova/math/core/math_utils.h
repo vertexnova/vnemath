@@ -32,7 +32,7 @@
  */
 
 // Project includes
-#include "constants.h"
+#include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/types.h"
 #include "vertexnova/common/macros.h"
 

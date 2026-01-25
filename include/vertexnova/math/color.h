@@ -15,7 +15,7 @@
  * @brief Defines the Color class for RGBA color representation.
  */
 
-#include "constants.h"
+#include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/vec.h"
 
 namespace vne::math {

@@ -16,7 +16,7 @@
  */
 
 // Project includes
-#include "vertexnova/math/constants.h"
+#include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/mat.h"
 #include "vertexnova/math/core/vec.h"
 

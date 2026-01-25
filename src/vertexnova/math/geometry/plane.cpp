@@ -13,7 +13,7 @@
 #include "vertexnova/math/geometry/plane.h"
 
 #include "vertexnova/common/macros.h"
-#include "vertexnova/math/math_utils.h"
+#include "vertexnova/math/core/math_utils.h"
 
 namespace vne::math {
 

@@ -21,8 +21,8 @@
 #include "core/core.h"
 
 // Math module includes
-#include "constants.h"
-#include "math_utils.h"
+#include "vertexnova/math/core/constants.h"
+#include "vertexnova/math/core/math_utils.h"
 #include "color.h"
 #include "transform_node.h"
 #include "random.h"

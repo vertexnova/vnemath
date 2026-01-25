@@ -12,7 +12,7 @@
 // Project includes
 #include "vertexnova/math/geometry/ray.h"
 
-#include "vertexnova/math/math_utils.h"
+#include "vertexnova/math/core/math_utils.h"
 
 namespace vne::math {
 

@@ -13,7 +13,7 @@
 #include <gtest/gtest.h>
 
 // Project headers
-#include "vertexnova/math/math_utils.h"
+#include "vertexnova/math/core/math_utils.h"
 
 // Third-party headers
 #include <glm/glm.hpp>
