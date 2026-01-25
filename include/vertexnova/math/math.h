@@ -29,3 +29,6 @@
 #include "color.h"
 #include "transform_node.h"
 #include "random.h"
+
+// Geometry module includes
+#include "geometry/geometry.h"

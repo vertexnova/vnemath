@@ -30,6 +30,12 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/random.h
+    # Geometry headers
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/ray.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/plane.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/aabb.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/sphere.h
+    ${VNE_INCLUDE_DIR}/vertexnova/math/geometry/frustum.h
 )
 
 # Define source files
@@ -42,6 +48,12 @@ set(SOURCE_FILES
     vertexnova/math/quaternion.cpp
     vertexnova/math/color.cpp
     vertexnova/math/transform_node.cpp
+    # Geometry sources
+    vertexnova/math/geometry/ray.cpp
+    vertexnova/math/geometry/plane.cpp
+    vertexnova/math/geometry/aabb.cpp
+    vertexnova/math/geometry/sphere.cpp
+    vertexnova/math/geometry/frustum.cpp
 )
 
 #==============================================================================

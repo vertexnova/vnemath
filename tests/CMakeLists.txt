@@ -69,6 +69,12 @@ set(TEST_SOURCES
     math/transform_node_test.cpp
     math/random_test.cpp
     math/math_utils_test.cpp
+    # Geometry tests
+    math/geometry/ray_test.cpp
+    math/geometry/plane_test.cpp
+    math/geometry/aabb_test.cpp
+    math/geometry/sphere_test.cpp
+    math/geometry/frustum_test.cpp
     main.cpp
 )
 
