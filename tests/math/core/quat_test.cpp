@@ -210,8 +210,7 @@ TEST_F(QuatTest, AngleAndAxis) {
 
 TEST_F(QuatTest, GetAngleAndAxis) {
     float angle = degToRad(60.0f);
-    Vec3f axis(0.756477f, 0.147957f, -0.635297f);
-    axis.normalize();
+    Vec3f axis = Vec3f(0.756477f, 0.147957f, -0.635297f).normalized();
 
     Quatf q;
     q.setAngleAndAxis(angle, axis);
