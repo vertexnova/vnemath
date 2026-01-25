@@ -171,12 +171,12 @@ float Color::A() const {
 
 //------------------------------------------------------------------------------
 Vec3f_C Color::RGB() const {
-    return Vec3f_C(r, b, g);
+    return {r, b, g};
 }
 
 //------------------------------------------------------------------------------
 Vec4f_C Color::RGBA() const {
-    return Vec4f_C(r, g, b, a);
+    return {r, g, b, a};
 }
 
 //------------------------------------------------------------------------------
@@ -371,13 +371,13 @@ float Color::operator[](uint32_t index) const {
 //------------------------------------------------------------------------------
 void Color::Clamp() {
     r = r < 0.0f || vne::math::isNaN(r) ? 0.0f : r;
-    r = r > 255.0f ? 1.0f : r > 1.0f ? r / 255.0f : r;
+    r = r > kColorByteMax ? 1.0f : r > 1.0f ? r / kColorByteMax : r;
 
     g = g < 0.0f || vne::math::isNaN(g) ? 0.0f : g;
-    g = g > 255.0f ? 1.0f : g > 1.0f ? g / 255.0f : g;
+    g = g > kColorByteMax ? 1.0f : g > 1.0f ? g / kColorByteMax : g;
 
     b = b < 0.0f || vne::math::isNaN(b) ? 0.0f : b;
-    b = b > 255.0f ? 1.0f : b > 1.0f ? b / 255.0f : b;
+    b = b > kColorByteMax ? 1.0f : b > 1.0f ? b / kColorByteMax : b;
 
     a = a < 0.0f || vne::math::isNaN(a) ? 0.0f : a;
     a = a > 1.0f ? 1.0f : a;

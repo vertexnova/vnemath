@@ -163,13 +163,13 @@ Mat3x3f& Mat3x3f::operator*=(float scalar) {
 
 //------------------------------------------------------------------------------
 Mat3x3f Mat3x3f::operator/(float scalar) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec3f zero denominator");
     return Mat3x3f(static_cast<glm::mat3>(*this) / scalar);
 }
 
 //------------------------------------------------------------------------------
 Mat3x3f& Mat3x3f::operator/=(float scalar) {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec3f zero denominator");
     *this = *this / scalar;
     return *this;
 }

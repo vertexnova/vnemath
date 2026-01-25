@@ -75,7 +75,7 @@ float Quaternion::getW() const {
 
 //------------------------------------------------------------------------------
 Vec3f Quaternion::getVector() const {
-    return Vec3f(x, y, z);
+    return {x, y, z};
 }
 
 //------------------------------------------------------------------------------
@@ -153,7 +153,7 @@ Vec3f Quaternion::getXAxis() const {
     float f_tyy = f_ty * y;
     float f_tzz = f_tz * z;
 
-    return Vec3f(1.0f - (f_tyy + f_tzz), f_txy + f_twz, f_txz - f_twy);
+    return {1.0f - (f_tyy + f_tzz), f_txy + f_twz, f_txz - f_twy};
 }
 
 //------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ Vec3f Quaternion::getYAxis() const {
     float f_txx = f_tx * x;
     float f_tzz = f_tz * z;
 
-    return Vec3f(f_txy - f_twz, 1.0f - (f_txx + f_tzz), f_tyz + f_twx);
+    return {f_txy - f_twz, 1.0f - (f_txx + f_tzz), f_tyz + f_twx};
 }
 
 //------------------------------------------------------------------------------
@@ -181,7 +181,7 @@ Vec3f Quaternion::getZAxis() const {
     float f_txx = f_tx * x;
     float f_tyy = f_ty * y;
 
-    return Vec3f(f_txz + f_twy, f_tyz - f_twx, 1.0f - (f_txx + f_tyy));
+    return {f_txz + f_twy, f_tyz - f_twx, 1.0f - (f_txx + f_tyy)};
 }
 
 //------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ Quaternion& Quaternion::operator*=(const float& scalar) {
 
 //------------------------------------------------------------------------------
 Quaternion& Quaternion::operator/=(const float& scalar) {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Quaternion zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Quaternion zero denominator");
     w /= scalar;
     x /= scalar;
     y /= scalar;
@@ -265,23 +265,23 @@ Quaternion& Quaternion::operator*=(const Quaternion& quat) {
 
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator*(const float& scalar) const {
-    return Quaternion(w * scalar, x * scalar, y * scalar, z * scalar);
+    return {w * scalar, x * scalar, y * scalar, z * scalar};
 }
 
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator/(const float& scalar) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Quaternion zero denominator");
-    return Quaternion(w / scalar, x / scalar, y / scalar, z / scalar);
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Quaternion zero denominator");
+    return {w / scalar, x / scalar, y / scalar, z / scalar};
 }
 
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator+(const Quaternion& quat) const {
-    return Quaternion(w + quat.w, x + quat.x, y + quat.y, z + quat.z);
+    return {w + quat.w, x + quat.x, y + quat.y, z + quat.z};
 }
 
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator-(const Quaternion& quat) const {
-    return Quaternion(w - quat.w, x - quat.x, y - quat.y, z - quat.z);
+    return {w - quat.w, x - quat.x, y - quat.y, z - quat.z};
 }
 
 //------------------------------------------------------------------------------
@@ -305,12 +305,12 @@ bool Quaternion::operator!=(const Quaternion& quat) const {
 
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator+() const {
-    return Quaternion(w, x, y, z);
+    return {w, x, y, z};
 }
 
 //------------------------------------------------------------------------------
 Quaternion Quaternion::operator-() const {
-    return Quaternion(-w, -x, -y, -z);
+    return {-w, -x, -y, -z};
 }
 
 //------------------------------------------------------------------------------
@@ -327,7 +327,7 @@ float Quaternion::operator[](uint32_t index) const {
 
 //------------------------------------------------------------------------------
 Quaternion operator*(float scalar, const Quaternion& quat) {
-    return Quaternion(quat.w * scalar, quat.x * scalar, quat.y * scalar, quat.z * scalar);
+    return {quat.w * scalar, quat.x * scalar, quat.y * scalar, quat.z * scalar};
 }
 
 //------------------------------------------------------------------------------

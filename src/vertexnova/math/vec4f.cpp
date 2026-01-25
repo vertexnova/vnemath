@@ -28,12 +28,12 @@ namespace vne::math {
 
 //------------------------------------------------------------------------------
 Vec3f Vec4f::xyz() {
-    return Vec3f(x, y, z);
+    return {x, y, z};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec4f::xy() {
-    return Vec2f(x, y);
+    return {x, y};
 }
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ const float* Vec4f::getPtr() const {
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::abs() const {
-    return Vec4f(glm::abs(x), glm::abs(y), glm::abs(z), glm::abs(w));
+    return {glm::abs(x), glm::abs(y), glm::abs(z), glm::abs(w)};
 }
 
 //------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ bool Vec4f::isNormalized(float eps) const {
 
 //------------------------------------------------------------------------------
 float Vec4f::angle(const Vec4f& v) const {
-    VNE_ASSERT_MSG((!this->isZero(1E-5f) && !v.isZero(1E-5f)), "Length of one vector is zero.");
+    VNE_ASSERT_MSG((!this->isZero(kZeroTolerance) && !v.isZero(kZeroTolerance)), "Length of one vector is zero.");
     return vne::math::acos(this->normalize().dot(v.normalize()));
 }
 
@@ -163,18 +163,18 @@ float Vec4f::angle(const Vec4f& p1, const Vec4f& p2) const {
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::midPoint(const Vec4f& point) const {
-    return Vec4f(vne::math::midPoint(x, point.x),
+    return {vne::math::midPoint(x, point.x),
                  vne::math::midPoint(y, point.y),
                  vne::math::midPoint(z, point.z),
-                 vne::math::midPoint(w, point.w));
+                 vne::math::midPoint(w, point.w)};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::lerp(const Vec4f& point, float factor) const {
-    return Vec4f(vne::math::lerp(x, point.x, factor),
+    return {vne::math::lerp(x, point.x, factor),
                  vne::math::lerp(y, point.y, factor),
                  vne::math::lerp(z, point.z, factor),
-                 vne::math::lerp(w, point.w, factor));
+                 vne::math::lerp(w, point.w, factor)};
 }
 
 //------------------------------------------------------------------------------
@@ -215,7 +215,7 @@ Vec4f& Vec4f::operator*=(float scalar) {
 
 //------------------------------------------------------------------------------
 Vec4f& Vec4f::operator/=(float scalar) {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec4f zero denominator");
     x /= scalar;
     y /= scalar;
     z /= scalar;
@@ -252,10 +252,10 @@ Vec4f& Vec4f::operator*=(const Vec4f& v) {
 
 //------------------------------------------------------------------------------
 Vec4f& Vec4f::operator/=(const Vec4f& v) {
-    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec4f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec4f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.z, 1E-5f), "Vec4f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.w, 1E-5f), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.z, kZeroTolerance), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.w, kZeroTolerance), "Vec4f zero denominator");
     x /= v.x;
     y /= v.y;
     z /= v.z;
@@ -265,47 +265,47 @@ Vec4f& Vec4f::operator/=(const Vec4f& v) {
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator+(float scalar) const {
-    return Vec4f(x + scalar, y + scalar, z + scalar, w + scalar);
+    return {x + scalar, y + scalar, z + scalar, w + scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator-(float scalar) const {
-    return Vec4f(x - scalar, y - scalar, z - scalar, w - scalar);
+    return {x - scalar, y - scalar, z - scalar, w - scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator*(float scalar) const {
-    return Vec4f(x * scalar, y * scalar, z * scalar, w * scalar);
+    return {x * scalar, y * scalar, z * scalar, w * scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator/(float scalar) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec4f zero denominator");
-    return Vec4f(x / scalar, y / scalar, z / scalar, w / scalar);
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec4f zero denominator");
+    return {x / scalar, y / scalar, z / scalar, w / scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator+(const Vec4f& v) const {
-    return Vec4f(x + v.x, y + v.y, z + v.z, w + v.w);
+    return {x + v.x, y + v.y, z + v.z, w + v.w};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator-(const Vec4f& v) const {
-    return Vec4f(x - v.x, y - v.y, z - v.z, w - v.w);
+    return {x - v.x, y - v.y, z - v.z, w - v.w};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator*(const Vec4f& v) const {
-    return Vec4f(x * v.x, y * v.y, z * v.z, w * v.w);
+    return {x * v.x, y * v.y, z * v.z, w * v.w};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator/(const Vec4f& v) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec4f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec4f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.z, 1E-5f), "Vec4f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.w, 1E-5f), "Vec4f zero denominator");
-    return Vec4f(x / v.x, y / v.y, z / v.z, w / v.w);
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.z, kZeroTolerance), "Vec4f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.w, kZeroTolerance), "Vec4f zero denominator");
+    return {x / v.x, y / v.y, z / v.z, w / v.w};
 }
 
 //------------------------------------------------------------------------------
@@ -320,7 +320,7 @@ bool Vec4f::operator!=(const Vec4f& v) const {
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::operator-() const {
-    return Vec4f(-x, -y, -z, -w);
+    return {-x, -y, -z, -w};
 }
 
 //------------------------------------------------------------------------------
@@ -363,37 +363,37 @@ uint32_t Vec4f::size() {
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::zero() {
-    return Vec4f(0.0f);
+    return {0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::one() {
-    return Vec4f(1.0f);
+    return {1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::xAxis() {
-    return Vec4f(1.0f, 0.0f, 0.0f, 0.0f);
+    return {1.0f, 0.0f, 0.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::yAxis() {
-    return Vec4f(0.0f, 1.0f, 0.0f, 0.0f);
+    return {0.0f, 1.0f, 0.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::zAxis() {
-    return Vec4f(0.0f, 0.0f, 1.0f, 0.0f);
+    return {0.0f, 0.0f, 1.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::wAxis() {
-    return Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+    return {0.0f, 0.0f, 0.0f, 1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec4f Vec4f::normalized(const Vec4f& v) {
-    Vec4f ret = v;
+    const Vec4f& ret = v;
     return ret.normalize();
 }
 
@@ -405,7 +405,7 @@ float Vec4f::distance(const Vec4f& v1, const Vec4f& v2) {
 
 //------------------------------------------------------------------------------
 float Vec4f::dot(const Vec4f& v1, const Vec4f& v2) {
-    Vec4f ret = v1;
+    const Vec4f& ret = v1;
     return ret.dot(v2);
 }
 

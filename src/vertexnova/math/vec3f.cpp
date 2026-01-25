@@ -28,7 +28,7 @@ namespace vne::math {
 
 //------------------------------------------------------------------------------
 Vec2f Vec3f::xy() {
-    return Vec2f(x, y);
+    return {x, y};
 }
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ const float* Vec3f::getPtr() const {
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::abs() const {
-    return Vec3f(glm::abs(x), glm::abs(y), glm::abs(z));
+    return {glm::abs(x), glm::abs(y), glm::abs(z)};
 }
 
 //------------------------------------------------------------------------------
@@ -132,8 +132,8 @@ void Vec3f::decomposeVec(const Vec3f& v, Vec3f& proj, Vec3f& perp) const {
 //------------------------------------------------------------------------------
 Vec3f Vec3f::perpendicular(const Vec3f& v) const {
     Vec3f perp = this->cross(v);
-    if (vne::math::isZero(perp.lengthSquare(), 1E-5f)) {
-        return Vec3f();
+    if (vne::math::isZero(perp.lengthSquare(), kZeroTolerance)) {
+        return {};
     } else {
         return perp.normalize();
     }
@@ -180,7 +180,7 @@ Vec3f& Vec3f::composeSpherical(float rho, float theta, float phi) {
 //------------------------------------------------------------------------------
 void Vec3f::decomposeSpherical(float& rho, float& theta, float& phi) const {
     rho = length();
-    VNE_ASSERT_MSG(!vne::math::isZero(rho, 1E-5f), "Length of the vector is zero.");
+    VNE_ASSERT_MSG(!vne::math::isZero(rho, kZeroTolerance), "Length of the vector is zero.");
     phi = vne::math::acos(z / rho);
     theta = vne::math::atan2(y, x);
     if (theta < 0) {
@@ -208,7 +208,7 @@ void Vec3f::decomposeCylindrical(float& radius, float& angle, float& height) con
 
 //------------------------------------------------------------------------------
 float Vec3f::angle(const Vec3f& v) const {
-    VNE_ASSERT_MSG((!this->isZero(1E-5f) && !v.isZero(1E-5f)), "Length of one vector is zero.");
+    VNE_ASSERT_MSG((!this->isZero(kZeroTolerance) && !v.isZero(kZeroTolerance)), "Length of one vector is zero.");
     return vne::math::atan2(this->cross(v).length(), this->dot(v));
 }
 
@@ -221,14 +221,14 @@ float Vec3f::angle(const Vec3f& p1, const Vec3f& p2) const {
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::midPoint(const Vec3f& point) const {
-    return Vec3f(vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y), vne::math::midPoint(z, point.z));
+    return {vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y), vne::math::midPoint(z, point.z)};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::lerp(Vec3f& point, float factor) const {
-    return Vec3f(vne::math::lerp(x, point.x, factor),
+    return {vne::math::lerp(x, point.x, factor),
                  vne::math::lerp(y, point.y, factor),
-                 vne::math::lerp(z, point.z, factor));
+                 vne::math::lerp(z, point.z, factor)};
 }
 
 //------------------------------------------------------------------------------
@@ -265,7 +265,7 @@ Vec3f& Vec3f::operator*=(float scalar) {
 
 //------------------------------------------------------------------------------
 Vec3f& Vec3f::operator/=(float scalar) {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec3f zero denominator");
     x /= scalar;
     y /= scalar;
     z /= scalar;
@@ -298,9 +298,9 @@ Vec3f& Vec3f::operator*=(const Vec3f& v) {
 
 //------------------------------------------------------------------------------
 Vec3f& Vec3f::operator/=(const Vec3f& v) {
-    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec3f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec3f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.z, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.z, kZeroTolerance), "Vec3f zero denominator");
     x /= v.x;
     y /= v.y;
     z /= v.z;
@@ -309,46 +309,46 @@ Vec3f& Vec3f::operator/=(const Vec3f& v) {
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator+(float scalar) const {
-    return Vec3f(x + scalar, y + scalar, z + scalar);
+    return {x + scalar, y + scalar, z + scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator-(float scalar) const {
-    return Vec3f(x - scalar, y - scalar, z - scalar);
+    return {x - scalar, y - scalar, z - scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator*(float scalar) const {
-    return Vec3f(x * scalar, y * scalar, z * scalar);
+    return {x * scalar, y * scalar, z * scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator/(float scalar) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
-    return Vec3f(x / scalar, y / scalar, z / scalar);
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec3f zero denominator");
+    return {x / scalar, y / scalar, z / scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator+(const Vec3f& v) const {
-    return Vec3f(x + v.x, y + v.y, z + v.z);
+    return {x + v.x, y + v.y, z + v.z};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator-(const Vec3f& v) const {
-    return Vec3f(x - v.x, y - v.y, z - v.z);
+    return {x - v.x, y - v.y, z - v.z};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator*(const Vec3f& v) const {
-    return Vec3f(x * v.x, y * v.y, z * v.z);
+    return {x * v.x, y * v.y, z * v.z};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator/(const Vec3f& v) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec3f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec3f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.z, 1E-5f), "Vec3f zero denominator");
-    return Vec3f(x / v.x, y / v.y, z / v.z);
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.z, kZeroTolerance), "Vec3f zero denominator");
+    return {x / v.x, y / v.y, z / v.z};
 }
 
 //------------------------------------------------------------------------------
@@ -373,7 +373,7 @@ bool Vec3f::operator<(const Vec3f& v) const {
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::operator-() const {
-    return Vec3f(-x, -y, -z);
+    return {-x, -y, -z};
 }
 
 //------------------------------------------------------------------------------
@@ -425,52 +425,52 @@ Vec3f Vec3f::one() {
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::xAxis() {
-    return Vec3f(1.0f, 0.0f, 0.0f);
+    return {1.0f, 0.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::yAxis() {
-    return Vec3f(0.0f, 1.0f, 0.0f);
+    return {0.0f, 1.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::zAxis() {
-    return Vec3f(0.0f, 0.0f, 1.0f);
+    return {0.0f, 0.0f, 1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::up() {
-    return Vec3f(0.0f, 1.0f, 0.0f);
+    return {0.0f, 1.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::down() {
-    return Vec3f(0.0f, -1.0f, 0.0f);
+    return {0.0f, -1.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::left() {
-    return Vec3f(-1.0f, 0.0f, 0.0f);
+    return {-1.0f, 0.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::right() {
-    return Vec3f(1.0f, 0.0f, 0.0f);
+    return {1.0f, 0.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::forward() {
-    return Vec3f(0.0f, 0.0f, 1.0f);
+    return {0.0f, 0.0f, 1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::backward() {
-    return Vec3f(0.0f, 0.0f, -1.0f);
+    return {0.0f, 0.0f, -1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::normalized(const Vec3f& v) {
-    Vec3f ret = v;
+    const Vec3f& ret = v;
     return ret.normalize();
 }
 
@@ -482,13 +482,13 @@ float Vec3f::distance(const Vec3f& v1, const Vec3f& v2) {
 
 //------------------------------------------------------------------------------
 float Vec3f::dot(const Vec3f& v1, const Vec3f& v2) {
-    Vec3f ret = v1;
+    const Vec3f& ret = v1;
     return ret.dot(v2);
 }
 
 //------------------------------------------------------------------------------
 Vec3f Vec3f::cross(const Vec3f& v1, const Vec3f& v2) {
-    Vec3f ret = v1;
+    const Vec3f& ret = v1;
     return ret.cross(v2);
 }
 

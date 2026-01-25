@@ -33,7 +33,7 @@ const float* Vec2f::getPtr() const {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::abs() const {
-    return Vec2f(glm::abs(x), glm::abs(y));
+    return {glm::abs(x), glm::abs(y)};
 }
 
 //------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ float Vec2f::lengthSquare() const {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::normalize() const {
-    VNE_ASSERT_MSG(!vne::math::isZero(lengthSquare(), 1E-5f), "Zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(lengthSquare(), kZeroTolerance), "Zero denominator");
     glm::vec2 norm = glm::normalize(glm::vec2(*this));
     return norm;
 }
@@ -122,7 +122,7 @@ void Vec2f::decomposeVec(const Vec2f& v, Vec2f& proj, Vec2f& perp) const {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::perpendicular() const {
-    return Vec2f(-y, x);
+    return {-y, x};
 }
 
 //------------------------------------------------------------------------------
@@ -189,12 +189,12 @@ float Vec2f::angle(const Vec2f& p1, const Vec2f& p2) const {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::midPoint(const Vec2f& point) const {
-    return Vec2f(vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y));
+    return {vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y)};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::lerp(Vec2f& point, float factor) const {
-    return Vec2f(vne::math::lerp(x, point.x, factor), vne::math::lerp(y, point.y, factor));
+    return {vne::math::lerp(x, point.x, factor), vne::math::lerp(y, point.y, factor)};
 }
 
 //------------------------------------------------------------------------------
@@ -227,7 +227,7 @@ Vec2f& Vec2f::operator*=(const float& scalar) {
 
 //------------------------------------------------------------------------------
 Vec2f& Vec2f::operator/=(const float& scalar) {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec2f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec2f zero denominator");
     x /= scalar;
     y /= scalar;
     return *this;
@@ -256,8 +256,8 @@ Vec2f& Vec2f::operator*=(const Vec2f& v) {
 
 //------------------------------------------------------------------------------
 Vec2f& Vec2f::operator/=(const Vec2f& v) {
-    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec2f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec2f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec2f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec2f zero denominator");
     x /= v.x;
     y /= v.y;
     return *this;
@@ -265,45 +265,45 @@ Vec2f& Vec2f::operator/=(const Vec2f& v) {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator+(const float& scalar) const {
-    return Vec2f(x + scalar, y + scalar);
+    return {x + scalar, y + scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator-(const float& scalar) const {
-    return Vec2f(x - scalar, y - scalar);
+    return {x - scalar, y - scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator*(const float& scalar) const {
-    return Vec2f(x * scalar, y * scalar);
+    return {x * scalar, y * scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator/(const float& scalar) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec2f zero denominator");
-    return Vec2f(x / scalar, y / scalar);
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec2f zero denominator");
+    return {x / scalar, y / scalar};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator+(const Vec2f& v) const {
-    return Vec2f(x + v.x, y + v.y);
+    return {x + v.x, y + v.y};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator-(const Vec2f& v) const {
-    return Vec2f(x - v.x, y - v.y);
+    return {x - v.x, y - v.y};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator*(const Vec2f& v) const {
-    return Vec2f(x * v.x, y * v.y);
+    return {x * v.x, y * v.y};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator/(const Vec2f& v) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec2f zero denominator");
-    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec2f zero denominator");
-    return Vec2f(x / v.x, y / v.y);
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec2f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec2f zero denominator");
+    return {x / v.x, y / v.y};
 }
 
 //------------------------------------------------------------------------------
@@ -328,7 +328,7 @@ bool Vec2f::operator<(const Vec2f& v) const {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::operator-() const {
-    return Vec2f(-x, -y);
+    return {-x, -y};
 }
 
 //------------------------------------------------------------------------------
@@ -368,27 +368,27 @@ uint32_t Vec2f::size() {
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::zero() {
-    return Vec2f();
+    return {};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::one() {
-    return Vec2f(1.0f, 1.0f);
+    return {1.0f, 1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::xAxis() {
-    return Vec2f(1.0f, 0.0f);
+    return {1.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::yAxis() {
-    return Vec2f(0.0f, 1.0f);
+    return {0.0f, 1.0f};
 }
 
 //------------------------------------------------------------------------------
 Vec2f Vec2f::normalized(const Vec2f& v) {
-    Vec2f ret = v;
+    const Vec2f& ret = v;
     return ret.normalize();
 }
 
@@ -400,13 +400,13 @@ float Vec2f::distance(const Vec2f& v1, const Vec2f& v2) {
 
 //------------------------------------------------------------------------------
 float Vec2f::dot(const Vec2f& v1, const Vec2f& v2) {
-    Vec2f ret = v1;
+    const Vec2f& ret = v1;
     return ret.dot(v2);
 }
 
 //------------------------------------------------------------------------------
 float Vec2f::cross(const Vec2f& v1, const Vec2f& v2) {
-    Vec2f ret = v1;
+    const Vec2f& ret = v1;
     return ret.cross(v2);
 }
 

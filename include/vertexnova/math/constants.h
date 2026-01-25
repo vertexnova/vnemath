@@ -72,6 +72,13 @@ constexpr double kDoubleInfinity = std::numeric_limits<double>::infinity();
 constexpr float kFloatEpsilon = std::numeric_limits<float>::epsilon();
 constexpr double kDoubleEpsilon = std::numeric_limits<double>::epsilon();
 
+/// A reasonable epsilon for zero-division checks and normalization
+constexpr float kZeroTolerance = 1E-5f;
+constexpr double kZeroToleranceDouble = 1E-10;
+
+/// Color component byte conversion factor (0-255 range)
+constexpr float kColorByteMax = 255.0f;
+
 /// The smallest normal positive value
 constexpr float kFloatMin = std::numeric_limits<float>::min();
 constexpr double kDoubleMin = std::numeric_limits<double>::min();

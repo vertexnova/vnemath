@@ -204,13 +204,13 @@ Mat4x4f& Mat4x4f::operator*=(float scalar) {
 
 //------------------------------------------------------------------------------
 Mat4x4f Mat4x4f::operator/(float scalar) const {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec3f zero denominator");
     return Mat4x4f(static_cast<glm::mat4>(*this) / scalar);
 }
 
 //------------------------------------------------------------------------------
 Mat4x4f& Mat4x4f::operator/=(float scalar) {
-    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec3f zero denominator");
     *this = *this / scalar;
     return *this;
 }
@@ -260,7 +260,7 @@ Handedness Mat4x4f::handedness() {
 
     Vec3f x_cross_y = Vec3f::cross(x, y);
 
-    if (Vec3f::dot(z, x_cross_y) > 1E-5f) {
+    if (Vec3f::dot(z, x_cross_y) > kZeroTolerance) {
         return Handedness::eRight;
     } else {
         return Handedness::eLeft;
