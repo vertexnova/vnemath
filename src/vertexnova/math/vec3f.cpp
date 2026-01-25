@@ -24,214 +24,214 @@ namespace {
 constexpr uint32_t DIMENSION = 3;
 }  // namespace
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
+
 
 //------------------------------------------------------------------------------
-Vec2f_C Vec3f_C::XY() {
-    return Vec2f_C(x, y);
+Vec2f Vec3f::xy() {
+    return Vec2f(x, y);
 }
 
 //------------------------------------------------------------------------------
-float* Vec3f_C::GetPtr() {
+float* Vec3f::getPtr() {
     return &x;
 }
 
 //------------------------------------------------------------------------------
-const float* Vec3f_C::GetPtr() const {
+const float* Vec3f::getPtr() const {
     return &x;
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Abs() const {
-    return Vec3f_C(glm::abs(x), glm::abs(y), glm::abs(z));
+Vec3f Vec3f::abs() const {
+    return Vec3f(glm::abs(x), glm::abs(y), glm::abs(z));
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Length() const {
+float Vec3f::length() const {
     return glm::length(glm::vec3(*this));
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::LengthSquare() const {
+float Vec3f::lengthSquare() const {
     return glm::length2(glm::vec3(*this));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Normalize() const {
-    VNE_ASSERT_MSG(LengthSquare() != 0.0f, "Zero denominator");
+Vec3f Vec3f::normalize() const {
+    VNE_ASSERT_MSG(lengthSquare() != 0.0f, "Zero denominator");
     glm::vec3 norm = glm::normalize(glm::vec3(*this));
     return norm;
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Min(const Vec3f_C& v) const {
-    return LengthSquare() < v.LengthSquare() ? glm::vec3(*this) : glm::vec3(v);
+Vec3f Vec3f::min(const Vec3f& v) const {
+    return lengthSquare() < v.lengthSquare() ? glm::vec3(*this) : glm::vec3(v);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Max(const Vec3f_C& v) const {
-    return LengthSquare() > v.LengthSquare() ? glm::vec3(*this) : glm::vec3(v);
+Vec3f Vec3f::max(const Vec3f& v) const {
+    return lengthSquare() > v.lengthSquare() ? glm::vec3(*this) : glm::vec3(v);
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::MinComponent() const {
+float Vec3f::minComponent() const {
     return glm::min(x, glm::min(y, z));
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::MaxComponent() const {
+float Vec3f::maxComponent() const {
     return glm::max(x, glm::max(y, z));
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Dot(const Vec3f_C& v) const {
+float Vec3f::dot(const Vec3f& v) const {
     return glm::dot<3, float, glm::qualifier::highp>(glm::vec3(*this), glm::vec3(v));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Cross(const Vec3f_C& v) const {
+Vec3f Vec3f::cross(const Vec3f& v) const {
     return glm::cross(glm::vec3(*this), glm::vec3(v));
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Distance(const Vec3f_C& v) const {
+float Vec3f::distance(const Vec3f& v) const {
     return glm::distance(glm::vec3(*this), glm::vec3(v));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Rotate(const Vec3f_C& axis, float angle) const {
+Vec3f Vec3f::rotate(const Vec3f& axis, float angle) const {
     return glm::rotate(glm::vec3(*this), angle, glm::vec3(axis));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Reflect(const Vec3f_C& normal) const {
+Vec3f Vec3f::reflect(const Vec3f& normal) const {
     return glm::reflect(glm::vec3(*this), glm::vec3(normal));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Refract(const Vec3f_C& normal, float mu) const {
+Vec3f Vec3f::refract(const Vec3f& normal, float mu) const {
     return glm::refract(glm::vec3(*this), glm::vec3(normal), mu);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Project(const Vec3f_C& v) const {
+Vec3f Vec3f::project(const Vec3f& v) const {
     return glm::proj(glm::vec3(*this), glm::vec3(v));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Reject(const Vec3f_C& v) const {
-    return *this - Project(v);
+Vec3f Vec3f::reject(const Vec3f& v) const {
+    return *this - project(v);
 }
 
 //------------------------------------------------------------------------------
-void Vec3f_C::DecomposeVec(const Vec3f_C& v, Vec3f_C& proj, Vec3f_C& perp) const {
-    proj = this->Project(v);
+void Vec3f::decomposeVec(const Vec3f& v, Vec3f& proj, Vec3f& perp) const {
+    proj = this->project(v);
     perp = *this - proj;
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Perpendicular(const Vec3f_C& v) const {
-    Vec3f_C perp = this->Cross(v);
-    if (Math::IsZero(perp.LengthSquare(), 1E-5f)) {
-        return Vec3f_C();
+Vec3f Vec3f::perpendicular(const Vec3f& v) const {
+    Vec3f perp = this->cross(v);
+    if (vne::math::isZero(perp.lengthSquare(), 1E-5f)) {
+        return Vec3f();
     } else {
-        return perp.Normalize();
+        return perp.normalize();
     }
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::AreSame(const Vec3f_C& v, float eps) const {
-    return Math::AreSame(x, v.x, eps) && Math::AreSame(y, v.y, eps) && Math::AreSame(z, v.z, eps);
+bool Vec3f::areSame(const Vec3f& v, float eps) const {
+    return vne::math::areSame(x, v.x, eps) && vne::math::areSame(y, v.y, eps) && vne::math::areSame(z, v.z, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::AreAligned(const Vec3f_C& v, float eps) const {
-    return Math::IsZero(this->Angle(v), eps);
+bool Vec3f::areAligned(const Vec3f& v, float eps) const {
+    return vne::math::isZero(this->angle(v), eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::IsZero(float eps) const {
-    return Math::IsZero(x, eps) && Math::IsZero(y, eps) && Math::IsZero(z, eps);
+bool Vec3f::isZero(float eps) const {
+    return vne::math::isZero(x, eps) && vne::math::isZero(y, eps) && vne::math::isZero(z, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::IsNormalized(float eps) const {
-    return Math::AreSame(LengthSquare(), 1.0f, eps);
+bool Vec3f::isNormalized(float eps) const {
+    return vne::math::areSame(lengthSquare(), 1.0f, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::IsLinearDependent(const Vec3f_C& p1, const Vec3f_C& p2, float eps) const {
-    return (p1 - *this).Cross(p2 - *this).IsZero(eps);
+bool Vec3f::isLinearDependent(const Vec3f& p1, const Vec3f& p2, float eps) const {
+    return (p1 - *this).cross(p2 - *this).isZero(eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::IsLinearDependent(const Vec3f_C& v, float eps) const {
-    return this->Cross(v).IsZero(eps);
+bool Vec3f::isLinearDependent(const Vec3f& v, float eps) const {
+    return this->cross(v).isZero(eps);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::ComposeSpherical(float rho, float theta, float phi) {
-    this->x = rho * Math::Sin(phi) * Math::Cos(theta);
-    this->y = rho * Math::Sin(phi) * Math::Sin(theta);
-    this->z = rho * Math::Cos(phi);
+Vec3f& Vec3f::composeSpherical(float rho, float theta, float phi) {
+    this->x = rho * vne::math::sin(phi) * vne::math::cos(theta);
+    this->y = rho * vne::math::sin(phi) * vne::math::sin(theta);
+    this->z = rho * vne::math::cos(phi);
     return *this;
 }
 
 //------------------------------------------------------------------------------
-void Vec3f_C::DecomposeSpherical(float& rho, float& theta, float& phi) const {
-    rho = Length();
-    VNE_ASSERT_MSG(!Math::IsZero(rho, 1E-5f), "Length of the vector is zero.");
-    phi = Math::ACos(z / rho);
-    theta = Math::ATan2(y, x);
+void Vec3f::decomposeSpherical(float& rho, float& theta, float& phi) const {
+    rho = length();
+    VNE_ASSERT_MSG(!vne::math::isZero(rho, 1E-5f), "Length of the vector is zero.");
+    phi = vne::math::acos(z / rho);
+    theta = vne::math::atan2(y, x);
     if (theta < 0) {
-        theta += Math::TwoPi<float>();
+        theta += vne::math::twoPi<float>();
     }
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::ComposeCylindrical(float radius, float angle, float height) {
-    this->x = radius * Math::Cos(angle);
-    this->y = radius * Math::Sin(angle);
+Vec3f& Vec3f::composeCylindrical(float radius, float angle, float height) {
+    this->x = radius * vne::math::cos(angle);
+    this->y = radius * vne::math::sin(angle);
     this->z = height;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-void Vec3f_C::DecomposeCylindrical(float& radius, float& angle, float& height) const {
-    radius = Math::Sqrt(Math::Square<float>(this->x) + Math::Square<float>(this->y));
-    angle = Math::ATan2(this->y, this->x);
+void Vec3f::decomposeCylindrical(float& radius, float& angle, float& height) const {
+    radius = vne::math::sqrt(vne::math::square<float>(this->x) + vne::math::square<float>(this->y));
+    angle = vne::math::atan2(this->y, this->x);
     if (angle < 0) {
-        angle += Math::TwoPi<float>();
+        angle += vne::math::twoPi<float>();
     }
     height = this->z;
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Angle(const Vec3f_C& v) const {
-    VNE_ASSERT_MSG((!this->IsZero(1E-5f) && !v.IsZero(1E-5f)), "Length of one vector is zero.");
-    return Math::ATan2(this->Cross(v).Length(), this->Dot(v));
+float Vec3f::angle(const Vec3f& v) const {
+    VNE_ASSERT_MSG((!this->isZero(1E-5f) && !v.isZero(1E-5f)), "Length of one vector is zero.");
+    return vne::math::atan2(this->cross(v).length(), this->dot(v));
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Angle(const Vec3f_C& p1, const Vec3f_C& p2) const {
-    Vec3f_C new_p1 = p1 - *this;
-    Vec3f_C new_p2 = p2 - *this;
-    return new_p1.Angle(new_p2);
+float Vec3f::angle(const Vec3f& p1, const Vec3f& p2) const {
+    Vec3f new_p1 = p1 - *this;
+    Vec3f new_p2 = p2 - *this;
+    return new_p1.angle(new_p2);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::MidPoint(const Vec3f_C& point) const {
-    return Math::Vec3f_C(Math::MidPoint(x, point.x), Math::MidPoint(y, point.y), Math::MidPoint(z, point.z));
+Vec3f Vec3f::midPoint(const Vec3f& point) const {
+    return Vec3f(vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y), vne::math::midPoint(z, point.z));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Lerp(Vec3f_C& point, float factor) const {
-    return Math::Vec3f_C(Math::Lerp(x, point.x, factor), Math::Lerp(y, point.y, factor), Math::Lerp(z, point.z, factor));
+Vec3f Vec3f::lerp(Vec3f& point, float factor) const {
+    return Vec3f(vne::math::lerp(x, point.x, factor), vne::math::lerp(y, point.y, factor), vne::math::lerp(z, point.z, factor));
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator=(const Vec3f_C& v) {
+Vec3f& Vec3f::operator=(const Vec3f& v) {
     x = v.x;
     y = v.y;
     z = v.z;
@@ -239,7 +239,7 @@ Vec3f_C& Vec3f_C::operator=(const Vec3f_C& v) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator+=(float scalar) {
+Vec3f& Vec3f::operator+=(float scalar) {
     x += scalar;
     y += scalar;
     z += scalar;
@@ -247,7 +247,7 @@ Vec3f_C& Vec3f_C::operator+=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator-=(float scalar) {
+Vec3f& Vec3f::operator-=(float scalar) {
     x -= scalar;
     y -= scalar;
     z -= scalar;
@@ -255,7 +255,7 @@ Vec3f_C& Vec3f_C::operator-=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator*=(float scalar) {
+Vec3f& Vec3f::operator*=(float scalar) {
     x *= scalar;
     y *= scalar;
     z *= scalar;
@@ -263,8 +263,8 @@ Vec3f_C& Vec3f_C::operator*=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator/=(float scalar) {
-    VNE_ASSERT_MSG(!Math::IsZero(scalar, 1E-5f), "Vec3f_C zero denominator");
+Vec3f& Vec3f::operator/=(float scalar) {
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
     x /= scalar;
     y /= scalar;
     z /= scalar;
@@ -272,7 +272,7 @@ Vec3f_C& Vec3f_C::operator/=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator+=(const Vec3f_C& v) {
+Vec3f& Vec3f::operator+=(const Vec3f& v) {
     x += v.x;
     y += v.y;
     z += v.z;
@@ -280,7 +280,7 @@ Vec3f_C& Vec3f_C::operator+=(const Vec3f_C& v) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator-=(const Vec3f_C& v) {
+Vec3f& Vec3f::operator-=(const Vec3f& v) {
     x -= v.x;
     y -= v.y;
     z -= v.z;
@@ -288,7 +288,7 @@ Vec3f_C& Vec3f_C::operator-=(const Vec3f_C& v) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator*=(const Vec3f_C& v) {
+Vec3f& Vec3f::operator*=(const Vec3f& v) {
     x *= v.x;
     y *= v.y;
     z *= v.z;
@@ -296,10 +296,10 @@ Vec3f_C& Vec3f_C::operator*=(const Vec3f_C& v) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C& Vec3f_C::operator/=(const Vec3f_C& v) {
-    VNE_ASSERT_MSG(!Math::IsZero(v.x, 1E-5f), "Vec3f_C zero denominator");
-    VNE_ASSERT_MSG(!Math::IsZero(v.y, 1E-5f), "Vec3f_C zero denominator");
-    VNE_ASSERT_MSG(!Math::IsZero(v.z, 1E-5f), "Vec3f_C zero denominator");
+Vec3f& Vec3f::operator/=(const Vec3f& v) {
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.z, 1E-5f), "Vec3f zero denominator");
     x /= v.x;
     y /= v.y;
     z /= v.z;
@@ -307,93 +307,93 @@ Vec3f_C& Vec3f_C::operator/=(const Vec3f_C& v) {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator+(float scalar) const {
-    return Vec3f_C(x + scalar, y + scalar, z + scalar);
+Vec3f Vec3f::operator+(float scalar) const {
+    return Vec3f(x + scalar, y + scalar, z + scalar);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator-(float scalar) const {
-    return Vec3f_C(x - scalar, y - scalar, z - scalar);
+Vec3f Vec3f::operator-(float scalar) const {
+    return Vec3f(x - scalar, y - scalar, z - scalar);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator*(float scalar) const {
-    return Vec3f_C(x * scalar, y * scalar, z * scalar);
+Vec3f Vec3f::operator*(float scalar) const {
+    return Vec3f(x * scalar, y * scalar, z * scalar);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator/(float scalar) const {
-    VNE_ASSERT_MSG(!Math::IsZero(scalar, 1E-5f), "Vec3f_C zero denominator");
-    return Vec3f_C(x / scalar, y / scalar, z / scalar);
+Vec3f Vec3f::operator/(float scalar) const {
+    VNE_ASSERT_MSG(!vne::math::isZero(scalar, 1E-5f), "Vec3f zero denominator");
+    return Vec3f(x / scalar, y / scalar, z / scalar);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator+(const Vec3f_C& v) const {
-    return Vec3f_C(x + v.x, y + v.y, z + v.z);
+Vec3f Vec3f::operator+(const Vec3f& v) const {
+    return Vec3f(x + v.x, y + v.y, z + v.z);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator-(const Vec3f_C& v) const {
-    return Vec3f_C(x - v.x, y - v.y, z - v.z);
+Vec3f Vec3f::operator-(const Vec3f& v) const {
+    return Vec3f(x - v.x, y - v.y, z - v.z);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator*(const Vec3f_C& v) const {
-    return Vec3f_C(x * v.x, y * v.y, z * v.z);
+Vec3f Vec3f::operator*(const Vec3f& v) const {
+    return Vec3f(x * v.x, y * v.y, z * v.z);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator/(const Vec3f_C& v) const {
-    VNE_ASSERT_MSG(!Math::IsZero(v.x, 1E-5f), "Vec3f_C zero denominator");
-    VNE_ASSERT_MSG(!Math::IsZero(v.y, 1E-5f), "Vec3f_C zero denominator");
-    VNE_ASSERT_MSG(!Math::IsZero(v.z, 1E-5f), "Vec3f_C zero denominator");
-    return Vec3f_C(x / v.x, y / v.y, z / v.z);
+Vec3f Vec3f::operator/(const Vec3f& v) const {
+    VNE_ASSERT_MSG(!vne::math::isZero(v.x, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.y, 1E-5f), "Vec3f zero denominator");
+    VNE_ASSERT_MSG(!vne::math::isZero(v.z, 1E-5f), "Vec3f zero denominator");
+    return Vec3f(x / v.x, y / v.y, z / v.z);
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::operator==(const Vec3f_C& v) const {
+bool Vec3f::operator==(const Vec3f& v) const {
     return x == v.x && y == v.y && z == v.z;
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::operator!=(const Vec3f_C& v) const {
+bool Vec3f::operator!=(const Vec3f& v) const {
     return x != v.x || y != v.y || z != v.z;
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::operator>(const Vec3f_C& v) const {
-    return LengthSquare() > v.LengthSquare();
+bool Vec3f::operator>(const Vec3f& v) const {
+    return lengthSquare() > v.lengthSquare();
 }
 
 //------------------------------------------------------------------------------
-bool Vec3f_C::operator<(const Vec3f_C& v) const {
-    return LengthSquare() < v.LengthSquare();
+bool Vec3f::operator<(const Vec3f& v) const {
+    return lengthSquare() < v.lengthSquare();
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::operator-() const {
-    return Vec3f_C(-x, -y, -z);
+Vec3f Vec3f::operator-() const {
+    return Vec3f(-x, -y, -z);
 }
 
 //------------------------------------------------------------------------------
-float& Vec3f_C::operator[](uint32_t index) {
-    VNE_ASSERT_MSG(index < 3, "Vec3f_C index out of bounds");
+float& Vec3f::operator[](uint32_t index) {
+    VNE_ASSERT_MSG(index < 3, "Vec3f index out of bounds");
     return (&x)[index];
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::operator[](uint32_t index) const {
-    VNE_ASSERT_MSG(index < 3, "Vec3f_C index out of bounds");
+float Vec3f::operator[](uint32_t index) const {
+    VNE_ASSERT_MSG(index < 3, "Vec3f index out of bounds");
     return (&x)[index];
 }
 
 //------------------------------------------------------------------------------
-std::ostream& operator<<(std::ostream& os, const Vec3f_C& vec) {
+std::ostream& operator<<(std::ostream& os, const Vec3f& vec) {
     return os << "[" << vec.x << ", " << vec.y << ", " << vec.z << "]";
 }
 
 //------------------------------------------------------------------------------
-std::istream& operator>>(std::istream& is, Vec3f_C& vec) {
+std::istream& operator>>(std::istream& is, Vec3f& vec) {
     is >> vec.x;
     is.ignore(2);
     is >> vec.y;
@@ -403,111 +403,111 @@ std::istream& operator>>(std::istream& is, Vec3f_C& vec) {
 }
 
 //------------------------------------------------------------------------------
-uint32_t Vec3f_C::Dim() {
+uint32_t Vec3f::dim() {
     return DIMENSION;
 }
 
 //------------------------------------------------------------------------------
-uint32_t Vec3f_C::Size() {
-    return Dim();
+uint32_t Vec3f::size() {
+    return dim();
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Zero() {
-    return Vec3f_C(0.0f);
+Vec3f Vec3f::zero() {
+    return Vec3f(0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::One() {
-    return Vec3f_C(1.0f);
+Vec3f Vec3f::one() {
+    return Vec3f(1.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::XAxis() {
-    return Vec3f_C(1.0f, 0.0f, 0.0f);
+Vec3f Vec3f::xAxis() {
+    return Vec3f(1.0f, 0.0f, 0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::YAxis() {
-    return Vec3f_C(0.0f, 1.0f, 0.0f);
+Vec3f Vec3f::yAxis() {
+    return Vec3f(0.0f, 1.0f, 0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::ZAxis() {
-    return Vec3f_C(0.0f, 0.0f, 1.0f);
+Vec3f Vec3f::zAxis() {
+    return Vec3f(0.0f, 0.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Up() {
-    return Vec3f_C(0.0f, 1.0f, 0.0f);
+Vec3f Vec3f::up() {
+    return Vec3f(0.0f, 1.0f, 0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Down() {
-    return Vec3f_C(0.0f, -1.0f, 0.0f);
+Vec3f Vec3f::down() {
+    return Vec3f(0.0f, -1.0f, 0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Left() {
-    return Vec3f_C(-1.0f, 0.0f, 0.0f);
+Vec3f Vec3f::left() {
+    return Vec3f(-1.0f, 0.0f, 0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Right() {
-    return Vec3f_C(1.0f, 0.0f, 0.0f);
+Vec3f Vec3f::right() {
+    return Vec3f(1.0f, 0.0f, 0.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Forward() {
-    return Vec3f_C(0.0f, 0.0f, 1.0f);
+Vec3f Vec3f::forward() {
+    return Vec3f(0.0f, 0.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Backward() {
-    return Vec3f_C(0.0f, 0.0f, -1.0f);
+Vec3f Vec3f::backward() {
+    return Vec3f(0.0f, 0.0f, -1.0f);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Normalized(const Vec3f_C& v) {
-    Vec3f_C ret = v;
-    return ret.Normalize();
+Vec3f Vec3f::normalized(const Vec3f& v) {
+    Vec3f ret = v;
+    return ret.normalize();
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Distance(const Vec3f_C& v1, const Vec3f_C& v2) {
-    Vec3f_C v = v1 - v2;
-    return v.Length();
+float Vec3f::distance(const Vec3f& v1, const Vec3f& v2) {
+    Vec3f v = v1 - v2;
+    return v.length();
 }
 
 //------------------------------------------------------------------------------
-float Vec3f_C::Dot(const Vec3f_C& v1, const Vec3f_C& v2) {
-    Vec3f_C ret = v1;
-    return ret.Dot(v2);
+float Vec3f::dot(const Vec3f& v1, const Vec3f& v2) {
+    Vec3f ret = v1;
+    return ret.dot(v2);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Cross(const Vec3f_C& v1, const Vec3f_C& v2) {
-    Vec3f_C ret = v1;
-    return ret.Cross(v2);
+Vec3f Vec3f::cross(const Vec3f& v1, const Vec3f& v2) {
+    Vec3f ret = v1;
+    return ret.cross(v2);
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::MidPoint(const Vec3f_C& p1, const Vec3f_C& p2) {
-    Vec3f_C out;
-    out.x = Math::MidPoint(p1.x, p2.x);
-    out.y = Math::MidPoint(p1.y, p2.y);
-    out.z = Math::MidPoint(p1.z, p2.z);
+Vec3f Vec3f::midPoint(const Vec3f& p1, const Vec3f& p2) {
+    Vec3f out;
+    out.x = vne::math::midPoint(p1.x, p2.x);
+    out.y = vne::math::midPoint(p1.y, p2.y);
+    out.z = vne::math::midPoint(p1.z, p2.z);
     return out;
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Vec3f_C::Lerp(const Vec3f_C& p1, const Vec3f_C& p2, float t) {
-    Vec3f_C out;
-    out.x = Math::Lerp(p1.x, p2.x, t);
-    out.y = Math::Lerp(p1.y, p2.y, t);
-    out.z = Math::Lerp(p1.z, p2.z, t);
+Vec3f Vec3f::lerp(const Vec3f& p1, const Vec3f& p2, float t) {
+    Vec3f out;
+    out.x = vne::math::lerp(p1.x, p2.x, t);
+    out.y = vne::math::lerp(p1.y, p2.y, t);
+    out.z = vne::math::lerp(p1.z, p2.z, t);
     return out;
 }
 
-}  // namespace Math
-}  // namespace VNE
+
+}  // namespace vne::math

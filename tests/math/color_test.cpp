@@ -26,112 +26,112 @@ class ColorTest_C : public ::testing::Test {
 };
 
 /**
- * Test predefined constant colors of the Color_C
+ * Test predefined constant colors of the Color
  *
  */
 TEST_F(ColorTest_C, TestConstColors) {
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::WHITE.R());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::WHITE.G());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::WHITE.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::WHITE.A());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.R());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.G());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::WHITE.A());
 
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::BLACK.R());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::BLACK.G());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::BLACK.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::BLACK.A());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::BLACK.R());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::BLACK.G());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::BLACK.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::BLACK.A());
 
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::RED.R());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::RED.G());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::RED.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::RED.A());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::RED.R());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::RED.G());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::RED.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::RED.A());
 
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::GREEN.R());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::GREEN.G());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::GREEN.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::GREEN.A());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::GREEN.R());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::GREEN.G());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::GREEN.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::GREEN.A());
 
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::BLUE.R());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::BLUE.G());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::BLUE.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::BLUE.A());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::BLUE.R());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::BLUE.G());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::BLUE.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::BLUE.A());
 
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::YELLOW.R());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::YELLOW.G());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::YELLOW.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::YELLOW.A());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::YELLOW.R());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::YELLOW.G());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::YELLOW.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::YELLOW.A());
 
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::CYAN.R());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::CYAN.G());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::CYAN.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::CYAN.A());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::CYAN.R());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::CYAN.G());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::CYAN.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::CYAN.A());
 
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::MAGENTA.R());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::MAGENTA.G());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::MAGENTA.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::MAGENTA.A());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::MAGENTA.R());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::MAGENTA.G());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::MAGENTA.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::MAGENTA.A());
 
-    EXPECT_FLOAT_EQ(0.4f, Math::Color_C::LIGHT_BLUE.R());
-    EXPECT_FLOAT_EQ(0.4f, Math::Color_C::LIGHT_BLUE.G());
-    EXPECT_FLOAT_EQ(0.8f, Math::Color_C::LIGHT_BLUE.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::LIGHT_BLUE.A());
+    EXPECT_FLOAT_EQ(0.4f, vne::math::Color::LIGHT_BLUE.R());
+    EXPECT_FLOAT_EQ(0.4f, vne::math::Color::LIGHT_BLUE.G());
+    EXPECT_FLOAT_EQ(0.8f, vne::math::Color::LIGHT_BLUE.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::LIGHT_BLUE.A());
 
-    EXPECT_FLOAT_EQ(0.1f, Math::Color_C::DARK_BLUE.R());
-    EXPECT_FLOAT_EQ(0.1f, Math::Color_C::DARK_BLUE.G());
-    EXPECT_FLOAT_EQ(0.6f, Math::Color_C::DARK_BLUE.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::DARK_BLUE.A());
+    EXPECT_FLOAT_EQ(0.1f, vne::math::Color::DARK_BLUE.R());
+    EXPECT_FLOAT_EQ(0.1f, vne::math::Color::DARK_BLUE.G());
+    EXPECT_FLOAT_EQ(0.6f, vne::math::Color::DARK_BLUE.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::DARK_BLUE.A());
 
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::MAROON.R());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::MAROON.G());
-    EXPECT_FLOAT_EQ(0.0f, Math::Color_C::MAROON.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::MAROON.A());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::MAROON.R());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::MAROON.G());
+    EXPECT_FLOAT_EQ(0.0f, vne::math::Color::MAROON.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::MAROON.A());
 
-    EXPECT_FLOAT_EQ(0.96f, Math::Color_C::BEIGE.R());
-    EXPECT_FLOAT_EQ(0.96f, Math::Color_C::BEIGE.G());
-    EXPECT_FLOAT_EQ(0.862f, Math::Color_C::BEIGE.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::BEIGE.A());
+    EXPECT_FLOAT_EQ(0.96f, vne::math::Color::BEIGE.R());
+    EXPECT_FLOAT_EQ(0.96f, vne::math::Color::BEIGE.G());
+    EXPECT_FLOAT_EQ(0.862f, vne::math::Color::BEIGE.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::BEIGE.A());
 
-    EXPECT_FLOAT_EQ(0.647f, Math::Color_C::BROWN.R());
-    EXPECT_FLOAT_EQ(0.164f, Math::Color_C::BROWN.G());
-    EXPECT_FLOAT_EQ(0.164f, Math::Color_C::BROWN.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::BROWN.A());
+    EXPECT_FLOAT_EQ(0.647f, vne::math::Color::BROWN.R());
+    EXPECT_FLOAT_EQ(0.164f, vne::math::Color::BROWN.G());
+    EXPECT_FLOAT_EQ(0.164f, vne::math::Color::BROWN.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::BROWN.A());
 
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::GRAY.R());
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::GRAY.G());
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::GRAY.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::GRAY.A());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::GRAY.R());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::GRAY.G());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::GRAY.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::GRAY.A());
 
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::GREY.R());
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::GREY.G());
-    EXPECT_FLOAT_EQ(0.5f, Math::Color_C::GREY.B());
-    EXPECT_FLOAT_EQ(1.0f, Math::Color_C::GREY.A());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::GREY.R());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::GREY.G());
+    EXPECT_FLOAT_EQ(0.5f, vne::math::Color::GREY.B());
+    EXPECT_FLOAT_EQ(1.0f, vne::math::Color::GREY.A());
 }
 
 /**
- * Test Color_C
+ * Test Color
  *
  */
 TEST_F(ColorTest_C, TestColorRGBA) {
-    Math::Color_C clr0;
+    vne::math::Color clr0;
     EXPECT_FLOAT_EQ(0.0f, clr0.R());
     EXPECT_FLOAT_EQ(0.0f, clr0.G());
     EXPECT_FLOAT_EQ(0.0f, clr0.B());
     EXPECT_FLOAT_EQ(1.0f, clr0.A());
 
-    Math::Color_C clr(0.1f, 0.2f, 0.3f, 1.0f);
+    vne::math::Color clr(0.1f, 0.2f, 0.3f, 1.0f);
     EXPECT_FLOAT_EQ(0.1f, clr.R());
     EXPECT_FLOAT_EQ(0.2f, clr.G());
     EXPECT_FLOAT_EQ(0.3f, clr.B());
     EXPECT_FLOAT_EQ(1.0f, clr.A());
 
-    Math::Vec3f_C rgb{0.1f, 0.2f, 0.3f};
-    Math::Color_C clr_rgb(rgb, 1.0f);
+    vne::math::Vec3f rgb{0.1f, 0.2f, 0.3f};
+    vne::math::Color clr_rgb(rgb, 1.0f);
     EXPECT_FLOAT_EQ(0.1f, clr_rgb.R());
     EXPECT_FLOAT_EQ(0.2f, clr_rgb.G());
     EXPECT_FLOAT_EQ(0.3f, clr_rgb.B());
     EXPECT_FLOAT_EQ(1.0f, clr_rgb.A());
 
-    Math::Vec4f_C rgba{0.1f, 0.2f, 0.3f, 1.0f};
-    Math::Color_C clr_rgba(rgba);
+    vne::math::Vec4f rgba{0.1f, 0.2f, 0.3f, 1.0f};
+    vne::math::Color clr_rgba(rgba);
     EXPECT_FLOAT_EQ(0.1f, clr_rgba.R());
     EXPECT_FLOAT_EQ(0.2f, clr_rgba.G());
     EXPECT_FLOAT_EQ(0.3f, clr_rgba.B());
@@ -148,10 +148,10 @@ TEST_F(ColorTest_C, TestColorRGBA) {
 }
 
 /**
- * Test Color_C GetPtr()
+ * Test Color GetPtr()
  */
 TEST_F(ColorTest_C, TestColorGetPtr) {
-    Math::Color_C clr(0.0f, 0.2f, 0.5f, 1.0f);
+    vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
     EXPECT_EQ(clr.R(), *clr.GetPtr());
     EXPECT_EQ(clr.G(), *(clr.GetPtr() + 1));
     EXPECT_EQ(clr.B(), *(clr.GetPtr() + 2));
@@ -159,10 +159,10 @@ TEST_F(ColorTest_C, TestColorGetPtr) {
 }
 
 /**
- * Test Color_C Reset(...) and Set(...)
+ * Test Color Reset(...) and Set(...)
  */
 TEST_F(ColorTest_C, TestColorSetAndReset) {
-    Math::Color_C clr(0.0f, 0.01f, 0.2f, 1.0f);
+    vne::math::Color clr(0.0f, 0.01f, 0.2f, 1.0f);
 
     clr.Reset();
     EXPECT_FLOAT_EQ(0.0f, clr.R());
@@ -182,7 +182,7 @@ TEST_F(ColorTest_C, TestColorSetAndReset) {
     EXPECT_FLOAT_EQ(0.2f, clr.B());
     EXPECT_FLOAT_EQ(1.0f, clr.A());
 
-    Math::Vec3f_C rgb{0.2f, 0.0f, 0.8f};
+    vne::math::Vec3f rgb{0.2f, 0.0f, 0.8f};
     clr.Set(rgb);
     EXPECT_FLOAT_EQ(0.2f, clr.R());
     EXPECT_FLOAT_EQ(0.0f, clr.G());
@@ -195,7 +195,7 @@ TEST_F(ColorTest_C, TestColorSetAndReset) {
     EXPECT_FLOAT_EQ(0.8f, clr.B());
     EXPECT_FLOAT_EQ(0.5f, clr.A());
 
-    Math::Vec4f_C rgba{0.5f, 0.5f, 0.5f, 1.0f};
+    vne::math::Vec4f rgba{0.5f, 0.5f, 0.5f, 1.0f};
     clr.Set(rgba);
     EXPECT_FLOAT_EQ(0.5f, clr.R());
     EXPECT_FLOAT_EQ(0.5f, clr.G());
@@ -204,51 +204,51 @@ TEST_F(ColorTest_C, TestColorSetAndReset) {
 }
 
 /**
- * Test Color_C AreSame(...)
+ * Test Color AreSame(...)
  *
  * clr1.AreSame(clr2, eps)
  *
  */
 TEST_F(ColorTest_C, TestColorAreSame) {
-    Math::Color_C clr(0.0f, 0.01f, 0.2f, 1.0f);
-    EXPECT_TRUE(clr.AreSame(Math::Color_C(0.00000001f, 0.01000075f, 0.2000001f), 1E-5f));
-    EXPECT_FALSE(clr.AreSame(Math::Color_C(0.000001f, 0.010075f, 0.20001f)));
+    vne::math::Color clr(0.0f, 0.01f, 0.2f, 1.0f);
+    EXPECT_TRUE(clr.AreSame(vne::math::Color(0.00000001f, 0.01000075f, 0.2000001f), 1E-5f));
+    EXPECT_FALSE(clr.AreSame(vne::math::Color(0.000001f, 0.010075f, 0.20001f)));
 }
 
 /**
- * Test Color_C IsZero(...)
+ * Test Color IsZero(...)
  *
  * clr.IsZero(eps)
  *
  */
 TEST_F(ColorTest_C, TestColorIsZero) {
-    Math::Color_C clr(0.0f, 0.01f, 0.2f, 1.0f);
-    ASSERT_TRUE(Math::Color_C().IsZero());
+    vne::math::Color clr(0.0f, 0.01f, 0.2f, 1.0f);
+    ASSERT_TRUE(vne::math::Color().IsZero());
     ASSERT_FALSE(clr.IsZero());
 }
 
 /**
- * Test Color_C Lerp(...)
+ * Test Color Lerp(...)
  *
- * clr1.Color_C(clr2, t)
+ * clr1.Color(clr2, t)
  *
  */
 TEST_F(ColorTest_C, TestColorLerp) {
-    Math::Color_C clr1(0.0f, 0.01f, 0.2f, 1.0f);
-    Math::Color_C clr2(1.0f, 0.2f, 0.2f, 0.0f);
+    vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
+    vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
     EXPECT_EQ(clr1, clr1.Lerp(clr2, 0.0f));
     EXPECT_EQ(clr2, clr1.Lerp(clr2, 1.0f));
-    EXPECT_EQ(Math::Color_C(0.5f, 0.105f, 0.2f, 0.5f), clr1.Lerp(clr2, 0.5f));
+    EXPECT_EQ(vne::math::Color(0.5f, 0.105f, 0.2f, 0.5f), clr1.Lerp(clr2, 0.5f));
 }
 
 /**
- * Test Color_C Addition
+ * Test Color Addition
  */
 TEST_F(ColorTest_C, TestColorAddition) {
-    Math::Color_C clr1(0.0f, 0.01f, 0.2f, 1.0f);
-    Math::Color_C clr2(1.0f, 0.2f, 0.2f, 0.0f);
+    vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
+    vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
 
-    Math::Color_C clr3 = clr1 + clr2;
+    vne::math::Color clr3 = clr1 + clr2;
     EXPECT_FLOAT_EQ(1.0f, clr3.R());
     EXPECT_FLOAT_EQ(0.21f, clr3.G());
     EXPECT_FLOAT_EQ(0.4f, clr3.B());
@@ -274,13 +274,13 @@ TEST_F(ColorTest_C, TestColorAddition) {
 }
 
 /**
- * Test Color_C Subtraction
+ * Test Color Subtraction
  */
 TEST_F(ColorTest_C, TestColorSubtraction) {
-    Math::Color_C clr1(0.0f, 0.01f, 0.2f, 1.0f);
-    Math::Color_C clr2(1.0f, 0.2f, 0.2f, 0.0f);
+    vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
+    vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
 
-    Math::Color_C clr3 = clr1 - clr2;
+    vne::math::Color clr3 = clr1 - clr2;
     EXPECT_FLOAT_EQ(clr3.R(), 0.0f);
     EXPECT_FLOAT_EQ(clr3.G(), 0.0f);
     EXPECT_FLOAT_EQ(clr3.B(), 0.0f);
@@ -306,13 +306,13 @@ TEST_F(ColorTest_C, TestColorSubtraction) {
 }
 
 /**
- * Test Color_C multiplication
+ * Test Color multiplication
  */
 TEST_F(ColorTest_C, TestColorMultiplication) {
-    Math::Color_C clr1(0.0f, 0.01f, 0.2f, 1.0f);
-    Math::Color_C clr2(1.0f, 0.2f, 0.2f, 0.0f);
+    vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
+    vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
 
-    Math::Color_C clr3 = clr1 * clr2;
+    vne::math::Color clr3 = clr1 * clr2;
     EXPECT_FLOAT_EQ(clr3.R(), 0.0f);
     EXPECT_FLOAT_EQ(clr3.G(), 0.002f);
     EXPECT_FLOAT_EQ(clr3.B(), 0.04f);
@@ -338,12 +338,12 @@ TEST_F(ColorTest_C, TestColorMultiplication) {
 }
 
 /**
- * Test Color_C division
+ * Test Color division
  */
 TEST_F(ColorTest_C, TestColorDivision) {
-    Math::Color_C clr(0.0f, 0.2f, 0.5f, 1.0f);
+    vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
 
-    Math::Color_C out = clr / 0.5f;
+    vne::math::Color out = clr / 0.5f;
     EXPECT_FLOAT_EQ(out.R(), 0.0f);
     EXPECT_FLOAT_EQ(out.G(), 0.4f);
     EXPECT_FLOAT_EQ(out.B(), 1.0f);
@@ -355,7 +355,7 @@ TEST_F(ColorTest_C, TestColorDivision) {
     EXPECT_FLOAT_EQ(out.B(), 0.5f);
     EXPECT_FLOAT_EQ(out.A(), 0.5f);
 
-    Math::Color_C other{0.0f, 0.4f, 0.5f, 0.5f};
+    vne::math::Color other{0.0f, 0.4f, 0.5f, 0.5f};
     out = clr / other;
     EXPECT_FLOAT_EQ(out.R(), 0.0f);
     EXPECT_FLOAT_EQ(out.G(), 0.5f);
@@ -384,32 +384,32 @@ TEST_F(ColorTest_C, TestColorDivision) {
 }
 
 /**
- * Test Color_C comparison
+ * Test Color comparison
  */
 TEST_F(ColorTest_C, TestColorComparison) {
-    Math::Color_C clr(0.0f, 0.2f, 0.5f, 1.0f);
-    Math::Color_C clr_equal = clr;
-    Math::Color_C clr_less = clr - 0.001f;
-    Math::Color_C clr_greater = clr + 0.001f;
+    vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
+    vne::math::Color clr_equal = clr;
+    vne::math::Color clr_less = clr - 0.001f;
+    vne::math::Color clr_greater = clr + 0.001f;
     EXPECT_TRUE(clr == clr_equal);
     EXPECT_TRUE(clr != clr_less);
     EXPECT_TRUE(clr != clr_greater);
 }
 
 /**
- * Test Color_C assignment operator
+ * Test Color assignment operator
  */
 TEST_F(ColorTest_C, TestColorAssignmentOp) {
-    Math::Color_C clr(0.0f, 0.2f, 0.5f, 1.0f);
-    Math::Color_C out;
+    vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
+    vne::math::Color out;
     EXPECT_EQ(clr, out = clr);
 }
 
 /**
- * Test Color_C specific component
+ * Test Color specific component
  */
 TEST_F(ColorTest_C, TestColorComponent) {
-    Math::Color_C clr(0.0f, 0.2f, 0.5f, 1.0f);
+    vne::math::Color clr(0.0f, 0.2f, 0.5f, 1.0f);
     EXPECT_EQ(clr.R(), clr[0]);
     EXPECT_EQ(clr.G(), clr[1]);
     EXPECT_EQ(clr.B(), clr[2]);
@@ -417,23 +417,23 @@ TEST_F(ColorTest_C, TestColorComponent) {
 }
 
 TEST_F(ColorTest_C, TestColorStreamOut) {
-    Math::Color_C clr(0.5f, 0.2f, 0.5f, 1.0f);
+    vne::math::Color clr(0.5f, 0.2f, 0.5f, 1.0f);
     std::ostringstream stream;
     stream << clr;
     EXPECT_EQ(stream.str(), "[0.5, 0.2, 0.5, 1]");
 }
 
 TEST_F(ColorTest_C, TestColorStreamIn) {
-    Math::Color_C clr(0.1f, 0.2f, 0.3f, 0.5f);
-    Math::Color_C test;
+    vne::math::Color clr(0.1f, 0.2f, 0.3f, 0.5f);
+    vne::math::Color test;
     std::stringstream ss("[0.1, 0.2, 0.3, 0.5]");
     ss >> test;
     EXPECT_EQ(clr, test);
 }
 
 TEST_F(ColorTest_C, TestColorStreamInWithoutAlpha) {
-    Math::Color_C clr(0.1f, 0.2f, 0.3f, 1.0f);
-    Math::Color_C test;
+    vne::math::Color clr(0.1f, 0.2f, 0.3f, 1.0f);
+    vne::math::Color test;
     std::stringstream ss("[0.1, 0.2, 0.3]");
     ss >> test;
     EXPECT_EQ(clr, test);

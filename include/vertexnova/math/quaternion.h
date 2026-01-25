@@ -1,5 +1,4 @@
-#ifndef VNE_MATH_QUATERNION_H
-#define VNE_MATH_QUATERNION_H
+#pragma once
 /* ---------------------------------------------------------------------
  * Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License")
@@ -17,92 +16,99 @@
  */
 
 // Project includes
-#include "vec3f.h"
 #include "mat4x4f.h"
+#include "vec3f.h"
 
 // Third-party library includes
 #include <glm/gtc/quaternion.hpp>
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
 
-class Quaternion_C : public glm::quat {
+class Quaternion : public glm::quat {
    public:
-    Quaternion_C();
-    Quaternion_C(const Vec4f_C& vec);
-    Quaternion_C(const Vec3f_C& vec);
-    Quaternion_C(float w_param, const Vec3f_C& vec);
-    Quaternion_C(float w_param, float x_param, float y_param, float z_param);
-    Quaternion_C(float pitch, float yaw, float roll);
-    Quaternion_C(const Mat4x4f_C& mat);
-    Quaternion_C(const glm::quat& q);
-    Quaternion_C(const Quaternion_C& other);
-    Quaternion_C& operator=(const Quaternion_C& quat);
-
-   public:
-    float GetW() const;
-    Vec3f_C GetVector() const;
+    Quaternion();
+    Quaternion(const Vec4f& vec);
+    Quaternion(const Vec3f& vec);
+    Quaternion(float w_param, const Vec3f& vec);
+    Quaternion(float w_param, float x_param, float y_param, float z_param);
+    Quaternion(float pitch, float yaw, float roll);
+    Quaternion(const Mat4x4f& mat);
+    Quaternion(const glm::quat& q);
+    Quaternion(const Quaternion& other);
+    Quaternion& operator=(const Quaternion& quat);
 
    public:
-    void SetFromEulerAngles(float pitch, float yaw, float roll);
-    Vec3f_C GetEulerAngles() const;
-    void SetFromRotationMatrix(const Mat4x4f_C& mat);
-    void SetFromAxisAngle(float angle, const Vec3f_C& axis);
-    Quaternion_C Normalize() const;
-    Vec3f_C RotateVector(const Vec3f_C& vec) const;
-    void SetIdentity();
-    void MakeRotate(const Vec3f_C& from, const Vec3f_C& to);
-    void SetAngleAndAxis(const float angle, const Vec3f_C& axis);
-    void GetAngleAndAxis(float& angle, Vec3f_C& axis) const;
-    float GetAngle() const;
-    Vec3f_C GetAxis() const;
-    Vec3f_C GetXAxis() const;
-    Vec3f_C GetYAxis() const;
-    Vec3f_C GetZAxis() const;
+    float getW() const;
+    Vec3f getVector() const;
 
    public:
-    void Clear();
-    Quaternion_C Conjugate() const;
-    Quaternion_C Inverse() const;
-    float Dot(const Quaternion_C& quat) const;
-    float Length() const;
-    float LengthSquared() const;
-    Quaternion_C Slerp(const Quaternion_C& to, float factor) const;
+    void setFromEulerAngles(float pitch, float yaw, float roll);
+    Vec3f getEulerAngles() const;
+    void setFromRotationMatrix(const Mat4x4f& mat);
+    void setFromAxisAngle(float angle, const Vec3f& axis);
+    Quaternion normalize() const;
+    Vec3f rotateVector(const Vec3f& vec) const;
+    void setIdentity();
+    void makeRotate(const Vec3f& from, const Vec3f& to);
+    void setAngleAndAxis(const float angle, const Vec3f& axis);
+    void getAngleAndAxis(float& angle, Vec3f& axis) const;
+    float getAngle() const;
+    Vec3f getAxis() const;
+    Vec3f getXAxis() const;
+    Vec3f getYAxis() const;
+    Vec3f getZAxis() const;
 
    public:
-    Quaternion_C& operator*=(const float& scalar);
-    Quaternion_C& operator/=(const float& scalar);
-    Quaternion_C& operator+=(const Quaternion_C& quat);
-    Quaternion_C& operator-=(const Quaternion_C& quat);
-    Quaternion_C& operator*=(const Quaternion_C& quat);
-    Quaternion_C operator*(const float& scalar) const;
-    Quaternion_C operator/(const float& scalar) const;
-    Quaternion_C operator+(const Quaternion_C& quat) const;
-    Quaternion_C operator-(const Quaternion_C& quat) const;
-    Quaternion_C operator*(const Quaternion_C& quat) const;
-    bool operator==(const Quaternion_C& quat) const;
-    bool operator!=(const Quaternion_C& quat) const;
-    Quaternion_C operator+() const;
-    Quaternion_C operator-() const;
+    void clear();
+    Quaternion conjugate() const;
+    Quaternion inverse() const;
+    float dot(const Quaternion& quat) const;
+    float length() const;
+    float lengthSquared() const;
+    Quaternion slerp(const Quaternion& to, float factor) const;
+
+   public:
+    Quaternion& operator*=(const float& scalar);
+    Quaternion& operator/=(const float& scalar);
+    Quaternion& operator+=(const Quaternion& quat);
+    Quaternion& operator-=(const Quaternion& quat);
+    Quaternion& operator*=(const Quaternion& quat);
+    Quaternion operator*(const float& scalar) const;
+    Quaternion operator/(const float& scalar) const;
+    Quaternion operator+(const Quaternion& quat) const;
+    Quaternion operator-(const Quaternion& quat) const;
+    Quaternion operator*(const Quaternion& quat) const;
+    bool operator==(const Quaternion& quat) const;
+    bool operator!=(const Quaternion& quat) const;
+    Quaternion operator+() const;
+    Quaternion operator-() const;
     float& operator[](uint32_t index);
     float operator[](uint32_t index) const;
 
-    friend Quaternion_C operator*(float scalar, const Quaternion_C& quat);
-    friend Vec3f_C operator*(const Quaternion_C& quat, const Vec3f_C& vec);
-    friend Vec3f_C operator*(const Vec3f_C& vec, const Quaternion_C& quat);
+    friend Quaternion operator*(float scalar, const Quaternion& quat);
+    friend Vec3f operator*(const Quaternion& quat, const Vec3f& vec);
+    friend Vec3f operator*(const Vec3f& vec, const Quaternion& quat);
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Quaternion_C& quat);
+    friend std::ostream& operator<<(std::ostream& os, const Quaternion& quat);
 
    public:
-    static Quaternion_C Slerp(const Quaternion_C& from, const Quaternion_C& to, float factor);
-    static Quaternion_C Normalize(const Quaternion_C& quat);
-    static Quaternion_C Conjugate(const Quaternion_C& quat);
-    static Quaternion_C Inverse(const Quaternion_C& quat);
-    static float Dot(const Quaternion_C& quat1, const Quaternion_C& quat2);
+    static Quaternion slerp(const Quaternion& from, const Quaternion& to, float factor);
+    static Quaternion normalize(const Quaternion& quat);
+    static Quaternion conjugate(const Quaternion& quat);
+    static Quaternion inverse(const Quaternion& quat);
+    static float dot(const Quaternion& quat1, const Quaternion& quat2);
 };
 
+// Legacy type alias for backward compatibility
+using Quaternion_C = Quaternion;
+
+}  // namespace vne::math
+
+// Legacy namespace aliases
+namespace VNE {
+namespace Math {
+using Quaternion_C = vne::math::Quaternion;
+using Quaternion = vne::math::Quaternion;
 }  // namespace Math
 }  // namespace VNE
-
-#endif  // VNE_MATH_QUATERNION_H

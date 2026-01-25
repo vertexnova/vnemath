@@ -45,30 +45,30 @@ class RandomTest_C : public ::testing::Test {
 };
 
 /**
- * Test Math::Random_C<T, false>::Get(...)
+ * Test vne::math::Random<T, false>::Get(...)
  */
 TEST_F(RandomTest_C, TestRealRandomGet) {
-    auto default_rand = std::make_unique<Math::Random_C<float>>();
-    auto rand_with_seed = std::make_unique<Math::Random_C<float>>(_seed);
-    Math::Random_C<float> rand_with_ab(_lower_f, _upper_f);
-    Math::Random_C<float> rand_with_seed_ab(_seed, _lower_f, _upper_f);
-    Math::Random_C<float> rand_copy(rand_with_seed_ab);
+    auto default_rand = std::make_unique<vne::math::Random<float>>();
+    auto rand_with_seed = std::make_unique<vne::math::Random<float>>(_seed);
+    vne::math::Random<float> rand_with_ab(_lower_f, _upper_f);
+    vne::math::Random<float> rand_with_seed_ab(_seed, _lower_f, _upper_f);
+    vne::math::Random<float> rand_copy(rand_with_seed_ab);
 
     // Nondeterministic random numbers
     EXPECT_TRUE(IsInBetween(default_rand->Get(), 0.0f, 1.0f));
-    EXPECT_TRUE(IsInBetween(rand_with_ab.Get(), _lower_f, _upper_f));
-    EXPECT_TRUE(IsInBetween(rand_copy.Get(), _lower_f, _upper_f));
+    EXPECT_TRUE(IsInBetween(rand_with_ab.get(), _lower_f, _upper_f));
+    EXPECT_TRUE(IsInBetween(rand_copy.get(), _lower_f, _upper_f));
     // Deterministic random numbers
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), 0.0f, 1.0f));
-    EXPECT_TRUE(IsInBetween(rand_with_seed_ab.Get(), _lower_f, _upper_f));
+    EXPECT_TRUE(IsInBetween(rand_with_seed_ab.get(), _lower_f, _upper_f));
 
     // Test Operator Overload
-    auto rand_double = std::make_unique<Math::Random_C<double>>(_seed, 10.0, 20.0);
+    auto rand_double = std::make_unique<vne::math::Random<double>>(_seed, 10.0, 20.0);
     EXPECT_TRUE(IsInBetween(rand_double->Get(), 10.0, 20.0));
     EXPECT_DOUBLE_EQ(10.0, rand_double->GetMin());
     EXPECT_DOUBLE_EQ(20.0, rand_double->GetMax());
 
-    auto rand_double_default = std::make_unique<Math::Random_C<double>>();
+    auto rand_double_default = std::make_unique<vne::math::Random<double>>();
     EXPECT_DOUBLE_EQ(0.0, rand_double_default->GetMin());
     EXPECT_DOUBLE_EQ(1.0, rand_double_default->GetMax());
 
@@ -82,17 +82,17 @@ TEST_F(RandomTest_C, TestRealRandomGet) {
  */
 TEST_F(RandomTest_C, TestRealRandomExceptions) {
 #ifdef _DEBUG
-    ASSERT_DEATH(std::make_unique<Math::Random_C<float>>(_upper_f, _lower_f), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
-    ASSERT_DEATH(std::make_unique<Math::Random_C<float>>(_seed, _upper_f, _lower_f),
+    ASSERT_DEATH(std::make_unique<vne::math::Random<float>>(_upper_f, _lower_f), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(std::make_unique<vne::math::Random<float>>(_seed, _upper_f, _lower_f),
                  ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
 #endif  // _DEBUG
 }
 
 /**
- * Test Math::Random_C<T, false>::Get(...)
+ * Test vne::math::Random<T, false>::Get(...)
  */
 TEST_F(RandomTest_C, TestRealRandomGetList) {
-    auto rand_with_seed = std::make_unique<Math::Random_C<float>>(_seed);
+    auto rand_with_seed = std::make_unique<vne::math::Random<float>>(_seed);
     // Deterministic random numbers
     std::vector<float> random_numbers = rand_with_seed->Get(_size);
     for (auto number : random_numbers) {
@@ -104,24 +104,24 @@ TEST_F(RandomTest_C, TestRealRandomGetList) {
 }
 
 /**
- * Test Math::Random_C<T, false>::GetParam(...) and
- * Math::Random_c<T, false>::SetParam(...)
+ * Test vne::math::Random<T, false>::GetParam(...) and
+ * vne::math::Random_c<T, false>::SetParam(...)
  */
 TEST_F(RandomTest_C, TestRealRandomGetAndSetParam) {
-    auto default_rand = std::make_unique<Math::Random_C<float>>();
-    auto rand_with_seed = std::make_unique<Math::Random_C<float>>(_seed);
+    auto default_rand = std::make_unique<vne::math::Random<float>>();
+    auto rand_with_seed = std::make_unique<vne::math::Random<float>>(_seed);
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), 0.0f, 1.0f));
     rand_with_seed->SetParam(default_rand->GetParam());
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), 0.0f, 1.0f));
 }
 
 /**
- * Test Math::Random_C<T, false>::GetMin(...),
- * Math::Random_C<T, false>::GetMax(...), and
- * Math::Random_c<T, false>::SetParam(...)
+ * Test vne::math::Random<T, false>::GetMin(...),
+ * vne::math::Random<T, false>::GetMax(...), and
+ * vne::math::Random_c<T, false>::SetParam(...)
  */
 TEST_F(RandomTest_C, TestRealRandomGetAndSetMinMax) {
-    auto rand_with_seed = std::make_unique<Math::Random_C<float>>(_seed);
+    auto rand_with_seed = std::make_unique<vne::math::Random<float>>(_seed);
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), 0.0f, 1.0f));
     EXPECT_EQ(0.0f, rand_with_seed->GetMin());
     EXPECT_EQ(1.0f, rand_with_seed->GetMax());
@@ -139,31 +139,31 @@ TEST_F(RandomTest_C, TestRealRandomGetAndSetMinMax) {
 }
 
 /**
- * Test Math::Random_C<T, true>::Get(...)
+ * Test vne::math::Random<T, true>::Get(...)
  */
 TEST_F(RandomTest_C, TestIntegerRandomGet) {
-    auto default_rand = std::make_unique<Math::Random_C<int>>();
-    auto rand_with_seed = std::make_unique<Math::Random_C<int>>(_seed);
-    auto rand_with_ab = std::make_unique<Math::Random_C<int>>(_lower_i, _upper_i);
-    auto rand_with_seed_ab = std::make_unique<Math::Random_C<int>>(_seed, _lower_i, _upper_i);
+    auto default_rand = std::make_unique<vne::math::Random<int>>();
+    auto rand_with_seed = std::make_unique<vne::math::Random<int>>(_seed);
+    auto rand_with_ab = std::make_unique<vne::math::Random<int>>(_lower_i, _upper_i);
+    auto rand_with_seed_ab = std::make_unique<vne::math::Random<int>>(_seed, _lower_i, _upper_i);
 
-    Math::Random_C<int> rand_copy(*rand_with_seed_ab);
+    vne::math::Random<int> rand_copy(*rand_with_seed_ab);
 
     // Nondeterministic random numbers
     EXPECT_TRUE(IsInBetween(default_rand->Get(), std::numeric_limits<int>::min(), std::numeric_limits<int>::max()));
     EXPECT_TRUE(IsInBetween(rand_with_ab->Get(), _lower_i, _upper_i));
-    EXPECT_TRUE(IsInBetween(rand_copy.Get(), _lower_i, _upper_i));
+    EXPECT_TRUE(IsInBetween(rand_copy.get(), _lower_i, _upper_i));
     // Deterministic random numbers
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), std::numeric_limits<int>::min(), std::numeric_limits<int>::max()));
     EXPECT_TRUE(IsInBetween(rand_with_seed_ab->Get(), _lower_i, _upper_i));
 
     // Test Operator Overload
-    auto rand_uint = std::make_unique<Math::Random_C<unsigned int>>(_seed, 10, 20);
+    auto rand_uint = std::make_unique<vne::math::Random<unsigned int>>(_seed, 10, 20);
     EXPECT_TRUE(IsInBetween(rand_uint->Get(), 10u, 20u));
     EXPECT_EQ(10u, rand_uint->GetMin());
     EXPECT_EQ(20u, rand_uint->GetMax());
 
-    auto rand_uint_default = std::make_unique<Math::Random_C<unsigned int>>();
+    auto rand_uint_default = std::make_unique<vne::math::Random<unsigned int>>();
     EXPECT_EQ(std::numeric_limits<unsigned int>::min(), rand_uint_default->GetMin());
     EXPECT_EQ(std::numeric_limits<unsigned int>::max(), rand_uint_default->GetMax());
 
@@ -173,10 +173,10 @@ TEST_F(RandomTest_C, TestIntegerRandomGet) {
 }
 
 /**
- * Test Math::Random_C<T, true>::Get(...)
+ * Test vne::math::Random<T, true>::Get(...)
  */
 TEST_F(RandomTest_C, TestIntegerRandomGetList) {
-    auto rand_with_seed = std::make_unique<Math::Random_C<int>>(_seed, _lower_i, _upper_i);
+    auto rand_with_seed = std::make_unique<vne::math::Random<int>>(_seed, _lower_i, _upper_i);
     // Deterministic random numbers
     std::vector<int> random_numbers = rand_with_seed->Get(_size);
     for (auto number : random_numbers) {
@@ -192,30 +192,30 @@ TEST_F(RandomTest_C, TestIntegerRandomGetList) {
  */
 TEST_F(RandomTest_C, TestIntegerRandomExceptions) {
 #ifdef _DEBUG
-    ASSERT_DEATH(std::make_unique<Math::Random_C<int>>(_upper_i, _lower_i), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
-    ASSERT_DEATH(std::make_unique<Math::Random_C<int>>(_seed, _upper_i, _lower_i), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(std::make_unique<vne::math::Random<int>>(_upper_i, _lower_i), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
+    ASSERT_DEATH(std::make_unique<vne::math::Random<int>>(_seed, _upper_i, _lower_i), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
 #endif  // _DEBUG
 }
 
 /**
- * Test Math::Random_C<T, true>::GetParam(...) and
- * Math::Random_c<T, true>::SetParam(...)
+ * Test vne::math::Random<T, true>::GetParam(...) and
+ * vne::math::Random_c<T, true>::SetParam(...)
  */
 TEST_F(RandomTest_C, TestIntegerRandomGetAndSetParam) {
-    auto default_rand = std::make_unique<Math::Random_C<int>>();
-    auto rand_with_seed = std::make_unique<Math::Random_C<int>>(_seed, _lower_i, _upper_i);
+    auto default_rand = std::make_unique<vne::math::Random<int>>();
+    auto rand_with_seed = std::make_unique<vne::math::Random<int>>(_seed, _lower_i, _upper_i);
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), _lower_i, _upper_i));
     rand_with_seed->SetParam(default_rand->GetParam());
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), std::numeric_limits<int>::min(), std::numeric_limits<int>::max()));
 }
 
 /**
- * Test Math::Random_C<T, true>::GetMin(...),
- * Math::Random_C<T, true>::GetMax(...), and
- * Math::Random_c<T, true>::SetParam(...)
+ * Test vne::math::Random<T, true>::GetMin(...),
+ * vne::math::Random<T, true>::GetMax(...), and
+ * vne::math::Random_c<T, true>::SetParam(...)
  */
 TEST_F(RandomTest_C, TestIntegerRandomGetAndSetMinMax) {
-    auto rand_with_seed = std::make_unique<Math::Random_C<int>>(_seed, _lower_i, _upper_i);
+    auto rand_with_seed = std::make_unique<vne::math::Random<int>>(_seed, _lower_i, _upper_i);
     EXPECT_TRUE(IsInBetween(rand_with_seed->Get(), _lower_i, _upper_i));
     EXPECT_EQ(_lower_i, rand_with_seed->GetMin());
     EXPECT_EQ(_upper_i, rand_with_seed->GetMax());

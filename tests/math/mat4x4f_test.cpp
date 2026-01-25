@@ -20,256 +20,256 @@ class Mat4x4fTest_C : public ::testing::Test {
     // Interface of test fixture base class
    protected:
     void SetUp() override {
-        mat = Math::Mat4x4f_C(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
-        mat2 = Math::Mat4x4f_C(-14.0f, -20.0f, -26.0f, -32.0f, -8.0f, -10.0f, -12.0f, -14.0f, -2.0f, 0.0f, 2.0f, 4.0f, 4.0f, 10.0f, 16.0f, 22.0f);
-        mat3 = Math::Mat4x4f_C(2.0f, 3.0f, 1.0f, 5.0f, 1.0f, 0.0f, 3.0f, 1.0f, 0.0f, 2.0f, -3.0f, 2.0f, 0.0f, 2.0f, 3.0f, 1.0f);
+        mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+        mat2 = vne::math::Mat4x4f(-14.0f, -20.0f, -26.0f, -32.0f, -8.0f, -10.0f, -12.0f, -14.0f, -2.0f, 0.0f, 2.0f, 4.0f, 4.0f, 10.0f, 16.0f, 22.0f);
+        mat3 = vne::math::Mat4x4f(2.0f, 3.0f, 1.0f, 5.0f, 1.0f, 0.0f, 3.0f, 1.0f, 0.0f, 2.0f, -3.0f, 2.0f, 0.0f, 2.0f, 3.0f, 1.0f);
     }
 
     void TearDown() override {}
 
    protected:
-    Math::Mat4x4f_C mat;
-    Math::Mat4x4f_C mat2;
-    Math::Mat4x4f_C mat3;
+    vne::math::Mat4x4f mat;
+    vne::math::Mat4x4f mat2;
+    vne::math::Mat4x4f mat3;
 };
 
 /**
  * Test GetColumn(uint32_t idx)
  *
- * mat.GetColumn(0)
+ * mat.getColumn(0)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fColumn) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f), Math::Vec4f_C(2.0f), Math::Vec4f_C(3.0f), Math::Vec4f_C(4.0f));
-    EXPECT_EQ(Math::Vec4f_C(1.0f), out.GetColumn(0));
-    EXPECT_EQ(Math::Vec4f_C(2.0f), out.GetColumn(1));
-    EXPECT_EQ(Math::Vec4f_C(3.0f), out.GetColumn(2));
-    EXPECT_EQ(Math::Vec4f_C(4.0f), out.GetColumn(3));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
+    EXPECT_EQ(vne::math::Vec4f(1.0f), out.getColumn(0));
+    EXPECT_EQ(vne::math::Vec4f(2.0f), out.getColumn(1));
+    EXPECT_EQ(vne::math::Vec4f(3.0f), out.getColumn(2));
+    EXPECT_EQ(vne::math::Vec4f(4.0f), out.getColumn(3));
 #ifdef _DEBUG
-    EXPECT_DEATH(out.GetColumn(4), ".*");
+    EXPECT_DEATH(out.getColumn(4), ".*");
 #endif  // _DEBUG
 }
 
 /**
  * Test GetRow(uint32_t idx)
  *
- * mat.GetRow(0)
+ * mat.getRow(0)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fRow) {
-    EXPECT_EQ(Math::Vec4f_C(0.0f, 4.0f, 8.0f, 12.0f), mat.GetRow(0));
-    EXPECT_EQ(Math::Vec4f_C(1.0f, 5.0f, 9.0f, 13.0f), mat.GetRow(1));
-    EXPECT_EQ(Math::Vec4f_C(2.0f, 6.0f, 10.0f, 14.0f), mat.GetRow(2));
-    EXPECT_EQ(Math::Vec4f_C(3.0f, 7.0f, 11.0f, 15.0f), mat.GetRow(3));
+    EXPECT_EQ(vne::math::Vec4f(0.0f, 4.0f, 8.0f, 12.0f), mat.getRow(0));
+    EXPECT_EQ(vne::math::Vec4f(1.0f, 5.0f, 9.0f, 13.0f), mat.getRow(1));
+    EXPECT_EQ(vne::math::Vec4f(2.0f, 6.0f, 10.0f, 14.0f), mat.getRow(2));
+    EXPECT_EQ(vne::math::Vec4f(3.0f, 7.0f, 11.0f, 15.0f), mat.getRow(3));
 #ifdef _DEBUG
-    EXPECT_DEATH(mat.GetRow(4), ".*");
+    EXPECT_DEATH(mat.getRow(4), ".*");
 #endif  // _DEBUG
 }
 
 /**
  * Test XAxis(), YAxis(), ZAxis() and Translation()
  *
- * mat.XAxis()
- * mat.YAxis()
- * mat.ZAxis()
- * mat.Translation()
+ * mat.xAxis()
+ * mat.yAxis()
+ * mat.zAxis()
+ * mat.translation()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fXYZAxes) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f), Math::Vec4f_C(2.0f), Math::Vec4f_C(3.0f), Math::Vec4f_C(4.0f));
-    EXPECT_EQ(Math::Vec3f_C(1.0f), out.XAxis());
-    EXPECT_EQ(Math::Vec3f_C(2.0f), out.YAxis());
-    EXPECT_EQ(Math::Vec3f_C(3.0f), out.ZAxis());
-    EXPECT_EQ(Math::Vec3f_C(4.0f), out.Translation());
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
+    EXPECT_EQ(vne::math::Vec3f(1.0f), out.xAxis());
+    EXPECT_EQ(vne::math::Vec3f(2.0f), out.yAxis());
+    EXPECT_EQ(vne::math::Vec3f(3.0f), out.zAxis());
+    EXPECT_EQ(vne::math::Vec3f(4.0f), out.translation());
 }
 
 /**
  * Test Determinant()
  *
- * mat.Determinant()
+ * mat.determinant()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fDeterminant) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(3.0f, 4.0f, 3.0f, 9.0f),
-                                          Math::Vec4f_C(2.0f, 0.0f, 0.0f, 2.0f),
-                                          Math::Vec4f_C(0.0f, 1.0f, 2.0f, 3.0f),
-                                          Math::Vec4f_C(1.0f, 2.0f, 1.0f, 1.0f));
-    EXPECT_EQ(24.0f, out.Determinant());
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(3.0f, 4.0f, 3.0f, 9.0f),
+                                          vne::math::Vec4f(2.0f, 0.0f, 0.0f, 2.0f),
+                                          vne::math::Vec4f(0.0f, 1.0f, 2.0f, 3.0f),
+                                          vne::math::Vec4f(1.0f, 2.0f, 1.0f, 1.0f));
+    EXPECT_EQ(24.0f, out.determinant());
 
-    out = Math::Mat4x4f_C(Math::Vec4f_C(4.0f, 0.0f, 0.0f, 0.0f),
-                          Math::Vec4f_C(3.0f, 1.0f, -1.0f, 3.0f),
-                          Math::Vec4f_C(2.0f, -3.0f, 3.0f, 1.0f),
-                          Math::Vec4f_C(2.0f, 3.0f, 3.0f, 1.0f));
-    EXPECT_EQ(-240.0f, out.Determinant());
+    out = vne::math::Mat4x4f(vne::math::Vec4f(4.0f, 0.0f, 0.0f, 0.0f),
+                          vne::math::Vec4f(3.0f, 1.0f, -1.0f, 3.0f),
+                          vne::math::Vec4f(2.0f, -3.0f, 3.0f, 1.0f),
+                          vne::math::Vec4f(2.0f, 3.0f, 3.0f, 1.0f));
+    EXPECT_EQ(-240.0f, out.determinant());
 
-    out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 4.0f, 0.0f, 1.0f),
-                          Math::Vec4f_C(2.0f, 7.0f, 0.0f, 2.0f),
-                          Math::Vec4f_C(6.0f, 3.0f, 0.0f, 2.0f),
-                          Math::Vec4f_C(6.0f, 2.0f, 0.0f, 9.0f));
-    EXPECT_EQ(0.0f, out.Determinant());  // 3rd row is a zero vector
+    out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 4.0f, 0.0f, 1.0f),
+                          vne::math::Vec4f(2.0f, 7.0f, 0.0f, 2.0f),
+                          vne::math::Vec4f(6.0f, 3.0f, 0.0f, 2.0f),
+                          vne::math::Vec4f(6.0f, 2.0f, 0.0f, 9.0f));
+    EXPECT_EQ(0.0f, out.determinant());  // 3rd row is a zero vector
 
-    out = Math::Mat4x4f_C(Math::Vec4f_C(2.0f, 6.0f, 0.0f, 1.0f),
-                          Math::Vec4f_C(1.0f, 7.0f, 6.0f, 2.0f),
-                          Math::Vec4f_C(2.0f, 6.0f, 0.0f, 1.0f),
-                          Math::Vec4f_C(3.0f, 9.0f, 0.0f, 4.0f));
-    EXPECT_EQ(0.0f, out.Determinant());  // 1st and 3rd columns are equal
+    out = vne::math::Mat4x4f(vne::math::Vec4f(2.0f, 6.0f, 0.0f, 1.0f),
+                          vne::math::Vec4f(1.0f, 7.0f, 6.0f, 2.0f),
+                          vne::math::Vec4f(2.0f, 6.0f, 0.0f, 1.0f),
+                          vne::math::Vec4f(3.0f, 9.0f, 0.0f, 4.0f));
+    EXPECT_EQ(0.0f, out.determinant());  // 1st and 3rd columns are equal
 }
 
 /**
  * Test Transpose()
  *
- * mat.Transpose()
+ * mat.transpose()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fTranspose) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(3.0f, 4.0f, 3.0f, 9.0f),
-                                          Math::Vec4f_C(2.0f, 0.0f, 0.0f, 2.0f),
-                                          Math::Vec4f_C(0.0f, 1.0f, 2.0f, 3.0f),
-                                          Math::Vec4f_C(1.0f, 2.0f, 1.0f, 1.0f));
-    Math::Mat4x4f_C trans = out.Transpose();
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(3.0f, 4.0f, 3.0f, 9.0f),
+                                          vne::math::Vec4f(2.0f, 0.0f, 0.0f, 2.0f),
+                                          vne::math::Vec4f(0.0f, 1.0f, 2.0f, 3.0f),
+                                          vne::math::Vec4f(1.0f, 2.0f, 1.0f, 1.0f));
+    vne::math::Mat4x4f trans = out.transpose();
 
-    EXPECT_EQ(out.GetColumn(0), trans.GetRow(0));
-    EXPECT_EQ(out.GetColumn(1), trans.GetRow(1));
-    EXPECT_EQ(out.GetColumn(2), trans.GetRow(2));
-    EXPECT_EQ(out.GetColumn(3), trans.GetRow(3));
+    EXPECT_EQ(out.getColumn(0), trans.getRow(0));
+    EXPECT_EQ(out.getColumn(1), trans.getRow(1));
+    EXPECT_EQ(out.getColumn(2), trans.getRow(2));
+    EXPECT_EQ(out.getColumn(3), trans.getRow(3));
 }
 
 /**
  * Test Inverse()
  *
- * mat.Inverse()
+ * mat.inverse()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fInverse) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 1.0f, 1.0f, -1.0f),
-                                          Math::Vec4f_C(1.0f, 1.0f, -1.0f, 1.0f),
-                                          Math::Vec4f_C(1.0f, -1.0f, 1.0f, 1.0f),
-                                          Math::Vec4f_C(-1.0f, 1.0f, 1.0f, 1.0f));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 1.0f, 1.0f, -1.0f),
+                                          vne::math::Vec4f(1.0f, 1.0f, -1.0f, 1.0f),
+                                          vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f),
+                                          vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
 
-    EXPECT_EQ(-16.0f, out.Determinant());
-    Math::Mat4x4f_C inv = out.Inverse();
+    EXPECT_EQ(-16.0f, out.determinant());
+    vne::math::Mat4x4f inv = out.inverse();
 
-    EXPECT_EQ(out.GetColumn(0) / 4.0f, inv.GetColumn(0));
-    EXPECT_EQ(out.GetColumn(1) / 4.0f, inv.GetColumn(1));
-    EXPECT_EQ(out.GetColumn(2) / 4.0f, inv.GetColumn(2));
-    EXPECT_EQ(out.GetColumn(3) / 4.0f, inv.GetColumn(3));
+    EXPECT_EQ(out.getColumn(0) / 4.0f, inv.getColumn(0));
+    EXPECT_EQ(out.getColumn(1) / 4.0f, inv.getColumn(1));
+    EXPECT_EQ(out.getColumn(2) / 4.0f, inv.getColumn(2));
+    EXPECT_EQ(out.getColumn(3) / 4.0f, inv.getColumn(3));
 }
 
 /**
  * Test InverseTransposed()
  *
- * mat.InverseTransposed()
+ * mat.inverseTransposed()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fInverseTransposed) {
-    Math::Mat4x4f_C transform = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 1.0f, 1.0f, -1.0f),
-                                                Math::Vec4f_C(1.0f, 1.0f, -1.0f, 1.0f),
-                                                Math::Vec4f_C(1.0f, -1.0f, 1.0f, 1.0f),
-                                                Math::Vec4f_C(-1.0f, 1.0f, 1.0f, 1.0f));
+    vne::math::Mat4x4f transform = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 1.0f, 1.0f, -1.0f),
+                                                vne::math::Vec4f(1.0f, 1.0f, -1.0f, 1.0f),
+                                                vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f),
+                                                vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
 
-    Math::Mat4x4f_C inv_transpose = transform.InverseTransposed();
+    vne::math::Mat4x4f inv_transpose = transform.inverseTransposed();
 
-    Math::Mat4x4f_C transpose = transform.Transpose();
-    EXPECT_EQ(transpose.GetColumn(0) / 4.0f, inv_transpose.GetColumn(0));
-    EXPECT_EQ(transpose.GetColumn(1) / 4.0f, inv_transpose.GetColumn(1));
-    EXPECT_EQ(transpose.GetColumn(2) / 4.0f, inv_transpose.GetColumn(2));
-    EXPECT_EQ(transpose.GetColumn(3) / 4.0f, inv_transpose.GetColumn(3));
+    vne::math::Mat4x4f transpose = transform.transpose();
+    EXPECT_EQ(transpose.getColumn(0) / 4.0f, inv_transpose.getColumn(0));
+    EXPECT_EQ(transpose.getColumn(1) / 4.0f, inv_transpose.getColumn(1));
+    EXPECT_EQ(transpose.getColumn(2) / 4.0f, inv_transpose.getColumn(2));
+    EXPECT_EQ(transpose.getColumn(3) / 4.0f, inv_transpose.getColumn(3));
 }
 
 /**
- * Test Mat4x4f_C Handness
+ * Test Mat4x4f Handness
  *
  * mat.Handness()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fHandness) {
-    Math::Mat4x4f_C result = Math::Mat4x4f_C(Math::Vec4f_C(1.0f), Math::Vec4f_C(2.0f), Math::Vec4f_C(3.0f), Math::Vec4f_C(4.0f));
-    EXPECT_EQ(Math::Handness_TP::LEFT, result.Handedness());
+    vne::math::Mat4x4f result = vne::math::Mat4x4f(vne::math::Vec4f(1.0f), vne::math::Vec4f(2.0f), vne::math::Vec4f(3.0f), vne::math::Vec4f(4.0f));
+    EXPECT_EQ(vne::math::Handness_TP::LEFT, result.handedness());
 
-    result = Math::Mat4x4f_C(Math::Vec4f_C(0.9f, -0.0f, 0.3f, 0.0f),
-                             Math::Vec4f_C(0.2f, 0.9f, -0.4f, 0.0f),
-                             Math::Vec4f_C(-0.3f, 0.5f, 0.8f, 0.0f),
-                             Math::Vec4f_C(0.0f, 0.0f, 0.0f, 1.0f));
-    EXPECT_EQ(Math::Handness_TP::RIGHT, result.Handedness());
+    result = vne::math::Mat4x4f(vne::math::Vec4f(0.9f, -0.0f, 0.3f, 0.0f),
+                             vne::math::Vec4f(0.2f, 0.9f, -0.4f, 0.0f),
+                             vne::math::Vec4f(-0.3f, 0.5f, 0.8f, 0.0f),
+                             vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+    EXPECT_EQ(vne::math::Handness_TP::RIGHT, result.handedness());
 }
 
 /**
  * Test TransformPoint()
  *
- * mat.TransformPoint(cont Math::Vec3f_C& )
+ * mat.transformPoint(cont vne::math::Vec3f& )
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fTransformPoint) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 0.0f, 0.0f, 0.0f),
-                                          Math::Vec4f_C(0.0f, 1.0f, 0.0f, 0.0f),
-                                          Math::Vec4f_C(0.0f, 0.0f, 1.0f, 0.0f),
-                                          Math::Vec4f_C(2.0f, 2.0f, 2.0f, 1.0f));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
+                                          vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                                          vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                                          vne::math::Vec4f(2.0f, 2.0f, 2.0f, 1.0f));
 
-    Math::Vec3f_C point = Math::Vec3f_C(2.0f, 3.0f, 1.0f);
+    vne::math::Vec3f point = vne::math::Vec3f(2.0f, 3.0f, 1.0f);
 
-    EXPECT_EQ(Math::Vec3f_C(4.0f, 5.0f, 3.0f), out.TransformPoint(point));
+    EXPECT_EQ(vne::math::Vec3f(4.0f, 5.0f, 3.0f), out.transformPoint(point));
 }
 
 /**
  * Test TransformVector()
  *
- * mat.TransformVector(cont Math::Vec3f_C& )
+ * mat.transformVector(cont vne::math::Vec3f& )
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fTransformVector) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 0.0f, 0.0f, 0.0f),
-                                          Math::Vec4f_C(0.0f, 1.0f, 0.0f, 0.0f),
-                                          Math::Vec4f_C(0.0f, 0.0f, 1.0f, 0.0f),
-                                          Math::Vec4f_C(2.0f, 2.0f, 2.0f, 1.0f));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
+                                          vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                                          vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                                          vne::math::Vec4f(2.0f, 2.0f, 2.0f, 1.0f));
 
-    Math::Vec3f_C vector = Math::Vec3f_C(2.0f, 3.0f, 1.0f);
+    vne::math::Vec3f vector = vne::math::Vec3f(2.0f, 3.0f, 1.0f);
 
-    EXPECT_EQ(Math::Vec3f_C(2.0f, 3.0f, 1.0f), out.TransformVector(vector));
+    EXPECT_EQ(vne::math::Vec3f(2.0f, 3.0f, 1.0f), out.transformVector(vector));
 
-    out[0] = Math::Vec4f_C(2.0f, 0.0f, 0.0f, 0.0f);
-    EXPECT_EQ(Math::Vec3f_C(4.0f, 3.0f, 1.0f), out.TransformVector(vector));
+    out[0] = vne::math::Vec4f(2.0f, 0.0f, 0.0f, 0.0f);
+    EXPECT_EQ(vne::math::Vec3f(4.0f, 3.0f, 1.0f), out.transformVector(vector));
 }
 
 /**
  * Test TransformNormal()
  *
- * mat.TransformNormal(cont Math::Vec3f_C& )
+ * mat.transformNormal(cont vne::math::Vec3f& )
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fTransformNormal) {
     // Identity matrix
-    Math::Mat4x4f_C out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 0.0f, 0.0f, 0.0f),
-                                          Math::Vec4f_C(0.0f, 1.0f, 0.0f, 0.0f),
-                                          Math::Vec4f_C(0.0f, 0.0f, 1.0f, 0.0f),
-                                          Math::Vec4f_C(2.0f, 3.0f, 4.0f, 1.0f));
+    vne::math::Mat4x4f out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
+                                          vne::math::Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                                          vne::math::Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                                          vne::math::Vec4f(2.0f, 3.0f, 4.0f, 1.0f));
 
-    Math::Vec3f_C normal = Math::Vec3f_C(0.0f, 0.0f, 1.0f);
+    vne::math::Vec3f normal = vne::math::Vec3f(0.0f, 0.0f, 1.0f);
 
-    EXPECT_EQ(normal, out.TransformNormal(normal));
+    EXPECT_EQ(normal, out.transformNormal(normal));
 
-    out[0] = Math::Vec4f_C(2.0f, 0.0f, 0.0f, 0.0f);
-    EXPECT_EQ(normal, out.TransformNormal(normal));
+    out[0] = vne::math::Vec4f(2.0f, 0.0f, 0.0f, 0.0f);
+    EXPECT_EQ(normal, out.transformNormal(normal));
 
     // Only Rotational matrix
-    out = Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 0.0f, 0.0f, 0.0f),
-                          Math::Vec4f_C(0.0f, 0.866f, 0.5f, 0.0f),
-                          Math::Vec4f_C(0.0f, -0.5f, 0.866f, 0.0f),
-                          Math::Vec4f_C(0.0f, 0.0f, 0.0f, 1.0f));
-    Math::Vec3f_C normal_out = Math::Vec3f_C(0.0f, -0.5f, 0.866f);
-    EXPECT_TRUE(normal_out.AreSame(out.TransformNormal(normal), 1E-3f));
+    out = vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
+                          vne::math::Vec4f(0.0f, 0.866f, 0.5f, 0.0f),
+                          vne::math::Vec4f(0.0f, -0.5f, 0.866f, 0.0f),
+                          vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+    vne::math::Vec3f normal_out = vne::math::Vec3f(0.0f, -0.5f, 0.866f);
+    EXPECT_TRUE(normal_out.areSame(out.transformNormal(normal), 1E-3f));
 
     // Scaling only
-    out = Math::Mat4x4f_C(Math::Vec4f_C(2.0f, 0.0f, 0.0f, 0.0f),
-                          Math::Vec4f_C(0.0f, 4.0f, 0.0f, 0.0f),
-                          Math::Vec4f_C(0.0f, 0.0f, 5.0f, 0.0f),
-                          Math::Vec4f_C(0.0f, 0.0f, 0.0f, 1.0f));
-    normal = Math::Vec3f_C(0.0f, 0.6f, 0.8f);
-    normal_out = Math::Vec3f_C(0, 0.683941f, 0.729537f);
-    EXPECT_TRUE(normal_out.AreSame(out.TransformNormal(normal), 1E-5f));
+    out = vne::math::Mat4x4f(vne::math::Vec4f(2.0f, 0.0f, 0.0f, 0.0f),
+                          vne::math::Vec4f(0.0f, 4.0f, 0.0f, 0.0f),
+                          vne::math::Vec4f(0.0f, 0.0f, 5.0f, 0.0f),
+                          vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+    normal = vne::math::Vec3f(0.0f, 0.6f, 0.8f);
+    normal_out = vne::math::Vec3f(0, 0.683941f, 0.729537f);
+    EXPECT_TRUE(normal_out.areSame(out.transformNormal(normal), 1E-5f));
 }
 
 /**
- * Test Mat4x4f_C stream out
+ * Test Mat4x4f stream out
  *
  * std::cout << mat << std::endl;
  */
@@ -280,200 +280,200 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fStreamOut) {
 }
 
 /**
- * Test Mat4x4f_C Identity
+ * Test Mat4x4f Identity
  *
- * Math::Math4x4f_C::Identity()
+ * vne::math::Math4x4f_C.identity()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fIdentity) {
-    Math::Mat4x4f_C mat4 = Math::Mat4x4f_C();
-    EXPECT_EQ(Math::Mat4x4f_C(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f),
-              Math::Mat4x4f_C::Identity());
+    vne::math::Mat4x4f mat4 = vne::math::Mat4x4f();
+    EXPECT_EQ(vne::math::Mat4x4f(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f),
+              vne::math::Mat4x4f::identity());
 }
 
 /**
- * Test Mat4x4f_C Zero
+ * Test Mat4x4f Zero
  *
- * Math::Mat4x4f_C::Zero()
+ * vne::math::Mat4x4f::zero()
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fZero) {
-    EXPECT_EQ(Math::Mat4x4f_C(0.0f), Math::Mat4x4f_C::Zero());
+    EXPECT_EQ(vne::math::Mat4x4f(0.0f), vne::math::Mat4x4f::zero());
 }
 
 /**
- * Test Mat4x4f_C Lerp
+ * Test Mat4x4f Lerp
  *
- * Math::Mat4x4f_C::Lerp(const Math::Mat4x4f_C&, const Math::Mat4x4f_C&, float)
+ * vne::math::Mat4x4f::lerp(const vne::math::Mat4x4f&, const vne::math::Mat4x4f&, float)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fLerp) {
-    Math::Mat4x4f_C from = mat;
-    Math::Mat4x4f_C to = mat3;
-    EXPECT_EQ(Math::Mat4x4f_C(Math::Vec4f_C(1.0f, 2.0f, 1.5f, 4.0f),
-                              Math::Vec4f_C(2.5f, 2.5f, 4.5f, 4.0f),
-                              Math::Vec4f_C(4.0f, 5.5f, 3.5f, 6.5f),
-                              Math::Vec4f_C(6.0f, 7.5f, 8.5f, 8.0f)),
-              Math::Mat4x4f_C::Lerp(from, to, 0.5f));
+    vne::math::Mat4x4f from = mat;
+    vne::math::Mat4x4f to = mat3;
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f(1.0f, 2.0f, 1.5f, 4.0f),
+                              vne::math::Vec4f(2.5f, 2.5f, 4.5f, 4.0f),
+                              vne::math::Vec4f(4.0f, 5.5f, 3.5f, 6.5f),
+                              vne::math::Vec4f(6.0f, 7.5f, 8.5f, 8.0f)),
+              vne::math::Mat4x4f::lerp(from, to, 0.5f));
 }
 
 /**
  * Test Transform()
  *
- * mat.Transform(const Vec3f_C&, const Vec3f_C&, const Vec3f_C&, const Vec3f_C&,
- * const Vec3f_C&) mat.Transform(const Vec3f_C&, const Vec3f_C&, const Vec3f_C&,
- * const Vec3f_C&) mat.Transform(const Vec3f_C&, const Vec3f_C&, const Vec3f_C&)
- * mat.Transform(const Vec3f_C&, const Vec3f_C&, const Vec3f_C&)
+ * mat.transform(const Vec3f&, const Vec3f&, const Vec3f&, const Vec3f&,
+ * const Vec3f&) mat.transform(const Vec3f&, const Vec3f&, const Vec3f&,
+ * const Vec3f&) mat.transform(const Vec3f&, const Vec3f&, const Vec3f&)
+ * mat.transform(const Vec3f&, const Vec3f&, const Vec3f&)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fTransform) {
-    Math::Mat4x4f_C out;
+    vne::math::Mat4x4f out;
 
-    EXPECT_EQ(Math::Mat4x4f_C(Math::Vec4f_C::XAxis(), Math::Vec4f_C::YAxis(), Math::Vec4f_C::ZAxis(), Math::Vec4f_C(1.0f, 2.0f, 3.0f, 1.0f)),
-              out.Transform(Math::Vec3f_C::XAxis(), Math::Vec3f_C::YAxis(), Math::Vec3f_C::ZAxis(), Math::Vec3f_C(1.0f, 2.0f, 3.0f)));
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f::zAxis(), vne::math::Vec4f(1.0f, 2.0f, 3.0f, 1.0f)),
+              out.transform(vne::math::Vec3f::xAxis(), vne::math::Vec3f::yAxis(), vne::math::Vec3f::zAxis(), vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
 
-    EXPECT_EQ(Math::Mat4x4f_C(Math::Vec4f_C::XAxis(), Math::Vec4f_C::YAxis(), Math::Vec4f_C::ZAxis(), Math::Vec4f_C(0.0f, 0.0f, 0.0f, 1.0f)),
-              out.Transform(Math::Vec3f_C::XAxis(), Math::Vec3f_C::YAxis(), Math::Vec3f_C::ZAxis()));
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f::zAxis(), vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f)),
+              out.transform(vne::math::Vec3f::xAxis(), vne::math::Vec3f::yAxis(), vne::math::Vec3f::zAxis()));
 
-    EXPECT_EQ(Math::Mat4x4f_C(Math::Vec4f_C::ZAxis(), Math::Vec4f_C::XAxis(), Math::Vec4f_C::YAxis(), Math::Vec4f_C(0.0f, 0.0f, 0.0f, 1.0f)),
-              out.Transform(Math::Vec3f_C::Forward(), Math::Vec3f_C::Up()));
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::zAxis(), vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f)),
+              out.transform(vne::math::Vec3f::forward(), vne::math::Vec3f::up()));
 
-    EXPECT_EQ(Math::Mat4x4f_C(Math::Vec4f_C::XAxis(), Math::Vec4f_C::YAxis(), Math::Vec4f_C::ZAxis(), Math::Vec4f_C(1.0f, 2.0f, 3.0f, 1.0f)),
-              out.Transform(Math::Vec3f_C(1.0f, 2.0f, 3.0f)));
+    EXPECT_EQ(vne::math::Mat4x4f(vne::math::Vec4f::xAxis(), vne::math::Vec4f::yAxis(), vne::math::Vec4f::zAxis(), vne::math::Vec4f(1.0f, 2.0f, 3.0f, 1.0f)),
+              out.transform(vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
 }
 
 /**
- * Test Mat4x4f_C Translate
+ * Test Mat4x4f Translate
  *
- * Math::Mat4x4f_C::Translate(Math::Vec3f_C(1.0f, 2.0f, 3.0f))
- * Math::Mat4x4f_C::Translate(1.0f, 2.0f, 3.0f)
- * Math::Mat4x4f_C::Translate(1.0f)
+ * vne::math::Mat4x4f::translate(vne::math::Vec3f(1.0f, 2.0f, 3.0f))
+ * vne::math::Mat4x4f::translate(1.0f, 2.0f, 3.0f)
+ * vne::math::Mat4x4f::translate(1.0f)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fTranslate) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::Identity();
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::identity();
 
     out[3][0] = 1.0f;
     out[3][1] = 2.0f;
     out[3][2] = 3.0f;
-    EXPECT_EQ(out, Math::Mat4x4f_C::Translate(Math::Vec3f_C(1.0f, 2.0f, 3.0f)));
+    EXPECT_EQ(out, vne::math::Mat4x4f::translate(vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
 
     out[3][0] = 4.0f;
     out[3][1] = 5.0f;
     out[3][2] = 6.0f;
-    EXPECT_EQ(out, Math::Mat4x4f_C::Translate(4.0f, 5.0f, 6.0f));
+    EXPECT_EQ(out, vne::math::Mat4x4f::translate(4.0f, 5.0f, 6.0f));
 
     out[3][0] = out[3][1] = out[3][2] = 10.0f;
-    EXPECT_EQ(out, Math::Mat4x4f_C::Translate(10.0f));
+    EXPECT_EQ(out, vne::math::Mat4x4f::translate(10.0f));
 }
 
 /**
- * Test Mat4x4f_C Scale
+ * Test Mat4x4f Scale
  *
- * Math::Mat4x4f_C::Scale(Math::Vec3f_C(1.0f, 2.0f, 3.0f))
- * Math::Mat4x4f_C::Scale(1.0f, 2.0f, 3.0f)
- * Math::Mat4x4f_C::Scale(1.0f)
+ * vne::math::Mat4x4f::scale(vne::math::Vec3f(1.0f, 2.0f, 3.0f))
+ * vne::math::Mat4x4f::scale(1.0f, 2.0f, 3.0f)
+ * vne::math::Mat4x4f::scale(1.0f)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fScale) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::Identity();
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::identity();
 
     out[0][0] = 1.0f;
     out[1][1] = 2.0f;
     out[2][2] = 3.0f;
-    EXPECT_EQ(out, Math::Mat4x4f_C::Scale(Math::Vec3f_C(1.0f, 2.0f, 3.0f)));
+    EXPECT_EQ(out, vne::math::Mat4x4f::scale(vne::math::Vec3f(1.0f, 2.0f, 3.0f)));
 
     out[0][0] = 4.0f;
     out[1][1] = 5.0f;
     out[2][2] = 6.0f;
-    EXPECT_EQ(out, Math::Mat4x4f_C::Scale(4.0f, 5.0f, 6.0f));
+    EXPECT_EQ(out, vne::math::Mat4x4f::scale(4.0f, 5.0f, 6.0f));
 
     out[0][0] = out[1][1] = out[2][2] = 10.0f;
-    EXPECT_EQ(out, Math::Mat4x4f_C::Scale(10.0f));
+    EXPECT_EQ(out, vne::math::Mat4x4f::scale(10.0f));
 }
 
 /**
- * Test Mat4x4f_C Rotate
+ * Test Mat4x4f Rotate
  *
- * Math::Mat4x4f_C::Rotate(PI, Math::Vec3f_C(1.0f, 1.0f, 1.0f))
+ * vne::math::Mat4x4f::rotate(PI, vne::math::Vec3f(1.0f, 1.0f, 1.0f))
  *
- * Math::Mat4x4f_C::RotateX(PI)
- * Math::Mat4x4f_C::RotateY(PI)
- * Math::Mat4x4f_C::RotateZ(PI)
- * Math::Mat4x4f_C::RotateXYZ(PI)
- * Math::Mat4x4f_C::RotateZYX(PI)
+ * vne::math::Mat4x4f::rotateX(PI)
+ * vne::math::Mat4x4f::rotateY(PI)
+ * vne::math::Mat4x4f::rotateZ(PI)
+ * vne::math::Mat4x4f::rotateXYZ(PI)
+ * vne::math::Mat4x4f::rotateZYX(PI)
  *
- * Math::Mat4x4f_C::RotateXYZ(PI, PI/2, PI/4)
- * Math::Mat4x4f_C::RotateZYX(PI, PI/2, PI/4)
+ * vne::math::Mat4x4f::rotateXYZ(PI, PI/2, PI/4)
+ * vne::math::Mat4x4f::rotateZYX(PI, PI/2, PI/4)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fRotate) {
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::Identity();
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::identity();
 
     out[0][0] = 1.0f;
     out[1][1] = -1.0f;
     out[2][2] = -1.0f;
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::Rotate(Math::Pi<float>(), Math::Vec3f_C(1.0f, 0.0f, 0.0f))));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotate(vne::math::pi<float>(), vne::math::Vec3f(1.0f, 0.0f, 0.0f))));
 
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::RotateX(Math::Pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateX(vne::math::pi<float>())));
 
     out[0][0] = -1.0f;
     out[1][1] = 1.0f;
     out[2][2] = -1.0f;
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::RotateY(Math::Pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateY(vne::math::pi<float>())));
 
     out[0][0] = -1.0f;
     out[1][1] = -1.0f;
     out[2][2] = 1.0f;
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::RotateZ(Math::Pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateZ(vne::math::pi<float>())));
 
     out[0][0] = 1.0f;
     out[1][1] = 1.0f;
     out[2][2] = 1.0f;
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::RotateXYZ(Math::Pi<float>())));
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::RotateZYX(Math::Pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateXYZ(vne::math::pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateZYX(vne::math::pi<float>())));
 
-    out = Math::Mat4x4f_C::Zero();
+    out = vne::math::Mat4x4f::zero();
     out[1][0] = -static_cast<float>(SQRT_ONE_OVER_TWO);
     out[2][0] = -static_cast<float>(SQRT_ONE_OVER_TWO);
     out[1][1] = -static_cast<float>(SQRT_ONE_OVER_TWO);
     out[2][1] = static_cast<float>(SQRT_ONE_OVER_TWO);
     out[0][2] = -1.0f;
     out[3][3] = 1.0f;
-    EXPECT_TRUE(out.AreSame(Math::Mat4x4f_C::RotateXYZ(Math::QuarterPi<float>(), Math::HalfPi<float>(), Math::Pi<float>())));
+    EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateXYZ(vne::math::quarterPi<float>(), vne::math::halfPi<float>(), vne::math::pi<float>())));
 
-    Math::Mat4x4f_C out1 = Math::Mat4x4f_C::RotateZYX(Math::QuarterPi<float>(), Math::HalfPi<float>(), Math::Pi<float>());
-    EXPECT_FALSE(out.AreSame(out1));
+    vne::math::Mat4x4f out1 = vne::math::Mat4x4f::rotateZYX(vne::math::quarterPi<float>(), vne::math::halfPi<float>(), vne::math::pi<float>());
+    EXPECT_FALSE(out.areSame(out1));
 }
 
 /**
- * Test Mat4x4f_C LookAt
+ * Test Mat4x4f LookAt
  *
- * Math::Mat4x4f_C::LookAt(Vec3f_C, Vec3f_C, Vec3f_C)
+ * vne::math::Mat4x4f::lookAt(Vec3f, Vec3f, Vec3f)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fLookAt) {
-    Math::Vec3f_C eye{0.0f, 0.0f, 3.0f};
-    Math::Vec3f_C center{0.0f, 0.0f, 2.0f};
-    Math::Vec3f_C up{0.0f, 1.0f, 0.0f};
+    vne::math::Vec3f eye{0.0f, 0.0f, 3.0f};
+    vne::math::Vec3f center{0.0f, 0.0f, 2.0f};
+    vne::math::Vec3f up{0.0f, 1.0f, 0.0f};
 
     // LookAt Matrix computation
-    Math::Vec3f_C forward = Math::Vec3f_C::Normalized(eye - center);
-    Math::Vec3f_C right = Math::Vec3f_C::Normalized(Math::Vec3f_C::Cross(up, forward));
-    Math::Vec3f_C new_up = Math::Vec3f_C::Cross(forward, right);
+    vne::math::Vec3f forward = vne::math::Vec3f::normalized(eye - center);
+    vne::math::Vec3f right = vne::math::Vec3f::normalized(vne::math::Vec3f::cross(up, forward));
+    vne::math::Vec3f new_up = vne::math::Vec3f::cross(forward, right);
 
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::LookAt(eye, center, up);
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::lookAt(eye, center, up);
 
-    EXPECT_EQ(right, out.XAxis());
-    EXPECT_EQ(new_up, out.YAxis());
-    EXPECT_EQ(forward, out.ZAxis());
-    EXPECT_EQ(-eye, out.Translation());
+    EXPECT_EQ(right, out.xAxis());
+    EXPECT_EQ(new_up, out.yAxis());
+    EXPECT_EQ(forward, out.zAxis());
+    EXPECT_EQ(-eye, out.translation());
 }
 
 /**
- * Test Mat4x4f_C Frustum
+ * Test Mat4x4f Frustum
  *
- * Math::Mat4x4f_C::Frustum(left, right, bottom, top, z_near, z_far)
+ * vne::math::Mat4x4f::frustum(left, right, bottom, top, z_near, z_far)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fFrustum) {
@@ -484,7 +484,7 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fFrustum) {
     float z_near = 1.0f;
     float z_far = 10.0f;
 
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::Frustum(left, right, bottom, top, z_near, z_far);
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::frustum(left, right, bottom, top, z_near, z_far);
 
     // GetColumn 0
     EXPECT_EQ(2.0f * z_near / (right - left), out[0][0]);
@@ -512,20 +512,20 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fFrustum) {
 }
 
 /**
- * Test Mat4x4f_C Perspective
+ * Test Mat4x4f Perspective
  *
- * Math::Mat4x4f_C::Perspective(fovy, aspect_ratio, z_near, z_far)
+ * vne::math::Mat4x4f::perspective(fovy, aspect_ratio, z_near, z_far)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fPerspective) {
-    float fovy = Math::DegToRad(45.0f);
+    float fovy = vne::math::degToRad(45.0f);
     float aspect_ratio = 16.0f / 9.0f;
     float z_near = 1.0f;
     float z_far = 10.0f;
 
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::Perspective(fovy, aspect_ratio, z_near, z_far);
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::perspective(fovy, aspect_ratio, z_near, z_far);
 
-    float tangent = Math::Tan(fovy / 2.0f);  // tangent of half fovy
+    float tangent = vne::math::tan(fovy / 2.0f);  // tangent of half fovy
     float height = z_near * tangent;         // half height of near plane
     float width = height * aspect_ratio;     // half width of near plane
 
@@ -561,9 +561,9 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fPerspective) {
 }
 
 /**
- * Test Mat4x4f_C Ortho
+ * Test Mat4x4f Ortho
  *
- * Math::Mat4x4f_C::Ortho(left, right, bottom, top, z_near, z_far)
+ * vne::math::Mat4x4f::ortho(left, right, bottom, top, z_near, z_far)
  *
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fOrtho) {
@@ -574,7 +574,7 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fOrtho) {
     float z_near = 1.0f;
     float z_far = 10.0f;
 
-    Math::Mat4x4f_C out = Math::Mat4x4f_C::Ortho(left, right, bottom, top, z_near, z_far);
+    vne::math::Mat4x4f out = vne::math::Mat4x4f::ortho(left, right, bottom, top, z_near, z_far);
 
     // GetColumn 0
     EXPECT_EQ(2.0f / (right - left), out[0][0]);
@@ -607,8 +607,8 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fOrtho) {
  * mat + mat3
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fAddition) {
-    Math::Mat4x4f_C result = mat + mat3;
-    EXPECT_EQ(result, Math::Mat4x4f_C(2.0f, 4.0f, 3.0f, 8.0f, 5.0f, 5.0f, 9.0f, 8.0f, 8.0f, 11.0f, 7.0f, 13.0f, 12.0f, 15.0f, 17.0f, 16.0f));
+    vne::math::Mat4x4f result = mat + mat3;
+    EXPECT_EQ(result, vne::math::Mat4x4f(2.0f, 4.0f, 3.0f, 8.0f, 5.0f, 5.0f, 9.0f, 8.0f, 8.0f, 11.0f, 7.0f, 13.0f, 12.0f, 15.0f, 17.0f, 16.0f));
 }
 
 /**
@@ -618,7 +618,7 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fAddition) {
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fAdditionAssignment) {
     mat += mat3;
-    EXPECT_EQ(mat, Math::Mat4x4f_C(2.0f, 4.0f, 3.0f, 8.0f, 5.0f, 5.0f, 9.0f, 8.0f, 8.0f, 11.0f, 7.0f, 13.0f, 12.0f, 15.0f, 17.0f, 16.0f));
+    EXPECT_EQ(mat, vne::math::Mat4x4f(2.0f, 4.0f, 3.0f, 8.0f, 5.0f, 5.0f, 9.0f, 8.0f, 8.0f, 11.0f, 7.0f, 13.0f, 12.0f, 15.0f, 17.0f, 16.0f));
 }
 
 /**
@@ -627,8 +627,8 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fAdditionAssignment) {
  * mat - mat3
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fSubtraction) {
-    Math::Mat4x4f_C result = mat - mat3;
-    EXPECT_EQ(result, Math::Mat4x4f_C(-2.0f, -2.0f, 1.0f, -2.0f, 3.0f, 5.0f, 3.0f, 6.0f, 8.0f, 7.0f, 13.0f, 9.0f, 12.0f, 11.0f, 11.0f, 14.0f));
+    vne::math::Mat4x4f result = mat - mat3;
+    EXPECT_EQ(result, vne::math::Mat4x4f(-2.0f, -2.0f, 1.0f, -2.0f, 3.0f, 5.0f, 3.0f, 6.0f, 8.0f, 7.0f, 13.0f, 9.0f, 12.0f, 11.0f, 11.0f, 14.0f));
 }
 
 /**
@@ -638,7 +638,7 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fSubtraction) {
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fSubtractionAssignment) {
     mat -= mat3;
-    EXPECT_EQ(mat, Math::Mat4x4f_C(-2.0f, -2.0f, 1.0f, -2.0f, 3.0f, 5.0f, 3.0f, 6.0f, 8.0f, 7.0f, 13.0f, 9.0f, 12.0f, 11.0f, 11.0f, 14.0f));
+    EXPECT_EQ(mat, vne::math::Mat4x4f(-2.0f, -2.0f, 1.0f, -2.0f, 3.0f, 5.0f, 3.0f, 6.0f, 8.0f, 7.0f, 13.0f, 9.0f, 12.0f, 11.0f, 11.0f, 14.0f));
 }
 
 /**
@@ -647,9 +647,9 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fSubtractionAssignment) {
  * mat * mat3
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplication) {
-    Math::Mat4x4f_C result = mat * mat3;
+    vne::math::Mat4x4f result = mat * mat3;
     EXPECT_EQ(result,
-              Math::Mat4x4f_C(80.0f, 91.0f, 102.0f, 113.0f, 36.0f, 41.0f, 46.0f, 51.0f, 8.0f, 9.0f, 10.0f, 11.0f, 44.0f, 50.0f, 56.0f, 62.0f));
+              vne::math::Mat4x4f(80.0f, 91.0f, 102.0f, 113.0f, 36.0f, 41.0f, 46.0f, 51.0f, 8.0f, 9.0f, 10.0f, 11.0f, 44.0f, 50.0f, 56.0f, 62.0f));
 }
 
 /**
@@ -659,7 +659,7 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplication) {
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplicationAssignment) {
     mat *= mat3;
-    EXPECT_EQ(mat, Math::Mat4x4f_C(80.0f, 91.0f, 102.0f, 113.0f, 36.0f, 41.0f, 46.0f, 51.0f, 8.0f, 9.0f, 10.0f, 11.0f, 44.0f, 50.0f, 56.0f, 62.0f));
+    EXPECT_EQ(mat, vne::math::Mat4x4f(80.0f, 91.0f, 102.0f, 113.0f, 36.0f, 41.0f, 46.0f, 51.0f, 8.0f, 9.0f, 10.0f, 11.0f, 44.0f, 50.0f, 56.0f, 62.0f));
 }
 
 /**
@@ -677,10 +677,10 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fAssignment) {
  * mat * scalar
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplicationByScalar) {
-    Math::Mat4x4f_C local_mat = Math::Mat4x4f_C(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
-    Math::Mat4x4f_C result = local_mat * scalar;
-    EXPECT_EQ(result, Math::Mat4x4f_C(0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f));
+    vne::math::Mat4x4f result = local_mat * scalar;
+    EXPECT_EQ(result, vne::math::Mat4x4f(0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f));
 }
 
 /**
@@ -689,10 +689,10 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplicationByScalar) {
  * mat *= scalar
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplicationAssignmentByScalar) {
-    Math::Mat4x4f_C local_mat = Math::Mat4x4f_C(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
     local_mat *= scalar;
-    EXPECT_EQ(local_mat, Math::Mat4x4f_C(0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f));
+    EXPECT_EQ(local_mat, vne::math::Mat4x4f(0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f));
 }
 
 /**
@@ -701,10 +701,10 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fMultiplicationAssignmentByScalar) {
  * mat / scalar
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fDivisionByScalar) {
-    Math::Mat4x4f_C local_mat = Math::Mat4x4f_C(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
-    Math::Mat4x4f_C result = local_mat / scalar;
-    EXPECT_EQ(result, Math::Mat4x4f_C(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
+    vne::math::Mat4x4f result = local_mat / scalar;
+    EXPECT_EQ(result, vne::math::Mat4x4f(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
 }
 
 /**
@@ -713,8 +713,8 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fDivisionByScalar) {
  * mat /= scalar
  */
 TEST_F(Mat4x4fTest_C, TestMat4x4fDivisionAssignmentByScalar) {
-    Math::Mat4x4f_C local_mat = Math::Mat4x4f_C(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
+    vne::math::Mat4x4f local_mat = vne::math::Mat4x4f(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f);
     float scalar = 2.0f;
     local_mat /= scalar;
-    EXPECT_EQ(local_mat, Math::Mat4x4f_C(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
+    EXPECT_EQ(local_mat, vne::math::Mat4x4f(0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f));
 }

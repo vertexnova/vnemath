@@ -1,5 +1,4 @@
-#ifndef VNE_MATH_MAT3x3F_H
-#define VNE_MATH_MAT3x3F_H
+#pragma once
 /* ---------------------------------------------------------------------
  * Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License")
@@ -25,81 +24,90 @@
 // Standard library includes
 #include <ostream>
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
 
-class Mat3x3f_C : public glm::mat3 {
+class Mat3x3f : public glm::mat3 {
    public:
-    Mat3x3f_C();
-    ~Mat3x3f_C();
-    Mat3x3f_C(const Vec3f_C& col0, const Vec3f_C& col1, const Vec3f_C& col2);
-    explicit Mat3x3f_C(const glm::mat3& other);
-    Mat3x3f_C(const Mat3x3f_C& other);
-    explicit Mat3x3f_C(float scalar);
-    Mat3x3f_C(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2);
-    Mat3x3f_C& operator=(const Mat3x3f_C& other);
-
-   public:
-    Mat3x3f_C RotationMatrix(const Vec3f_C& x_axis, const Vec3f_C& y_axis, const Vec3f_C& z_axis);
+    Mat3x3f();
+    ~Mat3x3f();
+    Mat3x3f(const Vec3f& col0, const Vec3f& col1, const Vec3f& col2);
+    explicit Mat3x3f(const glm::mat3& other);
+    Mat3x3f(const Mat3x3f& other);
+    explicit Mat3x3f(float scalar);
+    Mat3x3f(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2);
+    Mat3x3f& operator=(const Mat3x3f& other);
 
    public:
-    float Determinant() const;
-    float Trace() const;
-    Mat3x3f_C Transpose() const;
-    Mat3x3f_C Inverse() const;
-    Mat3x3f_C NormalMatrix() const;
-    Mat3x3f_C InverseTransposed() const;
+    Mat3x3f rotationMatrix(const Vec3f& x_axis, const Vec3f& y_axis, const Vec3f& z_axis);
 
    public:
-    Vec3f_C GetColumn(uint32_t idx) const;
-    Vec3f_C GetRow(uint32_t idx) const;
-    Vec3f_C XAxis() const;
-    Vec3f_C YAxis() const;
-    Vec3f_C ZAxis() const;
+    float determinant() const;
+    float trace() const;
+    Mat3x3f transpose() const;
+    Mat3x3f inverse() const;
+    Mat3x3f normalMatrix() const;
+    Mat3x3f inverseTransposed() const;
 
    public:
-    bool AreSame(const Mat3x3f_C& other, float eps = Math::FLOAT_EPSILON) const;
-    bool IsOrthogonal(float eps = Math::FLOAT_EPSILON) const;
+    Vec3f getColumn(uint32_t idx) const;
+    Vec3f getRow(uint32_t idx) const;
+    Vec3f xAxis() const;
+    Vec3f yAxis() const;
+    Vec3f zAxis() const;
 
    public:
-    Mat3x3f_C operator+(const Mat3x3f_C& other) const;
-    Mat3x3f_C& operator+=(const Mat3x3f_C& other);
-    Mat3x3f_C operator-(const Mat3x3f_C& other) const;
-    Mat3x3f_C& operator-=(const Mat3x3f_C& other);
-    Mat3x3f_C operator*(const Mat3x3f_C& other) const;
-    Mat3x3f_C& operator*=(const Mat3x3f_C& other);
-    Mat3x3f_C operator*(float scalar) const;
-    Mat3x3f_C& operator*=(float scalar);
-    Mat3x3f_C operator/(float scalar) const;
-    Mat3x3f_C& operator/=(float scalar);
+    bool areSame(const Mat3x3f& other, float eps = kFloatEpsilon) const;
+    bool isOrthogonal(float eps = kFloatEpsilon) const;
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Mat3x3f_C& mat);
+    Mat3x3f operator+(const Mat3x3f& other) const;
+    Mat3x3f& operator+=(const Mat3x3f& other);
+    Mat3x3f operator-(const Mat3x3f& other) const;
+    Mat3x3f& operator-=(const Mat3x3f& other);
+    Mat3x3f operator*(const Mat3x3f& other) const;
+    Mat3x3f& operator*=(const Mat3x3f& other);
+    Mat3x3f operator*(float scalar) const;
+    Mat3x3f& operator*=(float scalar);
+    Mat3x3f operator/(float scalar) const;
+    Mat3x3f& operator/=(float scalar);
 
    public:
-    static uint32_t Length();
-    static Mat3x3f_C Identity();
-    static Mat3x3f_C Zero();
-    static Mat3x3f_C Lerp(const Mat3x3f_C& from, const Mat3x3f_C& to, float t);
-    static Mat3x3f_C Rotate(float angle, const Vec3f_C& axis);
-    static Mat3x3f_C RotateX(float angle);
-    static Mat3x3f_C RotateY(float angle);
-    static Mat3x3f_C RotateZ(float angle);
-    static Mat3x3f_C RotateXYZ(float x_angle, float y_angle, float z_angle);
-    static Mat3x3f_C RotateXYZ(float angle);
-    static Mat3x3f_C RotateZYX(float x_angle, float y_angle, float z_angle);
-    static Mat3x3f_C RotateZYX(float angle);
-    static Mat3x3f_C Scale(const Vec3f_C& scale);
-    static Mat3x3f_C Scale(float sx, float sy, float sz);
-    static Mat3x3f_C Scale(float s);
+    friend std::ostream& operator<<(std::ostream& os, const Mat3x3f& mat);
+
+   public:
+    static uint32_t length();
+    static Mat3x3f identity();
+    static Mat3x3f zero();
+    static Mat3x3f lerp(const Mat3x3f& from, const Mat3x3f& to, float t);
+    static Mat3x3f rotate(float angle, const Vec3f& axis);
+    static Mat3x3f rotateX(float angle);
+    static Mat3x3f rotateY(float angle);
+    static Mat3x3f rotateZ(float angle);
+    static Mat3x3f rotateXYZ(float x_angle, float y_angle, float z_angle);
+    static Mat3x3f rotateXYZ(float angle);
+    static Mat3x3f rotateZYX(float x_angle, float y_angle, float z_angle);
+    static Mat3x3f rotateZYX(float angle);
+    static Mat3x3f scale(const Vec3f& scale);
+    static Mat3x3f scale(float sx, float sy, float sz);
+    static Mat3x3f scale(float s);
 };
 
+// Legacy type alias for backward compatibility
+using Mat3x3f_C = Mat3x3f;
+
+}  // namespace vne::math
+
+// Legacy namespace aliases
+namespace VNE {
+namespace Math {
+using Mat3x3f_C = vne::math::Mat3x3f;
+using Mat3x3f = vne::math::Mat3x3f;
 }  // namespace Math
 }  // namespace VNE
 
 namespace {
 
-inline bool operator==(const glm::mat3& a, const VNE::Math::Mat3x3f_C& b) {
+inline bool operator==(const glm::mat3& a, const vne::math::Mat3x3f& b) {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             if (a[i][j] != b[i][j]) {
@@ -111,5 +119,3 @@ inline bool operator==(const glm::mat3& a, const VNE::Math::Mat3x3f_C& b) {
 }
 
 }  // namespace
-
-#endif  // VNE_MATH_MAT3x3F_H

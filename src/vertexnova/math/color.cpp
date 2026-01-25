@@ -14,33 +14,33 @@
 #include "vertexnova/math/math_utils.h"
 #include "vertexnova/common/macros.h"
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
 
-const Color_C Color_C::WHITE = Color_C(1.0f, 1.0f, 1.0f);
-const Color_C Color_C::BLACK = Color_C(0.0f, 0.0f, 0.0f);
-const Color_C Color_C::RED = Color_C(1.0f, 0.0f, 0.0f);
-const Color_C Color_C::GREEN = Color_C(0.0f, 1.0f, 0.0f);
-const Color_C Color_C::BLUE = Color_C(0.0f, 0.0f, 1.0f);
-const Color_C Color_C::YELLOW = Color_C(1.0f, 1.0f, 0.0f);
-const Color_C Color_C::CYAN = Color_C(0.0f, 1.0f, 1.0f);
-const Color_C Color_C::MAGENTA = Color_C(1.0f, 0.0f, 1.0f);
-const Color_C Color_C::LIGHT_BLUE = Color_C(0.4f, 0.4f, 0.8f);
-const Color_C Color_C::DARK_BLUE = Color_C(0.1f, 0.1f, 0.6f);
-const Color_C Color_C::MAROON = Color_C(0.5f, 0.0f, 0.0f);
-const Color_C Color_C::BEIGE = Color_C(0.96f, 0.96f, 0.862f);
-const Color_C Color_C::BROWN = Color_C(0.647f, 0.164f, 0.164f);
-const Color_C Color_C::GRAY = Color_C(0.5f, 0.5f, 0.5f);
-const Color_C Color_C::GREY = Color_C(0.5f, 0.5f, 0.5f);
 
-//------------------------------------------------------------------------------
-Color_C::Color_C() {}
+const Color Color::WHITE = Color(1.0f, 1.0f, 1.0f);
+const Color Color::BLACK = Color(0.0f, 0.0f, 0.0f);
+const Color Color::RED = Color(1.0f, 0.0f, 0.0f);
+const Color Color::GREEN = Color(0.0f, 1.0f, 0.0f);
+const Color Color::BLUE = Color(0.0f, 0.0f, 1.0f);
+const Color Color::YELLOW = Color(1.0f, 1.0f, 0.0f);
+const Color Color::CYAN = Color(0.0f, 1.0f, 1.0f);
+const Color Color::MAGENTA = Color(1.0f, 0.0f, 1.0f);
+const Color Color::LIGHT_BLUE = Color(0.4f, 0.4f, 0.8f);
+const Color Color::DARK_BLUE = Color(0.1f, 0.1f, 0.6f);
+const Color Color::MAROON = Color(0.5f, 0.0f, 0.0f);
+const Color Color::BEIGE = Color(0.96f, 0.96f, 0.862f);
+const Color Color::BROWN = Color(0.647f, 0.164f, 0.164f);
+const Color Color::GRAY = Color(0.5f, 0.5f, 0.5f);
+const Color Color::GREY = Color(0.5f, 0.5f, 0.5f);
 
 //------------------------------------------------------------------------------
-Color_C::~Color_C() {}
+Color::Color() {}
 
 //------------------------------------------------------------------------------
-Color_C::Color_C(const float red, const float green, const float blue, const float alpha)
+Color::~Color() {}
+
+//------------------------------------------------------------------------------
+Color::Color(const float red, const float green, const float blue, const float alpha)
     : r(red)
     , g(green)
     , b(blue)
@@ -49,7 +49,7 @@ Color_C::Color_C(const float red, const float green, const float blue, const flo
 }
 
 //------------------------------------------------------------------------------
-Color_C::Color_C(const Vec3f_C& rgb, float alpha)
+Color::Color(const Vec3f_C& rgb, float alpha)
     : r(rgb.r)
     , g(rgb.g)
     , b(rgb.b)
@@ -58,7 +58,7 @@ Color_C::Color_C(const Vec3f_C& rgb, float alpha)
 }
 
 //------------------------------------------------------------------------------
-Color_C::Color_C(const Vec4f_C& rgba)
+Color::Color(const Vec4f_C& rgba)
     : r(rgba.r)
     , g(rgba.g)
     , b(rgba.b)
@@ -67,7 +67,7 @@ Color_C::Color_C(const Vec4f_C& rgba)
 }
 
 //------------------------------------------------------------------------------
-Color_C::Color_C(const Color_C& rhs)
+Color::Color(const Color& rhs)
     : r(rhs.r)
     , g(rhs.g)
     , b(rhs.b)
@@ -76,7 +76,7 @@ Color_C::Color_C(const Color_C& rhs)
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator=(const Color_C& rhs) {
+Color& Color::operator=(const Color& rhs) {
     r = rhs.r;
     g = rhs.g;
     b = rhs.b;
@@ -87,32 +87,32 @@ Color_C& Color_C::operator=(const Color_C& rhs) {
 }
 
 //------------------------------------------------------------------------------
-float* Color_C::GetPtr() {
+float* Color::GetPtr() {
     return &r;
 }
 
 //------------------------------------------------------------------------------
-const float* Color_C::GetPtr() const {
+const float* Color::GetPtr() const {
     return &r;
 }
 
 //------------------------------------------------------------------------------
-bool Color_C::AreSame(const Color_C& color, float eps) const {
-    return Math::AreSame(r, color.r, eps) && Math::AreSame(g, color.g, eps) && Math::AreSame(b, color.b, eps) && Math::AreSame(a, color.a, eps);
+bool Color::AreSame(const Color& color, float eps) const {
+    return vne::math::areSame(r, color.r, eps) && vne::math::areSame(g, color.g, eps) && vne::math::areSame(b, color.b, eps) && vne::math::areSame(a, color.a, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Color_C::IsZero(float eps) const {
-    return Math::IsZero(r, eps) && Math::IsZero(g, eps) && Math::IsZero(b, eps);
+bool Color::IsZero(float eps) const {
+    return vne::math::isZero(r, eps) && vne::math::isZero(g, eps) && vne::math::isZero(b, eps);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::Lerp(const Color_C& color, float t) const {
-    return Color_C(Math::Lerp(r, color.r, t), Math::Lerp(g, color.g, t), Math::Lerp(b, color.b, t), Math::Lerp(a, color.a, t));
+Color Color::Lerp(const Color& color, float t) const {
+    return Color(vne::math::lerp(r, color.r, t), vne::math::lerp(g, color.g, t), vne::math::lerp(b, color.b, t), vne::math::lerp(a, color.a, t));
 }
 
 //------------------------------------------------------------------------------
-void Color_C::Reset() {
+void Color::Reset() {
     r = 0.0f;
     g = 0.0f;
     b = 0.0f;
@@ -120,7 +120,7 @@ void Color_C::Reset() {
 }
 
 //------------------------------------------------------------------------------
-void Color_C::Set(float red, float green, float blue, float alpha) {
+void Color::Set(float red, float green, float blue, float alpha) {
     r = red;
     g = green;
     b = blue;
@@ -129,7 +129,7 @@ void Color_C::Set(float red, float green, float blue, float alpha) {
 }
 
 //------------------------------------------------------------------------------
-void Color_C::Set(const Vec3f_C& rgb, float alpha) {
+void Color::Set(const Vec3f_C& rgb, float alpha) {
     r = rgb.r;
     g = rgb.g;
     b = rgb.b;
@@ -138,7 +138,7 @@ void Color_C::Set(const Vec3f_C& rgb, float alpha) {
 }
 
 //------------------------------------------------------------------------------
-void Color_C::Set(const Vec4f_C& rgba) {
+void Color::Set(const Vec4f_C& rgba) {
     r = rgba.r;
     g = rgba.g;
     b = rgba.b;
@@ -147,76 +147,76 @@ void Color_C::Set(const Vec4f_C& rgba) {
 }
 
 //------------------------------------------------------------------------------
-float Color_C::R() const {
+float Color::R() const {
     return r;
 }
 
 //------------------------------------------------------------------------------
-float Color_C::G() const {
+float Color::G() const {
     return g;
 }
 
 //------------------------------------------------------------------------------
-float Color_C::B() const {
+float Color::B() const {
     return b;
 }
 
 //------------------------------------------------------------------------------
-float Color_C::A() const {
+float Color::A() const {
     return a;
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Color_C::RGB() const {
+Vec3f_C Color::RGB() const {
     return Vec3f_C(r, b, g);
 }
 
 //------------------------------------------------------------------------------
-Vec4f_C Color_C::RGBA() const {
+Vec4f_C Color::RGBA() const {
     return Vec4f_C(r, g, b, a);
 }
 
 //------------------------------------------------------------------------------
-float& Color_C::R() {
+float& Color::R() {
     return r;
 }
 
 //------------------------------------------------------------------------------
-float& Color_C::G() {
+float& Color::G() {
     return g;
 }
 
 //------------------------------------------------------------------------------
-float& Color_C::B() {
+float& Color::B() {
     return b;
 }
 
 //------------------------------------------------------------------------------
-float& Color_C::A() {
+float& Color::A() {
     return a;
 }
 
 //------------------------------------------------------------------------------
-void Color_C::R(float red) {
+void Color::R(float red) {
     r = red;
 }
 //------------------------------------------------------------------------------
-void Color_C::G(float green) {
+void Color::G(float green) {
     g = green;
 }
 
 //------------------------------------------------------------------------------
-void Color_C::B(const float blue) {
+void Color::B(const float blue) {
     b = blue;
 }
 
 //------------------------------------------------------------------------------
-void Color_C::A(const float alpha) {
+void Color::A(const float alpha) {
     a = alpha;
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator+=(float scalar) {
+Color& Color::operator+=(float scalar) {
     r += scalar;
     g += scalar;
     b += scalar;
@@ -227,7 +227,7 @@ Color_C& Color_C::operator+=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator-=(float scalar) {
+Color& Color::operator-=(float scalar) {
     r -= scalar;
     g -= scalar;
     b -= scalar;
@@ -238,7 +238,7 @@ Color_C& Color_C::operator-=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator*=(float scalar) {
+Color& Color::operator*=(float scalar) {
     r *= scalar;
     g *= scalar;
     b *= scalar;
@@ -249,7 +249,7 @@ Color_C& Color_C::operator*=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator/=(float scalar) {
+Color& Color::operator/=(float scalar) {
     r /= scalar;
     g /= scalar;
     b /= scalar;
@@ -260,7 +260,7 @@ Color_C& Color_C::operator/=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator+=(const Color_C& color) {
+Color& Color::operator+=(const Color& color) {
     r += color.r;
     g += color.g;
     b += color.b;
@@ -271,7 +271,7 @@ Color_C& Color_C::operator+=(const Color_C& color) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator-=(const Color_C& color) {
+Color& Color::operator-=(const Color& color) {
     r -= color.r;
     g -= color.g;
     b -= color.b;
@@ -282,7 +282,7 @@ Color_C& Color_C::operator-=(const Color_C& color) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator*=(const Color_C& color) {
+Color& Color::operator*=(const Color& color) {
     r *= color.r;
     g *= color.g;
     b *= color.b;
@@ -293,7 +293,7 @@ Color_C& Color_C::operator*=(const Color_C& color) {
 }
 
 //------------------------------------------------------------------------------
-Color_C& Color_C::operator/=(const Color_C& color) {
+Color& Color::operator/=(const Color& color) {
     r /= color.r;
     g /= color.g;
     b /= color.b;
@@ -304,89 +304,89 @@ Color_C& Color_C::operator/=(const Color_C& color) {
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator+(float scalar) const {
-    return Color_C(r + scalar, g + scalar, b + scalar, a + scalar);
+Color Color::operator+(float scalar) const {
+    return Color(r + scalar, g + scalar, b + scalar, a + scalar);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator-(float scalar) const {
-    return Color_C(r - scalar, g - scalar, b - scalar, a - scalar);
+Color Color::operator-(float scalar) const {
+    return Color(r - scalar, g - scalar, b - scalar, a - scalar);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator*(float scalar) const {
-    return Color_C(r * scalar, g * scalar, b * scalar, a * scalar);
+Color Color::operator*(float scalar) const {
+    return Color(r * scalar, g * scalar, b * scalar, a * scalar);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator/(float scalar) const {
-    return Color_C(r / scalar, g / scalar, b / scalar, a / scalar);
+Color Color::operator/(float scalar) const {
+    return Color(r / scalar, g / scalar, b / scalar, a / scalar);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator+(const Color_C& color) const {
-    return Color_C(r + color.r, g + color.g, b + color.b, a + color.a);
+Color Color::operator+(const Color& color) const {
+    return Color(r + color.r, g + color.g, b + color.b, a + color.a);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator-(const Color_C& color) const {
-    return Color_C(r - color.r, g - color.g, b - color.b, a - color.a);
+Color Color::operator-(const Color& color) const {
+    return Color(r - color.r, g - color.g, b - color.b, a - color.a);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator*(const Color_C& color) const {
-    return Color_C(r * color.r, g * color.g, b * color.b, a * color.a);
+Color Color::operator*(const Color& color) const {
+    return Color(r * color.r, g * color.g, b * color.b, a * color.a);
 }
 
 //------------------------------------------------------------------------------
-Color_C Color_C::operator/(const Color_C& color) const {
-    return Color_C(r / color.r, g / color.g, b / color.b, a / color.a);
+Color Color::operator/(const Color& color) const {
+    return Color(r / color.r, g / color.g, b / color.b, a / color.a);
 }
 
 //------------------------------------------------------------------------------
-bool Color_C::operator==(const Color_C& color) const {
+bool Color::operator==(const Color& color) const {
     return r == color.r && g == color.g && b == color.b && a == color.a;
 }
 
 //------------------------------------------------------------------------------
-bool Color_C::operator!=(const Color_C& color) const {
+bool Color::operator!=(const Color& color) const {
     return r != color.r || g != color.g || b != color.b || a != color.a;
 }
 
 //------------------------------------------------------------------------------
-float Color_C::operator[](uint32_t index) {
-    VNE_ASSERT_MSG(index < 4, "Color_C index out of bounds");
+float Color::operator[](uint32_t index) {
+    VNE_ASSERT_MSG(index < 4, "Color index out of bounds");
     return (&r)[index];
 }
 
 //------------------------------------------------------------------------------
-float Color_C::operator[](uint32_t index) const {
-    VNE_ASSERT_MSG(index < 4, "Color_C index out of bounds");
+float Color::operator[](uint32_t index) const {
+    VNE_ASSERT_MSG(index < 4, "Color index out of bounds");
     return (&r)[index];
 }
 
 //------------------------------------------------------------------------------
-void Color_C::Clamp() {
-    r = r < 0.0f || Math::IsNaN(r) ? 0.0f : r;
+void Color::Clamp() {
+    r = r < 0.0f || vne::math::isNaN(r) ? 0.0f : r;
     r = r > 255.0f ? 1.0f : r > 1.0f ? r / 255.0f : r;
 
-    g = g < 0.0f || Math::IsNaN(g) ? 0.0f : g;
+    g = g < 0.0f || vne::math::isNaN(g) ? 0.0f : g;
     g = g > 255.0f ? 1.0f : g > 1.0f ? g / 255.0f : g;
 
-    b = b < 0.0f || Math::IsNaN(b) ? 0.0f : b;
+    b = b < 0.0f || vne::math::isNaN(b) ? 0.0f : b;
     b = b > 255.0f ? 1.0f : b > 1.0f ? b / 255.0f : b;
 
-    a = a < 0.0f || Math::IsNaN(a) ? 0.0f : a;
+    a = a < 0.0f || vne::math::isNaN(a) ? 0.0f : a;
     a = a > 1.0f ? 1.0f : a;
 }
 
 //------------------------------------------------------------------------------
-std::ostream& operator<<(std::ostream& os, const Color_C& color) {
+std::ostream& operator<<(std::ostream& os, const Color& color) {
     return os << "[" << color.r << ", " << color.g << ", " << color.b << ", " << color.a << "]";
 }
 
 //------------------------------------------------------------------------------
-std::istream& operator>>(std::istream& is, Color_C& color) {
+std::istream& operator>>(std::istream& is, Color& color) {
     // Skip white spaces
     is.setf(std::ios_base::skipws);
     is.ignore(1);
@@ -408,5 +408,5 @@ std::istream& operator>>(std::istream& is, Color_C& color) {
     return is;
 }
 
-}  // namespace Math
-}  // namespace VNE
+
+}  // namespace vne::math

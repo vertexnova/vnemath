@@ -1,5 +1,4 @@
-#ifndef VNE_MATH_VEC3F_H
-#define VNE_MATH_VEC3F_H
+#pragma once
 /* ---------------------------------------------------------------------
  * Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License")
@@ -17,7 +16,9 @@
  */
 
 // GLM Configuration
+#ifndef GLM_ENABLE_EXPERIMENTAL
 #define GLM_ENABLE_EXPERIMENTAL
+#endif
 
 // Project includes
 #include "vec2f.h"
@@ -28,132 +29,139 @@
 // Standard library includes
 #include <ostream>
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
 
-class Vec3f_C : public glm::vec3 {
+class Vec3f : public glm::vec3 {
    public:
-    Vec3f_C() : glm::vec3(0.0f) {};
-    Vec3f_C(float x_value, float y_value, float z_value) : glm::vec3(x_value, y_value, z_value) {};
-    Vec3f_C(const float xyz) : glm::vec3(xyz) {};
-    Vec3f_C(const Vec3f_C& v) : glm::vec3(v) {};
-    Vec3f_C(const glm::vec3& v) : glm::vec3(v.x, v.y, v.z) {};
-    Vec3f_C(const Vec2f_C& v) : glm::vec3(v.x, v.y, 0.0f) {};
-    Vec3f_C(const glm::vec2& v) : glm::vec3(v.x, v.y, 0.0f) {};
-    Vec3f_C(const Vec2f_C& v, float z_value) : glm::vec3(v, z_value) {};
-    Vec3f_C(const glm::vec2& v, float z_value) : glm::vec3(v, z_value) {};
+    Vec3f() : glm::vec3(0.0f) {};
+    Vec3f(float x_value, float y_value, float z_value) : glm::vec3(x_value, y_value, z_value) {};
+    Vec3f(const float xyz) : glm::vec3(xyz) {};
+    Vec3f(const Vec3f& v) : glm::vec3(v) {};
+    Vec3f(const glm::vec3& v) : glm::vec3(v.x, v.y, v.z) {};
+    Vec3f(const Vec2f& v) : glm::vec3(v.x, v.y, 0.0f) {};
+    Vec3f(const glm::vec2& v) : glm::vec3(v.x, v.y, 0.0f) {};
+    Vec3f(const Vec2f& v, float z_value) : glm::vec3(v, z_value) {};
+    Vec3f(const glm::vec2& v, float z_value) : glm::vec3(v, z_value) {};
 
-    Vec2f_C XY();
-
-   public:
-    float* GetPtr();
-    const float* GetPtr() const;
+    Vec2f xy();
 
    public:
-    Vec3f_C Abs() const;
-    float Length() const;
-    float LengthSquare() const;
-    Vec3f_C Normalize() const;
-    Vec3f_C Min(const Vec3f_C& v) const;
-    Vec3f_C Max(const Vec3f_C& v) const;
-    float MinComponent() const;
-    float MaxComponent() const;
-    float Dot(const Vec3f_C& v) const;
-    Vec3f_C Cross(const Vec3f_C& v) const;
-    float Distance(const Vec3f_C& v) const;
-    Vec3f_C Rotate(const Vec3f_C& axis, float angle) const;
-    Vec3f_C Reflect(const Vec3f_C& normal) const;
-    Vec3f_C Refract(const Vec3f_C& normal, float mu) const;
-    Vec3f_C Project(const Vec3f_C& v) const;
-    Vec3f_C Reject(const Vec3f_C& v) const;
-    void DecomposeVec(const Vec3f_C& v, Vec3f_C& proj, Vec3f_C& perp) const;
-    Vec3f_C Perpendicular(const Vec3f_C& v) const;
+    float* getPtr();
+    const float* getPtr() const;
 
    public:
-    bool AreSame(const Vec3f_C& v, float eps = Math::FLOAT_EPSILON) const;
-    bool AreAligned(const Vec3f_C& v, float eps = Math::FLOAT_EPSILON) const;
-    bool IsZero(float eps = Math::FLOAT_EPSILON) const;
-    bool IsNormalized(float eps = Math::FLOAT_EPSILON) const;
-    bool IsLinearDependent(const Vec3f_C& p1, const Vec3f_C& p2, float eps = Math::FLOAT_EPSILON) const;
-    bool IsLinearDependent(const Vec3f_C& v, float eps = Math::FLOAT_EPSILON) const;
+    Vec3f abs() const;
+    float length() const;
+    float lengthSquare() const;
+    Vec3f normalize() const;
+    Vec3f min(const Vec3f& v) const;
+    Vec3f max(const Vec3f& v) const;
+    float minComponent() const;
+    float maxComponent() const;
+    float dot(const Vec3f& v) const;
+    Vec3f cross(const Vec3f& v) const;
+    float distance(const Vec3f& v) const;
+    Vec3f rotate(const Vec3f& axis, float angle) const;
+    Vec3f reflect(const Vec3f& normal) const;
+    Vec3f refract(const Vec3f& normal, float mu) const;
+    Vec3f project(const Vec3f& v) const;
+    Vec3f reject(const Vec3f& v) const;
+    void decomposeVec(const Vec3f& v, Vec3f& proj, Vec3f& perp) const;
+    Vec3f perpendicular(const Vec3f& v) const;
 
    public:
-    Vec3f_C& ComposeSpherical(float rho, float theta, float phi);
-    void DecomposeSpherical(float& rho, float& theta, float& phi) const;
-    Vec3f_C& ComposeCylindrical(float radius, float angle, float height);
-    void DecomposeCylindrical(float& radius, float& angle, float& height) const;
-    float Angle(const Vec3f_C& v) const;
-    float Angle(const Vec3f_C& p1, const Vec3f_C& p2) const;
+    bool areSame(const Vec3f& v, float eps = kFloatEpsilon) const;
+    bool areAligned(const Vec3f& v, float eps = kFloatEpsilon) const;
+    bool isZero(float eps = kFloatEpsilon) const;
+    bool isNormalized(float eps = kFloatEpsilon) const;
+    bool isLinearDependent(const Vec3f& p1, const Vec3f& p2, float eps = kFloatEpsilon) const;
+    bool isLinearDependent(const Vec3f& v, float eps = kFloatEpsilon) const;
 
    public:
-    Vec3f_C MidPoint(const Vec3f_C& point) const;
-    Vec3f_C Lerp(Vec3f_C& point, float factor) const;
+    Vec3f& composeSpherical(float rho, float theta, float phi);
+    void decomposeSpherical(float& rho, float& theta, float& phi) const;
+    Vec3f& composeCylindrical(float radius, float angle, float height);
+    void decomposeCylindrical(float& radius, float& angle, float& height) const;
+    float angle(const Vec3f& v) const;
+    float angle(const Vec3f& p1, const Vec3f& p2) const;
 
    public:
-    Vec3f_C& operator=(const Vec3f_C& v);
-    Vec3f_C& operator+=(float scalar);
-    Vec3f_C& operator-=(float scalar);
-    Vec3f_C& operator*=(float scalar);
-    Vec3f_C& operator/=(float scalar);
-    Vec3f_C& operator+=(const Vec3f_C& v);
-    Vec3f_C& operator-=(const Vec3f_C& v);
-    Vec3f_C& operator*=(const Vec3f_C& v);
-    Vec3f_C& operator/=(const Vec3f_C& v);
-    Vec3f_C operator+(float scalar) const;
-    Vec3f_C operator-(float scalar) const;
-    Vec3f_C operator*(float scalar) const;
-    Vec3f_C operator/(float scalar) const;
-    Vec3f_C operator+(const Vec3f_C& v) const;
-    Vec3f_C operator-(const Vec3f_C& v) const;
-    Vec3f_C operator*(const Vec3f_C& v) const;
-    Vec3f_C operator/(const Vec3f_C& v) const;
-    bool operator==(const Vec3f_C& v) const;
-    bool operator!=(const Vec3f_C& v) const;
-    bool operator>(const Vec3f_C& v) const;
-    bool operator<(const Vec3f_C& v) const;
-    Vec3f_C operator-() const;
+    Vec3f midPoint(const Vec3f& point) const;
+    Vec3f lerp(Vec3f& point, float factor) const;
+
+   public:
+    Vec3f& operator=(const Vec3f& v);
+    Vec3f& operator+=(float scalar);
+    Vec3f& operator-=(float scalar);
+    Vec3f& operator*=(float scalar);
+    Vec3f& operator/=(float scalar);
+    Vec3f& operator+=(const Vec3f& v);
+    Vec3f& operator-=(const Vec3f& v);
+    Vec3f& operator*=(const Vec3f& v);
+    Vec3f& operator/=(const Vec3f& v);
+    Vec3f operator+(float scalar) const;
+    Vec3f operator-(float scalar) const;
+    Vec3f operator*(float scalar) const;
+    Vec3f operator/(float scalar) const;
+    Vec3f operator+(const Vec3f& v) const;
+    Vec3f operator-(const Vec3f& v) const;
+    Vec3f operator*(const Vec3f& v) const;
+    Vec3f operator/(const Vec3f& v) const;
+    bool operator==(const Vec3f& v) const;
+    bool operator!=(const Vec3f& v) const;
+    bool operator>(const Vec3f& v) const;
+    bool operator<(const Vec3f& v) const;
+    Vec3f operator-() const;
     float& operator[](uint32_t index);
     float operator[](uint32_t index) const;
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Vec3f_C& vec);
-    friend std::istream& operator>>(std::istream& is, Vec3f_C& vec);
+    friend std::ostream& operator<<(std::ostream& os, const Vec3f& vec);
+    friend std::istream& operator>>(std::istream& is, Vec3f& vec);
 
    public:
-    static uint32_t Dim();
-    static uint32_t Size();
-    static Vec3f_C Zero();
-    static Vec3f_C One();
-    static Vec3f_C XAxis();
-    static Vec3f_C YAxis();
-    static Vec3f_C ZAxis();
-    static Vec3f_C Up();
-    static Vec3f_C Down();
-    static Vec3f_C Left();
-    static Vec3f_C Right();
-    static Vec3f_C Forward();
-    static Vec3f_C Backward();
-    static Vec3f_C Normalized(const Vec3f_C& v);
-    static float Distance(const Vec3f_C& v1, const Vec3f_C& v2);
-    static float Dot(const Vec3f_C& v1, const Vec3f_C& v2);
-    static Vec3f_C Cross(const Vec3f_C& v1, const Vec3f_C& v2);
-    static Vec3f_C MidPoint(const Vec3f_C& p1, const Vec3f_C& p2);
-    static Vec3f_C Lerp(const Vec3f_C& p1, const Vec3f_C& p2, float factor);
+    static uint32_t dim();
+    static uint32_t size();
+    static Vec3f zero();
+    static Vec3f one();
+    static Vec3f xAxis();
+    static Vec3f yAxis();
+    static Vec3f zAxis();
+    static Vec3f up();
+    static Vec3f down();
+    static Vec3f left();
+    static Vec3f right();
+    static Vec3f forward();
+    static Vec3f backward();
+    static Vec3f normalized(const Vec3f& v);
+    static float distance(const Vec3f& v1, const Vec3f& v2);
+    static float dot(const Vec3f& v1, const Vec3f& v2);
+    static Vec3f cross(const Vec3f& v1, const Vec3f& v2);
+    static Vec3f midPoint(const Vec3f& p1, const Vec3f& p2);
+    static Vec3f lerp(const Vec3f& p1, const Vec3f& p2, float factor);
 };
 
+// Legacy type alias for backward compatibility
+using Vec3f_C = Vec3f;
+
+}  // namespace vne::math
+
+// Legacy namespace aliases
+namespace VNE {
+namespace Math {
+using Vec3f_C = vne::math::Vec3f;
+using Vec3f = vne::math::Vec3f;
 }  // namespace Math
 }  // namespace VNE
 
 namespace {
 
-inline bool operator==(const VNE::Math::Vec3f_C& a, const glm::vec3& b) {
+inline bool operator==(const vne::math::Vec3f& a, const glm::vec3& b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
-inline bool operator==(const glm::vec3& a, const VNE::Math::Vec3f_C& b) {
+inline bool operator==(const glm::vec3& a, const vne::math::Vec3f& b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
 }  // namespace
-
-#endif  // VNE_MATH_VEC3F_H

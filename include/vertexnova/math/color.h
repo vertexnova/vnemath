@@ -1,5 +1,4 @@
-#ifndef VNE_MATH_COLOR_H
-#define VNE_MATH_COLOR_H
+#pragma once
 /* ---------------------------------------------------------------------
  * Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License")
@@ -19,27 +18,27 @@
 #include "constants.h"
 #include "vec4f.h"
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
 
-class Color_C {
+
+class Color {
    public:
-    Color_C();
-    ~Color_C();
-    Color_C(float red, float green, float blue, float alpha = 1.0f);
-    Color_C(const Vec3f_C& rgb, float alpha = 1.0f);
-    Color_C(const Vec4f_C& rgba);
-    Color_C(const Color_C& rhs);
-    Color_C& operator=(const Color_C& rhs);
+    Color();
+    ~Color();
+    Color(float red, float green, float blue, float alpha = 1.0f);
+    Color(const Vec3f_C& rgb, float alpha = 1.0f);
+    Color(const Vec4f_C& rgba);
+    Color(const Color& rhs);
+    Color& operator=(const Color& rhs);
 
    public:
     float* GetPtr();
     const float* GetPtr() const;
 
    public:
-    bool AreSame(const Color_C& color, float eps = Math::FLOAT_EPSILON) const;
-    bool IsZero(float eps = Math::FLOAT_EPSILON) const;
-    Color_C Lerp(const Color_C& color, float t) const;
+    bool AreSame(const Color& color, float eps = kFloatEpsilon) const;
+    bool IsZero(float eps = kFloatEpsilon) const;
+    Color Lerp(const Color& color, float t) const;
 
    public:
     void Reset();
@@ -64,30 +63,30 @@ class Color_C {
     void A(float alpha);
 
    public:
-    Color_C& operator+=(float scalar);
-    Color_C& operator-=(float scalar);
-    Color_C& operator*=(float scalar);
-    Color_C& operator/=(float scalar);
-    Color_C& operator+=(const Color_C& color);
-    Color_C& operator-=(const Color_C& color);
-    Color_C& operator*=(const Color_C& color);
-    Color_C& operator/=(const Color_C& color);
-    Color_C operator+(float scalar) const;
-    Color_C operator-(float scalar) const;
-    Color_C operator*(float scalar) const;
-    Color_C operator/(float scalar) const;
-    Color_C operator+(const Color_C& color) const;
-    Color_C operator-(const Color_C& color) const;
-    Color_C operator*(const Color_C& color) const;
-    Color_C operator/(const Color_C& color) const;
-    bool operator==(const Color_C& color) const;
-    bool operator!=(const Color_C& color) const;
+    Color& operator+=(float scalar);
+    Color& operator-=(float scalar);
+    Color& operator*=(float scalar);
+    Color& operator/=(float scalar);
+    Color& operator+=(const Color& color);
+    Color& operator-=(const Color& color);
+    Color& operator*=(const Color& color);
+    Color& operator/=(const Color& color);
+    Color operator+(float scalar) const;
+    Color operator-(float scalar) const;
+    Color operator*(float scalar) const;
+    Color operator/(float scalar) const;
+    Color operator+(const Color& color) const;
+    Color operator-(const Color& color) const;
+    Color operator*(const Color& color) const;
+    Color operator/(const Color& color) const;
+    bool operator==(const Color& color) const;
+    bool operator!=(const Color& color) const;
     float operator[](uint32_t index);
     float operator[](uint32_t index) const;
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Color_C& color);
-    friend std::istream& operator>>(std::istream& is, Color_C& color);
+    friend std::ostream& operator<<(std::ostream& os, const Color& color);
+    friend std::istream& operator>>(std::istream& is, Color& color);
 
    private:
     void Clamp();
@@ -99,24 +98,23 @@ class Color_C {
     float a = 1.0f;
 
    public:
-    static const Color_C WHITE;
-    static const Color_C BLACK;
-    static const Color_C RED;
-    static const Color_C GREEN;
-    static const Color_C BLUE;
-    static const Color_C YELLOW;
-    static const Color_C CYAN;
-    static const Color_C MAGENTA;
-    static const Color_C LIGHT_BLUE;
-    static const Color_C DARK_BLUE;
-    static const Color_C MAROON;
-    static const Color_C BEIGE;
-    static const Color_C BROWN;
-    static const Color_C GRAY;
-    static const Color_C GREY;
+    static const Color WHITE;
+    static const Color BLACK;
+    static const Color RED;
+    static const Color GREEN;
+    static const Color BLUE;
+    static const Color YELLOW;
+    static const Color CYAN;
+    static const Color MAGENTA;
+    static const Color LIGHT_BLUE;
+    static const Color DARK_BLUE;
+    static const Color MAROON;
+    static const Color BEIGE;
+    static const Color BROWN;
+    static const Color GRAY;
+    static const Color GREY;
 };
 
-}  // namespace Math
-}  // namespace VNE
 
-#endif  // VNE_MATH_COLOR_H
+}  // namespace vne::math
+

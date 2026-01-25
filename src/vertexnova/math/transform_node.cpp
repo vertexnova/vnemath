@@ -12,115 +12,115 @@
 // Project includes
 #include "vertexnova/math/transform_node.h"
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
+
 
 //------------------------------------------------------------------------------
-TransformNode_C::TransformNode_C()
-    : _local_transform(Mat4x4f_C::Identity())
-    , _root_transform(Mat4x4f_C::Identity())
-    , _parent(nullptr) {}
+TransformNode::TransformNode()
+    : local_transform_(Mat4x4f::identity())
+    , root_transform_(Mat4x4f::identity())
+    , parent_(nullptr) {}
 
 //------------------------------------------------------------------------------
-TransformNode_C::~TransformNode_C() {
-    for (TransformNode_C* child : _children) {
+TransformNode::~TransformNode() {
+    for (TransformNode* child : children_) {
         if (child) {
-            child->SetParent(nullptr);
+            child->setParent(nullptr);
         }
     }
 }
 
 //------------------------------------------------------------------------------
-void TransformNode_C::SetLocalTransform(const Mat4x4f_C& transform) {
-    _local_transform = transform;
+void TransformNode::setLocalTransform(const Mat4x4f& transform) {
+    local_transform_ = transform;
 }
 
 //------------------------------------------------------------------------------
-Mat4x4f_C TransformNode_C::GetLocalTransform() const {
-    return _local_transform;
+Mat4x4f TransformNode::getLocalTransform() const {
+    return local_transform_;
 }
 
 //------------------------------------------------------------------------------
-Mat4x4f_C TransformNode_C::GetModelMatrix() const {
-    return _root_transform * _local_transform;
+Mat4x4f TransformNode::getModelMatrix() const {
+    return root_transform_ * local_transform_;
 }
 
 //------------------------------------------------------------------------------
-void TransformNode_C::SetParent(TransformNode_C* parent) {
-    if (_parent) {
-        _parent->RemoveChild(this);
+void TransformNode::setParent(TransformNode* parent) {
+    if (parent_) {
+        parent_->removeChild(this);
     }
-    _parent = parent;
-    if (_parent) {
-        _parent->AddChild(this);
-        UpdateRootTransform();
-    }
-}
-
-//------------------------------------------------------------------------------
-TransformNode_C* TransformNode_C::GetParent() const {
-    return _parent;
-}
-
-//------------------------------------------------------------------------------
-void TransformNode_C::AddChild(TransformNode_C* child) {
-    if (child && std::find(_children.begin(), _children.end(), child) == _children.end()) {
-        _children.push_back(child);
+    parent_ = parent;
+    if (parent_) {
+        parent_->addChild(this);
+        updateRootTransform();
     }
 }
 
 //------------------------------------------------------------------------------
-void TransformNode_C::RemoveChild(TransformNode_C* child) {
-    auto it = std::find(_children.begin(), _children.end(), child);
-    if (it != _children.end()) {
-        _children.erase(it);
+TransformNode* TransformNode::getParent() const {
+    return parent_;
+}
+
+//------------------------------------------------------------------------------
+void TransformNode::addChild(TransformNode* child) {
+    if (child && std::find(children_.begin(), children_.end(), child) == children_.end()) {
+        children_.push_back(child);
+    }
+}
+
+//------------------------------------------------------------------------------
+void TransformNode::removeChild(TransformNode* child) {
+    auto it = std::find(children_.begin(), children_.end(), child);
+    if (it != children_.end()) {
+        children_.erase(it);
         if (child) {
-            child->SetParent(nullptr);
+            child->setParent(nullptr);
         }
     }
 }
 
 //------------------------------------------------------------------------------
-void TransformNode_C::RemoveFromParent() {
-    if (_parent) {
-        _parent->RemoveChild(this);
-        _parent = nullptr;
+void TransformNode::removeFromParent() {
+    if (parent_) {
+        parent_->removeChild(this);
+        parent_ = nullptr;
     }
 }
 
 //------------------------------------------------------------------------------
-std::vector<TransformNode_C*> TransformNode_C::GetChildren() const {
-    return _children;
+std::vector<TransformNode*> TransformNode::getChildren() const {
+    return children_;
 }
 
 //------------------------------------------------------------------------------
-size_t TransformNode_C::NumChildren() const {
-    return _children.size();
+size_t TransformNode::numChildren() const {
+    return children_.size();
 }
 
 //------------------------------------------------------------------------------
-bool TransformNode_C::IsRoot() const {
-    return _parent == nullptr;
+bool TransformNode::isRoot() const {
+    return parent_ == nullptr;
 }
 
 //------------------------------------------------------------------------------
-bool TransformNode_C::IsLeaf() const {
-    return _children.empty();
+bool TransformNode::isLeaf() const {
+    return children_.empty();
 }
 
 //------------------------------------------------------------------------------
-void TransformNode_C::UpdateRootTransform() {
-    if (_parent) {
-        _root_transform = _parent->GetModelMatrix();
+void TransformNode::updateRootTransform() {
+    if (parent_) {
+        root_transform_ = parent_->getModelMatrix();
     } else {
-        _root_transform = Mat4x4f_C::Identity();
+        root_transform_ = Mat4x4f::identity();
     }
 }
 
 //------------------------------------------------------------------------------
-void TransformNode_C::ComposeTransform(const Mat4x4f_C& transform) {
-    _local_transform = transform * _local_transform;
+void TransformNode::composeTransform(const Mat4x4f& transform) {
+    local_transform_ = transform * local_transform_;
 }
 
-}  // namespace Math
-}  // namespace VNE
+
+}  // namespace vne::math

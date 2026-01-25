@@ -1,5 +1,4 @@
-#ifndef VNE_MATH_RANDOM_H
-#define VNE_MATH_RANDOM_H
+#pragma once
 /* ---------------------------------------------------------------------
  * Copyright (c) 2024 Ajeet Singh Yadav. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License")
@@ -25,156 +24,170 @@
 #include <type_traits>
 #include <vector>
 
-namespace VNE {
-namespace Math {
+namespace vne::math {
 
 template<typename T>
-using RandEngine_TP = typename std::conditional<sizeof(T) <= 4, std::mt19937, std::mt19937_64>::type;
+using RandEngine = typename std::conditional<sizeof(T) <= 4, std::mt19937, std::mt19937_64>::type;
 
 template<typename T = float, bool = std::is_integral<std::decay_t<T>>::value>
-class Random_C {};
+class Random {};
 
-// Floating point Random_C
+// Floating point Random
 template<typename T>
-class Random_C<T, false> {
+class Random<T, false> {
    public:
-    using Distributor_TP = typename std::uniform_real_distribution<T>::param_type;
+    using DistributorParam = typename std::uniform_real_distribution<T>::param_type;
 
-    Random_C() {
-        Distributor_TP uid(T{0}, T{1});
-        _uniform_distribution.param(uid);
+    Random() {
+        DistributorParam uid(T{0}, T{1});
+        uniform_distribution_.param(uid);
     }
 
-    ~Random_C() = default;
+    ~Random() = default;
 
-    Random_C(uint32_t seed) {
-        _random_engine.seed(seed);
-        Distributor_TP uid(T{0}, T{1});
-        _uniform_distribution.param(uid);
+    Random(uint32_t seed) {
+        random_engine_.seed(seed);
+        DistributorParam uid(T{0}, T{1});
+        uniform_distribution_.param(uid);
     }
 
-    Random_C(T a, T b) {
+    Random(T a, T b) {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
-        Distributor_TP uid(a, b);
-        _uniform_distribution.param(uid);
+        DistributorParam uid(a, b);
+        uniform_distribution_.param(uid);
     }
 
-    Random_C(uint32_t seed, T a, T b) {
+    Random(uint32_t seed, T a, T b) {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
-        _random_engine.seed(seed);
-        Distributor_TP uid(a, b);
-        _uniform_distribution.param(uid);
+        random_engine_.seed(seed);
+        DistributorParam uid(a, b);
+        uniform_distribution_.param(uid);
     }
 
-    Random_C(const Random_C<T>& rhs) { SetParam(rhs.GetParam()); }
+    Random(const Random<T>& rhs) { setParam(rhs.getParam()); }
 
-    Random_C& operator=(const Random_C<T>& rhs) {
+    Random& operator=(const Random<T>& rhs) {
         if (&rhs == this) return *this;
-        SetParam(rhs.GetParam());
+        setParam(rhs.getParam());
         return *this;
     }
 
-    Random_C(Random_C<T>&&) = delete;
-    Random_C& operator=(Random_C<T>&&) = delete;
+    Random(Random<T>&&) = delete;
+    Random& operator=(Random<T>&&) = delete;
 
-    T Get() { return _uniform_distribution(_random_engine); }
+    T get() { return uniform_distribution_(random_engine_); }
 
-    std::vector<T> Get(size_t n) {
+    std::vector<T> get(size_t n) {
         std::vector<T> rand_list(n, T{0});
         for (size_t i = 0; i < n; ++i) {
-            rand_list[i] = _uniform_distribution(_random_engine);
+            rand_list[i] = uniform_distribution_(random_engine_);
         }
         return rand_list;
     }
 
-    Distributor_TP GetParam() const { return _uniform_distribution.param(); }
-    void SetParam(const Distributor_TP& params) { _uniform_distribution.param(params); }
+    DistributorParam getParam() const { return uniform_distribution_.param(); }
+    void setParam(const DistributorParam& params) { uniform_distribution_.param(params); }
 
-    void SetMinMax(T a, T b) {
+    void setMinMax(T a, T b) {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
-        Distributor_TP uid(a, b);
-        _uniform_distribution.param(uid);
+        DistributorParam uid(a, b);
+        uniform_distribution_.param(uid);
     }
 
-    T GetMin(void) { return _uniform_distribution.min(); }
-    T GetMax(void) { return _uniform_distribution.max(); }
+    T getMin(void) { return uniform_distribution_.min(); }
+    T getMax(void) { return uniform_distribution_.max(); }
 
    private:
-    RandEngine_TP<T> _random_engine{std::random_device()()};
-    std::uniform_real_distribution<T> _uniform_distribution;
+    RandEngine<T> random_engine_{std::random_device()()};
+    std::uniform_real_distribution<T> uniform_distribution_;
 };
 
-// Integer Random_C
+// Integer Random
 template<typename T>
-class Random_C<T, true> {
+class Random<T, true> {
    public:
-    using Distributor_TP = typename std::uniform_int_distribution<T>::param_type;
+    using DistributorParam = typename std::uniform_int_distribution<T>::param_type;
 
-    Random_C() {
-        Distributor_TP uid(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
-        _uniform_distribution.param(uid);
+    Random() {
+        DistributorParam uid(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+        uniform_distribution_.param(uid);
     }
 
-    ~Random_C() = default;
+    ~Random() = default;
 
-    Random_C(uint32_t seed) {
-        _random_engine.seed(seed);
-        Distributor_TP uid(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
-        _uniform_distribution.param(uid);
+    Random(uint32_t seed) {
+        random_engine_.seed(seed);
+        DistributorParam uid(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+        uniform_distribution_.param(uid);
     }
 
-    Random_C(T a, T b) {
+    Random(T a, T b) {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
-        Distributor_TP uid(a, b);
-        _uniform_distribution.param(uid);
+        DistributorParam uid(a, b);
+        uniform_distribution_.param(uid);
     }
 
-    Random_C(uint32_t seed, T a, T b) {
+    Random(uint32_t seed, T a, T b) {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
-        _random_engine.seed(seed);
-        Distributor_TP uid(a, b);
-        _uniform_distribution.param(uid);
+        random_engine_.seed(seed);
+        DistributorParam uid(a, b);
+        uniform_distribution_.param(uid);
     }
 
-    Random_C(const Random_C<T>& rhs) { SetParam(rhs.GetParam()); }
+    Random(const Random<T>& rhs) { setParam(rhs.getParam()); }
 
-    Random_C& operator=(const Random_C<T>& rhs) {
+    Random& operator=(const Random<T>& rhs) {
         if (&rhs == this) return *this;
-        SetParam(rhs.GetParam());
+        setParam(rhs.getParam());
         return *this;
     }
 
-    Random_C(Random_C<T>&&) = delete;
-    Random_C& operator=(Random_C<T>&&) = delete;
+    Random(Random<T>&&) = delete;
+    Random& operator=(Random<T>&&) = delete;
 
-    T Get() { return _uniform_distribution(_random_engine); }
+    T get() { return uniform_distribution_(random_engine_); }
 
-    std::vector<T> Get(size_t n) {
+    std::vector<T> get(size_t n) {
         std::vector<T> rand_list(n, T{0});
         for (size_t i = 0; i < n; ++i) {
-            rand_list[i] = _uniform_distribution(_random_engine);
+            rand_list[i] = uniform_distribution_(random_engine_);
         }
         return rand_list;
     }
 
-    Distributor_TP GetParam() const { return _uniform_distribution.param(); }
-    void SetParam(const Distributor_TP& params) { _uniform_distribution.param(params); }
+    DistributorParam getParam() const { return uniform_distribution_.param(); }
+    void setParam(const DistributorParam& params) { uniform_distribution_.param(params); }
 
-    void SetMinMax(T a, T b) {
+    void setMinMax(T a, T b) {
         VNE_ASSERT_MSG(a <= b, "invalid min and max arguments");
-        Distributor_TP uid(a, b);
-        _uniform_distribution.param(uid);
+        DistributorParam uid(a, b);
+        uniform_distribution_.param(uid);
     }
 
-    T GetMin(void) { return _uniform_distribution.min(); }
-    T GetMax(void) { return _uniform_distribution.max(); }
+    T getMin(void) { return uniform_distribution_.min(); }
+    T getMax(void) { return uniform_distribution_.max(); }
 
    private:
-    RandEngine_TP<T> _random_engine{std::random_device()()};
-    std::uniform_int_distribution<T> _uniform_distribution;
+    RandEngine<T> random_engine_{std::random_device()()};
+    std::uniform_int_distribution<T> uniform_distribution_;
 };
 
+// Legacy type aliases for backward compatibility
+template<typename T>
+using Random_C = Random<T>;
+template<typename T>
+using RandEngine_TP = RandEngine<T>;
+
+}  // namespace vne::math
+
+// Legacy namespace aliases
+namespace VNE {
+namespace Math {
+template<typename T>
+using Random_C = vne::math::Random<T>;
+template<typename T>
+using Random = vne::math::Random<T>;
+template<typename T>
+using RandEngine_TP = vne::math::RandEngine<T>;
 }  // namespace Math
 }  // namespace VNE
-
-#endif  // VNE_MATH_RANDOM_H
