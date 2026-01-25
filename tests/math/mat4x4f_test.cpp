@@ -499,10 +499,11 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fFrustum) {
     EXPECT_EQ(0.0f, out[3][1]);
 
     // GetColumn 2
+    // Note: Using [0, 1] depth range (GLM_FORCE_DEPTH_ZERO_TO_ONE) for Vulkan/Metal
     EXPECT_EQ(0.0f, out[0][2]);
     EXPECT_EQ(0.0f, out[1][2]);
-    EXPECT_EQ(-(z_far + z_near) / (z_far - z_near), out[2][2]);
-    EXPECT_EQ(-2.0f * z_far * z_near / (z_far - z_near), out[3][2]);
+    EXPECT_EQ(-z_far / (z_far - z_near), out[2][2]);
+    EXPECT_EQ(-z_far * z_near / (z_far - z_near), out[3][2]);
 
     // GetColumn 3
     EXPECT_EQ(0.0f, out[0][3]);
@@ -548,10 +549,11 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fPerspective) {
     EXPECT_EQ(0.0f, out[3][1]);
 
     // GetColumn 2
+    // Note: Using [0, 1] depth range (GLM_FORCE_DEPTH_ZERO_TO_ONE) for Vulkan/Metal
     EXPECT_EQ(0.0f, out[0][2]);
     EXPECT_EQ(0.0f, out[1][2]);
-    EXPECT_EQ(-(z_far + z_near) / (z_far - z_near), out[2][2]);
-    EXPECT_EQ(-2.0f * z_far * z_near / (z_far - z_near), out[3][2]);
+    EXPECT_EQ(-z_far / (z_far - z_near), out[2][2]);
+    EXPECT_EQ(-z_far * z_near / (z_far - z_near), out[3][2]);
 
     // GetColumn 3
     EXPECT_EQ(0.0f, out[0][3]);
@@ -589,10 +591,11 @@ TEST_F(Mat4x4fTest_C, TestMat4x4fOrtho) {
     EXPECT_EQ(-(top + bottom) / (top - bottom), out[3][1]);
 
     // GetColumn 2
+    // Note: Using [0, 1] depth range (GLM_FORCE_DEPTH_ZERO_TO_ONE) for Vulkan/Metal
     EXPECT_EQ(0.0f, out[0][2]);
     EXPECT_EQ(0.0f, out[1][2]);
-    EXPECT_EQ(-2.0f / (z_far - z_near), out[2][2]);
-    EXPECT_EQ(-(z_far + z_near) / (z_far - z_near), out[3][2]);
+    EXPECT_EQ(-1.0f / (z_far - z_near), out[2][2]);
+    EXPECT_EQ(-z_near / (z_far - z_near), out[3][2]);
 
     // GetColumn 3
     EXPECT_EQ(0.0f, out[0][3]);
