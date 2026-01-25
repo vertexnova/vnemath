@@ -224,11 +224,14 @@ endif()
 #------------------------------------------------------------------------------
 if(EXISTS "${VNE_LIBS_DIR}/vnelogging/CMakeLists.txt")
     message(STATUS "Using VneLogging from libs/vnelogging (v1.0.0)")
-    # Disable vnelogging tests to avoid conflicts
+    # Disable vnelogging tests and examples to avoid conflicts
     set(BUILD_TESTS_SAVED ${BUILD_TESTS})
+    set(BUILD_EXAMPLES_SAVED ${BUILD_EXAMPLES})
     set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
     add_subdirectory(${VNE_LIBS_DIR}/vnelogging ${CMAKE_BINARY_DIR}/libs/vnelogging)
     set(BUILD_TESTS ${BUILD_TESTS_SAVED} CACHE BOOL "" FORCE)
+    set(BUILD_EXAMPLES ${BUILD_EXAMPLES_SAVED} CACHE BOOL "" FORCE)
 else()
     message(WARNING "VneLogging submodule not found at libs/vnelogging")
 endif()
