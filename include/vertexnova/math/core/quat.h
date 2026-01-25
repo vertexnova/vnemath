@@ -25,10 +25,12 @@
 #include "vec.h"
 
 #include <cmath>
+#include <cstdint>
 #include <ostream>
 
 // GLM for optimized operations
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace vne::math {
 
@@ -46,7 +48,7 @@ namespace vne::math {
  * ```cpp
  * Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(90.0f));
  * Vec3f rotated = q.rotate(Vec3f::forward());
- * Mat4f rotMatrix = q.toMatrix();
+ * Mat4f rotMatrix = q.toMatrix4();
  * ```
  */
 template<typename T>
@@ -67,22 +69,22 @@ class Quat {
     // ========================================================================
 
     /**
-     * @brief Default constructor, creates an identity quaternion (no rotation).
+     * @brief Default constructor, creates identity quaternion (no rotation).
      */
     constexpr Quat() noexcept = default;
 
     /**
      * @brief Constructs a quaternion from components.
-     * @param x X component (imaginary)
-     * @param y Y component (imaginary)
-     * @param z Z component (imaginary)
-     * @param w W component (real/scalar)
+     * @param x_val X component (imaginary)
+     * @param y_val Y component (imaginary)
+     * @param z_val Z component (imaginary)
+     * @param w_val W component (real/scalar)
      */
-    constexpr Quat(T x, T y, T z, T w) noexcept
-        : x(x)
-        , y(y)
-        , z(z)
-        , w(w) {}
+    constexpr Quat(T x_val, T y_val, T z_val, T w_val) noexcept
+        : x(x_val)
+        , y(y_val)
+        , z(z_val)
+        , w(w_val) {}
 
     /**
      * @brief Constructs from a scalar and vector part.
@@ -94,6 +96,40 @@ class Quat {
         , y(vector.y())
         , z(vector.z())
         , w(scalar) {}
+
+    /**
+     * @brief Constructs from a Vec4 (x, y, z, w).
+     * @param vec Vector with quaternion components
+     */
+    constexpr explicit Quat(const Vec<T, 4>& vec) noexcept
+        : x(vec.x())
+        , y(vec.y())
+        , z(vec.z())
+        , w(vec.w()) {}
+
+    /**
+     * @brief Constructs from a Vec3 with w = 1.
+     * @param vec Vector with x, y, z components
+     */
+    constexpr explicit Quat(const Vec<T, 3>& vec) noexcept
+        : x(vec.x())
+        , y(vec.y())
+        , z(vec.z())
+        , w(T(1)) {}
+
+    /**
+     * @brief Constructs from Euler angles.
+     * @param pitch Rotation around X axis (radians)
+     * @param yaw Rotation around Y axis (radians)
+     * @param roll Rotation around Z axis (radians)
+     */
+    Quat(T pitch, T yaw, T roll) noexcept { setFromEulerAngles(pitch, yaw, roll); }
+
+    /**
+     * @brief Constructs from a rotation matrix.
+     * @param mat The 4x4 rotation matrix
+     */
+    explicit Quat(const Mat<T, 4, 4>& mat) noexcept { setFromRotationMatrix(mat); }
 
     /**
      * @brief Copy constructor.
@@ -148,9 +184,103 @@ class Quat {
     [[nodiscard]] constexpr Vec<T, 3> vector() const noexcept { return Vec<T, 3>(x, y, z); }
 
     /**
+     * @brief Gets the vector (imaginary) part (alias for vector()).
+     */
+    [[nodiscard]] constexpr Vec<T, 3> getVector() const noexcept { return Vec<T, 3>(x, y, z); }
+
+    /**
      * @brief Gets the scalar (real) part.
      */
     [[nodiscard]] constexpr T scalar() const noexcept { return w; }
+
+    /**
+     * @brief Gets the w (scalar) component.
+     */
+    [[nodiscard]] constexpr T getW() const noexcept { return w; }
+
+    /**
+     * @brief Subscript operator for component access.
+     * @param index Component index (0=x, 1=y, 2=z, 3=w)
+     */
+    [[nodiscard]] constexpr T& operator[](uint32_t index) noexcept { return (&x)[index]; }
+
+    /**
+     * @brief Subscript operator for component access (const).
+     */
+    [[nodiscard]] constexpr T operator[](uint32_t index) const noexcept { return (&x)[index]; }
+
+    // ========================================================================
+    // Setters
+    // ========================================================================
+
+    /**
+     * @brief Sets the quaternion from Euler angles.
+     * @param pitch Rotation around X axis (radians)
+     * @param yaw Rotation around Y axis (radians)
+     * @param roll Rotation around Z axis (radians)
+     */
+    void setFromEulerAngles(T pitch, T yaw, T roll) noexcept {
+        glm::qua<T> q = glm::qua<T>(glm::vec<3, T>(pitch, yaw, roll));
+        x = q.x;
+        y = q.y;
+        z = q.z;
+        w = q.w;
+    }
+
+    /**
+     * @brief Sets the quaternion from a rotation matrix.
+     * @param mat The rotation matrix
+     */
+    void setFromRotationMatrix(const Mat<T, 4, 4>& mat) noexcept {
+        glm::qua<T> q = glm::quat_cast(static_cast<glm::mat<4, 4, T>>(mat));
+        x = q.x;
+        y = q.y;
+        z = q.z;
+        w = q.w;
+    }
+
+    /**
+     * @brief Sets the quaternion from axis-angle representation.
+     * @param angle The rotation angle in radians
+     * @param axis The rotation axis (should be normalized)
+     */
+    void setFromAxisAngle(T angle, const Vec<T, 3>& axis) noexcept {
+        T half_angle = angle * T(0.5);
+        T s = std::sin(half_angle);
+        x = axis.x() * s;
+        y = axis.y() * s;
+        z = axis.z() * s;
+        w = std::cos(half_angle);
+    }
+
+    /**
+     * @brief Sets the quaternion from angle and axis (alias for setFromAxisAngle).
+     */
+    void setAngleAndAxis(T angle, const Vec<T, 3>& axis) noexcept { setFromAxisAngle(angle, axis); }
+
+    /**
+     * @brief Resets to identity quaternion.
+     */
+    void setIdentity() noexcept {
+        x = T(0);
+        y = T(0);
+        z = T(0);
+        w = T(1);
+    }
+
+    /**
+     * @brief Resets to identity quaternion (alias for setIdentity).
+     */
+    void clear() noexcept { setIdentity(); }
+
+    /**
+     * @brief Sets the quaternion to rotate from one direction to another.
+     * @param from The source direction
+     * @param to The target direction
+     */
+    void makeRotate(const Vec<T, 3>& from, const Vec<T, 3>& to) noexcept {
+        *this = fromToRotation(from.normalized(), to.normalized());
+    }
 
     // ========================================================================
     // Quaternion Properties
@@ -180,9 +310,17 @@ class Quat {
 
     /**
      * @brief Normalizes this quaternion in place.
+     * @return Reference to this quaternion
      */
     Quat& normalize() noexcept {
-        *this = normalized();
+        T len = length();
+        if (len > kEpsilon<T>) {
+            T inv = T(1) / len;
+            x *= inv;
+            y *= inv;
+            z *= inv;
+            w *= inv;
+        }
         return *this;
     }
 
@@ -210,6 +348,15 @@ class Quat {
         return identity();
     }
 
+    /**
+     * @brief Computes the dot product with another quaternion.
+     * @param other The other quaternion
+     * @return The dot product
+     */
+    [[nodiscard]] constexpr T dot(const Quat& other) const noexcept {
+        return x * other.x + y * other.y + z * other.z + w * other.w;
+    }
+
     // ========================================================================
     // Rotation Operations
     // ========================================================================
@@ -228,9 +375,19 @@ class Quat {
     }
 
     /**
+     * @brief Rotates a vector by this quaternion (alias for rotate).
+     */
+    [[nodiscard]] Vec<T, 3> rotateVector(const Vec<T, 3>& v) const noexcept { return rotate(v); }
+
+    /**
      * @brief Gets the rotation angle in radians.
      */
     [[nodiscard]] T angle() const noexcept { return T(2) * std::acos(clamp(w, T(-1), T(1))); }
+
+    /**
+     * @brief Gets the rotation angle in radians (alias for angle).
+     */
+    [[nodiscard]] T getAngle() const noexcept { return angle(); }
 
     /**
      * @brief Gets the rotation axis.
@@ -241,6 +398,81 @@ class Quat {
             return Vec<T, 3>::yAxis();
         }
         return Vec<T, 3>(x / s, y / s, z / s);
+    }
+
+    /**
+     * @brief Gets the rotation axis (alias for axis).
+     */
+    [[nodiscard]] Vec<T, 3> getAxis() const noexcept { return axis(); }
+
+    /**
+     * @brief Extracts the angle and axis from this quaternion.
+     * @param angle Output: the rotation angle
+     * @param axis Output: the rotation axis
+     */
+    void getAngleAndAxis(T& angle_out, Vec<T, 3>& axis_out) const noexcept {
+        angle_out = angle();
+        axis_out = axis();
+    }
+
+    /**
+     * @brief Spherical linear interpolation to another quaternion.
+     * @param to The target quaternion
+     * @param factor Interpolation factor [0, 1]
+     * @return The interpolated quaternion
+     */
+    [[nodiscard]] Quat slerp(const Quat& to, T factor) const noexcept { return Quat::slerp(*this, to, factor); }
+
+    // ========================================================================
+    // Basis Vectors
+    // ========================================================================
+
+    /**
+     * @brief Gets the X axis (right) vector after rotation.
+     */
+    [[nodiscard]] Vec<T, 3> getXAxis() const noexcept {
+        T f_ty = T(2) * y;
+        T f_tz = T(2) * z;
+        T f_twy = f_ty * w;
+        T f_twz = f_tz * w;
+        T f_txy = f_ty * x;
+        T f_txz = f_tz * x;
+        T f_tyy = f_ty * y;
+        T f_tzz = f_tz * z;
+
+        return Vec<T, 3>(T(1) - (f_tyy + f_tzz), f_txy + f_twz, f_txz - f_twy);
+    }
+
+    /**
+     * @brief Gets the Y axis (up) vector after rotation.
+     */
+    [[nodiscard]] Vec<T, 3> getYAxis() const noexcept {
+        T f_tx = T(2) * x;
+        T f_tz = T(2) * z;
+        T f_twx = f_tx * w;
+        T f_twz = f_tz * w;
+        T f_txy = f_tx * y;
+        T f_tyz = f_tz * y;
+        T f_txx = f_tx * x;
+        T f_tzz = f_tz * z;
+
+        return Vec<T, 3>(f_txy - f_twz, T(1) - (f_txx + f_tzz), f_tyz + f_twx);
+    }
+
+    /**
+     * @brief Gets the Z axis (forward) vector after rotation.
+     */
+    [[nodiscard]] Vec<T, 3> getZAxis() const noexcept {
+        T f_tx = T(2) * x;
+        T f_ty = T(2) * y;
+        T f_twx = f_tx * w;
+        T f_twy = f_ty * w;
+        T f_txz = f_tx * z;
+        T f_tyz = f_ty * z;
+        T f_txx = f_tx * x;
+        T f_tyy = f_ty * y;
+
+        return Vec<T, 3>(f_txz + f_twy, f_tyz - f_twx, T(1) - (f_txx + f_tyy));
     }
 
     // ========================================================================
@@ -263,6 +495,11 @@ class Quat {
      */
     [[nodiscard]] Vec<T, 3> toEuler() const noexcept { return glm::eulerAngles(static_cast<glm::qua<T>>(*this)); }
 
+    /**
+     * @brief Converts to Euler angles (alias for toEuler).
+     */
+    [[nodiscard]] Vec<T, 3> getEulerAngles() const noexcept { return toEuler(); }
+
     // ========================================================================
     // Comparison
     // ========================================================================
@@ -275,7 +512,11 @@ class Quat {
                && approxEqual(w, other.w, epsilon);
     }
 
-    [[nodiscard]] constexpr bool operator==(const Quat& other) const noexcept = default;
+    [[nodiscard]] constexpr bool operator==(const Quat& other) const noexcept {
+        return x == other.x && y == other.y && z == other.z && w == other.w;
+    }
+
+    [[nodiscard]] constexpr bool operator!=(const Quat& other) const noexcept { return !(*this == other); }
 
     // ========================================================================
     // Arithmetic Operators
@@ -308,6 +549,20 @@ class Quat {
         return *this;
     }
 
+    [[nodiscard]] constexpr Quat operator/(T scalar) const noexcept {
+        T inv = T(1) / scalar;
+        return Quat(x * inv, y * inv, z * inv, w * inv);
+    }
+
+    constexpr Quat& operator/=(T scalar) noexcept {
+        T inv = T(1) / scalar;
+        x *= inv;
+        y *= inv;
+        z *= inv;
+        w *= inv;
+        return *this;
+    }
+
     [[nodiscard]] constexpr Quat operator+(const Quat& other) const noexcept {
         return Quat(x + other.x, y + other.y, z + other.z, w + other.w);
     }
@@ -319,6 +574,20 @@ class Quat {
         w += other.w;
         return *this;
     }
+
+    [[nodiscard]] constexpr Quat operator-(const Quat& other) const noexcept {
+        return Quat(x - other.x, y - other.y, z - other.z, w - other.w);
+    }
+
+    constexpr Quat& operator-=(const Quat& other) noexcept {
+        x -= other.x;
+        y -= other.y;
+        z -= other.z;
+        w -= other.w;
+        return *this;
+    }
+
+    [[nodiscard]] constexpr Quat operator+() const noexcept { return *this; }
 
     [[nodiscard]] constexpr Quat operator-() const noexcept { return Quat(-x, -y, -z, -w); }
 
@@ -406,11 +675,9 @@ class Quat {
      * @param forward The forward direction (where the object should look)
      * @param up The up direction (hint for orientation)
      * @return A quaternion that rotates from default orientation to look at the target
-     *
-     * @note This uses a right-handed coordinate system where -Z is forward.
      */
-    [[nodiscard]] static Quat lookRotation(const Vec<T, 3>& forward, const Vec<T, 3>& up) noexcept {
-        // Use fromToRotation to rotate from default forward to target forward
+    [[nodiscard]] static Quat lookRotation(const Vec<T, 3>& forward,
+                                           [[maybe_unused]] const Vec<T, 3>& up = Vec<T, 3>::up()) noexcept {
         return fromToRotation(Vec<T, 3>::forward(), forward.normalized());
     }
 
@@ -447,12 +714,27 @@ class Quat {
         return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
     }
 
+    /**
+     * @brief Returns a normalized copy of a quaternion.
+     */
+    [[nodiscard]] static Quat normalize(const Quat& q) noexcept { return q.normalized(); }
+
+    /**
+     * @brief Returns the conjugate of a quaternion.
+     */
+    [[nodiscard]] static constexpr Quat conjugate(const Quat& q) noexcept { return q.conjugate(); }
+
+    /**
+     * @brief Returns the inverse of a quaternion.
+     */
+    [[nodiscard]] static Quat inverse(const Quat& q) noexcept { return q.inverse(); }
+
     // ========================================================================
     // Stream Output
     // ========================================================================
 
     friend std::ostream& operator<<(std::ostream& os, const Quat& q) {
-        return os << "Quat(" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ")";
+        return os << "[" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << "]";
     }
 };
 
@@ -467,6 +749,24 @@ template<typename T>
     requires FloatingPoint<T>
 [[nodiscard]] constexpr Quat<T> operator*(T scalar, const Quat<T>& q) noexcept {
     return q * scalar;
+}
+
+/**
+ * @brief Quaternion-vector multiplication (rotates vector).
+ */
+template<typename T>
+    requires FloatingPoint<T>
+[[nodiscard]] Vec<T, 3> operator*(const Quat<T>& q, const Vec<T, 3>& v) noexcept {
+    return q.rotate(v);
+}
+
+/**
+ * @brief Vector-quaternion multiplication (inverse rotation).
+ */
+template<typename T>
+    requires FloatingPoint<T>
+[[nodiscard]] Vec<T, 3> operator*(const Vec<T, 3>& v, const Quat<T>& q) noexcept {
+    return q.inverse().rotate(v);
 }
 
 }  // namespace vne::math

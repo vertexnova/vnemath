@@ -26,7 +26,6 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/vec4f.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/mat3x3f.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/mat4x4f.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/quaternion.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/random.h
@@ -52,7 +51,6 @@ set(SOURCE_FILES
     vertexnova/math/vec4f.cpp
     vertexnova/math/mat3x3f.cpp
     vertexnova/math/mat4x4f.cpp
-    vertexnova/math/quaternion.cpp
     vertexnova/math/color.cpp
     vertexnova/math/transform_node.cpp
     # Geometry sources

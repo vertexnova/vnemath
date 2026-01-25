@@ -25,10 +25,19 @@
 #include "vec4f.h"
 #include "mat3x3f.h"
 #include "mat4x4f.h"
-#include "quaternion.h"
 #include "color.h"
 #include "transform_node.h"
 #include "random.h"
 
+// Core templated types
+#include "core/core.h"
+
 // Geometry module includes
 #include "geometry/geometry.h"
+
+namespace vne::math {
+
+// Type alias for backward compatibility
+using Quaternion = Quatf;
+
+}  // namespace vne::math

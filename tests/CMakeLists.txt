@@ -64,7 +64,6 @@ set(TEST_SOURCES
     math/vec4f_test.cpp
     math/mat3x3f_test.cpp
     math/mat4x4f_test.cpp
-    math/quaternion_test.cpp
     math/color_test.cpp
     math/transform_node_test.cpp
     math/random_test.cpp
