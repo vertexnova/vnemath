@@ -158,7 +158,9 @@ template<typename T>
 /**
  * @brief Checks whether two unsigned long values are equal.
  */
-[[nodiscard]] inline constexpr bool areSame(unsigned long val1, unsigned long val2, unsigned long /*eps*/ = 0) noexcept {
+[[nodiscard]] inline constexpr bool areSame(unsigned long val1,
+                                            unsigned long val2,
+                                            unsigned long /*eps*/ = 0) noexcept {
     return val1 == val2;
 }
 
@@ -172,7 +174,9 @@ template<typename T>
 /**
  * @brief Checks whether two unsigned char values are equal.
  */
-[[nodiscard]] inline constexpr bool areSame(unsigned char val1, unsigned char val2, unsigned char /*eps*/ = 0) noexcept {
+[[nodiscard]] inline constexpr bool areSame(unsigned char val1,
+                                            unsigned char val2,
+                                            unsigned char /*eps*/ = 0) noexcept {
     return val1 == val2;
 }
 
