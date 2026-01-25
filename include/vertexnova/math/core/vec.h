@@ -673,9 +673,6 @@ class Vec {
      *
      * Uses absolute epsilon comparison for each component.
      *
-     * @note This uses approxZero() (absolute epsilon) rather than the
-     *       isZero() from math_utils.h (relative epsilon).
-     *
      * @param epsilon Tolerance for comparison (absolute)
      * @return true if all components are within epsilon of zero
      */
@@ -683,7 +680,7 @@ class Vec {
         requires FloatingPoint<T>
     {
         for (size_type i = 0; i < N; ++i) {
-            if (!approxZero(data[i], epsilon)) {
+            if (!vne::math::isZero(data[i], epsilon)) {
                 return false;
             }
         }

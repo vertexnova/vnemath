@@ -13,22 +13,20 @@
 /**
  * @file math_utils.h
  *
- * @brief Provides a collection of mathematical utilities.
+ * @brief Provides extended mathematical utilities.
  *
  * This file contains:
  * - Additional templated math constants (kQuarterPiT)
  * - Legacy constant accessor functions (quarterPi(), etc.) for backward compatibility
- * - Basic math operations (min, max, abs, sign, sqrt)
- * - Robust comparison functions (areSame, isZero) using relative epsilon
- * - Interpolation functions (saturate, midPoint, biLerp)
- * - Exponential, power, and trigonometric functions
+ * - Power and root functions (pow, sqrt, invSqrt)
+ * - Midpoint calculation
+ * - Rounding functions (floor, ceil, trunc, round)
+ * - Classification functions (isNaN, isInf, isNormal, isFinite)
+ * - Exponential and logarithmic functions
+ * - Trigonometric and hyperbolic functions
  *
- * Comparison function notes:
- * - areSame/isZero: Use relative epsilon - better for large values
- * - approxEqual/approxZero (in types.h): Use absolute epsilon - better for small values
- *
- * Core utilities (clamp, lerp, approxEqual, degToRad) are in core/types.h
- * as they're required by the templated vec/mat/quat classes.
+ * Core templated utilities (abs, min, max, clamp, lerp, isZero, etc.)
+ * are in core/types.h as they're required by the templated vec/mat/quat classes.
  *
  * For non-templated constants, use constants.h
  */
@@ -73,264 +71,120 @@ template<>
 }
 
 ////////////////////////////////////////////////////////////////////////////
-//                        Basic Operations                                 //
+//                        Power and Root Functions                         //
 // /////////////////////////////////////////////////////////////////////////
 
 /**
- * Computes the absolute value of the input value.
+ * @brief Computes the value of base raised to power exponent.
+ * @tparam T Arithmetic type
+ * @param base The base value
+ * @param exponent The exponent
+ * @return base^exponent
  */
 template<typename T>
-[[nodiscard]] inline constexpr T abs(const T& val) {
-    return std::abs(val);
-}
-
-/**
- * Computes the sign value of the given input value.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T sign(const T& val, T eps = static_cast<T>(0)) {
-    return (val > eps ? static_cast<T>(1) : (val < eps ? static_cast<T>(-1) : static_cast<T>(0)));
-}
-
-/**
- * Returns the minimum of the two given values
- */
-template<typename T>
-[[nodiscard]] inline constexpr T min(const T& val1, const T& val2) {
-    return val1 <= val2 ? val1 : val2;
-}
-
-/**
- * Returns the maximum of the two given values
- */
-template<typename T>
-[[nodiscard]] inline constexpr T max(const T& val1, const T& val2) {
-    return val1 >= val2 ? val1 : val2;
-}
-
-/**
- * Returns the minimum of the three given values
- */
-template<typename T>
-[[nodiscard]] inline constexpr T min(const T& val1, const T& val2, const T& val3) {
-    return min(min(val1, val2), val3);
-}
-
-/**
- * Returns the maximum of the three given values
- */
-template<typename T>
-[[nodiscard]] inline constexpr T max(const T& val1, const T& val2, const T& val3) {
-    return max(max(val1, val2), val3);
-}
-
-/**
- * Clamps a value between 0 and 1.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T saturate(const T& val) {
-    return clamp<T>(val, static_cast<T>(0), static_cast<T>(1));
-}
-
-/**
- * Sorts parameters val1 and val2 in the ascending order.
- */
-template<typename T>
-inline void arrangeMinMax(T* val1, T* val2) {
-    if (*val1 > *val2) {
-        std::swap(*val1, *val2);
-    }
-}
-
-/**
- * Checks if the given value is lying in an interval [min, max].
- */
-template<typename T>
-[[nodiscard]] inline bool isInBetween(T val, T min_val, T max_val, T eps = static_cast<T>(0)) {
-    arrangeMinMax(&min_val, &max_val);
-    return val >= min_val - eps && val <= max_val + eps;
-}
-
-/**
- * Computes the square of the given input.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T square(const T& val) {
-    return val * val;
-}
-
-/**
- * Computes the cube of the given input.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T cube(const T& val) {
-    return val * val * val;
-}
-
-/**
- * Computes the value of the base raised to power exponent.
- */
-template<typename T>
-[[nodiscard]] inline constexpr T pow(const T& base, T exponent) {
+[[nodiscard]] inline T pow(const T& base, T exponent) {
     return std::pow(base, exponent);
 }
 
 /**
- * Computes the square root of the given value.
+ * @brief Computes the square root of a value.
+ * @tparam T Floating-point type
+ * @param val Input value
+ * @return Square root of val
  */
 template<typename T>
-[[nodiscard]] inline constexpr T sqrt(const T& val) {
+[[nodiscard]] inline T sqrt(const T& val) {
     return std::sqrt(val);
 }
 
 /**
- * Computes the inverse of the square root of the given value.
+ * @brief Computes the inverse square root (1/sqrt(val)).
+ * @tparam T Floating-point type
+ * @param val Input value
+ * @return 1 / sqrt(val)
  */
 template<typename T>
-[[nodiscard]] inline constexpr T invSqrt(const T& val) {
+[[nodiscard]] inline T invSqrt(const T& val) {
     return static_cast<T>(1) / std::sqrt(val);
 }
 
 // ============================================================================
-// Robust Comparison Functions (Relative Epsilon)
+// Comparison Functions (relative epsilon for large values)
 // ============================================================================
 
 /**
- * @brief Checks whether two values are "close enough" using relative epsilon.
+ * @brief Checks whether two float values are "close enough" using relative epsilon.
  *
- * For floating-point types, uses: |val1 - val2| <= eps * max(1, |val1|, |val2|)
- * This makes the comparison scale with the magnitude of the values,
- * which is more appropriate for large numbers.
+ * Uses: |val1 - val2| <= eps * max(1, |val1|, |val2|)
+ * This comparison scales with the magnitude of the values.
  *
- * For integral types, uses exact equality (eps is ignored).
- *
- * @note For small values near zero (0-1 range), approxEqual() from types.h
- *       may be more appropriate as it uses absolute epsilon.
- *
- * @tparam T Value type
  * @param val1 First value
  * @param val2 Second value
- * @param eps Relative epsilon tolerance
+ * @param eps Relative epsilon tolerance (default: kFloatEpsilon)
  * @return true if values are close enough
- *
- * @see approxEqual() in types.h for absolute epsilon comparison
  */
-template<typename T>
-[[nodiscard]] inline constexpr bool areSameImpl(const T& val1, const T& val2, T eps) {
-    VNE_UNUSED(eps);
+[[nodiscard]] inline bool areSame(float val1, float val2, float eps = kFloatEpsilon) {
+    return abs(val1 - val2) <= eps * max(1.0f, abs(val1), abs(val2));
+}
+
+/**
+ * @brief Checks whether two double values are "close enough" using relative epsilon.
+ */
+[[nodiscard]] inline bool areSame(double val1, double val2, double eps = kDoubleEpsilon) {
+    return abs(val1 - val2) <= eps * max(1.0, abs(val1), abs(val2));
+}
+
+/**
+ * @brief Checks whether two int values are equal.
+ */
+[[nodiscard]] inline constexpr bool areSame(int val1, int val2, int /*eps*/ = 0) noexcept {
     return val1 == val2;
 }
 
-template<>
-[[nodiscard]] inline bool areSameImpl(const float& val1, const float& val2, float eps) {
-    VNE_ASSERT_MSG(eps >= kFloatEpsilon, "eps cannot be less than kFloatEpsilon.");
-    return abs<float>(val1 - val2) <= eps * max<float>(1.0f, abs<float>(val1), abs<float>(val2));
-}
-
-template<>
-[[nodiscard]] inline bool areSameImpl(const double& val1, const double& val2, double eps) {
-    VNE_ASSERT_MSG(eps >= kDoubleEpsilon, "eps cannot be less than kDoubleEpsilon.");
-    return abs<double>(val1 - val2) <= eps * max<double>(1.0, abs<double>(val1), abs<double>(val2));
-}
-
-[[nodiscard]] inline bool areSame(float val1, float val2, float eps = kFloatEpsilon) {
-    return areSameImpl<float>(val1, val2, eps);
-}
-
-[[nodiscard]] inline bool areSame(double val1, double val2, double eps = kDoubleEpsilon) {
-    return areSameImpl<double>(val1, val2, eps);
-}
-
-[[nodiscard]] inline constexpr bool areSame(int val1, int val2, int eps = 0) {
-    return areSameImpl<int>(val1, val2, eps);
-}
-
-[[nodiscard]] inline constexpr bool areSame(long int val1, long int val2, long int eps = 0) {
-    return areSameImpl<long int>(val1, val2, eps);
-}
-
-[[nodiscard]] inline constexpr bool areSame(unsigned int val1, unsigned int val2, unsigned int eps = 0) {
-    return areSameImpl<unsigned int>(val1, val2, eps);
-}
-
-[[nodiscard]] inline constexpr bool areSame(unsigned long val1, unsigned long val2, unsigned long eps = 0) {
-    return areSameImpl<unsigned long>(val1, val2, eps);
-}
-
-[[nodiscard]] inline constexpr bool areSame(char val1, char val2, char eps = 0) {
-    return areSameImpl<char>(val1, val2, eps);
-}
-
-[[nodiscard]] inline constexpr bool areSame(unsigned char val1, unsigned char val2, unsigned char eps = 0) {
-    return areSameImpl<unsigned char>(val1, val2, eps);
+/**
+ * @brief Checks whether two long int values are equal.
+ */
+[[nodiscard]] inline constexpr bool areSame(long int val1, long int val2, long int /*eps*/ = 0) noexcept {
+    return val1 == val2;
 }
 
 /**
- * @brief Checks whether the given value is "close enough" to zero using relative epsilon.
- *
- * For floating-point types, uses: |val| < eps * max(1, |val|)
- * This is the zero-check counterpart to areSame().
- *
- * For integral types, uses exact comparison with zero (eps is ignored).
- *
- * @note For small values, approxZero() from types.h may be more appropriate
- *       as it uses absolute epsilon.
- *
- * @tparam T Value type
- * @param val The value to check
- * @param eps Relative epsilon tolerance
- * @return true if value is close enough to zero
- *
- * @see approxZero() in types.h for absolute epsilon comparison
+ * @brief Checks whether two unsigned int values are equal.
  */
-template<typename T>
-[[nodiscard]] inline constexpr bool isZeroImpl(const T& val, T eps = static_cast<T>(0)) {
-    VNE_UNUSED(eps);
-    return val == T(0);
+[[nodiscard]] inline constexpr bool areSame(unsigned int val1, unsigned int val2, unsigned int /*eps*/ = 0) noexcept {
+    return val1 == val2;
 }
 
-template<>
-[[nodiscard]] inline bool isZeroImpl(const float& val, float eps) {
-    VNE_ASSERT_MSG(eps >= kFloatEpsilon, "eps cannot be less than kFloatEpsilon.");
-    return abs<float>(val) < eps * max<float>(1.0f, abs<float>(val));
+/**
+ * @brief Checks whether two unsigned long values are equal.
+ */
+[[nodiscard]] inline constexpr bool areSame(unsigned long val1, unsigned long val2, unsigned long /*eps*/ = 0) noexcept {
+    return val1 == val2;
 }
 
-template<>
-[[nodiscard]] inline bool isZeroImpl(const double& val, double eps) {
-    VNE_ASSERT_MSG(eps >= kDoubleEpsilon, "eps cannot be less than kDoubleEpsilon.");
-    return abs<double>(val) < eps * max<double>(1.0, abs<double>(val));
+/**
+ * @brief Checks whether two char values are equal.
+ */
+[[nodiscard]] inline constexpr bool areSame(char val1, char val2, char /*eps*/ = 0) noexcept {
+    return val1 == val2;
 }
 
-[[nodiscard]] inline bool isZero(float val, float eps = kFloatEpsilon) {
-    return isZeroImpl<float>(val, eps);
-}
-
-[[nodiscard]] inline bool isZero(double val, double eps = kDoubleEpsilon) {
-    return isZeroImpl<double>(val, eps);
-}
-
-[[nodiscard]] inline constexpr bool isZero(int val, int eps = 0) {
-    return isZeroImpl<int>(val, eps);
-}
-
-[[nodiscard]] inline constexpr bool isZero(unsigned int val, unsigned int eps = 0) {
-    return isZeroImpl<unsigned int>(val, eps);
-}
-
-[[nodiscard]] inline constexpr bool isZero(long int val, long int eps = 0) {
-    return isZeroImpl<long int>(val, eps);
-}
-
-[[nodiscard]] inline constexpr bool isZero(unsigned long val, unsigned long eps = 0) {
-    return isZeroImpl<unsigned long>(val, eps);
+/**
+ * @brief Checks whether two unsigned char values are equal.
+ */
+[[nodiscard]] inline constexpr bool areSame(unsigned char val1, unsigned char val2, unsigned char /*eps*/ = 0) noexcept {
+    return val1 == val2;
 }
 
 ////////////////////////////////////////////////////////////////////////////
-//                             Interpolations                              //
+//                             Midpoint                                    //
 // /////////////////////////////////////////////////////////////////////////
 
 /**
- * Computes the midpoint of the integers, floating-points, or pointers a and b.
+ * @brief Computes the midpoint of two integers.
+ * @param a First value
+ * @param b Second value
+ * @return Midpoint value
  */
 [[nodiscard]] inline int midPoint(const int a, const int b) {
     int direction = 1;
@@ -346,6 +200,9 @@ template<>
     return a + direction * static_cast<int>((hi - lo) / 2);
 }
 
+/**
+ * @brief Computes the midpoint of two floats (overflow-safe).
+ */
 [[nodiscard]] inline float midPoint(const float a, const float b) {
     float lo = kFloatMin * 2;
     float hi = kFloatMax / 2;
@@ -363,6 +220,9 @@ template<>
     return a / 2 + b / 2;
 }
 
+/**
+ * @brief Computes the midpoint of two doubles (overflow-safe).
+ */
 [[nodiscard]] inline double midPoint(const double a, const double b) {
     double lo = kDoubleMin * 2;
     double hi = kDoubleMax / 2;
@@ -380,30 +240,7 @@ template<>
     return a / 2 + b / 2;
 }
 
-// Note: lerp(a, b, t) is defined in core/types.h
-
-/**
- * @brief BiLinear interpolation.
- *
- * Interpolates between four corner values using two interpolation factors.
- * Uses lerp from types.h internally.
- *
- * @tparam T Floating-point type for values
- * @param c00 Value at (0, 0)
- * @param c10 Value at (1, 0)
- * @param c01 Value at (0, 1)
- * @param c11 Value at (1, 1)
- * @param tx Interpolation factor in x direction [0, 1]
- * @param ty Interpolation factor in y direction [0, 1]
- * @return Bilinearly interpolated value
- */
-template<FloatingPoint T>
-[[nodiscard]] inline constexpr T biLerp(
-    const T& c00, const T& c10, const T& c01, const T& c11, const T& tx, const T& ty) {
-    T a = lerp(c00, c10, tx);
-    T b = lerp(c01, c11, tx);
-    return lerp(a, b, ty);
-}
+// Note: lerp(a, b, t) and biLerp are defined in core/types.h
 
 ////////////////////////////////////////////////////////////////////////////
 //               Nearest Integer floating point operations                 //

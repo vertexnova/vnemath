@@ -358,46 +358,68 @@ template<FloatingPoint T>
 }
 
 /**
- * @brief Checks if two values are approximately equal using absolute epsilon.
- *
- * Uses absolute epsilon comparison: |a - b| <= epsilon
- *
- * This is suitable for values expected to be in a small range (e.g., 0-1).
- * For comparing values that may be large, consider using areSame() from
- * math_utils.h which uses relative epsilon comparison.
- *
- * @tparam T Floating-point type
- * @param a First value
- * @param b Second value
- * @param epsilon Tolerance (default: kEpsilon<T>)
- * @return true if |a - b| <= epsilon
- *
- * @see areSame() in math_utils.h for relative epsilon comparison
+ * @brief Computes the absolute value.
+ * @tparam T Arithmetic type
+ * @param val Input value
+ * @return Absolute value
  */
-template<FloatingPoint T>
-[[nodiscard]] constexpr bool approxEqual(T a, T b, T epsilon = kEpsilon<T>) noexcept {
-    T diff = a - b;
-    return diff >= -epsilon && diff <= epsilon;
+template<Arithmetic T>
+[[nodiscard]] constexpr T abs(T val) noexcept {
+    return val < T(0) ? -val : val;
 }
 
 /**
- * @brief Checks if a value is approximately zero using absolute epsilon.
- *
- * Uses absolute epsilon comparison: |value| <= epsilon
- *
- * For comparing values that may be large, consider using isZero() from
- * math_utils.h which uses relative epsilon comparison.
- *
- * @tparam T Floating-point type
- * @param value The value to check
- * @param epsilon Tolerance (default: kEpsilon<T>)
- * @return true if |value| <= epsilon
- *
- * @see isZero() in math_utils.h for relative epsilon comparison
+ * @brief Computes the sign of a value.
+ * @tparam T Arithmetic type
+ * @param val Input value
+ * @param eps Threshold value (values > eps are positive, < eps are negative)
+ * @return 1 if val > eps, -1 if val < eps, 0 if val == eps
  */
-template<FloatingPoint T>
-[[nodiscard]] constexpr bool approxZero(T value, T epsilon = kEpsilon<T>) noexcept {
-    return value >= -epsilon && value <= epsilon;
+template<Arithmetic T>
+[[nodiscard]] constexpr T sign(T val, T eps = T(0)) noexcept {
+    return (val > eps ? T(1) : (val < eps ? T(-1) : T(0)));
+}
+
+/**
+ * @brief Returns the minimum of two values.
+ * @tparam T Arithmetic type
+ * @param a First value
+ * @param b Second value
+ * @return Minimum value
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T min(T a, T b) noexcept {
+    return a <= b ? a : b;
+}
+
+/**
+ * @brief Returns the maximum of two values.
+ * @tparam T Arithmetic type
+ * @param a First value
+ * @param b Second value
+ * @return Maximum value
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T max(T a, T b) noexcept {
+    return a >= b ? a : b;
+}
+
+/**
+ * @brief Returns the minimum of three values.
+ * @tparam T Arithmetic type
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T min(T a, T b, T c) noexcept {
+    return min(min(a, b), c);
+}
+
+/**
+ * @brief Returns the maximum of three values.
+ * @tparam T Arithmetic type
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T max(T a, T b, T c) noexcept {
+    return max(max(a, b), c);
 }
 
 /**
@@ -414,6 +436,98 @@ template<Arithmetic T>
 }
 
 /**
+ * @brief Clamps a value between 0 and 1.
+ * @tparam T Arithmetic type
+ * @param val Value to saturate
+ * @return Value clamped to [0, 1]
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T saturate(T val) noexcept {
+    return clamp(val, T(0), T(1));
+}
+
+/**
+ * @brief Sorts two values so that *a <= *b.
+ * @tparam T Arithmetic type
+ * @param a Pointer to first value
+ * @param b Pointer to second value
+ */
+template<Arithmetic T>
+constexpr void arrangeMinMax(T* a, T* b) noexcept {
+    if (*a > *b) {
+        T temp = *a;
+        *a = *b;
+        *b = temp;
+    }
+}
+
+/**
+ * @brief Computes the square of a value.
+ * @tparam T Arithmetic type
+ * @param val Input value
+ * @return val * val
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T square(T val) noexcept {
+    return val * val;
+}
+
+/**
+ * @brief Computes the cube of a value.
+ * @tparam T Arithmetic type
+ * @param val Input value
+ * @return val * val * val
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr T cube(T val) noexcept {
+    return val * val * val;
+}
+
+/**
+ * @brief Checks if two values are approximately equal.
+ *
+ * Uses absolute epsilon comparison: |a - b| <= epsilon
+ *
+ * @tparam T Floating-point type
+ * @param a First value
+ * @param b Second value
+ * @param epsilon Tolerance (default: kEpsilon<T>)
+ * @return true if |a - b| <= epsilon
+ */
+template<FloatingPoint T>
+[[nodiscard]] constexpr bool approxEqual(T a, T b, T epsilon = kEpsilon<T>) noexcept {
+    T diff = a - b;
+    return diff >= -epsilon && diff <= epsilon;
+}
+
+/**
+ * @brief Checks if a floating-point value is approximately zero.
+ *
+ * Uses absolute epsilon comparison: |value| <= epsilon
+ *
+ * @tparam T Floating-point type
+ * @param value The value to check
+ * @param epsilon Tolerance (default: kEpsilon<T>)
+ * @return true if |value| <= epsilon
+ */
+template<FloatingPoint T>
+[[nodiscard]] constexpr bool isZero(T value, T epsilon = kEpsilon<T>) noexcept {
+    return value >= -epsilon && value <= epsilon;
+}
+
+/**
+ * @brief Checks if an integral value is zero.
+ * @tparam T Integral type
+ * @param value The value to check
+ * @param eps Unused (for API consistency with floating-point version)
+ * @return true if value == 0
+ */
+template<Integral T>
+[[nodiscard]] constexpr bool isZero(T value, T /*eps*/ = T(0)) noexcept {
+    return value == T(0);
+}
+
+/**
  * @brief Linear interpolation between two values.
  *
  * Computes a + t * (b - a) for t in [0, 1].
@@ -427,6 +541,43 @@ template<Arithmetic T>
 template<FloatingPoint T>
 [[nodiscard]] constexpr T lerp(T a, T b, T t) noexcept {
     return a + t * (b - a);
+}
+
+/**
+ * @brief BiLinear interpolation.
+ *
+ * Interpolates between four corner values using two interpolation factors.
+ *
+ * @tparam T Floating-point type
+ * @param c00 Value at (0, 0)
+ * @param c10 Value at (1, 0)
+ * @param c01 Value at (0, 1)
+ * @param c11 Value at (1, 1)
+ * @param tx Interpolation factor in x direction [0, 1]
+ * @param ty Interpolation factor in y direction [0, 1]
+ * @return Bilinearly interpolated value
+ */
+template<FloatingPoint T>
+[[nodiscard]] constexpr T biLerp(T c00, T c10, T c01, T c11, T tx, T ty) noexcept {
+    T a = lerp(c00, c10, tx);
+    T b = lerp(c01, c11, tx);
+    return lerp(a, b, ty);
+}
+
+/**
+ * @brief Checks if a value is in the interval [min_val, max_val].
+ * @tparam T Arithmetic type
+ * @param val Value to check
+ * @param min_val Minimum bound
+ * @param max_val Maximum bound
+ * @param eps Tolerance to extend the interval
+ * @return true if val is within [min_val - eps, max_val + eps]
+ */
+template<Arithmetic T>
+[[nodiscard]] constexpr bool isInBetween(T val, T min_val, T max_val, T eps = T(0)) noexcept {
+    T lo = min_val <= max_val ? min_val : max_val;
+    T hi = min_val <= max_val ? max_val : min_val;
+    return val >= lo - eps && val <= hi + eps;
 }
 
 }  // namespace vne::math
