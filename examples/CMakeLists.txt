@@ -25,3 +25,6 @@ add_subdirectory(07_color_utilities)
 
 # 08 - GPU Buffer Alignment: Memory layout for shader uniform buffers
 add_subdirectory(08_gpu_buffer_alignment)
+
+# 09 - Easing & Intersection: IQ-style easing functions and ray casting
+add_subdirectory(09_easing_intersection)

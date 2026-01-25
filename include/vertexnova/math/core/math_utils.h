@@ -537,4 +537,149 @@ inline void sinCos(int x, double& sin_val, double& cos_val) {
     return std::tanh(static_cast<double>(x));
 }
 
+// ============================================================================
+// Angle Utilities
+// ============================================================================
+
+/**
+ * @brief Normalizes an angle to the range [0, 2π).
+ *
+ * @param radians Angle in radians
+ * @return Normalized angle in [0, 2π)
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T normalizeAngle(T radians) noexcept {
+    radians = std::fmod(radians, kTwoPiT<T>);
+    if (radians < T(0)) {
+        radians += kTwoPiT<T>;
+    }
+    return radians;
+}
+
+/**
+ * @brief Normalizes an angle to the range [-π, π].
+ *
+ * @param radians Angle in radians
+ * @return Normalized angle in [-π, π]
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T normalizeAngleSigned(T radians) noexcept {
+    radians = std::fmod(radians + kPiT<T>, kTwoPiT<T>);
+    if (radians < T(0)) {
+        radians += kTwoPiT<T>;
+    }
+    return radians - kPiT<T>;
+}
+
+/**
+ * @brief Computes the shortest angular difference between two angles.
+ *
+ * The result is in the range [-π, π], representing the shortest
+ * path from 'from' to 'to'.
+ *
+ * @param from Starting angle in radians
+ * @param to Target angle in radians
+ * @return Shortest difference in radians (can be negative)
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T angleDifference(T from, T to) noexcept {
+    T diff = std::fmod(to - from + kPiT<T>, kTwoPiT<T>);
+    if (diff < T(0)) {
+        diff += kTwoPiT<T>;
+    }
+    return diff - kPiT<T>;
+}
+
+/**
+ * @brief Linearly interpolates between two angles, handling wraparound.
+ *
+ * Takes the shortest path around the circle.
+ *
+ * @param a Starting angle in radians
+ * @param b Target angle in radians
+ * @param t Interpolation factor [0, 1]
+ * @return Interpolated angle in radians
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T lerpAngle(T a, T b, T t) noexcept {
+    T diff = angleDifference(a, b);
+    return a + diff * t;
+}
+
+/**
+ * @brief Wraps a value to a range [min, max).
+ *
+ * @param value Value to wrap
+ * @param min_val Minimum of range
+ * @param max_val Maximum of range (exclusive)
+ * @return Wrapped value
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T wrap(T value, T min_val, T max_val) noexcept {
+    T range = max_val - min_val;
+    T result = std::fmod(value - min_val, range);
+    if (result < T(0)) {
+        result += range;
+    }
+    return result + min_val;
+}
+
+/**
+ * @brief Maps a value from one range to another.
+ *
+ * @param value Input value
+ * @param in_min Input range minimum
+ * @param in_max Input range maximum
+ * @param out_min Output range minimum
+ * @param out_max Output range maximum
+ * @return Mapped value
+ */
+template<FloatingPoint T>
+[[nodiscard]] constexpr T remap(T value, T in_min, T in_max, T out_min, T out_max) noexcept {
+    return out_min + (value - in_min) * (out_max - out_min) / (in_max - in_min);
+}
+
+/**
+ * @brief Inverse lerp: finds t such that lerp(a, b, t) = value.
+ *
+ * @param a Start value
+ * @param b End value
+ * @param value Value between a and b
+ * @return The t parameter in [0, 1] (or outside if value is outside [a, b])
+ */
+template<FloatingPoint T>
+[[nodiscard]] constexpr T inverseLerp(T a, T b, T value) noexcept {
+    if (approxEqual(a, b)) {
+        return T(0);
+    }
+    return (value - a) / (b - a);
+}
+
+/**
+ * @brief Step function: returns 0 if x < edge, 1 otherwise.
+ */
+template<FloatingPoint T>
+[[nodiscard]] constexpr T step(T edge, T x) noexcept {
+    return x < edge ? T(0) : T(1);
+}
+
+/**
+ * @brief Fractional part of a number (x - floor(x)).
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T fract(T x) noexcept {
+    return x - std::floor(x);
+}
+
+/**
+ * @brief Modulo that works correctly for negative numbers.
+ *
+ * Unlike std::fmod, this always returns a positive result
+ * when the divisor is positive.
+ */
+template<FloatingPoint T>
+[[nodiscard]] inline T mod(T x, T y) noexcept {
+    return x - y * std::floor(x / y);
+}
+
 }  // namespace vne::math

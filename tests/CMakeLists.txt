@@ -68,6 +68,8 @@ set(TEST_SOURCES
     math/transform_node_test.cpp
     math/random_test.cpp
     math/math_utils_test.cpp
+    math/angle_utils_test.cpp
+    math/easing_test.cpp
     # Multi-backend graphics API tests
     math/graphics_api_test.cpp
     math/camera_test.cpp
@@ -79,6 +81,7 @@ set(TEST_SOURCES
     math/geometry/sphere_test.cpp
     math/geometry/frustum_test.cpp
     math/geometry/culling_test.cpp
+    math/geometry/intersection_test.cpp
     main.cpp
 )
 
