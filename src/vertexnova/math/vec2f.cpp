@@ -24,27 +24,27 @@
 namespace vne::math {
 
 //------------------------------------------------------------------------------
-float* Vec2f::getPtr() {
+float* Vec2f::getPtr() noexcept {
     return &x;
 }
 
 //------------------------------------------------------------------------------
-const float* Vec2f::getPtr() const {
+const float* Vec2f::getPtr() const noexcept {
     return &x;
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::abs() const {
+Vec2f Vec2f::abs() const noexcept {
     return {glm::abs(x), glm::abs(y)};
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::length() const {
+float Vec2f::length() const noexcept {
     return glm::length(glm::vec2(*this));
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::lengthSquare() const {
+float Vec2f::lengthSquare() const noexcept {
     return glm::length2(glm::vec2(*this));
 }
 
@@ -56,106 +56,106 @@ Vec2f Vec2f::normalize() const {
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::min(const Vec2f& v) const {
+Vec2f Vec2f::min(const Vec2f& v) const noexcept {
     return lengthSquare() < v.lengthSquare() ? *this : v;
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::max(const Vec2f& v) const {
+Vec2f Vec2f::max(const Vec2f& v) const noexcept {
     return lengthSquare() > v.lengthSquare() ? *this : v;
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::minComponent() const {
+float Vec2f::minComponent() const noexcept {
     return glm::min(x, y);
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::maxComponent() const {
+float Vec2f::maxComponent() const noexcept {
     return glm::max(x, y);
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::dot(const Vec2f& v) const {
+float Vec2f::dot(const Vec2f& v) const noexcept {
     return glm::dot<2, float, glm::qualifier::highp>(glm::vec2(*this), glm::vec2(v));
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::cross(const Vec2f& v) const {
+float Vec2f::cross(const Vec2f& v) const noexcept {
     return x * v.y - y * v.x;
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::distance(const Vec2f& v) const {
+float Vec2f::distance(const Vec2f& v) const noexcept {
     Vec2f diff = *this - v;
     return diff.length();
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::rotate(const Vec2f& axis, float angle_val) const {
+Vec2f Vec2f::rotate(const Vec2f& axis, float angle_val) const noexcept {
     return glm::rotate(glm::vec2(axis), angle_val);
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::reflect(const Vec2f& normal) const {
+Vec2f Vec2f::reflect(const Vec2f& normal) const noexcept {
     return glm::reflect(glm::vec2(*this), glm::vec2(normal));
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::refract(const Vec2f& normal, float mu) const {
+Vec2f Vec2f::refract(const Vec2f& normal, float mu) const noexcept {
     return glm::refract(glm::vec2(*this), glm::vec2(normal), mu);
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::project(const Vec2f& v) const {
+Vec2f Vec2f::project(const Vec2f& v) const noexcept {
     return glm::proj(glm::vec2(*this), glm::vec2(v));
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::reject(const Vec2f& v) const {
+Vec2f Vec2f::reject(const Vec2f& v) const noexcept {
     return *this - project(v);
 }
 
 //------------------------------------------------------------------------------
-void Vec2f::decomposeVec(const Vec2f& v, Vec2f& proj, Vec2f& perp) const {
+void Vec2f::decomposeVec(const Vec2f& v, Vec2f& proj, Vec2f& perp) const noexcept {
     proj = this->project(v);
     perp = *this - proj;
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::perpendicular() const {
+Vec2f Vec2f::perpendicular() const noexcept {
     return {-y, x};
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::areSame(const Vec2f& v, float eps) const {
+bool Vec2f::areSame(const Vec2f& v, float eps) const noexcept {
     return vne::math::areSame(x, v.x, eps) && vne::math::areSame(y, v.y, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::areAligned(const Vec2f& v, float eps) const {
+bool Vec2f::areAligned(const Vec2f& v, float eps) const noexcept {
     return vne::math::isZero(this->angle(v), eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::isZero(float eps) const {
+bool Vec2f::isZero(float eps) const noexcept {
     return vne::math::isZero(x, eps) && vne::math::isZero(y, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::isNormalized(float eps) const {
+bool Vec2f::isNormalized(float eps) const noexcept {
     return vne::math::areSame(lengthSquare(), 1.0f, eps);
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::composePolar(float radius, float angle_val) {
+Vec2f& Vec2f::composePolar(float radius, float angle_val) noexcept {
     this->x = radius * cos(angle_val);
     this->y = radius * sin(angle_val);
     return *this;
 }
 
 //------------------------------------------------------------------------------
-void Vec2f::decomposePolar(float& radius, float& angle_val) const {
+void Vec2f::decomposePolar(float& radius, float& angle_val) const noexcept {
     radius = length();
     angle_val = atan2(y, x);
 
@@ -165,7 +165,7 @@ void Vec2f::decomposePolar(float& radius, float& angle_val) const {
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::angle() const {
+float Vec2f::angle() const noexcept {
     float angle_val = atan2(this->y, this->x);
     if (angle_val < 0) {
         angle_val += twoPi<float>();
@@ -174,7 +174,7 @@ float Vec2f::angle() const {
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::angle(const Vec2f& v) const {
+float Vec2f::angle(const Vec2f& v) const noexcept {
     float angle_val = atan2(x * v.y - y * v.x, x * v.x + y * v.y);
     if (angle_val < 0) {
         angle_val += twoPi<float>();
@@ -183,52 +183,52 @@ float Vec2f::angle(const Vec2f& v) const {
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::angle(const Vec2f& p1, const Vec2f& p2) const {
+float Vec2f::angle(const Vec2f& p1, const Vec2f& p2) const noexcept {
     Vec2f new_p1 = p1 - *this;
     Vec2f new_p2 = p2 - *this;
     return new_p1.angle(new_p2);
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::midPoint(const Vec2f& point) const {
+Vec2f Vec2f::midPoint(const Vec2f& point) const noexcept {
     return {vne::math::midPoint(x, point.x), vne::math::midPoint(y, point.y)};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::lerp(Vec2f& point, float factor) const {
+Vec2f Vec2f::lerp(Vec2f& point, float factor) const noexcept {
     return {vne::math::lerp(x, point.x, factor), vne::math::lerp(y, point.y, factor)};
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator=(const Vec2f& v) {
+Vec2f& Vec2f::operator=(const Vec2f& v) noexcept {
     x = v.x;
     y = v.y;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator+=(const float& scalar) {
+Vec2f& Vec2f::operator+=(const float& scalar) noexcept {
     x += scalar;
     y += scalar;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator-=(const float& scalar) {
+Vec2f& Vec2f::operator-=(const float& scalar) noexcept {
     x -= scalar;
     y -= scalar;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator*=(const float& scalar) {
+Vec2f& Vec2f::operator*=(const float& scalar) noexcept {
     x *= scalar;
     y *= scalar;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator/=(const float& scalar) {
+Vec2f& Vec2f::operator/=(const float& scalar) noexcept {
     VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec2f zero denominator");
     x /= scalar;
     y /= scalar;
@@ -236,28 +236,28 @@ Vec2f& Vec2f::operator/=(const float& scalar) {
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator+=(const Vec2f& v) {
+Vec2f& Vec2f::operator+=(const Vec2f& v) noexcept {
     x += v.x;
     y += v.y;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator-=(const Vec2f& v) {
+Vec2f& Vec2f::operator-=(const Vec2f& v) noexcept {
     x -= v.x;
     y -= v.y;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator*=(const Vec2f& v) {
+Vec2f& Vec2f::operator*=(const Vec2f& v) noexcept {
     x *= v.x;
     y *= v.y;
     return *this;
 }
 
 //------------------------------------------------------------------------------
-Vec2f& Vec2f::operator/=(const Vec2f& v) {
+Vec2f& Vec2f::operator/=(const Vec2f& v) noexcept {
     VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec2f zero denominator");
     VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec2f zero denominator");
     x /= v.x;
@@ -266,81 +266,81 @@ Vec2f& Vec2f::operator/=(const Vec2f& v) {
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator+(const float& scalar) const {
+Vec2f Vec2f::operator+(const float& scalar) const noexcept {
     return {x + scalar, y + scalar};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator-(const float& scalar) const {
+Vec2f Vec2f::operator-(const float& scalar) const noexcept {
     return {x - scalar, y - scalar};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator*(const float& scalar) const {
+Vec2f Vec2f::operator*(const float& scalar) const noexcept {
     return {x * scalar, y * scalar};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator/(const float& scalar) const {
+Vec2f Vec2f::operator/(const float& scalar) const noexcept {
     VNE_ASSERT_MSG(!vne::math::isZero(scalar, kZeroTolerance), "Vec2f zero denominator");
     return {x / scalar, y / scalar};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator+(const Vec2f& v) const {
+Vec2f Vec2f::operator+(const Vec2f& v) const noexcept {
     return {x + v.x, y + v.y};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator-(const Vec2f& v) const {
+Vec2f Vec2f::operator-(const Vec2f& v) const noexcept {
     return {x - v.x, y - v.y};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator*(const Vec2f& v) const {
+Vec2f Vec2f::operator*(const Vec2f& v) const noexcept {
     return {x * v.x, y * v.y};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator/(const Vec2f& v) const {
+Vec2f Vec2f::operator/(const Vec2f& v) const noexcept {
     VNE_ASSERT_MSG(!vne::math::isZero(v.x, kZeroTolerance), "Vec2f zero denominator");
     VNE_ASSERT_MSG(!vne::math::isZero(v.y, kZeroTolerance), "Vec2f zero denominator");
     return {x / v.x, y / v.y};
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::operator==(const Vec2f& v) const {
+bool Vec2f::operator==(const Vec2f& v) const noexcept {
     return x == v.x && y == v.y;
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::operator!=(const Vec2f& v) const {
+bool Vec2f::operator!=(const Vec2f& v) const noexcept {
     return x != v.x || y != v.y;
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::operator>(const Vec2f& v) const {
+bool Vec2f::operator>(const Vec2f& v) const noexcept {
     return lengthSquare() > v.lengthSquare();
 }
 
 //------------------------------------------------------------------------------
-bool Vec2f::operator<(const Vec2f& v) const {
+bool Vec2f::operator<(const Vec2f& v) const noexcept {
     return lengthSquare() < v.lengthSquare();
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::operator-() const {
+Vec2f Vec2f::operator-() const noexcept {
     return {-x, -y};
 }
 
 //------------------------------------------------------------------------------
-float& Vec2f::operator[](uint32_t index) {
+float& Vec2f::operator[](uint32_t index) noexcept {
     VNE_ASSERT_MSG(index < 2, "Vec2f index out of bounds");
     return (&x)[index];
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::operator[](uint32_t index) const {
+float Vec2f::operator[](uint32_t index) const noexcept {
     VNE_ASSERT_MSG(index < 2, "Vec2f index out of bounds");
     return (&x)[index];
 }
@@ -359,32 +359,32 @@ std::istream& operator>>(std::istream& is, Vec2f& vec) {
 }
 
 //------------------------------------------------------------------------------
-uint32_t Vec2f::dim() {
+uint32_t Vec2f::dim() noexcept {
     return 2;
 }
 
 //------------------------------------------------------------------------------
-uint32_t Vec2f::size() {
+uint32_t Vec2f::size() noexcept {
     return dim();
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::zero() {
+Vec2f Vec2f::zero() noexcept {
     return {};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::one() {
+Vec2f Vec2f::one() noexcept {
     return {1.0f, 1.0f};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::xAxis() {
+Vec2f Vec2f::xAxis() noexcept {
     return {1.0f, 0.0f};
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::yAxis() {
+Vec2f Vec2f::yAxis() noexcept {
     return {0.0f, 1.0f};
 }
 
@@ -395,25 +395,25 @@ Vec2f Vec2f::normalized(const Vec2f& v) {
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::distance(const Vec2f& v1, const Vec2f& v2) {
+float Vec2f::distance(const Vec2f& v1, const Vec2f& v2) noexcept {
     Vec2f v = v1 - v2;
     return v.length();
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::dot(const Vec2f& v1, const Vec2f& v2) {
+float Vec2f::dot(const Vec2f& v1, const Vec2f& v2) noexcept {
     const Vec2f& ret = v1;
     return ret.dot(v2);
 }
 
 //------------------------------------------------------------------------------
-float Vec2f::cross(const Vec2f& v1, const Vec2f& v2) {
+float Vec2f::cross(const Vec2f& v1, const Vec2f& v2) noexcept {
     const Vec2f& ret = v1;
     return ret.cross(v2);
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::midPoint(const Vec2f& p1, const Vec2f& p2) {
+Vec2f Vec2f::midPoint(const Vec2f& p1, const Vec2f& p2) noexcept {
     Vec2f out;
     out.x = vne::math::midPoint(p1.x, p2.x);
     out.y = vne::math::midPoint(p1.y, p2.y);
@@ -421,7 +421,7 @@ Vec2f Vec2f::midPoint(const Vec2f& p1, const Vec2f& p2) {
 }
 
 //------------------------------------------------------------------------------
-Vec2f Vec2f::lerp(const Vec2f& p1, const Vec2f& p2, float factor) {
+Vec2f Vec2f::lerp(const Vec2f& p1, const Vec2f& p2, float factor) noexcept {
     Vec2f out;
     out.x = vne::math::lerp(p1.x, p2.x, factor);
     out.y = vne::math::lerp(p1.y, p2.y, factor);
