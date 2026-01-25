@@ -72,7 +72,9 @@ float Aabb::surfaceArea() const noexcept {
 }
 
 Vec3f Aabb::corner(uint32_t index) const noexcept {
-    return Vec3f((index & 1) ? max_.x() : min_.x(), (index & 2) ? max_.y() : min_.y(), (index & 4) ? max_.z() : min_.z());
+    return Vec3f((index & 1) ? max_.x() : min_.x(),
+                 (index & 2) ? max_.y() : min_.y(),
+                 (index & 4) ? max_.z() : min_.z());
 }
 
 void Aabb::expand(const Vec3f& point) noexcept {
@@ -114,22 +116,24 @@ bool Aabb::isValid() const noexcept {
 }
 
 bool Aabb::contains(const Vec3f& point) const noexcept {
-    return point.x() >= min_.x() && point.x() <= max_.x() && point.y() >= min_.y() && point.y() <= max_.y() && point.z() >= min_.z()
-           && point.z() <= max_.z();
+    return point.x() >= min_.x() && point.x() <= max_.x() && point.y() >= min_.y() && point.y() <= max_.y()
+           && point.z() >= min_.z() && point.z() <= max_.z();
 }
 
 bool Aabb::contains(const Aabb& other) const noexcept {
-    return other.min_.x() >= min_.x() && other.max_.x() <= max_.x() && other.min_.y() >= min_.y() && other.max_.y() <= max_.y()
-           && other.min_.z() >= min_.z() && other.max_.z() <= max_.z();
+    return other.min_.x() >= min_.x() && other.max_.x() <= max_.x() && other.min_.y() >= min_.y()
+           && other.max_.y() <= max_.y() && other.min_.z() >= min_.z() && other.max_.z() <= max_.z();
 }
 
 bool Aabb::intersects(const Aabb& other) const noexcept {
-    return min_.x() < other.max_.x() && max_.x() > other.min_.x() && min_.y() < other.max_.y() && max_.y() > other.min_.y()
-           && min_.z() < other.max_.z() && max_.z() > other.min_.z();
+    return min_.x() < other.max_.x() && max_.x() > other.min_.x() && min_.y() < other.max_.y()
+           && max_.y() > other.min_.y() && min_.z() < other.max_.z() && max_.z() > other.min_.z();
 }
 
 Vec3f Aabb::closestPoint(const Vec3f& point) const noexcept {
-    return Vec3f(clamp(point.x(), min_.x(), max_.x()), clamp(point.y(), min_.y(), max_.y()), clamp(point.z(), min_.z(), max_.z()));
+    return Vec3f(clamp(point.x(), min_.x(), max_.x()),
+                 clamp(point.y(), min_.y(), max_.y()),
+                 clamp(point.z(), min_.z(), max_.z()));
 }
 
 float Aabb::squaredDistanceToPoint(const Vec3f& point) const noexcept {
