@@ -274,7 +274,7 @@ TEST(ValueNoiseTest, Continuity) {
 // ============================================================================
 
 TEST(NoiseStatisticsTest, PerlinMeanNearZero) {
-    double sum = 0.0;
+    float sum = 0.0f;
     int count = 0;
 
     for (float x = 0.0f; x < 100.0f; x += 0.1f) {
@@ -282,12 +282,12 @@ TEST(NoiseStatisticsTest, PerlinMeanNearZero) {
         count++;
     }
 
-    double mean = sum / count;
-    EXPECT_NEAR(mean, 0.0, 0.2);  // Mean should be near zero
+    float mean = sum / static_cast<float>(count);
+    EXPECT_NEAR(mean, 0.0f, 0.2f);  // Mean should be near zero
 }
 
 TEST(NoiseStatisticsTest, SimplexMeanNearZero) {
-    double sum = 0.0;
+    float sum = 0.0f;
     int count = 0;
 
     for (float x = 0.0f; x < 10.0f; x += 0.1f) {
@@ -297,8 +297,8 @@ TEST(NoiseStatisticsTest, SimplexMeanNearZero) {
         }
     }
 
-    double mean = sum / count;
-    EXPECT_NEAR(mean, 0.0, 0.2);
+    float mean = sum / static_cast<float>(count);
+    EXPECT_NEAR(mean, 0.0f, 0.2f);
 }
 
 // ============================================================================

@@ -92,6 +92,11 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
     return x < xi ? xi - 1 : xi;
 }
 
+// Safe permutation table access (handles int to size_t conversion)
+[[nodiscard]] inline constexpr int perm(int index) noexcept {
+    return static_cast<int>(kPermutation[static_cast<size_t>(index)]);
+}
+
 }  // namespace detail
 
 // ============================================================================
@@ -102,15 +107,15 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  * @brief 1D Perlin noise.
  *
  * @param x Input coordinate
- * @return Noise value in approximately [-1, 1]
+ * @return Noise value in approximately [-1, 1)
  */
 [[nodiscard]] inline float perlin(float x) noexcept {
     int X = detail::fastFloor(x) & 255;
     x -= std::floor(x);
     float u = detail::fade(x);
 
-    int a = detail::kPermutation[X];
-    int b = detail::kPermutation[X + 1];
+    int a = detail::perm(X);
+    int b = detail::perm(X + 1);
 
     return lerp(detail::grad1(a, x), detail::grad1(b, x - 1.0f), u);
 }
@@ -120,7 +125,7 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  *
  * @param x X coordinate
  * @param y Y coordinate
- * @return Noise value in approximately [-1, 1]
+ * @return Noise value in approximately [-1, 1)
  */
 [[nodiscard]] inline float perlin(float x, float y) noexcept {
     int X = detail::fastFloor(x) & 255;
@@ -132,10 +137,10 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
     float u = detail::fade(x);
     float v = detail::fade(y);
 
-    int aa = detail::kPermutation[detail::kPermutation[X] + Y];
-    int ab = detail::kPermutation[detail::kPermutation[X] + Y + 1];
-    int ba = detail::kPermutation[detail::kPermutation[X + 1] + Y];
-    int bb = detail::kPermutation[detail::kPermutation[X + 1] + Y + 1];
+    int aa = detail::perm(detail::perm(X) + Y);
+    int ab = detail::perm(detail::perm(X) + Y + 1);
+    int ba = detail::perm(detail::perm(X + 1) + Y);
+    int bb = detail::perm(detail::perm(X + 1) + Y + 1);
 
     float x1 = lerp(detail::grad2(aa, x, y), detail::grad2(ba, x - 1.0f, y), u);
     float x2 = lerp(detail::grad2(ab, x, y - 1.0f), detail::grad2(bb, x - 1.0f, y - 1.0f), u);
@@ -156,7 +161,7 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  * @param x X coordinate
  * @param y Y coordinate
  * @param z Z coordinate
- * @return Noise value in approximately [-1, 1]
+ * @return Noise value in approximately [-1, 1)
  */
 [[nodiscard]] inline float perlin(float x, float y, float z) noexcept {
     int X = detail::fastFloor(x) & 255;
@@ -171,23 +176,23 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
     float v = detail::fade(y);
     float w = detail::fade(z);
 
-    int A = detail::kPermutation[X] + Y;
-    int AA = detail::kPermutation[A] + Z;
-    int AB = detail::kPermutation[A + 1] + Z;
-    int B = detail::kPermutation[X + 1] + Y;
-    int BA = detail::kPermutation[B] + Z;
-    int BB = detail::kPermutation[B + 1] + Z;
+    int A = detail::perm(X) + Y;
+    int AA = detail::perm(A) + Z;
+    int AB = detail::perm(A + 1) + Z;
+    int B = detail::perm(X + 1) + Y;
+    int BA = detail::perm(B) + Z;
+    int BB = detail::perm(B + 1) + Z;
 
-    float x1 = lerp(detail::grad3(detail::kPermutation[AA], x, y, z),
-                    detail::grad3(detail::kPermutation[BA], x - 1.0f, y, z), u);
-    float x2 = lerp(detail::grad3(detail::kPermutation[AB], x, y - 1.0f, z),
-                    detail::grad3(detail::kPermutation[BB], x - 1.0f, y - 1.0f, z), u);
+    float x1 = lerp(detail::grad3(detail::perm(AA), x, y, z),
+                    detail::grad3(detail::perm(BA), x - 1.0f, y, z), u);
+    float x2 = lerp(detail::grad3(detail::perm(AB), x, y - 1.0f, z),
+                    detail::grad3(detail::perm(BB), x - 1.0f, y - 1.0f, z), u);
     float y1 = lerp(x1, x2, v);
 
-    float x3 = lerp(detail::grad3(detail::kPermutation[AA + 1], x, y, z - 1.0f),
-                    detail::grad3(detail::kPermutation[BA + 1], x - 1.0f, y, z - 1.0f), u);
-    float x4 = lerp(detail::grad3(detail::kPermutation[AB + 1], x, y - 1.0f, z - 1.0f),
-                    detail::grad3(detail::kPermutation[BB + 1], x - 1.0f, y - 1.0f, z - 1.0f), u);
+    float x3 = lerp(detail::grad3(detail::perm(AA + 1), x, y, z - 1.0f),
+                    detail::grad3(detail::perm(BA + 1), x - 1.0f, y, z - 1.0f), u);
+    float x4 = lerp(detail::grad3(detail::perm(AB + 1), x, y - 1.0f, z - 1.0f),
+                    detail::grad3(detail::perm(BB + 1), x - 1.0f, y - 1.0f, z - 1.0f), u);
     float y2 = lerp(x3, x4, v);
 
     return lerp(y1, y2, w);
@@ -214,7 +219,7 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  *
  * @param x X coordinate
  * @param y Y coordinate
- * @return Noise value in approximately [-1, 1]
+ * @return Noise value in approximately [-1, 1)
  */
 [[nodiscard]] inline float simplex(float x, float y) noexcept {
     constexpr float F2 = 0.366025403784439f;  // (sqrt(3) - 1) / 2
@@ -251,9 +256,9 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
     // Hashed gradient indices
     int ii = i & 255;
     int jj = j & 255;
-    int gi0 = detail::kPermutation[ii + detail::kPermutation[jj]] & 7;
-    int gi1 = detail::kPermutation[ii + i1 + detail::kPermutation[jj + j1]] & 7;
-    int gi2 = detail::kPermutation[ii + 1 + detail::kPermutation[jj + 1]] & 7;
+    int gi0 = detail::perm(ii + detail::perm(jj)) & 7;
+    int gi1 = detail::perm(ii + i1 + detail::perm(jj + j1)) & 7;
+    int gi2 = detail::perm(ii + 1 + detail::perm(jj + 1)) & 7;
 
     // Gradient directions
     constexpr std::array<float, 16> grad2_x = {1, -1, 1, -1, 1, -1, 0, 0};
@@ -265,22 +270,25 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
     float t0 = 0.5f - x0 * x0 - y0 * y0;
     if (t0 >= 0.0f) {
         t0 *= t0;
-        n0 = t0 * t0 * (grad2_x[gi0] * x0 + grad2_y[gi0] * y0);
+        auto idx0 = static_cast<size_t>(gi0);
+        n0 = t0 * t0 * (grad2_x[idx0] * x0 + grad2_y[idx0] * y0);
     }
 
     float t1 = 0.5f - x1 * x1 - y1 * y1;
     if (t1 >= 0.0f) {
         t1 *= t1;
-        n1 = t1 * t1 * (grad2_x[gi1] * x1 + grad2_y[gi1] * y1);
+        auto idx1 = static_cast<size_t>(gi1);
+        n1 = t1 * t1 * (grad2_x[idx1] * x1 + grad2_y[idx1] * y1);
     }
 
     float t2 = 0.5f - x2 * x2 - y2 * y2;
     if (t2 >= 0.0f) {
         t2 *= t2;
-        n2 = t2 * t2 * (grad2_x[gi2] * x2 + grad2_y[gi2] * y2);
+        auto idx2 = static_cast<size_t>(gi2);
+        n2 = t2 * t2 * (grad2_x[idx2] * x2 + grad2_y[idx2] * y2);
     }
 
-    // Scale to [-1, 1]
+    // Scale to [-1, 1)
     return 70.0f * (n0 + n1 + n2);
 }
 
@@ -297,7 +305,7 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  * @param x X coordinate
  * @param y Y coordinate
  * @param z Z coordinate
- * @return Noise value in approximately [-1, 1]
+ * @return Noise value in approximately [-1, 1)
  */
 [[nodiscard]] inline float simplex(float x, float y, float z) noexcept {
     constexpr float F3 = 1.0f / 3.0f;
@@ -359,33 +367,33 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
 
     float t0 = 0.6f - x0 * x0 - y0 * y0 - z0 * z0;
     if (t0 >= 0.0f) {
-        int gi0 = detail::kPermutation[ii + detail::kPermutation[jj + detail::kPermutation[kk]]] & 15;
+        int gi0 = detail::perm(ii + detail::perm(jj + detail::perm(kk))) & 15;
         t0 *= t0;
         n0 = t0 * t0 * detail::grad3(gi0, x0, y0, z0);
     }
 
     float t1 = 0.6f - x1 * x1 - y1 * y1 - z1 * z1;
     if (t1 >= 0.0f) {
-        int gi1 = detail::kPermutation[ii + i1 + detail::kPermutation[jj + j1 + detail::kPermutation[kk + k1]]] & 15;
+        int gi1 = detail::perm(ii + i1 + detail::perm(jj + j1 + detail::perm(kk + k1))) & 15;
         t1 *= t1;
         n1 = t1 * t1 * detail::grad3(gi1, x1, y1, z1);
     }
 
     float t2 = 0.6f - x2 * x2 - y2 * y2 - z2 * z2;
     if (t2 >= 0.0f) {
-        int gi2 = detail::kPermutation[ii + i2 + detail::kPermutation[jj + j2 + detail::kPermutation[kk + k2]]] & 15;
+        int gi2 = detail::perm(ii + i2 + detail::perm(jj + j2 + detail::perm(kk + k2))) & 15;
         t2 *= t2;
         n2 = t2 * t2 * detail::grad3(gi2, x2, y2, z2);
     }
 
     float t3 = 0.6f - x3 * x3 - y3 * y3 - z3 * z3;
     if (t3 >= 0.0f) {
-        int gi3 = detail::kPermutation[ii + 1 + detail::kPermutation[jj + 1 + detail::kPermutation[kk + 1]]] & 15;
+        int gi3 = detail::perm(ii + 1 + detail::perm(jj + 1 + detail::perm(kk + 1))) & 15;
         t3 *= t3;
         n3 = t3 * t3 * detail::grad3(gi3, x3, y3, z3);
     }
 
-    // Scale to [-1, 1]
+    // Scale to [-1, 1)
     return 32.0f * (n0 + n1 + n2 + n3);
 }
 
@@ -519,7 +527,7 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  * @param octaves Number of layers
  * @param lacunarity Frequency multiplier
  * @param gain Amplitude multiplier
- * @return Noise value in [0, 1]
+ * @return Noise value in [0, 1)
  */
 [[nodiscard]] inline float turbulence(const Vec2f& p,
                                        int octaves = 6,
@@ -645,7 +653,7 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
  *
  * @param x X coordinate
  * @param y Y coordinate
- * @return Noise value in [0, 1]
+ * @return Noise value in [0, 1)
  */
 [[nodiscard]] inline float valueNoise(float x, float y) noexcept {
     int xi = detail::fastFloor(x);
@@ -657,10 +665,10 @@ inline constexpr std::array<uint8_t, 512> kPermutation = {
     yi &= 255;
 
     // Hash corners
-    float n00 = static_cast<float>(detail::kPermutation[detail::kPermutation[xi] + yi]) / 255.0f;
-    float n01 = static_cast<float>(detail::kPermutation[detail::kPermutation[xi] + yi + 1]) / 255.0f;
-    float n10 = static_cast<float>(detail::kPermutation[detail::kPermutation[xi + 1] + yi]) / 255.0f;
-    float n11 = static_cast<float>(detail::kPermutation[detail::kPermutation[xi + 1] + yi + 1]) / 255.0f;
+    float n00 = static_cast<float>(detail::perm(detail::perm(xi) + yi)) / 255.0f;
+    float n01 = static_cast<float>(detail::perm(detail::perm(xi) + yi + 1)) / 255.0f;
+    float n10 = static_cast<float>(detail::perm(detail::perm(xi + 1) + yi)) / 255.0f;
+    float n11 = static_cast<float>(detail::perm(detail::perm(xi + 1) + yi + 1)) / 255.0f;
 
     // Smooth interpolation
     float u = detail::fade(xf);
