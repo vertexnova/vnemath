@@ -31,35 +31,35 @@ class Color {
     Color& operator=(const Color& rhs) noexcept;
 
    public:
-    [[nodiscard]] float* GetPtr() noexcept;
-    [[nodiscard]] const float* GetPtr() const noexcept;
+    [[nodiscard]] float* getPtr() noexcept;
+    [[nodiscard]] const float* getPtr() const noexcept;
 
    public:
-    [[nodiscard]] bool AreSame(const Color& color, float eps = kFloatEpsilon) const noexcept;
-    [[nodiscard]] bool IsZero(float eps = kFloatEpsilon) const noexcept;
-    [[nodiscard]] Color Lerp(const Color& color, float t) const noexcept;
+    [[nodiscard]] bool areSame(const Color& color, float eps = kFloatEpsilon) const noexcept;
+    [[nodiscard]] bool isZero(float eps = kFloatEpsilon) const noexcept;
+    [[nodiscard]] Color lerp(const Color& color, float t) const noexcept;
 
    public:
-    void Reset() noexcept;
-    void Set(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f) noexcept;
-    void Set(const Vec3f& rgb, float alpha = 1.0f) noexcept;
-    void Set(const Vec4f& rgba) noexcept;
+    void reset() noexcept;
+    void set(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f) noexcept;
+    void set(const Vec3f& rgb, float alpha = 1.0f) noexcept;
+    void set(const Vec4f& rgba) noexcept;
 
    public:
-    [[nodiscard]] float R() const noexcept;
-    [[nodiscard]] float G() const noexcept;
-    [[nodiscard]] float B() const noexcept;
-    [[nodiscard]] float A() const noexcept;
-    [[nodiscard]] Vec3f RGB() const noexcept;
-    [[nodiscard]] Vec4f RGBA() const noexcept;
-    [[nodiscard]] float& R() noexcept;
-    [[nodiscard]] float& G() noexcept;
-    [[nodiscard]] float& B() noexcept;
-    [[nodiscard]] float& A() noexcept;
-    void R(float red) noexcept;
-    void G(float green) noexcept;
-    void B(float blue) noexcept;
-    void A(float alpha) noexcept;
+    [[nodiscard]] float r() const noexcept;
+    [[nodiscard]] float g() const noexcept;
+    [[nodiscard]] float b() const noexcept;
+    [[nodiscard]] float a() const noexcept;
+    [[nodiscard]] Vec3f rgb() const noexcept;
+    [[nodiscard]] Vec4f rgba() const noexcept;
+    [[nodiscard]] float& r() noexcept;
+    [[nodiscard]] float& g() noexcept;
+    [[nodiscard]] float& b() noexcept;
+    [[nodiscard]] float& a() noexcept;
+    void setR(float red) noexcept;
+    void setG(float green) noexcept;
+    void setB(float blue) noexcept;
+    void setA(float alpha) noexcept;
 
    public:
     Color& operator+=(float scalar) noexcept;
@@ -88,30 +88,30 @@ class Color {
     friend std::istream& operator>>(std::istream& is, Color& color);
 
    private:
-    void Clamp() noexcept;
+    void clamp() noexcept;
 
    private:
-    float r = 0.0f;
-    float g = 0.0f;
-    float b = 0.0f;
-    float a = 1.0f;
+    float r_ = 0.0f;
+    float g_ = 0.0f;
+    float b_ = 0.0f;
+    float a_ = 1.0f;
 
    public:
-    static const Color WHITE;
-    static const Color BLACK;
-    static const Color RED;
-    static const Color GREEN;
-    static const Color BLUE;
-    static const Color YELLOW;
-    static const Color CYAN;
-    static const Color MAGENTA;
-    static const Color LIGHT_BLUE;
-    static const Color DARK_BLUE;
-    static const Color MAROON;
-    static const Color BEIGE;
-    static const Color BROWN;
-    static const Color GRAY;
-    static const Color GREY;
+    static const Color kWhite;
+    static const Color kBlack;
+    static const Color kRed;
+    static const Color kGreen;
+    static const Color kBlue;
+    static const Color kYellow;
+    static const Color kCyan;
+    static const Color kMagenta;
+    static const Color kLightBlue;
+    static const Color kDarkBlue;
+    static const Color kMaroon;
+    static const Color kBeige;
+    static const Color kBrown;
+    static const Color kGray;
+    static const Color kGrey;
 };
 
 }  // namespace vne::math
