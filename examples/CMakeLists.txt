@@ -22,3 +22,6 @@ add_subdirectory(06_ray_intersection)
 
 # 07 - Color Utilities: Color manipulation and conversions
 add_subdirectory(07_color_utilities)
+
+# 08 - GPU Buffer Alignment: Memory layout for shader uniform buffers
+add_subdirectory(08_gpu_buffer_alignment)
