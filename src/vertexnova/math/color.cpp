@@ -35,13 +35,10 @@ const Color Color::GRAY = Color(0.5f, 0.5f, 0.5f);
 const Color Color::GREY = Color(0.5f, 0.5f, 0.5f);
 
 //------------------------------------------------------------------------------
-Color::Color() {}
+Color::Color() noexcept {}
 
 //------------------------------------------------------------------------------
-Color::~Color() {}
-
-//------------------------------------------------------------------------------
-Color::Color(const float red, const float green, const float blue, const float alpha)
+Color::Color(const float red, const float green, const float blue, const float alpha) noexcept
     : r(red)
     , g(green)
     , b(blue)
@@ -50,7 +47,7 @@ Color::Color(const float red, const float green, const float blue, const float a
 }
 
 //------------------------------------------------------------------------------
-Color::Color(const Vec3f_C& rgb, float alpha)
+Color::Color(const Vec3f_C& rgb, float alpha) noexcept
     : r(rgb.r)
     , g(rgb.g)
     , b(rgb.b)
@@ -59,7 +56,7 @@ Color::Color(const Vec3f_C& rgb, float alpha)
 }
 
 //------------------------------------------------------------------------------
-Color::Color(const Vec4f_C& rgba)
+Color::Color(const Vec4f_C& rgba) noexcept
     : r(rgba.r)
     , g(rgba.g)
     , b(rgba.b)
@@ -68,7 +65,7 @@ Color::Color(const Vec4f_C& rgba)
 }
 
 //------------------------------------------------------------------------------
-Color::Color(const Color& rhs)
+Color::Color(const Color& rhs) noexcept
     : r(rhs.r)
     , g(rhs.g)
     , b(rhs.b)
@@ -77,7 +74,7 @@ Color::Color(const Color& rhs)
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator=(const Color& rhs) {
+Color& Color::operator=(const Color& rhs) noexcept {
     r = rhs.r;
     g = rhs.g;
     b = rhs.b;
@@ -88,28 +85,28 @@ Color& Color::operator=(const Color& rhs) {
 }
 
 //------------------------------------------------------------------------------
-float* Color::GetPtr() {
+float* Color::GetPtr() noexcept {
     return &r;
 }
 
 //------------------------------------------------------------------------------
-const float* Color::GetPtr() const {
+const float* Color::GetPtr() const noexcept {
     return &r;
 }
 
 //------------------------------------------------------------------------------
-bool Color::AreSame(const Color& color, float eps) const {
+bool Color::AreSame(const Color& color, float eps) const noexcept {
     return vne::math::areSame(r, color.r, eps) && vne::math::areSame(g, color.g, eps)
            && vne::math::areSame(b, color.b, eps) && vne::math::areSame(a, color.a, eps);
 }
 
 //------------------------------------------------------------------------------
-bool Color::IsZero(float eps) const {
+bool Color::IsZero(float eps) const noexcept {
     return vne::math::isZero(r, eps) && vne::math::isZero(g, eps) && vne::math::isZero(b, eps);
 }
 
 //------------------------------------------------------------------------------
-Color Color::Lerp(const Color& color, float t) const {
+Color Color::Lerp(const Color& color, float t) const noexcept {
     return Color(vne::math::lerp(r, color.r, t),
                  vne::math::lerp(g, color.g, t),
                  vne::math::lerp(b, color.b, t),
@@ -117,7 +114,7 @@ Color Color::Lerp(const Color& color, float t) const {
 }
 
 //------------------------------------------------------------------------------
-void Color::Reset() {
+void Color::Reset() noexcept {
     r = 0.0f;
     g = 0.0f;
     b = 0.0f;
@@ -125,7 +122,7 @@ void Color::Reset() {
 }
 
 //------------------------------------------------------------------------------
-void Color::Set(float red, float green, float blue, float alpha) {
+void Color::Set(float red, float green, float blue, float alpha) noexcept {
     r = red;
     g = green;
     b = blue;
@@ -134,7 +131,7 @@ void Color::Set(float red, float green, float blue, float alpha) {
 }
 
 //------------------------------------------------------------------------------
-void Color::Set(const Vec3f_C& rgb, float alpha) {
+void Color::Set(const Vec3f_C& rgb, float alpha) noexcept {
     r = rgb.r;
     g = rgb.g;
     b = rgb.b;
@@ -143,7 +140,7 @@ void Color::Set(const Vec3f_C& rgb, float alpha) {
 }
 
 //------------------------------------------------------------------------------
-void Color::Set(const Vec4f_C& rgba) {
+void Color::Set(const Vec4f_C& rgba) noexcept {
     r = rgba.r;
     g = rgba.g;
     b = rgba.b;
@@ -152,76 +149,76 @@ void Color::Set(const Vec4f_C& rgba) {
 }
 
 //------------------------------------------------------------------------------
-float Color::R() const {
+float Color::R() const noexcept {
     return r;
 }
 
 //------------------------------------------------------------------------------
-float Color::G() const {
+float Color::G() const noexcept {
     return g;
 }
 
 //------------------------------------------------------------------------------
-float Color::B() const {
+float Color::B() const noexcept {
     return b;
 }
 
 //------------------------------------------------------------------------------
-float Color::A() const {
+float Color::A() const noexcept {
     return a;
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Color::RGB() const {
+Vec3f_C Color::RGB() const noexcept {
     return {r, b, g};
 }
 
 //------------------------------------------------------------------------------
-Vec4f_C Color::RGBA() const {
+Vec4f_C Color::RGBA() const noexcept {
     return {r, g, b, a};
 }
 
 //------------------------------------------------------------------------------
-float& Color::R() {
+float& Color::R() noexcept {
     return r;
 }
 
 //------------------------------------------------------------------------------
-float& Color::G() {
+float& Color::G() noexcept {
     return g;
 }
 
 //------------------------------------------------------------------------------
-float& Color::B() {
+float& Color::B() noexcept {
     return b;
 }
 
 //------------------------------------------------------------------------------
-float& Color::A() {
+float& Color::A() noexcept {
     return a;
 }
 
 //------------------------------------------------------------------------------
-void Color::R(float red) {
+void Color::R(float red) noexcept {
     r = red;
 }
 //------------------------------------------------------------------------------
-void Color::G(float green) {
+void Color::G(float green) noexcept {
     g = green;
 }
 
 //------------------------------------------------------------------------------
-void Color::B(const float blue) {
+void Color::B(const float blue) noexcept {
     b = blue;
 }
 
 //------------------------------------------------------------------------------
-void Color::A(const float alpha) {
+void Color::A(const float alpha) noexcept {
     a = alpha;
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator+=(float scalar) {
+Color& Color::operator+=(float scalar) noexcept {
     r += scalar;
     g += scalar;
     b += scalar;
@@ -232,7 +229,7 @@ Color& Color::operator+=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator-=(float scalar) {
+Color& Color::operator-=(float scalar) noexcept {
     r -= scalar;
     g -= scalar;
     b -= scalar;
@@ -243,7 +240,7 @@ Color& Color::operator-=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator*=(float scalar) {
+Color& Color::operator*=(float scalar) noexcept {
     r *= scalar;
     g *= scalar;
     b *= scalar;
@@ -254,7 +251,7 @@ Color& Color::operator*=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator/=(float scalar) {
+Color& Color::operator/=(float scalar) noexcept {
     r /= scalar;
     g /= scalar;
     b /= scalar;
@@ -265,7 +262,7 @@ Color& Color::operator/=(float scalar) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator+=(const Color& color) {
+Color& Color::operator+=(const Color& color) noexcept {
     r += color.r;
     g += color.g;
     b += color.b;
@@ -276,7 +273,7 @@ Color& Color::operator+=(const Color& color) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator-=(const Color& color) {
+Color& Color::operator-=(const Color& color) noexcept {
     r -= color.r;
     g -= color.g;
     b -= color.b;
@@ -287,7 +284,7 @@ Color& Color::operator-=(const Color& color) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator*=(const Color& color) {
+Color& Color::operator*=(const Color& color) noexcept {
     r *= color.r;
     g *= color.g;
     b *= color.b;
@@ -298,7 +295,7 @@ Color& Color::operator*=(const Color& color) {
 }
 
 //------------------------------------------------------------------------------
-Color& Color::operator/=(const Color& color) {
+Color& Color::operator/=(const Color& color) noexcept {
     r /= color.r;
     g /= color.g;
     b /= color.b;
@@ -309,69 +306,69 @@ Color& Color::operator/=(const Color& color) {
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator+(float scalar) const {
+Color Color::operator+(float scalar) const noexcept {
     return Color(r + scalar, g + scalar, b + scalar, a + scalar);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator-(float scalar) const {
+Color Color::operator-(float scalar) const noexcept {
     return Color(r - scalar, g - scalar, b - scalar, a - scalar);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator*(float scalar) const {
+Color Color::operator*(float scalar) const noexcept {
     return Color(r * scalar, g * scalar, b * scalar, a * scalar);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator/(float scalar) const {
+Color Color::operator/(float scalar) const noexcept {
     return Color(r / scalar, g / scalar, b / scalar, a / scalar);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator+(const Color& color) const {
+Color Color::operator+(const Color& color) const noexcept {
     return Color(r + color.r, g + color.g, b + color.b, a + color.a);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator-(const Color& color) const {
+Color Color::operator-(const Color& color) const noexcept {
     return Color(r - color.r, g - color.g, b - color.b, a - color.a);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator*(const Color& color) const {
+Color Color::operator*(const Color& color) const noexcept {
     return Color(r * color.r, g * color.g, b * color.b, a * color.a);
 }
 
 //------------------------------------------------------------------------------
-Color Color::operator/(const Color& color) const {
+Color Color::operator/(const Color& color) const noexcept {
     return Color(r / color.r, g / color.g, b / color.b, a / color.a);
 }
 
 //------------------------------------------------------------------------------
-bool Color::operator==(const Color& color) const {
+bool Color::operator==(const Color& color) const noexcept {
     return r == color.r && g == color.g && b == color.b && a == color.a;
 }
 
 //------------------------------------------------------------------------------
-bool Color::operator!=(const Color& color) const {
+bool Color::operator!=(const Color& color) const noexcept {
     return r != color.r || g != color.g || b != color.b || a != color.a;
 }
 
 //------------------------------------------------------------------------------
-float Color::operator[](uint32_t index) {
+float Color::operator[](uint32_t index) noexcept {
     VNE_ASSERT_MSG(index < 4, "Color index out of bounds");
     return (&r)[index];
 }
 
 //------------------------------------------------------------------------------
-float Color::operator[](uint32_t index) const {
+float Color::operator[](uint32_t index) const noexcept {
     VNE_ASSERT_MSG(index < 4, "Color index out of bounds");
     return (&r)[index];
 }
 
 //------------------------------------------------------------------------------
-void Color::Clamp() {
+void Color::Clamp() noexcept {
     r = r < 0.0f || vne::math::isNaN(r) ? 0.0f : r;
     r = r > kColorByteMax ? 1.0f : r > 1.0f ? r / kColorByteMax : r;
 

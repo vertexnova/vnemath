@@ -22,73 +22,73 @@ namespace vne::math {
 
 class Color {
    public:
-    Color();
-    ~Color();
-    Color(float red, float green, float blue, float alpha = 1.0f);
-    Color(const Vec3f_C& rgb, float alpha = 1.0f);
-    Color(const Vec4f_C& rgba);
-    Color(const Color& rhs);
-    Color& operator=(const Color& rhs);
+    Color() noexcept;
+    ~Color() noexcept = default;
+    Color(float red, float green, float blue, float alpha = 1.0f) noexcept;
+    Color(const Vec3f_C& rgb, float alpha = 1.0f) noexcept;
+    Color(const Vec4f_C& rgba) noexcept;
+    Color(const Color& rhs) noexcept;
+    Color& operator=(const Color& rhs) noexcept;
 
    public:
-    float* GetPtr();
-    const float* GetPtr() const;
+    [[nodiscard]] float* GetPtr() noexcept;
+    [[nodiscard]] const float* GetPtr() const noexcept;
 
    public:
-    bool AreSame(const Color& color, float eps = kFloatEpsilon) const;
-    bool IsZero(float eps = kFloatEpsilon) const;
-    Color Lerp(const Color& color, float t) const;
+    [[nodiscard]] bool AreSame(const Color& color, float eps = kFloatEpsilon) const noexcept;
+    [[nodiscard]] bool IsZero(float eps = kFloatEpsilon) const noexcept;
+    [[nodiscard]] Color Lerp(const Color& color, float t) const noexcept;
 
    public:
-    void Reset();
-    void Set(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f);
-    void Set(const Vec3f_C& rgb, float alpha = 1.0f);
-    void Set(const Vec4f_C& rgba);
+    void Reset() noexcept;
+    void Set(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f) noexcept;
+    void Set(const Vec3f_C& rgb, float alpha = 1.0f) noexcept;
+    void Set(const Vec4f_C& rgba) noexcept;
 
    public:
-    float R() const;
-    float G() const;
-    float B() const;
-    float A() const;
-    Vec3f_C RGB() const;
-    Vec4f_C RGBA() const;
-    float& R();
-    float& G();
-    float& B();
-    float& A();
-    void R(float red);
-    void G(float green);
-    void B(float blue);
-    void A(float alpha);
+    [[nodiscard]] float R() const noexcept;
+    [[nodiscard]] float G() const noexcept;
+    [[nodiscard]] float B() const noexcept;
+    [[nodiscard]] float A() const noexcept;
+    [[nodiscard]] Vec3f_C RGB() const noexcept;
+    [[nodiscard]] Vec4f_C RGBA() const noexcept;
+    [[nodiscard]] float& R() noexcept;
+    [[nodiscard]] float& G() noexcept;
+    [[nodiscard]] float& B() noexcept;
+    [[nodiscard]] float& A() noexcept;
+    void R(float red) noexcept;
+    void G(float green) noexcept;
+    void B(float blue) noexcept;
+    void A(float alpha) noexcept;
 
    public:
-    Color& operator+=(float scalar);
-    Color& operator-=(float scalar);
-    Color& operator*=(float scalar);
-    Color& operator/=(float scalar);
-    Color& operator+=(const Color& color);
-    Color& operator-=(const Color& color);
-    Color& operator*=(const Color& color);
-    Color& operator/=(const Color& color);
-    Color operator+(float scalar) const;
-    Color operator-(float scalar) const;
-    Color operator*(float scalar) const;
-    Color operator/(float scalar) const;
-    Color operator+(const Color& color) const;
-    Color operator-(const Color& color) const;
-    Color operator*(const Color& color) const;
-    Color operator/(const Color& color) const;
-    bool operator==(const Color& color) const;
-    bool operator!=(const Color& color) const;
-    float operator[](uint32_t index);
-    float operator[](uint32_t index) const;
+    Color& operator+=(float scalar) noexcept;
+    Color& operator-=(float scalar) noexcept;
+    Color& operator*=(float scalar) noexcept;
+    Color& operator/=(float scalar) noexcept;
+    Color& operator+=(const Color& color) noexcept;
+    Color& operator-=(const Color& color) noexcept;
+    Color& operator*=(const Color& color) noexcept;
+    Color& operator/=(const Color& color) noexcept;
+    [[nodiscard]] Color operator+(float scalar) const noexcept;
+    [[nodiscard]] Color operator-(float scalar) const noexcept;
+    [[nodiscard]] Color operator*(float scalar) const noexcept;
+    [[nodiscard]] Color operator/(float scalar) const noexcept;
+    [[nodiscard]] Color operator+(const Color& color) const noexcept;
+    [[nodiscard]] Color operator-(const Color& color) const noexcept;
+    [[nodiscard]] Color operator*(const Color& color) const noexcept;
+    [[nodiscard]] Color operator/(const Color& color) const noexcept;
+    [[nodiscard]] bool operator==(const Color& color) const noexcept;
+    [[nodiscard]] bool operator!=(const Color& color) const noexcept;
+    [[nodiscard]] float operator[](uint32_t index) noexcept;
+    [[nodiscard]] float operator[](uint32_t index) const noexcept;
 
    public:
     friend std::ostream& operator<<(std::ostream& os, const Color& color);
     friend std::istream& operator>>(std::istream& is, Color& color);
 
    private:
-    void Clamp();
+    void Clamp() noexcept;
 
    private:
     float r = 0.0f;
