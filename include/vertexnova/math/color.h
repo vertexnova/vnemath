@@ -25,8 +25,8 @@ class Color {
     Color() noexcept;
     ~Color() noexcept = default;
     Color(float red, float green, float blue, float alpha = 1.0f) noexcept;
-    Color(const Vec3f_C& rgb, float alpha = 1.0f) noexcept;
-    Color(const Vec4f_C& rgba) noexcept;
+    Color(const Vec3f& rgb, float alpha = 1.0f) noexcept;
+    Color(const Vec4f& rgba) noexcept;
     Color(const Color& rhs) noexcept;
     Color& operator=(const Color& rhs) noexcept;
 
@@ -42,16 +42,16 @@ class Color {
    public:
     void Reset() noexcept;
     void Set(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f) noexcept;
-    void Set(const Vec3f_C& rgb, float alpha = 1.0f) noexcept;
-    void Set(const Vec4f_C& rgba) noexcept;
+    void Set(const Vec3f& rgb, float alpha = 1.0f) noexcept;
+    void Set(const Vec4f& rgba) noexcept;
 
    public:
     [[nodiscard]] float R() const noexcept;
     [[nodiscard]] float G() const noexcept;
     [[nodiscard]] float B() const noexcept;
     [[nodiscard]] float A() const noexcept;
-    [[nodiscard]] Vec3f_C RGB() const noexcept;
-    [[nodiscard]] Vec4f_C RGBA() const noexcept;
+    [[nodiscard]] Vec3f RGB() const noexcept;
+    [[nodiscard]] Vec4f RGBA() const noexcept;
     [[nodiscard]] float& R() noexcept;
     [[nodiscard]] float& G() noexcept;
     [[nodiscard]] float& B() noexcept;

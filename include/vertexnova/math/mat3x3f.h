@@ -92,18 +92,7 @@ class Mat3x3f : public glm::mat3 {
     [[nodiscard]] static Mat3x3f scale(float s) noexcept;
 };
 
-// Legacy type alias for backward compatibility
-using Mat3x3f_C = Mat3x3f;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-using Mat3x3f_C = vne::math::Mat3x3f;
-using Mat3x3f = vne::math::Mat3x3f;
-}  // namespace Math
-}  // namespace VNE
 
 namespace {
 

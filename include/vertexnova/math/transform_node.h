@@ -50,15 +50,4 @@ class TransformNode {
     std::vector<TransformNode*> children_;
 };
 
-// Legacy type alias for backward compatibility
-using TransformNode_C = TransformNode;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-using TransformNode_C = vne::math::TransformNode;
-using TransformNode = vne::math::TransformNode;
-}  // namespace Math
-}  // namespace VNE

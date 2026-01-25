@@ -323,7 +323,7 @@ TEST_F(Vec4fTest, TestVec4fDot) {
  *
  */
 TEST_F(Vec4fTest, TestVec4fDistance) {
-    ASSERT_FLOAT_EQ(static_cast<float>(SQRT_TWO), vne::math::Vec4f::distance(x_point, y_point));
+    ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::Vec4f::distance(x_point, y_point));
     ASSERT_FLOAT_EQ(5.2019229f, vne::math::Vec4f::distance(vne::math::Vec4f::zero(), xyzw_point));
     ASSERT_FLOAT_EQ(4.5891175f, vne::math::Vec4f::distance(x_point, xyzw_point));
     ASSERT_FLOAT_EQ(5.1048999f, xyzw_point.distance(y_point));
@@ -338,11 +338,11 @@ TEST_F(Vec4fTest, TestVec4fDistance) {
 TEST_F(Vec4fTest, TestVec4fRotate) {
     vne::math::Vec4f test_vec{1.0f};
     ASSERT_TRUE(vne::math::Vec4f(1.0f, -1.0f, 1.0f, 1.0f)
-                    .areSame(test_vec.rotate(z_axis_.xyz(), -static_cast<float>(HALF_PI))));
+                    .areSame(test_vec.rotate(z_axis_.xyz(), -vne::math::kHalfPi)));
     ASSERT_TRUE(
-        vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f).areSame(test_vec.rotate(z_axis_.xyz(), static_cast<float>(HALF_PI))));
+        vne::math::Vec4f(-1.0f, 1.0f, 1.0f, 1.0f).areSame(test_vec.rotate(z_axis_.xyz(), vne::math::kHalfPi)));
     ASSERT_TRUE(vne::math::Vec4f(1.41421f, 1.0f, 0.0f, 1.0f)
-                    .areSame(test_vec.rotate(y_axis_.xyz(), static_cast<float>(QUARTER_PI)), 1E-5f));
+                    .areSame(test_vec.rotate(y_axis_.xyz(), vne::math::kQuarterPi), 1E-5f));
 }
 
 /**
@@ -488,12 +488,12 @@ TEST_F(Vec4fTest, TestVec4fAngle) {
     ASSERT_TRUE(vne::math::areSame(60.0f, vne::math::radToDeg(x_axis_.angle(one_vec_))));
 
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f,
-                                   vne::math::Vec4f(static_cast<float>(SQRT_THREE), 1.0f, 0.0f, 0.0f)
-                                       .angle(vne::math::Vec4f(1.0f, static_cast<float>(SQRT_THREE), 0.0f, 0.0f))));
+                                   vne::math::Vec4f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f, 0.0f, 0.0f)
+                                       .angle(vne::math::Vec4f(1.0f, static_cast<float>(vne::math::kSqrtThreeDouble), 0.0f, 0.0f))));
 
     ASSERT_TRUE(vne::math::areSame(vne::math::twoPi<float>() / 3.0f,
-                                   vne::math::Vec4f(static_cast<float>(SQRT_THREE), 1.0f, 0.0f, 0.0f)
-                                       .angle(vne::math::Vec4f(-static_cast<float>(SQRT_THREE), 1.0f, 0.0f, 0.0f))));
+                                   vne::math::Vec4f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f, 0.0f, 0.0f)
+                                       .angle(vne::math::Vec4f(-static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f, 0.0f, 0.0f))));
 
     ASSERT_TRUE(vne::math::areSame(
         63.5799f,

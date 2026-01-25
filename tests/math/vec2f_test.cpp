@@ -227,8 +227,8 @@ TEST_F(Vec2fTest, TestVec2fCross) {
  *
  */
 TEST_F(Vec2fTest, TestVec2fDistance) {
-    ASSERT_FLOAT_EQ(static_cast<float>(SQRT_TWO), vne::math::Vec2f::distance(x_point_, y_point_));
-    ASSERT_FLOAT_EQ(static_cast<float>(SQRT_TWO), vne::math::Vec2f::distance(vne::math::Vec2f::zero(), xy_point__));
+    ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::Vec2f::distance(x_point_, y_point_));
+    ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::Vec2f::distance(vne::math::Vec2f::zero(), xy_point__));
     ASSERT_FLOAT_EQ(1.0f, vne::math::Vec2f::distance(x_point_, xy_point__));
     ASSERT_FLOAT_EQ(1.0f, xy_point__.distance(y_point_));
 }
@@ -242,10 +242,10 @@ TEST_F(Vec2fTest, TestVec2fDistance) {
 TEST_F(Vec2fTest, TestVec2fRotate) {
     vne::math::Vec2f test_vec;
 
-    ASSERT_TRUE(x_axis_.areSame(test_vec.rotate(y_axis_, static_cast<float>(-HALF_PI))));
-    ASSERT_TRUE(y_axis_.areSame(test_vec.rotate(x_axis_, static_cast<float>(HALF_PI))));
+    ASSERT_TRUE(x_axis_.areSame(test_vec.rotate(y_axis_, -vne::math::kHalfPi)));
+    ASSERT_TRUE(y_axis_.areSame(test_vec.rotate(x_axis_, vne::math::kHalfPi)));
     vne::math::Vec2f out_vec = vne::math::Vec2f(0.0f, 1.41421f);
-    ASSERT_TRUE(out_vec.areSame(test_vec.rotate(one_vec_, static_cast<float>(QUARTER_PI)), 1E-5f));
+    ASSERT_TRUE(out_vec.areSame(test_vec.rotate(one_vec_, vne::math::kQuarterPi), 1E-5f));
 }
 
 /**
@@ -347,8 +347,8 @@ TEST_F(Vec2fTest, TestVec2fAreSame) {
     ASSERT_TRUE(equal_vec_.areSame(vne::math::Vec2f(567.3453f), 1E-3f));
 #ifdef _DEBUG
     ASSERT_DEATH(equal_vec_.areSame(vne::math::Vec2f(567.3453f), 0.0f),
-                 ".* Assertion Failed: eps >= FLOAT_EPSILON :: eps cannot be "
-                 "less than FLOAT_EPSILON.*");
+                 ".* Assertion Failed: eps >= kFloatEpsilon :: eps cannot be "
+                 "less than kFloatEpsilon.*");
 #endif  // _DEBUG
 }
 
@@ -377,8 +377,8 @@ TEST_F(Vec2fTest, TestVec2fIsZero) {
     ASSERT_TRUE(rand_xy_vec__.isZero(1E-4f));
 #ifdef _DEBUG
     ASSERT_DEATH(zero_vec_.isZero(0.0f),
-                 ".* Assertion Failed: eps >= FLOAT_EPSILON :: eps cannot be "
-                 "less than FLOAT_EPSILON.*");
+                 ".* Assertion Failed: eps >= kFloatEpsilon :: eps cannot be "
+                 "less than kFloatEpsilon.*");
 #endif  // _DEBUG
 }
 
@@ -393,7 +393,7 @@ TEST_F(Vec2fTest, TestVec2fIsNormalized) {
     ASSERT_TRUE(y_axis_.isNormalized());
     ASSERT_FALSE(xy_vec_.isNormalized());
     ASSERT_TRUE(
-        vne::math::Vec2f(static_cast<float>(SQRT_ONE_OVER_TWO), static_cast<float>(SQRT_ONE_OVER_TWO)).isNormalized());
+        vne::math::Vec2f(static_cast<float>(vne::math::kSqrtOneOverTwoDouble), static_cast<float>(vne::math::kSqrtOneOverTwoDouble)).isNormalized());
 }
 
 /**
@@ -404,7 +404,7 @@ TEST_F(Vec2fTest, TestVec2fIsNormalized) {
  */
 TEST_F(Vec2fTest, TestVec2fComposePolar) {
     vne::math::Vec2f test_vec;
-    ASSERT_TRUE(one_vec_.areSame(test_vec.composePolar(static_cast<float>(SQRT_TWO), vne::math::quarterPi<float>())));
+    ASSERT_TRUE(one_vec_.areSame(test_vec.composePolar(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::quarterPi<float>())));
 }
 
 /**
@@ -417,12 +417,12 @@ TEST_F(Vec2fTest, TestVec2fDecomposePolar) {
     float radius;
     float angle;
     one_vec_.decomposePolar(radius, angle);
-    ASSERT_TRUE(vne::math::areSame(static_cast<float>(SQRT_TWO), radius));
+    ASSERT_TRUE(vne::math::areSame(static_cast<float>(vne::math::kSqrtTwoDouble), radius));
     ASSERT_TRUE(vne::math::areSame(vne::math::quarterPi<float>(), angle));
     // For the negative angle
     vne::math::Vec2f test_vec{-1.0f, -1.0f};
     test_vec.decomposePolar(radius, angle);
-    ASSERT_TRUE(vne::math::areSame(static_cast<float>(SQRT_TWO), radius));
+    ASSERT_TRUE(vne::math::areSame(static_cast<float>(vne::math::kSqrtTwoDouble), radius));
     ASSERT_TRUE(vne::math::areSame(5.0f * vne::math::quarterPi<float>(), angle));
 }
 
@@ -441,11 +441,11 @@ TEST_F(Vec2fTest, TestVec2fAngle) {
     ASSERT_TRUE(vne::math::areSame(vne::math::quarterPi<float>(), x_axis_.angle(one_vec_)));
 
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f,
-                                   vne::math::Vec2f(static_cast<float>(SQRT_THREE), 1.0f)
-                                       .angle(vne::math::Vec2f(1.0f, static_cast<float>(SQRT_THREE)))));
+                                   vne::math::Vec2f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f)
+                                       .angle(vne::math::Vec2f(1.0f, static_cast<float>(vne::math::kSqrtThreeDouble)))));
     ASSERT_TRUE(vne::math::areSame(vne::math::twoPi<float>() / 3.0f,
-                                   vne::math::Vec2f(static_cast<float>(SQRT_THREE), 1.0f)
-                                       .angle(vne::math::Vec2f(-static_cast<float>(SQRT_THREE), 1.0f))));
+                                   vne::math::Vec2f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f)
+                                       .angle(vne::math::Vec2f(-static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f))));
     ASSERT_TRUE(vne::math::areSame((3.0f / 8.0f) * vne::math::twoPi<float>(),
                                    vne::math::Vec2f(1.0f, 1.0f).angle(vne::math::Vec2f(-2.0f, 0.0f))));
     ASSERT_TRUE(vne::math::areSame(3.0f * vne::math::halfPi<float>(),

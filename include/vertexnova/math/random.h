@@ -174,22 +174,4 @@ class Random<T, true> {
     std::uniform_int_distribution<T> uniform_distribution_;
 };
 
-// Legacy type aliases for backward compatibility
-template<typename T>
-using Random_C = Random<T>;
-template<typename T>
-using RandEngine_TP = RandEngine<T>;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-template<typename T>
-using Random_C = vne::math::Random<T>;
-template<typename T>
-using Random = vne::math::Random<T>;
-template<typename T>
-using RandEngine_TP = vne::math::RandEngine<T>;
-}  // namespace Math
-}  // namespace VNE

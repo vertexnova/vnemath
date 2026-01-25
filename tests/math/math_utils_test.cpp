@@ -248,8 +248,8 @@ TEST_F(MathUtilsTest, TestMathSqrt) {
     ASSERT_FLOAT_EQ(glm::sqrt(3.0f), vne::math::sqrt<float>(3.0f));
     ASSERT_FLOAT_EQ(glm::sqrt(625.0f), vne::math::sqrt<float>(625.0f));
     ASSERT_DOUBLE_EQ(glm::sqrt(6252.5), vne::math::sqrt<double>(6252.5));
-    ASSERT_DOUBLE_EQ(SQRT_TWO, vne::math::sqrt<double>(2));
-    ASSERT_DOUBLE_EQ(SQRT_THREE, vne::math::sqrt<double>(3));
+    ASSERT_DOUBLE_EQ(vne::math::kSqrtTwoDouble, vne::math::sqrt<double>(2));
+    ASSERT_DOUBLE_EQ(vne::math::kSqrtThreeDouble, vne::math::sqrt<double>(3));
 }
 
 /**

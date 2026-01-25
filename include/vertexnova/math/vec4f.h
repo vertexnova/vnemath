@@ -136,18 +136,7 @@ class Vec4f : public glm::vec4 {
     static Vec4f lerp(const Vec4f& p1, const Vec4f& p2, float t);
 };
 
-// Legacy type alias for backward compatibility
-using Vec4f_C = Vec4f;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-using Vec4f_C = vne::math::Vec4f;
-using Vec4f = vne::math::Vec4f;
-}  // namespace Math
-}  // namespace VNE
 
 namespace {
 

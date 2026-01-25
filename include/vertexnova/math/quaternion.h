@@ -100,15 +100,4 @@ class Quaternion : public glm::quat {
     [[nodiscard]] static float dot(const Quaternion& quat1, const Quaternion& quat2) noexcept;
 };
 
-// Legacy type alias for backward compatibility
-using Quaternion_C = Quaternion;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-using Quaternion_C = vne::math::Quaternion;
-using Quaternion = vne::math::Quaternion;
-}  // namespace Math
-}  // namespace VNE

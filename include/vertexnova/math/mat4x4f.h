@@ -131,20 +131,7 @@ class Mat4x4f : public glm::mat4 {
     [[nodiscard]] static Mat4x4f ortho(float left, float right, float bottom, float top, float z_near, float z_far) noexcept;
 };
 
-// Legacy type aliases for backward compatibility
-using Mat4x4f_C = Mat4x4f;
-using Handness_TP = Handedness;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-using Mat4x4f_C = vne::math::Mat4x4f;
-using Mat4x4f = vne::math::Mat4x4f;
-using Handness_TP = vne::math::Handedness;
-}  // namespace Math
-}  // namespace VNE
 
 namespace {
 

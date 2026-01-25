@@ -350,7 +350,7 @@ TEST_F(Vec3fTest, TestVec3fCross) {
  *
  */
 TEST_F(Vec3fTest, TestVec3fDistance) {
-    ASSERT_FLOAT_EQ(static_cast<float>(SQRT_TWO), vne::math::Vec3f::distance(x_point_, y_point));
+    ASSERT_FLOAT_EQ(static_cast<float>(vne::math::kSqrtTwoDouble), vne::math::Vec3f::distance(x_point_, y_point));
     ASSERT_FLOAT_EQ(3.9370039f, vne::math::Vec3f::distance(vne::math::Vec3f::zero(), xyz_point));
     ASSERT_FLOAT_EQ(3.082207f, vne::math::Vec3f::distance(x_point_, xyz_point));
     ASSERT_FLOAT_EQ(3.8078866f, xyz_point.distance(y_point));
@@ -364,10 +364,10 @@ TEST_F(Vec3fTest, TestVec3fDistance) {
  */
 TEST_F(Vec3fTest, TestVec3fRotate) {
     vne::math::Vec3f test_vec{1.0f};
-    ASSERT_TRUE(vne::math::Vec3f(1.0f, -1.0f, 1.0f).areSame(test_vec.rotate(z_axis_, -static_cast<float>(HALF_PI))));
-    ASSERT_TRUE(vne::math::Vec3f(-1.0f, 1.0f, 1.0f).areSame(test_vec.rotate(z_axis_, static_cast<float>(HALF_PI))));
+    ASSERT_TRUE(vne::math::Vec3f(1.0f, -1.0f, 1.0f).areSame(test_vec.rotate(z_axis_, -vne::math::kHalfPi)));
+    ASSERT_TRUE(vne::math::Vec3f(-1.0f, 1.0f, 1.0f).areSame(test_vec.rotate(z_axis_, vne::math::kHalfPi)));
     ASSERT_TRUE(vne::math::Vec3f(1.41421f, 1.0f, 0.0f)
-                    .areSame(test_vec.rotate(y_axis_, static_cast<float>(QUARTER_PI)), 1E-5f));
+                    .areSame(test_vec.rotate(y_axis_, vne::math::kQuarterPi), 1E-5f));
 }
 
 /**
@@ -507,7 +507,7 @@ TEST_F(Vec3fTest, TestVec3fIsNormalized) {
     ASSERT_TRUE(x_axis_.isNormalized());
     ASSERT_TRUE(y_axis_.isNormalized());
     ASSERT_FALSE(xyz_vec_.isNormalized());
-    ASSERT_TRUE(vne::math::Vec3f(static_cast<float>(SQRT_ONE_OVER_THREE)).isNormalized());
+    ASSERT_TRUE(vne::math::Vec3f(static_cast<float>(vne::math::kSqrtOneOverThreeDouble)).isNormalized());
 }
 
 /**
@@ -532,7 +532,7 @@ TEST_F(Vec3fTest, TestVec3fIsLinearDependent) {
  */
 TEST_F(Vec3fTest, TestVec3fComposeSpherical) {
     vne::math::Vec3f test_vec;
-    vne::math::Vec3f out_vec{2.0f, static_cast<float>(2.0 * SQRT_THREE), static_cast<float>(4.0 * SQRT_THREE)};
+    vne::math::Vec3f out_vec{2.0f, static_cast<float>(2.0 * vne::math::kSqrtThreeDouble), static_cast<float>(4.0 * vne::math::kSqrtThreeDouble)};
     ASSERT_TRUE(
         out_vec.areSame(test_vec.composeSpherical(8.0f, vne::math::pi<float>() / 3.0f, vne::math::pi<float>() / 6.0f)));
 }
@@ -547,7 +547,7 @@ TEST_F(Vec3fTest, TestVec3fDecomposeSpherical) {
     float rho;
     float theta;
     float phi;
-    vne::math::Vec3f rect_vec{2.0f, static_cast<float>(2.0 * SQRT_THREE), static_cast<float>(4.0 * SQRT_THREE)};
+    vne::math::Vec3f rect_vec{2.0f, static_cast<float>(2.0 * vne::math::kSqrtThreeDouble), static_cast<float>(4.0 * vne::math::kSqrtThreeDouble)};
     rect_vec.decomposeSpherical(rho, theta, phi);
     ASSERT_TRUE(vne::math::areSame(8.0f, rho));
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 3.0f, theta));
@@ -555,7 +555,7 @@ TEST_F(Vec3fTest, TestVec3fDecomposeSpherical) {
 
     rect_vec = vne::math::Vec3f(-1.0f, 1.0f, vne::math::sqrt(6.0f));
     rect_vec.decomposeSpherical(rho, theta, phi);
-    ASSERT_TRUE(vne::math::areSame(static_cast<float>(2.0 * SQRT_TWO), rho));
+    ASSERT_TRUE(vne::math::areSame(static_cast<float>(2.0 * vne::math::kSqrtTwoDouble), rho));
     ASSERT_TRUE(vne::math::areSame(3.0f * vne::math::quarterPi<float>(), theta));
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f, phi));
 }
@@ -568,7 +568,7 @@ TEST_F(Vec3fTest, TestVec3fDecomposeSpherical) {
  */
 TEST_F(Vec3fTest, TestVec3fComposeCylindrical) {
     vne::math::Vec3f test_vec;
-    vne::math::Vec3f out_vec{-2.0f, static_cast<float>(2.0 * SQRT_THREE), -2.0f};
+    vne::math::Vec3f out_vec{-2.0f, static_cast<float>(2.0 * vne::math::kSqrtThreeDouble), -2.0f};
     ASSERT_TRUE(out_vec.areSame(test_vec.composeCylindrical(4.0f, vne::math::twoPi<float>() / 3.0f, -2.0f)));
 }
 
@@ -582,7 +582,7 @@ TEST_F(Vec3fTest, TestVec3fDecomposeCylindrical) {
     float r;
     float theta;
     float z;
-    vne::math::Vec3f rect_vec{2.5f * static_cast<float>(SQRT_THREE), 2.5f, 4.0f};
+    vne::math::Vec3f rect_vec{2.5f * static_cast<float>(vne::math::kSqrtThreeDouble), 2.5f, 4.0f};
     rect_vec.decomposeCylindrical(r, theta, z);
     ASSERT_TRUE(vne::math::areSame(5.0f, r));
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f, theta));
@@ -608,12 +608,12 @@ TEST_F(Vec3fTest, TestVec3fAngle) {
     ASSERT_TRUE(vne::math::areSame(54.7356071f, vne::math::radToDeg(x_axis_.angle(one_vec_))));
 
     ASSERT_TRUE(vne::math::areSame(vne::math::pi<float>() / 6.0f,
-                                   vne::math::Vec3f(static_cast<float>(SQRT_THREE), 1.0f, 0.0f)
-                                       .angle(vne::math::Vec3f(1.0f, static_cast<float>(SQRT_THREE), 0.0f))));
+                                   vne::math::Vec3f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f, 0.0f)
+                                       .angle(vne::math::Vec3f(1.0f, static_cast<float>(vne::math::kSqrtThreeDouble), 0.0f))));
 
     ASSERT_TRUE(vne::math::areSame(vne::math::twoPi<float>() / 3.0f,
-                                   vne::math::Vec3f(static_cast<float>(SQRT_THREE), 1.0f, 0.0f)
-                                       .angle(vne::math::Vec3f(-static_cast<float>(SQRT_THREE), 1.0f, 0.0f))));
+                                   vne::math::Vec3f(static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f, 0.0f)
+                                       .angle(vne::math::Vec3f(-static_cast<float>(vne::math::kSqrtThreeDouble), 1.0f, 0.0f))));
 
     ASSERT_TRUE(vne::math::areSame(
         64.4724f,

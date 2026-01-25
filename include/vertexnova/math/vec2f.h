@@ -132,18 +132,7 @@ class Vec2f : public glm::vec2 {
     static Vec2f lerp(const Vec2f& p1, const Vec2f& p2, float factor);
 };
 
-// Legacy type alias for backward compatibility
-using Vec2f_C = Vec2f;
-
 }  // namespace vne::math
-
-// Legacy namespace aliases
-namespace VNE {
-namespace Math {
-using Vec2f_C = vne::math::Vec2f;
-using Vec2f = vne::math::Vec2f;
-}  // namespace Math
-}  // namespace VNE
 
 namespace {
 

@@ -47,7 +47,7 @@ Color::Color(const float red, const float green, const float blue, const float a
 }
 
 //------------------------------------------------------------------------------
-Color::Color(const Vec3f_C& rgb, float alpha) noexcept
+Color::Color(const Vec3f& rgb, float alpha) noexcept
     : r(rgb.r)
     , g(rgb.g)
     , b(rgb.b)
@@ -56,7 +56,7 @@ Color::Color(const Vec3f_C& rgb, float alpha) noexcept
 }
 
 //------------------------------------------------------------------------------
-Color::Color(const Vec4f_C& rgba) noexcept
+Color::Color(const Vec4f& rgba) noexcept
     : r(rgba.r)
     , g(rgba.g)
     , b(rgba.b)
@@ -131,7 +131,7 @@ void Color::Set(float red, float green, float blue, float alpha) noexcept {
 }
 
 //------------------------------------------------------------------------------
-void Color::Set(const Vec3f_C& rgb, float alpha) noexcept {
+void Color::Set(const Vec3f& rgb, float alpha) noexcept {
     r = rgb.r;
     g = rgb.g;
     b = rgb.b;
@@ -140,7 +140,7 @@ void Color::Set(const Vec3f_C& rgb, float alpha) noexcept {
 }
 
 //------------------------------------------------------------------------------
-void Color::Set(const Vec4f_C& rgba) noexcept {
+void Color::Set(const Vec4f& rgba) noexcept {
     r = rgba.r;
     g = rgba.g;
     b = rgba.b;
@@ -169,12 +169,12 @@ float Color::A() const noexcept {
 }
 
 //------------------------------------------------------------------------------
-Vec3f_C Color::RGB() const noexcept {
+Vec3f Color::RGB() const noexcept {
     return {r, b, g};
 }
 
 //------------------------------------------------------------------------------
-Vec4f_C Color::RGBA() const noexcept {
+Vec4f Color::RGBA() const noexcept {
     return {r, g, b, a};
 }
 

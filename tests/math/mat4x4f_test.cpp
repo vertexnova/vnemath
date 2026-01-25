@@ -493,10 +493,10 @@ TEST_F(Mat4x4fTest, TestMat4x4fRotate) {
     EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateZYX(vne::math::pi<float>())));
 
     out = vne::math::Mat4x4f::zero();
-    out[1][0] = -static_cast<float>(SQRT_ONE_OVER_TWO);
-    out[2][0] = -static_cast<float>(SQRT_ONE_OVER_TWO);
-    out[1][1] = -static_cast<float>(SQRT_ONE_OVER_TWO);
-    out[2][1] = static_cast<float>(SQRT_ONE_OVER_TWO);
+    out[1][0] = -static_cast<float>(vne::math::kSqrtOneOverTwoDouble);
+    out[2][0] = -static_cast<float>(vne::math::kSqrtOneOverTwoDouble);
+    out[1][1] = -static_cast<float>(vne::math::kSqrtOneOverTwoDouble);
+    out[2][1] = static_cast<float>(vne::math::kSqrtOneOverTwoDouble);
     out[0][2] = -1.0f;
     out[3][3] = 1.0f;
     EXPECT_TRUE(out.areSame(vne::math::Mat4x4f::rotateXYZ(vne::math::quarterPi<float>(),
