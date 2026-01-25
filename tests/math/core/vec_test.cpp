@@ -133,16 +133,27 @@ TEST_F(Vec2Test, Abs) {
 }
 
 TEST_F(Vec2Test, MinMax) {
-    Vec2f a(1.0f, 4.0f);
-    Vec2f b(3.0f, 2.0f);
+    Vec2f a(1.0f, 2.0f);  // length = sqrt(5) ~= 2.24
+    Vec2f b(3.0f, 4.0f);  // length = 5
 
+    // min() returns the vector with smaller length
     Vec2f min_result = a.min(b);
-    EXPECT_FLOAT_EQ(min_result.x(), 1.0f);
-    EXPECT_FLOAT_EQ(min_result.y(), 2.0f);
+    EXPECT_EQ(min_result, a);
 
+    // max() returns the vector with larger length
     Vec2f max_result = a.max(b);
-    EXPECT_FLOAT_EQ(max_result.x(), 3.0f);
-    EXPECT_FLOAT_EQ(max_result.y(), 4.0f);
+    EXPECT_EQ(max_result, b);
+
+    // componentMin() and componentMax() are component-wise
+    Vec2f c(1.0f, 4.0f);
+    Vec2f d(3.0f, 2.0f);
+    Vec2f comp_min = c.componentMin(d);
+    EXPECT_FLOAT_EQ(comp_min.x(), 1.0f);
+    EXPECT_FLOAT_EQ(comp_min.y(), 2.0f);
+
+    Vec2f comp_max = c.componentMax(d);
+    EXPECT_FLOAT_EQ(comp_max.x(), 3.0f);
+    EXPECT_FLOAT_EQ(comp_max.y(), 4.0f);
 }
 
 TEST_F(Vec2Test, MinMaxComponent) {
@@ -202,7 +213,7 @@ TEST_F(Vec2Test, Perpendicular) {
 
 TEST_F(Vec2Test, Rotate) {
     Vec2f v(1.0f, 0.0f);
-    Vec2f rotated = v.rotate(Vec2f::zero(), kHalfPi<float>);
+    Vec2f rotated = v.rotate(Vec2f::zero(), kHalfPiT<float>);
     EXPECT_NEAR(rotated.x(), 0.0f, 1e-5f);
     EXPECT_NEAR(rotated.y(), 1.0f, 1e-5f);
 }
@@ -233,20 +244,20 @@ TEST_F(Vec2Test, IsZero) {
 
 TEST_F(Vec2Test, PolarCoordinates) {
     Vec2f v;
-    v.composePolar(5.0f, kHalfPi<float>);
+    v.composePolar(5.0f, kHalfPiT<float>);
     EXPECT_NEAR(v.x(), 0.0f, 1e-5f);
     EXPECT_NEAR(v.y(), 5.0f, 1e-5f);
 
     float radius, angle;
     v.decomposePolar(radius, angle);
     EXPECT_NEAR(radius, 5.0f, 1e-5f);
-    EXPECT_NEAR(angle, kHalfPi<float>, 1e-5f);
+    EXPECT_NEAR(angle, kHalfPiT<float>, 1e-5f);
 }
 
 TEST_F(Vec2Test, Angle) {
     Vec2f a(1.0f, 0.0f);
     Vec2f b(0.0f, 1.0f);
-    EXPECT_NEAR(a.angle(b), kHalfPi<float>, 1e-5f);
+    EXPECT_NEAR(a.angle(b), kHalfPiT<float>, 1e-5f);
     EXPECT_NEAR(a.angle(), 0.0f, 1e-5f);
 }
 
@@ -361,8 +372,8 @@ TEST_F(Vec3Test, DirectionAliases) {
     EXPECT_EQ(Vec3f::down(), Vec3f(0.0f, -1.0f, 0.0f));
     EXPECT_EQ(Vec3f::right(), Vec3f(1.0f, 0.0f, 0.0f));
     EXPECT_EQ(Vec3f::left(), Vec3f(-1.0f, 0.0f, 0.0f));
-    EXPECT_EQ(Vec3f::forward(), Vec3f(0.0f, 0.0f, -1.0f));
-    EXPECT_EQ(Vec3f::backward(), Vec3f(0.0f, 0.0f, 1.0f));
+    EXPECT_EQ(Vec3f::forward(), Vec3f(0.0f, 0.0f, 1.0f));
+    EXPECT_EQ(Vec3f::backward(), Vec3f(0.0f, 0.0f, -1.0f));
 }
 
 TEST_F(Vec3Test, Reflect) {
@@ -376,7 +387,7 @@ TEST_F(Vec3Test, Reflect) {
 
 TEST_F(Vec3Test, Rotate) {
     Vec3f v(1.0f, 0.0f, 0.0f);
-    Vec3f rotated = v.rotate(Vec3f::zAxis(), kHalfPi<float>);
+    Vec3f rotated = v.rotate(Vec3f::zAxis(), kHalfPiT<float>);
     EXPECT_NEAR(rotated.x(), 0.0f, 1e-5f);
     EXPECT_NEAR(rotated.y(), 1.0f, 1e-5f);
     EXPECT_NEAR(rotated.z(), 0.0f, 1e-5f);
@@ -384,7 +395,7 @@ TEST_F(Vec3Test, Rotate) {
 
 TEST_F(Vec3Test, SphericalCoordinates) {
     Vec3f v;
-    v.composeSpherical(5.0f, 0.0f, kHalfPi<float>);
+    v.composeSpherical(5.0f, 0.0f, kHalfPiT<float>);
     EXPECT_NEAR(v.x(), 5.0f, 1e-5f);
     EXPECT_NEAR(v.y(), 0.0f, 1e-5f);
     EXPECT_NEAR(v.z(), 0.0f, 1e-5f);
@@ -427,7 +438,7 @@ TEST_F(Vec3Test, AngleTriangle) {
     Vec3f a(0.0f, 0.0f, 0.0f);
     Vec3f b(1.0f, 0.0f, 0.0f);
     Vec3f c(0.0f, 1.0f, 0.0f);
-    EXPECT_NEAR(a.angle(b, c), kHalfPi<float>, 1e-5f);
+    EXPECT_NEAR(a.angle(b, c), kHalfPiT<float>, 1e-5f);
 }
 
 // ============================================================================
@@ -505,7 +516,7 @@ TEST_F(Vec4Test, StaticFactories) {
 
 TEST_F(Vec4Test, Rotate) {
     Vec4f v(1.0f, 0.0f, 0.0f, 1.0f);
-    Vec4f rotated = v.rotate(Vec3f::zAxis(), kHalfPi<float>);
+    Vec4f rotated = v.rotate(Vec3f::zAxis(), kHalfPiT<float>);
     EXPECT_NEAR(rotated.x(), 0.0f, 1e-5f);
     EXPECT_NEAR(rotated.y(), 1.0f, 1e-5f);
     EXPECT_NEAR(rotated.z(), 0.0f, 1e-5f);

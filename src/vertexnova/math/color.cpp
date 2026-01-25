@@ -48,19 +48,19 @@ Color::Color(const float red, const float green, const float blue, const float a
 
 //------------------------------------------------------------------------------
 Color::Color(const Vec3f& rgb, float alpha) noexcept
-    : r_(rgb.r)
-    , g_(rgb.g)
-    , b_(rgb.b)
+    : r_(rgb.x())
+    , g_(rgb.y())
+    , b_(rgb.z())
     , a_(alpha) {
     clamp();
 }
 
 //------------------------------------------------------------------------------
 Color::Color(const Vec4f& rgba) noexcept
-    : r_(rgba.r)
-    , g_(rgba.g)
-    , b_(rgba.b)
-    , a_(rgba.a) {
+    : r_(rgba.x())
+    , g_(rgba.y())
+    , b_(rgba.z())
+    , a_(rgba.w()) {
     clamp();
 }
 
@@ -132,19 +132,19 @@ void Color::set(float red, float green, float blue, float alpha) noexcept {
 
 //------------------------------------------------------------------------------
 void Color::set(const Vec3f& rgb, float alpha) noexcept {
-    r_ = rgb.r;
-    g_ = rgb.g;
-    b_ = rgb.b;
+    r_ = rgb.x();
+    g_ = rgb.y();
+    b_ = rgb.z();
     a_ = alpha;
     clamp();
 }
 
 //------------------------------------------------------------------------------
 void Color::set(const Vec4f& rgba) noexcept {
-    r_ = rgba.r;
-    g_ = rgba.g;
-    b_ = rgba.b;
-    a_ = rgba.a;
+    r_ = rgba.x();
+    g_ = rgba.y();
+    b_ = rgba.z();
+    a_ = rgba.w();
     clamp();
 }
 

@@ -226,12 +226,10 @@ Vec4f Mat4x4f::getColumn(uint32_t idx) const noexcept {
 //------------------------------------------------------------------------------
 Vec4f Mat4x4f::getRow(uint32_t idx) const noexcept {
     VNE_ASSERT_MSG(idx < length(), "Mat4x4f index out of bounds");
-    Vec4f row;
-    row.x = (*this)[0][static_cast<int>(idx)];
-    row.y = (*this)[1][static_cast<int>(idx)];
-    row.z = (*this)[2][static_cast<int>(idx)];
-    row.w = (*this)[3][static_cast<int>(idx)];
-    return row;
+    return Vec4f((*this)[0][static_cast<int>(idx)],
+                 (*this)[1][static_cast<int>(idx)],
+                 (*this)[2][static_cast<int>(idx)],
+                 (*this)[3][static_cast<int>(idx)]);
 }
 
 //------------------------------------------------------------------------------

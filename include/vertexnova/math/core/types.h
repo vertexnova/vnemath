@@ -278,7 +278,7 @@ using Quatf = Quat<float>;
 using Quatd = Quat<double>;
 
 // ============================================================================
-// Constants
+// Constants (Templated versions - use different names to avoid conflict with constants.h)
 // ============================================================================
 
 /// @brief Default epsilon for floating-point comparisons
@@ -291,25 +291,25 @@ inline constexpr float kEpsilon<float> = 1e-6f;
 template<>
 inline constexpr double kEpsilon<double> = 1e-12;
 
-/// @brief Pi constant
+/// @brief Pi constant (templated)
 template<FloatingPoint T>
-inline constexpr T kPi = T(3.14159265358979323846);
+inline constexpr T kPiT = T(3.14159265358979323846);
 
-/// @brief Two times Pi
+/// @brief Two times Pi (templated)
 template<FloatingPoint T>
-inline constexpr T kTwoPi = T(2) * kPi<T>;
+inline constexpr T kTwoPiT = T(2) * kPiT<T>;
 
-/// @brief Half of Pi
+/// @brief Half of Pi (templated)
 template<FloatingPoint T>
-inline constexpr T kHalfPi = kPi<T> / T(2);
+inline constexpr T kHalfPiT = kPiT<T> / T(2);
 
-/// @brief Degrees to radians conversion factor
+/// @brief Degrees to radians conversion factor (templated)
 template<FloatingPoint T>
-inline constexpr T kDegToRad = kPi<T> / T(180);
+inline constexpr T kDegToRadT = kPiT<T> / T(180);
 
-/// @brief Radians to degrees conversion factor
+/// @brief Radians to degrees conversion factor (templated)
 template<FloatingPoint T>
-inline constexpr T kRadToDeg = T(180) / kPi<T>;
+inline constexpr T kRadToDegT = T(180) / kPiT<T>;
 
 // ============================================================================
 // Utility Functions
@@ -320,7 +320,7 @@ inline constexpr T kRadToDeg = T(180) / kPi<T>;
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr T degToRad(T degrees) noexcept {
-    return degrees * kDegToRad<T>;
+    return degrees * kDegToRadT<T>;
 }
 
 /**
@@ -328,7 +328,7 @@ template<FloatingPoint T>
  */
 template<FloatingPoint T>
 [[nodiscard]] constexpr T radToDeg(T radians) noexcept {
-    return radians * kRadToDeg<T>;
+    return radians * kRadToDegT<T>;
 }
 
 /**

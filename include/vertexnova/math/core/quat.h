@@ -661,7 +661,7 @@ class Quat {
             if (axis.lengthSquared() < kEpsilon<T>) {
                 axis = Vec<T, 3>::cross(Vec<T, 3>::yAxis(), from);
             }
-            return fromAxisAngle(axis.normalized(), kPi<T>);
+            return fromAxisAngle(axis.normalized(), kPiT<T>);
         }
 
         Vec<T, 3> axis = Vec<T, 3>::cross(from, to);

@@ -16,7 +16,7 @@
  */
 
 #include "constants.h"
-#include "vec4f.h"
+#include "core/vec.h"
 
 namespace vne::math {
 

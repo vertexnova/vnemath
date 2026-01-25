@@ -194,7 +194,10 @@ class Vec {
         : data{v.x, v.y, v.z, v.w} {}
 
     /**
-     * @brief Converts to glm::vec.
+     * @brief Implicit conversion to glm::vec for seamless GLM interoperability.
+     *
+     * This is implicit (not explicit) to allow Vec to be used directly with
+     * GLM functions without requiring casts.
      */
     [[nodiscard]] constexpr operator glm::vec<N, T>() const noexcept
         requires(N >= 2 && N <= 4 && (std::is_same_v<T, float> || std::is_same_v<T, double>))
@@ -206,6 +209,24 @@ class Vec {
         } else {
             return glm::vec<4, T>(data[0], data[1], data[2], data[3]);
         }
+    }
+
+    /**
+     * @brief Implicit conversion to glm::vec2 from 3D/4D vectors (takes xy).
+     */
+    [[nodiscard]] constexpr operator glm::vec<2, T>() const noexcept
+        requires(N >= 3 && N <= 4 && (std::is_same_v<T, float> || std::is_same_v<T, double>))
+    {
+        return glm::vec<2, T>(data[0], data[1]);
+    }
+
+    /**
+     * @brief Implicit conversion to glm::vec3 from 4D vectors (takes xyz).
+     */
+    [[nodiscard]] constexpr operator glm::vec<3, T>() const noexcept
+        requires(N == 4 && (std::is_same_v<T, float> || std::is_same_v<T, double>))
+    {
+        return glm::vec<3, T>(data[0], data[1], data[2]);
     }
 
     // ========================================================================
@@ -706,9 +727,27 @@ class Vec {
     // ========================================================================
 
     /**
-     * @brief Returns the component-wise minimum of this and another vector.
+     * @brief Returns the vector with smaller length.
+     * @param other The other vector
+     * @return The vector with smaller magnitude
      */
     [[nodiscard]] constexpr Vec min(const Vec& other) const noexcept {
+        return lengthSquared() < other.lengthSquared() ? *this : other;
+    }
+
+    /**
+     * @brief Returns the vector with larger length.
+     * @param other The other vector
+     * @return The vector with larger magnitude
+     */
+    [[nodiscard]] constexpr Vec max(const Vec& other) const noexcept {
+        return lengthSquared() > other.lengthSquared() ? *this : other;
+    }
+
+    /**
+     * @brief Returns the component-wise minimum of this and another vector.
+     */
+    [[nodiscard]] constexpr Vec componentMin(const Vec& other) const noexcept {
         Vec result;
         for (size_type i = 0; i < N; ++i) {
             result.data[i] = std::min(data[i], other.data[i]);
@@ -719,7 +758,7 @@ class Vec {
     /**
      * @brief Returns the component-wise maximum of this and another vector.
      */
-    [[nodiscard]] constexpr Vec max(const Vec& other) const noexcept {
+    [[nodiscard]] constexpr Vec componentMax(const Vec& other) const noexcept {
         Vec result;
         for (size_type i = 0; i < N; ++i) {
             result.data[i] = std::max(data[i], other.data[i]);
@@ -1141,13 +1180,13 @@ class Vec {
     [[nodiscard]] static constexpr Vec forward() noexcept
         requires(N == 3)
     {
-        return -zAxis();
+        return zAxis();
     }
 
     [[nodiscard]] static constexpr Vec backward() noexcept
         requires(N == 3)
     {
-        return zAxis();
+        return -zAxis();
     }
 
     /// @}
@@ -1214,12 +1253,12 @@ class Vec {
     /**
      * @brief Returns the component-wise minimum of two vectors.
      */
-    [[nodiscard]] static constexpr Vec min(const Vec& a, const Vec& b) noexcept { return a.min(b); }
+    [[nodiscard]] static constexpr Vec min(const Vec& a, const Vec& b) noexcept { return a.componentMin(b); }
 
     /**
      * @brief Returns the component-wise maximum of two vectors.
      */
-    [[nodiscard]] static constexpr Vec max(const Vec& a, const Vec& b) noexcept { return a.max(b); }
+    [[nodiscard]] static constexpr Vec max(const Vec& a, const Vec& b) noexcept { return a.componentMax(b); }
 
     /**
      * @brief Returns the component-wise absolute value.

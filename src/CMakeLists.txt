@@ -21,9 +21,6 @@ set(INCLUDE_FILES
     ${VNE_INCLUDE_DIR}/vertexnova/math/math.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/constants.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/math_utils.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/vec2f.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/vec3f.h
-    ${VNE_INCLUDE_DIR}/vertexnova/math/vec4f.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/mat3x3f.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/mat4x4f.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
@@ -46,9 +43,6 @@ set(INCLUDE_FILES
 
 # Define source files
 set(SOURCE_FILES
-    vertexnova/math/vec2f.cpp
-    vertexnova/math/vec3f.cpp
-    vertexnova/math/vec4f.cpp
     vertexnova/math/mat3x3f.cpp
     vertexnova/math/mat4x4f.cpp
     vertexnova/math/color.cpp

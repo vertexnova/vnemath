@@ -59,9 +59,6 @@ endif()
 #==============================================================================
 
 set(TEST_SOURCES
-    math/vec2f_test.cpp
-    math/vec3f_test.cpp
-    math/vec4f_test.cpp
     math/mat3x3f_test.cpp
     math/mat4x4f_test.cpp
     math/color_test.cpp

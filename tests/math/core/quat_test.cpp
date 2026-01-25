@@ -121,7 +121,7 @@ TEST_F(QuatTest, Conjugate) {
 }
 
 TEST_F(QuatTest, Inverse) {
-    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
+    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
     Quatf inv = q.inverse();
     Quatf result = q * inv;
     EXPECT_TRUE(result.approxEquals(identity_, 1e-5f));
@@ -157,7 +157,7 @@ TEST_F(QuatTest, SetIdentity) {
 // ============================================================================
 
 TEST_F(QuatTest, FromAxisAngle) {
-    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
+    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
     EXPECT_TRUE(q.isNormalized());
 
     // Rotating X axis by 90 degrees around Y should give -Z
@@ -169,7 +169,7 @@ TEST_F(QuatTest, FromAxisAngle) {
 
 TEST_F(QuatTest, SetFromAxisAngle) {
     Quatf q;
-    q.setFromAxisAngle(kHalfPi<float>, Vec3f::zAxis());
+    q.setFromAxisAngle(kHalfPiT<float>, Vec3f::zAxis());
     Vec3f rotated = q.rotateVector(Vec3f::xAxis());
     EXPECT_NEAR(rotated.x(), 0.0f, 1e-5f);
     EXPECT_NEAR(rotated.y(), 1.0f, 1e-5f);
@@ -178,7 +178,7 @@ TEST_F(QuatTest, SetFromAxisAngle) {
 
 TEST_F(QuatTest, RotateVector) {
     // 90 degree rotation around Z axis
-    Quatf q = Quatf::fromAxisAngle(Vec3f::zAxis(), kHalfPi<float>);
+    Quatf q = Quatf::fromAxisAngle(Vec3f::zAxis(), kHalfPiT<float>);
     Vec3f v(1.0f, 0.0f, 0.0f);
     Vec3f rotated = q.rotate(v);
 
@@ -188,7 +188,7 @@ TEST_F(QuatTest, RotateVector) {
 }
 
 TEST_F(QuatTest, RotateVectorAlias) {
-    Quatf q = Quatf::fromAxisAngle(Vec3f::zAxis(), kHalfPi<float>);
+    Quatf q = Quatf::fromAxisAngle(Vec3f::zAxis(), kHalfPiT<float>);
     Vec3f v(1.0f, 0.0f, 0.0f);
     Vec3f rotated = q.rotateVector(v);
     EXPECT_NEAR(rotated.x(), 0.0f, 1e-5f);
@@ -197,7 +197,7 @@ TEST_F(QuatTest, RotateVectorAlias) {
 }
 
 TEST_F(QuatTest, AngleAndAxis) {
-    float angle = kHalfPi<float>;
+    float angle = kHalfPiT<float>;
     Vec3f axis = Vec3f::yAxis();
 
     Quatf q = Quatf::fromAxisAngle(axis, angle);
@@ -225,8 +225,8 @@ TEST_F(QuatTest, GetAngleAndAxis) {
 
 TEST_F(QuatTest, MultiplicationIsComposition) {
     // Rotate 90 degrees around Y, then 90 degrees around X
-    Quatf qy = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
-    Quatf qx = Quatf::fromAxisAngle(Vec3f::xAxis(), kHalfPi<float>);
+    Quatf qy = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
+    Quatf qx = Quatf::fromAxisAngle(Vec3f::xAxis(), kHalfPiT<float>);
 
     Quatf combined = qx * qy;
 
@@ -270,7 +270,7 @@ TEST_F(QuatTest, BasisVectors) {
 // ============================================================================
 
 TEST_F(QuatTest, ToMatrix4) {
-    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
+    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
     Mat4f m = q.toMatrix4();
 
     // Both should rotate the same way
@@ -295,11 +295,11 @@ TEST_F(QuatTest, FromMatrix) {
 }
 
 TEST_F(QuatTest, MatrixConstructor) {
-    Mat4f rotation = Mat4f::rotateX(kHalfPi<float>);
+    Mat4f rotation = Mat4f::rotateX(kHalfPiT<float>);
     Quatf q(rotation);
 
     Vec3f euler = q.getEulerAngles();
-    EXPECT_NEAR(euler.x(), kHalfPi<float>, 1e-5f);
+    EXPECT_NEAR(euler.x(), kHalfPiT<float>, 1e-5f);
     EXPECT_NEAR(euler.y(), 0.0f, 1e-5f);
     EXPECT_NEAR(euler.z(), 0.0f, 1e-5f);
 }
@@ -316,12 +316,12 @@ TEST_F(QuatTest, EulerConversion) {
 
 TEST_F(QuatTest, SetFromEulerAngles) {
     Quatf q;
-    q.setFromEulerAngles(kHalfPi<float>, kPi<float> / 4.0f, kPi<float> / 6.0f);
+    q.setFromEulerAngles(kHalfPiT<float>, kPiT<float> / 4.0f, kPiT<float> / 6.0f);
 
     Vec3f euler = q.getEulerAngles();
-    EXPECT_NEAR(kHalfPi<float>, euler.x(), 1e-5f);
-    EXPECT_NEAR(kPi<float> / 4.0f, euler.y(), 1e-5f);
-    EXPECT_NEAR(kPi<float> / 6.0f, euler.z(), 1e-5f);
+    EXPECT_NEAR(kHalfPiT<float>, euler.x(), 1e-5f);
+    EXPECT_NEAR(kPiT<float> / 4.0f, euler.y(), 1e-5f);
+    EXPECT_NEAR(kPiT<float> / 6.0f, euler.z(), 1e-5f);
 }
 
 // ============================================================================
@@ -330,13 +330,13 @@ TEST_F(QuatTest, SetFromEulerAngles) {
 
 TEST_F(QuatTest, Slerp) {
     Quatf q1 = Quatf::identity();
-    Quatf q2 = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
+    Quatf q2 = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
 
     Quatf mid = Quatf::slerp(q1, q2, 0.5f);
     EXPECT_TRUE(mid.isNormalized());
 
     // Midpoint should be half the rotation
-    EXPECT_NEAR(mid.angle(), kHalfPi<float> / 2.0f, 1e-5f);
+    EXPECT_NEAR(mid.angle(), kHalfPiT<float> / 2.0f, 1e-5f);
 }
 
 TEST_F(QuatTest, SlerpMember) {
@@ -353,7 +353,7 @@ TEST_F(QuatTest, SlerpMember) {
 
 TEST_F(QuatTest, Nlerp) {
     Quatf q1 = Quatf::identity();
-    Quatf q2 = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
+    Quatf q2 = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
 
     Quatf mid = Quatf::nlerp(q1, q2, 0.5f);
     EXPECT_TRUE(mid.isNormalized());
@@ -589,8 +589,8 @@ TEST_F(QuatTest, LookRotation) {
 // ============================================================================
 
 TEST(QuatDoubleTest, BasicOperations) {
-    Quatd q1 = Quatd::fromAxisAngle(Vec3d::yAxis(), kHalfPi<double>);
-    Quatd q2 = Quatd::fromAxisAngle(Vec3d::xAxis(), kHalfPi<double>);
+    Quatd q1 = Quatd::fromAxisAngle(Vec3d::yAxis(), kHalfPiT<double>);
+    Quatd q2 = Quatd::fromAxisAngle(Vec3d::xAxis(), kHalfPiT<double>);
 
     Quatd combined = q2 * q1;
     EXPECT_TRUE(combined.isNormalized());
@@ -601,7 +601,7 @@ TEST(QuatDoubleTest, BasicOperations) {
 // ============================================================================
 
 TEST(QuatGlmTest, ConvertToGlm) {
-    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPi<float>);
+    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), kHalfPiT<float>);
     glm::quat gq = static_cast<glm::quat>(q);
 
     EXPECT_FLOAT_EQ(q.x, gq.x);
@@ -611,7 +611,7 @@ TEST(QuatGlmTest, ConvertToGlm) {
 }
 
 TEST(QuatGlmTest, ConvertFromGlm) {
-    glm::quat gq = glm::angleAxis(kHalfPi<float>, glm::vec3(0, 1, 0));
+    glm::quat gq = glm::angleAxis(kHalfPiT<float>, glm::vec3(0, 1, 0));
     Quatf q = gq;
 
     EXPECT_FLOAT_EQ(q.x, gq.x);

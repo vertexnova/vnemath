@@ -110,7 +110,7 @@ TEST_F(Mat4Test, Scale) {
 }
 
 TEST_F(Mat4Test, RotateX) {
-    Mat4f r = Mat4f::rotateX(kHalfPi<float>);
+    Mat4f r = Mat4f::rotateX(kHalfPiT<float>);
     Vec4f v(0.0f, 1.0f, 0.0f, 0.0f);
     Vec4f result = r * v;
     EXPECT_NEAR(result.x(), 0.0f, 1e-5f);
@@ -119,7 +119,7 @@ TEST_F(Mat4Test, RotateX) {
 }
 
 TEST_F(Mat4Test, RotateY) {
-    Mat4f r = Mat4f::rotateY(kHalfPi<float>);
+    Mat4f r = Mat4f::rotateY(kHalfPiT<float>);
     Vec4f v(1.0f, 0.0f, 0.0f, 0.0f);
     Vec4f result = r * v;
     EXPECT_NEAR(result.x(), 0.0f, 1e-5f);

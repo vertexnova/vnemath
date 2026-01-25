@@ -20,16 +20,13 @@
 // Math module includes
 #include "constants.h"
 #include "math_utils.h"
-#include "vec2f.h"
-#include "vec3f.h"
-#include "vec4f.h"
 #include "mat3x3f.h"
 #include "mat4x4f.h"
 #include "color.h"
 #include "transform_node.h"
 #include "random.h"
 
-// Core templated types
+// Core templated types (Vec, Mat, Quat)
 #include "core/core.h"
 
 // Geometry module includes
@@ -37,7 +34,10 @@
 
 namespace vne::math {
 
-// Type alias for backward compatibility
+// Type aliases for backward compatibility
 using Quaternion = Quatf;
+using Vec2f = Vec<float, 2>;
+using Vec3f = Vec<float, 3>;
+using Vec4f = Vec<float, 4>;
 
 }  // namespace vne::math
