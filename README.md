@@ -62,6 +62,146 @@ This library is part of [VertexNova](https://github.com/vertexnova) — a multi-
 - GPU-aligned types for shader uniform buffers
 - Statistics (running mean, variance, standard deviation)
 
+## Architecture: GLM Integration & Matrix Conventions
+
+### GLM as Compute Backend
+
+VertexNova Math uses [GLM](https://github.com/g-truc/glm) (OpenGL Mathematics) as the optimized backend for expensive matrix operations while providing its own API layer:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    VertexNova Math API                       │
+│  Vec<T,N>, Mat<T,R,C>, Quatf, Color, geometry primitives    │
+├─────────────────────────────────────────────────────────────┤
+│                     GLM Backend                              │
+│  Optimized: inverse, determinant, perspective, lookAt, etc. │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**GLM is used for:**
+- Matrix inverse, determinant, inverse-transpose
+- Projection matrices (perspective, orthographic)
+- View matrices (lookAt)
+- Transform matrices (translate, rotate, scale)
+- SIMD-optimized operations where available
+
+**VertexNova Math provides:**
+- Unified type system with seamless GLM conversion
+- Multi-backend graphics API support
+- Geometry primitives and intersection tests
+- Easing, curves, noise, and other utilities
+- C++20 concepts and modern API design
+
+### Seamless GLM Interop
+
+```cpp
+#include <vertexnova/math/core/core.h>
+#include <glm/glm.hpp>
+
+using namespace vne::math;
+
+// Automatic conversion both ways
+Mat4f vne_matrix = Mat4f::translate(Vec3f(1, 2, 3));
+glm::mat4 glm_matrix = vne_matrix;  // Implicit conversion to GLM
+Mat4f back = glm_matrix;             // Implicit conversion from GLM
+
+// Same for vectors
+Vec3f vne_vec(1, 2, 3);
+glm::vec3 glm_vec = static_cast<glm::vec3>(vne_vec);
+```
+
+### Matrix Storage: Column-Major
+
+VertexNova Math uses **column-major storage** (same as GLM, OpenGL, and Vulkan):
+
+```cpp
+// Mat4f internal layout:
+// columns[0] = first column  (X-axis / right vector)
+// columns[1] = second column (Y-axis / up vector)
+// columns[2] = third column  (Z-axis / forward vector)
+// columns[3] = fourth column (translation / position)
+
+Mat4f transform = Mat4f::translate(Vec3f(10, 20, 30));
+
+// Access translation (4th column)
+Vec3f position = transform.getColumn(3).xyz();  // (10, 20, 30)
+Vec3f position2 = transform.translation();       // Same, convenience method
+
+// Access basis vectors
+Vec3f right = transform.xAxis();    // Column 0
+Vec3f up = transform.yAxis();       // Column 1
+Vec3f forward = transform.zAxis();  // Column 2
+```
+
+**Memory layout** (16 floats contiguous):
+
+```
+Memory: [m00 m10 m20 m30 | m01 m11 m21 m31 | m02 m12 m22 m32 | m03 m13 m23 m33]
+        └── Column 0 ───┘ └── Column 1 ───┘ └── Column 2 ───┘ └── Column 3 ───┘
+```
+
+### Multi-Backend Graphics API Support
+
+Different graphics APIs have different conventions. VertexNova Math handles this transparently:
+
+| API | Depth Range | Y-Axis | Handedness |
+|-----|-------------|--------|------------|
+| OpenGL | [-1, 1] | +Y up | Right-handed |
+| Vulkan | [0, 1] | +Y down | Right-handed |
+| Metal | [0, 1] | +Y down | Left-handed |
+| DirectX | [0, 1] | +Y up | Left-handed |
+| WebGPU | [0, 1] | +Y down | Right-handed |
+
+**Usage:**
+
+```cpp
+// Perspective projection for different APIs
+Mat4f proj_vulkan = Mat4f::perspective(fov, aspect, near, far, GraphicsApi::eVulkan);
+Mat4f proj_opengl = Mat4f::perspective(fov, aspect, near, far, GraphicsApi::eOpenGL);
+Mat4f proj_metal = Mat4f::perspective(fov, aspect, near, far, GraphicsApi::eMetal);
+
+// Orthographic projection
+Mat4f ortho = Mat4f::ortho(left, right, bottom, top, near, far, GraphicsApi::eVulkan);
+
+// View matrices (handedness-aware)
+Mat4f view_rh = Mat4f::lookAtRH(eye, center, up);  // OpenGL, Vulkan, WebGPU
+Mat4f view_lh = Mat4f::lookAtLH(eye, center, up);  // Metal, DirectX
+```
+
+**Compile-time traits:**
+
+```cpp
+// Query API conventions at compile time
+using VulkanTraits = GraphicsApiTraits<GraphicsApi::eVulkan>;
+static_assert(VulkanTraits::kDepth == ClipSpaceDepth::eZeroToOne);
+static_assert(VulkanTraits::kHandedness == Handedness::eRight);
+static_assert(VulkanTraits::kFlipY == true);
+
+// Runtime queries
+ClipSpaceDepth depth = getClipSpaceDepth(GraphicsApi::eOpenGL);  // eNegativeOneToOne
+Handedness hand = getHandedness(GraphicsApi::eMetal);             // eLeft
+bool flip = needsYFlip(GraphicsApi::eVulkan);                     // true
+```
+
+### GPU Buffer Alignment (std140/std430)
+
+For shader uniform buffers, use the GPU-aligned types:
+
+```cpp
+#include <vertexnova/math/gpu_types.h>
+
+// std140-compatible struct
+struct alignas(16) MyUniform {
+    GpuVec3 position;   // 16 bytes (padded)
+    float padding1;
+    GpuVec4 color;      // 16 bytes
+    GpuMat4 transform;  // 64 bytes
+};
+
+// Validation
+static_assert(isStd140Compatible<MyUniform>());
+```
+
 ## Requirements
 
 - C++20 compatible compiler
