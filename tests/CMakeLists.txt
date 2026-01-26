@@ -91,6 +91,7 @@ set(TEST_SOURCES
     math/geometry/rect_test.cpp
     math/geometry/obb_test.cpp
     math/geometry/capsule_test.cpp
+    math/geometry/triangle_test.cpp
     math/statistic_test.cpp
     main.cpp
 )
