@@ -47,14 +47,19 @@ namespace vne::math {
 
     Vec3f ndc = clip.xyz() / clip.w();
 
-    // NDC to screen coordinates
-    float screen_x = viewport.x + (ndc.x() + 1.0f) * 0.5f * viewport.width;
-    float screen_y = viewport.y + (ndc.y() + 1.0f) * 0.5f * viewport.height;
+    // NDC to normalized viewport coordinates [0, 1]
+    float sx = (ndc.x() + 1.0f) * 0.5f;
+    float sy = (ndc.y() + 1.0f) * 0.5f;
 
-    // Handle Y-flip for Vulkan/Metal/WebGPU
-    if (needsYFlip(api)) {
-        screen_y = viewport.height - screen_y;
+    // Handle screen-space origin convention.
+    // Most APIs (Vulkan/Metal/DirectX/WebGPU) use top-left origin for framebuffers.
+    if (screenOriginIsTopLeft(api)) {
+        sy = 1.0f - sy;
     }
+
+    // Convert normalized coordinates to screen-space pixels
+    float screen_x = viewport.x + sx * viewport.width;
+    float screen_y = viewport.y + sy * viewport.height;
 
     // Map depth to viewport range
     float screen_z = viewport.z_near + (ndc.z() + 1.0f) * 0.5f * (viewport.z_far - viewport.z_near);
@@ -98,14 +103,18 @@ namespace vne::math {
                                      const Mat4f& inv_mvp,
                                      const Viewport& viewport,
                                      GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
-    // Screen to NDC
-    float ndc_x = (screen_pos.x() - viewport.x) / viewport.width * 2.0f - 1.0f;
-    float ndc_y = (screen_pos.y() - viewport.y) / viewport.height * 2.0f - 1.0f;
+    // Screen (pixel) to normalized viewport coordinates [0, 1]
+    float sx = (screen_pos.x() - viewport.x) / viewport.width;
+    float sy = (screen_pos.y() - viewport.y) / viewport.height;
 
-    // Handle Y-flip for Vulkan/Metal/WebGPU
-    if (needsYFlip(api)) {
-        ndc_y = -ndc_y;
+    // If screen-space uses top-left origin, invert Y to match NDC (+Y up) math
+    if (screenOriginIsTopLeft(api)) {
+        sy = 1.0f - sy;
     }
+
+    // Normalized viewport to NDC [-1, 1]
+    float ndc_x = sx * 2.0f - 1.0f;
+    float ndc_y = sy * 2.0f - 1.0f;
 
     // Unmap depth from viewport range to NDC
     float ndc_z;
@@ -201,12 +210,18 @@ namespace vne::math {
 [[nodiscard]] inline Vec2f screenToNDC(const Vec2f& screen_pos,
                                        const Viewport& viewport,
                                        GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
-    float ndc_x = (screen_pos.x() - viewport.x) / viewport.width * 2.0f - 1.0f;
-    float ndc_y = (screen_pos.y() - viewport.y) / viewport.height * 2.0f - 1.0f;
+    // Screen (pixel) to normalized viewport coordinates [0, 1]
+    float sx = (screen_pos.x() - viewport.x) / viewport.width;
+    float sy = (screen_pos.y() - viewport.y) / viewport.height;
 
-    if (needsYFlip(api)) {
-        ndc_y = -ndc_y;
+    // If screen-space uses top-left origin, invert Y to match NDC (+Y up) math
+    if (screenOriginIsTopLeft(api)) {
+        sy = 1.0f - sy;
     }
+
+    // Normalized viewport to NDC [-1, 1]
+    float ndc_x = sx * 2.0f - 1.0f;
+    float ndc_y = sy * 2.0f - 1.0f;
 
     return Vec2f(ndc_x, ndc_y);
 }
@@ -217,13 +232,18 @@ namespace vne::math {
 [[nodiscard]] inline Vec2f ndcToScreen(const Vec2f& ndc_pos,
                                        const Viewport& viewport,
                                        GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
-    float y = ndc_pos.y();
-    if (needsYFlip(api)) {
-        y = -y;
+    // NDC [-1, 1] to normalized viewport coordinates [0, 1]
+    float sx = (ndc_pos.x() + 1.0f) * 0.5f;
+    float sy = (ndc_pos.y() + 1.0f) * 0.5f;
+
+    // If screen-space uses top-left origin, invert Y
+    if (screenOriginIsTopLeft(api)) {
+        sy = 1.0f - sy;
     }
 
-    float screen_x = viewport.x + (ndc_pos.x() + 1.0f) * 0.5f * viewport.width;
-    float screen_y = viewport.y + (y + 1.0f) * 0.5f * viewport.height;
+    // Normalized viewport to screen (pixel) coordinates
+    float screen_x = viewport.x + sx * viewport.width;
+    float screen_y = viewport.y + sy * viewport.height;
 
     return Vec2f(screen_x, screen_y);
 }

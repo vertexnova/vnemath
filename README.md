@@ -150,13 +150,18 @@ Memory: [m00 m10 m20 m30 | m01 m11 m21 m31 | m02 m12 m22 m32 | m03 m13 m23 m33]
 
 Different graphics APIs have different conventions. VertexNova Math handles this transparently:
 
-| API | Depth Range | Y-Axis | Handedness |
-|-----|-------------|--------|------------|
-| OpenGL | [-1, 1] | +Y up | Right-handed |
-| Vulkan | [0, 1] | +Y down | Right-handed |
-| Metal | [0, 1] | +Y down | Left-handed |
-| DirectX | [0, 1] | +Y up | Left-handed |
-| WebGPU | [0, 1] | +Y down | Right-handed |
+| API | Depth Range | NDC Y-Axis | Screen Origin | Projection Y-Flip |
+|-----|-------------|------------|---------------|-------------------|
+| OpenGL | [-1, 1] | +Y up | Bottom-left | No |
+| Vulkan | [0, 1] | +Y down | Top-left | Yes |
+| Metal | [0, 1] | +Y up | Top-left | No |
+| DirectX | [0, 1] | +Y up | Top-left | No |
+| WebGPU | [0, 1] | +Y up | Top-left | No |
+
+> **Key distinction**: NDC Y-axis direction (used in projection matrices) is different from 
+> framebuffer/screen origin (used in viewport/rasterization). Only Vulkan has NDC Y-down and 
+> requires a projection matrix Y-flip. Metal/DirectX/WebGPU have NDC Y-up like OpenGL; their 
+> top-left screen origin is handled by the viewport, not the projection matrix.
 
 **Usage:**
 
@@ -180,14 +185,19 @@ Mat4f view_lh = Mat4f::lookAtLH(eye, center, up);  // Metal, DirectX
 // Query API conventions at compile time
 using VulkanTraits = GraphicsApiTraits<GraphicsApi::eVulkan>;
 VNE_STATIC_ASSERT(VulkanTraits::kDepth == ClipSpaceDepth::eZeroToOne, "Vulkan uses [0,1] depth");
-VNE_STATIC_ASSERT(VulkanTraits::kHandedness == Handedness::eRight, "Vulkan is right-handed");
-VNE_STATIC_ASSERT(VulkanTraits::kFlipY == true, "Vulkan needs Y flip");
+VNE_STATIC_ASSERT(VulkanTraits::kProjectionYFlip == true, "Vulkan needs projection Y flip");
+VNE_STATIC_ASSERT(VulkanTraits::kScreenOriginTopLeft == true, "Vulkan uses top-left origin");
 
 // Runtime queries
-ClipSpaceDepth depth = getClipSpaceDepth(GraphicsApi::eOpenGL);  // eNegativeOneToOne
-Handedness hand = getHandedness(GraphicsApi::eMetal);             // eLeft
-bool flip = needsYFlip(GraphicsApi::eVulkan);                     // true
+ClipSpaceDepth depth = getClipSpaceDepth(GraphicsApi::eOpenGL);      // eNegativeOneToOne
+bool projFlip = needsProjectionYFlip(GraphicsApi::eVulkan);          // true (only Vulkan)
+bool screenFlip = screenOriginIsTopLeft(GraphicsApi::eMetal);        // true
+bool screenFlipGL = screenOriginIsTopLeft(GraphicsApi::eOpenGL);     // false
 ```
+
+> **Note on Handedness**: While the traits include default handedness values per API, handedness 
+> is best treated as an **engine/world convention**, not an API property. Choose one handedness 
+> (right-handed recommended) for your engine and use it consistently across all backends.
 
 ### GPU Buffer Alignment (std140/std430)
 

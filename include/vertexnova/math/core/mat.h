@@ -633,8 +633,9 @@ class Mat {
                                  : perspectiveRH_NO(fovy, aspect, z_near, z_far);
         }
 
-        // Apply Y-flip for APIs that need it (Vulkan, Metal, WebGPU)
-        if (needsYFlip(api)) {
+        // Apply projection Y-flip only for Vulkan (NDC Y-down).
+        // Metal/DirectX/WebGPU have NDC Y-up, so no flip needed.
+        if (needsProjectionYFlip(api)) {
             result[1][1] *= T(-1);
         }
 
@@ -696,8 +697,9 @@ class Mat {
                                  : orthoRH_NO(left, right, bottom, top, z_near, z_far);
         }
 
-        // Apply Y-flip for APIs that need it
-        if (needsYFlip(api)) {
+        // Apply projection Y-flip only for Vulkan (NDC Y-down).
+        // Metal/DirectX/WebGPU have NDC Y-up, so no flip needed.
+        if (needsProjectionYFlip(api)) {
             result[1][1] *= T(-1);
         }
 

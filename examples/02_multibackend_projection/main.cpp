@@ -23,7 +23,8 @@ using vne::math::examples::LoggingGuard_C;
 void printApiInfo(GraphicsApi api) {
     VNE_LOG_INFO << "  Depth Range: " << depthRangeName(api);
     VNE_LOG_INFO << "  Handedness: " << handednessName(api);
-    VNE_LOG_INFO << "  Y-Flip: " << (needsYFlip(api) ? "Yes" : "No");
+    VNE_LOG_INFO << "  Projection Y-Flip: " << (needsProjectionYFlip(api) ? "Yes" : "No");
+    VNE_LOG_INFO << "  Screen Origin: " << (screenOriginIsTopLeft(api) ? "Top-left" : "Bottom-left");
 }
 
 void demonstratePerspectiveMatrices() {

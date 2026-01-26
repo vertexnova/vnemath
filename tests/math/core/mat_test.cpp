@@ -163,8 +163,10 @@ TEST(Mat4ProjectionTest, PerspectiveOpenGL) {
 TEST(Mat4ProjectionTest, PerspectiveMetal) {
     Mat4f proj = Mat4f::perspective(degToRad(45.0f), 1.0f, 0.1f, 100.0f, GraphicsApi::eMetal);
 
-    // Metal: depth [0,1], Y-flipped, left-handed
-    EXPECT_LT(proj[1][1], 0.0f);  // Y should be flipped
+    // Metal: depth [0,1], NDC Y-up (no flip needed), left-handed
+    // Note: Metal NDC is Y-up like OpenGL/DirectX. The framebuffer origin is top-left,
+    // but that's handled by the viewport/rasterizer, not the projection matrix.
+    EXPECT_GT(proj[1][1], 0.0f);  // Y should NOT be flipped in projection
 }
 
 TEST(Mat4ProjectionTest, OrthoVulkan) {

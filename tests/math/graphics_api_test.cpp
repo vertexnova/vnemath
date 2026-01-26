@@ -29,31 +29,50 @@ class GraphicsApiTraitsTest : public ::testing::Test {
 TEST_F(GraphicsApiTraitsTest, OpenGLTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eOpenGL), ClipSpaceDepth::eNegativeOneToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eOpenGL), Handedness::eRight);
+    // OpenGL framebuffer origin is bottom-left
     EXPECT_FALSE(needsYFlip(GraphicsApi::eOpenGL));
+    EXPECT_FALSE(screenOriginIsTopLeft(GraphicsApi::eOpenGL));
+    // OpenGL NDC is Y-up, no projection flip needed
+    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eOpenGL));
 }
 
 TEST_F(GraphicsApiTraitsTest, VulkanTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eVulkan), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eVulkan), Handedness::eRight);
+    // Vulkan framebuffer origin is top-left
     EXPECT_TRUE(needsYFlip(GraphicsApi::eVulkan));
+    EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eVulkan));
+    // Vulkan NDC is Y-down, so projection Y-flip is needed
+    EXPECT_TRUE(needsProjectionYFlip(GraphicsApi::eVulkan));
 }
 
 TEST_F(GraphicsApiTraitsTest, MetalTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eMetal), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eMetal), Handedness::eLeft);
+    // Metal framebuffer origin is top-left
     EXPECT_TRUE(needsYFlip(GraphicsApi::eMetal));
+    EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eMetal));
+    // Metal NDC is Y-up, no projection flip needed
+    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eMetal));
 }
 
 TEST_F(GraphicsApiTraitsTest, DirectXTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eDirectX), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eDirectX), Handedness::eLeft);
-    EXPECT_FALSE(needsYFlip(GraphicsApi::eDirectX));
+    // DirectX framebuffer origin is top-left, so needsYFlip() returns true for screen-space
+    EXPECT_TRUE(needsYFlip(GraphicsApi::eDirectX));
+    // But no projection matrix Y-flip needed (NDC Y-up)
+    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eDirectX));
 }
 
 TEST_F(GraphicsApiTraitsTest, WebGPUTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eWebGPU), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eWebGPU), Handedness::eRight);
+    // WebGPU framebuffer origin is top-left
     EXPECT_TRUE(needsYFlip(GraphicsApi::eWebGPU));
+    EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eWebGPU));
+    // WebGPU NDC is Y-up, no projection flip needed
+    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eWebGPU));
 }
 
 // ============================================================================
@@ -110,8 +129,10 @@ TEST_F(PerspectiveProjectionTest, VulkanPerspective) {
 TEST_F(PerspectiveProjectionTest, MetalPerspective) {
     Mat4f proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eMetal);
 
-    // Metal: Y flipped, left-handed, [0,1] depth
-    EXPECT_LT(proj[1][1], 0.0f);
+    // Metal: NDC Y-up (NO projection flip needed), left-handed, [0,1] depth
+    // Note: Metal's framebuffer origin is top-left, but that's handled by the
+    // viewport/rasterizer, not the projection matrix.
+    EXPECT_GT(proj[1][1], 0.0f);
 
     // Note: Metal is left-handed, so z direction is inverted
     Vec4f near_point(0.0f, 0.0f, kNear, 1.0f);  // +Z for left-handed
@@ -135,8 +156,10 @@ TEST_F(PerspectiveProjectionTest, DirectXPerspective) {
 TEST_F(PerspectiveProjectionTest, WebGPUPerspective) {
     Mat4f proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eWebGPU);
 
-    // WebGPU: Y flipped, right-handed, [0,1] depth
-    EXPECT_LT(proj[1][1], 0.0f);
+    // WebGPU: NDC Y-up (NO projection flip needed), right-handed, [0,1] depth
+    // Note: WebGPU's framebuffer origin is top-left, but that's handled by the
+    // viewport/rasterizer, not the projection matrix.
+    EXPECT_GT(proj[1][1], 0.0f);
 }
 
 TEST_F(PerspectiveProjectionTest, CenterPointMapsToOriginInNDC) {
