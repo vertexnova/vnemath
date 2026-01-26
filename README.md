@@ -179,9 +179,9 @@ Mat4f view_lh = Mat4f::lookAtLH(eye, center, up);  // Metal, DirectX
 ```cpp
 // Query API conventions at compile time
 using VulkanTraits = GraphicsApiTraits<GraphicsApi::eVulkan>;
-static_assert(VulkanTraits::kDepth == ClipSpaceDepth::eZeroToOne);
-static_assert(VulkanTraits::kHandedness == Handedness::eRight);
-static_assert(VulkanTraits::kFlipY == true);
+VNE_STATIC_ASSERT(VulkanTraits::kDepth == ClipSpaceDepth::eZeroToOne, "Vulkan uses [0,1] depth");
+VNE_STATIC_ASSERT(VulkanTraits::kHandedness == Handedness::eRight, "Vulkan is right-handed");
+VNE_STATIC_ASSERT(VulkanTraits::kFlipY == true, "Vulkan needs Y flip");
 
 // Runtime queries
 ClipSpaceDepth depth = getClipSpaceDepth(GraphicsApi::eOpenGL);  // eNegativeOneToOne
@@ -205,7 +205,7 @@ struct alignas(16) MyUniform {
 };
 
 // Validation
-static_assert(isStd140Compatible<MyUniform>());
+VNE_STATIC_ASSERT(isStd140Compatible<MyUniform>(), "MyUniform must be std140 compatible");
 ```
 
 ## Requirements
