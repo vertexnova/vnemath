@@ -158,6 +158,20 @@ Different graphics APIs have different conventions. VertexNova Math handles this
 | DirectX | [0, 1] | +Y up | Top-left | No |
 | WebGPU | [0, 1] | +Y up | Top-left | No |
 
+**NDC Coordinate Systems:**
+
+```
+OpenGL/Metal/DX/WebGPU:        Vulkan (without Y-flip):
+      +Y ↑                            -Y ↑
+         |                               |
+    -----+-----> +X                 -----+-----> +X
+         |                               |
+      -Y ↓                            +Y ↓
+
+With needsProjectionYFlip(), Vulkan projection matrices are adjusted
+so that the resulting NDC behaves like OpenGL/Metal/DX/WebGPU (+Y up).
+```
+
 > **Key distinction**: NDC Y-axis direction (used in projection matrices) is different from 
 > framebuffer/screen origin (used in viewport/rasterization). Only Vulkan has NDC Y-down and 
 > requires a projection matrix Y-flip. Metal/DirectX/WebGPU have NDC Y-up like OpenGL; their 
