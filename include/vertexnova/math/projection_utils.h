@@ -290,4 +290,43 @@ namespace vne::math {
     return (ndc_z + 1.0f) * 0.5f;
 }
 
+// ============================================================================
+// Validation Utilities
+// ============================================================================
+
+/**
+ * @brief Validates that a projection matrix has the correct Y-flip for the API.
+ *
+ * This helps catch mismatches where a projection matrix was generated for one API
+ * but is being used with another. Only Vulkan requires Y-flip in the projection matrix.
+ *
+ * @param proj The projection matrix to validate
+ * @param api The target graphics API
+ * @return true if the Y-flip is correct for the API, false otherwise
+ */
+[[nodiscard]] inline bool validateProjectionMatrix(const Mat4f& proj,
+                                                   GraphicsApi api) noexcept {
+    bool y_flipped = proj[1][1] < 0.0f;
+    bool should_flip = needsProjectionYFlip(api);
+    return y_flipped == should_flip;
+}
+
+/**
+ * @brief Validates projection matrix and returns detailed mismatch info.
+ *
+ * @param proj The projection matrix to validate
+ * @param api The target graphics API
+ * @param out_expected_flip Output: whether Y-flip was expected
+ * @param out_actual_flip Output: whether Y-flip was detected
+ * @return true if the Y-flip is correct for the API, false otherwise
+ */
+[[nodiscard]] inline bool validateProjectionMatrixDetailed(const Mat4f& proj,
+                                                           GraphicsApi api,
+                                                           bool& out_expected_flip,
+                                                           bool& out_actual_flip) noexcept {
+    out_actual_flip = proj[1][1] < 0.0f;
+    out_expected_flip = needsProjectionYFlip(api);
+    return out_actual_flip == out_expected_flip;
+}
+
 }  // namespace vne::math

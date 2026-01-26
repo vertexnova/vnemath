@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 
 #include "vertexnova/math/core/core.h"
+#include "vertexnova/math/projection_utils.h"
 
 namespace vne::math {
 
@@ -519,6 +520,73 @@ TEST_F(CrossApiConsistencyTest, AllApisRenderSameSceneCorrectly) {
             EXPECT_LE(ndc_z, 1.0f) << "Failed for API: " << static_cast<int>(api);
         }
     }
+}
+
+// ============================================================================
+// Projection Validation Tests
+// ============================================================================
+
+class ProjectionValidationTest : public ::testing::Test {
+   protected:
+    static constexpr float kFov = degToRad(60.0f);
+    static constexpr float kAspect = 16.0f / 9.0f;
+    static constexpr float kNear = 0.1f;
+    static constexpr float kFar = 1000.0f;
+};
+
+TEST_F(ProjectionValidationTest, ValidateCorrectMatrices) {
+    // Each API's projection matrix should validate for its own API
+    GraphicsApi apis[] = {GraphicsApi::eOpenGL,
+                          GraphicsApi::eVulkan,
+                          GraphicsApi::eMetal,
+                          GraphicsApi::eDirectX,
+                          GraphicsApi::eWebGPU};
+
+    for (GraphicsApi api : apis) {
+        Mat4f proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, api);
+        EXPECT_TRUE(validateProjectionMatrix(proj, api))
+            << "Validation failed for " << graphicsApiName(api);
+    }
+}
+
+TEST_F(ProjectionValidationTest, DetectMismatchedMatrices) {
+    // Vulkan matrix used with OpenGL should fail validation
+    Mat4f vulkan_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eVulkan);
+    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eOpenGL));
+    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eMetal));
+    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eDirectX));
+    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eWebGPU));
+
+    // OpenGL matrix used with Vulkan should fail validation
+    Mat4f opengl_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eOpenGL);
+    EXPECT_FALSE(validateProjectionMatrix(opengl_proj, GraphicsApi::eVulkan));
+}
+
+TEST_F(ProjectionValidationTest, DetailedValidation) {
+    Mat4f vulkan_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eVulkan);
+
+    bool expected_flip = false;
+    bool actual_flip = false;
+
+    // Vulkan matrix should validate correctly
+    EXPECT_TRUE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eVulkan,
+                                                  expected_flip, actual_flip));
+    EXPECT_TRUE(expected_flip);  // Vulkan expects Y-flip
+    EXPECT_TRUE(actual_flip);    // Matrix has Y-flip
+
+    // Same matrix fails for OpenGL
+    EXPECT_FALSE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eOpenGL,
+                                                   expected_flip, actual_flip));
+    EXPECT_FALSE(expected_flip);  // OpenGL doesn't expect Y-flip
+    EXPECT_TRUE(actual_flip);     // But matrix has Y-flip
+}
+
+TEST_F(ProjectionValidationTest, GraphicsApiName) {
+    EXPECT_STREQ(graphicsApiName(GraphicsApi::eOpenGL), "OpenGL");
+    EXPECT_STREQ(graphicsApiName(GraphicsApi::eVulkan), "Vulkan");
+    EXPECT_STREQ(graphicsApiName(GraphicsApi::eMetal), "Metal");
+    EXPECT_STREQ(graphicsApiName(GraphicsApi::eDirectX), "DirectX");
+    EXPECT_STREQ(graphicsApiName(GraphicsApi::eWebGPU), "WebGPU");
 }
 
 }  // namespace vne::math

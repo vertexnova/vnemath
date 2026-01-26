@@ -235,6 +235,26 @@ struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
     return screenOriginIsTopLeft(api);
 }
 
+/**
+ * @brief Returns a human-readable name for a graphics API.
+ */
+[[nodiscard]] constexpr const char* graphicsApiName(GraphicsApi api) noexcept {
+    switch (api) {
+        case GraphicsApi::eOpenGL:
+            return "OpenGL";
+        case GraphicsApi::eVulkan:
+            return "Vulkan";
+        case GraphicsApi::eMetal:
+            return "Metal";
+        case GraphicsApi::eDirectX:
+            return "DirectX";
+        case GraphicsApi::eWebGPU:
+            return "WebGPU";
+        default:
+            return "Unknown";
+    }
+}
+
 // ============================================================================
 // C++20 Concepts
 // ============================================================================
