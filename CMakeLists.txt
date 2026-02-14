@@ -99,8 +99,11 @@ endif()
 #==============================================================================
 # Build Options
 #==============================================================================
+# When used as a submodule (e.g. from vnescene), parent may set VNE_MATH_TESTS=OFF
+# so only the parent's tests run (e.g. VNE_SCENE_TESTS on, VNE_MATH_TESTS/VNE_LOGGING_TESTS off).
 
 option(BUILD_TESTS "Build the test suite" ON)
+option(VNE_MATH_TESTS "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
 option(ENABLE_COVERAGE "Enable code coverage reporting" OFF)
 
@@ -207,33 +210,43 @@ endif()
 
 #==============================================================================
 # VertexNova Libraries (libs/)
+# Only add if not already provided by parent (e.g. vnescene adds deps/internal first)
+# Same pattern as vneio and vnelogging: if(NOT TARGET vne::common) / if(NOT TARGET vne::logging)
 #==============================================================================
 
 #------------------------------------------------------------------------------
-# VneLogging - v1.0.0
+# VneCommon - only if not already in the build (e.g. from parent deps/internal)
 #------------------------------------------------------------------------------
-if(EXISTS "${VNE_LIBS_DIR}/vnecommon/CMakeLists.txt")
-    message(STATUS "Using VneCommon from libs/vnecommon")
-    add_subdirectory(${VNE_LIBS_DIR}/vnecommon ${CMAKE_BINARY_DIR}/libs/vnecommon)
+if(NOT TARGET vne::common)
+    if(EXISTS "${VNE_LIBS_DIR}/vnecommon/CMakeLists.txt")
+        message(STATUS "Using VneCommon from libs/vnecommon")
+        add_subdirectory(${VNE_LIBS_DIR}/vnecommon ${CMAKE_BINARY_DIR}/libs/vnecommon)
+    else()
+        message(WARNING "VneCommon submodule not found at libs/vnecommon")
+    endif()
 else()
-    message(WARNING "VneCommon submodule not found at libs/vnecommon")
+    message(STATUS "VneMath: using vne::common from parent")
 endif()
 
 #------------------------------------------------------------------------------
-# VneLogging - v1.0.0
+# VneLogging - only if not already in the build (e.g. from parent deps/internal)
 #------------------------------------------------------------------------------
-if(EXISTS "${VNE_LIBS_DIR}/vnelogging/CMakeLists.txt")
-    message(STATUS "Using VneLogging from libs/vnelogging (v1.0.0)")
-    # Disable vnelogging tests and examples to avoid conflicts
-    set(BUILD_TESTS_SAVED ${BUILD_TESTS})
-    set(BUILD_EXAMPLES_SAVED ${BUILD_EXAMPLES})
-    set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    add_subdirectory(${VNE_LIBS_DIR}/vnelogging ${CMAKE_BINARY_DIR}/libs/vnelogging)
-    set(BUILD_TESTS ${BUILD_TESTS_SAVED} CACHE BOOL "" FORCE)
-    set(BUILD_EXAMPLES ${BUILD_EXAMPLES_SAVED} CACHE BOOL "" FORCE)
+if(NOT TARGET vne::logging)
+    if(EXISTS "${VNE_LIBS_DIR}/vnelogging/CMakeLists.txt")
+        message(STATUS "Using VneLogging from libs/vnelogging (v1.0.0)")
+        # Disable vnelogging tests and examples to avoid conflicts
+        set(BUILD_TESTS_SAVED ${BUILD_TESTS})
+        set(BUILD_EXAMPLES_SAVED ${BUILD_EXAMPLES})
+        set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+        set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+        add_subdirectory(${VNE_LIBS_DIR}/vnelogging ${CMAKE_BINARY_DIR}/libs/vnelogging)
+        set(BUILD_TESTS ${BUILD_TESTS_SAVED} CACHE BOOL "" FORCE)
+        set(BUILD_EXAMPLES ${BUILD_EXAMPLES_SAVED} CACHE BOOL "" FORCE)
+    else()
+        message(WARNING "VneLogging submodule not found at libs/vnelogging")
+    endif()
 else()
-    message(WARNING "VneLogging submodule not found at libs/vnelogging")
+    message(STATUS "VneMath: using vne::logging from parent")
 endif()
 
 #==============================================================================
@@ -243,10 +256,10 @@ endif()
 add_subdirectory(src)
 
 #==============================================================================
-# Tests
+# Tests (only when BUILD_TESTS and VNE_MATH_TESTS; parent can set VNE_MATH_TESTS=OFF)
 #==============================================================================
 
-if(BUILD_TESTS)
+if(BUILD_TESTS AND VNE_MATH_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
