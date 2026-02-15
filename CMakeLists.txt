@@ -269,8 +269,12 @@ function(_vnemath_configure_vnelogging_dep)
         SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnelogging"
         BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnelogging"
         CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF)
-    set_property(CACHE BUILD_TESTS PROPERTY VALUE "${_vnemath_build_tests_saved}")
-    set_property(CACHE BUILD_EXAMPLES PROPERTY VALUE "${_vnemath_build_examples_saved}")
+    # Restore BUILD_TESTS in both cache and normal variable
+    set(BUILD_TESTS "${_vnemath_build_tests_saved}" CACHE BOOL "" FORCE)
+    set(BUILD_TESTS "${_vnemath_build_tests_saved}")
+    # Restore BUILD_EXAMPLES in both cache and normal variable
+    set(BUILD_EXAMPLES "${_vnemath_build_examples_saved}" CACHE BOOL "" FORCE)
+    set(BUILD_EXAMPLES "${_vnemath_build_examples_saved}")
 endfunction()
 
 _vnemath_configure_vnecommon_dep()
