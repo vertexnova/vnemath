@@ -277,10 +277,10 @@ TEST(LerpTransformTest, RotationInterpolation) {
 
     // Rotation should be 45 degrees around Y
     Quatf expected = Quatf::fromAxisAngle(Vec3f::yAxis(), kPi / 4.0f);
-    
+
     // Check that the rotation is approximately correct (quaternions can be negated and still represent same rotation)
-    bool matches = components.rotation.approxEquals(expected, 0.01f)
-                || components.rotation.approxEquals(-expected, 0.01f);
+    bool matches =
+        components.rotation.approxEquals(expected, 0.01f) || components.rotation.approxEquals(-expected, 0.01f);
     EXPECT_TRUE(matches);
 }
 
@@ -303,7 +303,8 @@ TEST(RoundTripTest, DecomposeCompose) {
 }
 
 TEST(RoundTripTest, MultipleIterations) {
-    Mat4f matrix = compose(Vec3f(1.0f, 2.0f, 3.0f), Quatf::fromAxisAngle(Vec3f::zAxis(), 0.5f), Vec3f(2.0f, 2.0f, 2.0f));
+    Mat4f matrix =
+        compose(Vec3f(1.0f, 2.0f, 3.0f), Quatf::fromAxisAngle(Vec3f::zAxis(), 0.5f), Vec3f(2.0f, 2.0f, 2.0f));
 
     // Multiple round-trips should not accumulate error significantly
     for (int i = 0; i < 10; ++i) {

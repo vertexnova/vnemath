@@ -99,13 +99,50 @@ endif()
 #==============================================================================
 # Build Options
 #==============================================================================
-# When used as a submodule (e.g. from vnescene), parent may set VNE_MATH_TESTS=OFF
-# so only the parent's tests run (e.g. VNE_SCENE_TESTS on, VNE_MATH_TESTS/VNE_LOGGING_TESTS off).
+# Build presets: DEV (local repo) and CI (pipelines). Default DEV when top-level project.
+# Use CMake's built-in top-level detection; fallback for CMake < 3.21.
+if(DEFINED PROJECT_IS_TOP_LEVEL AND PROJECT_IS_TOP_LEVEL)
+    set(VNE_MATH_DEV_DEFAULT ON)
+elseif(NOT DEFINED PROJECT_IS_TOP_LEVEL AND CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    set(VNE_MATH_DEV_DEFAULT ON)
+else()
+    set(VNE_MATH_DEV_DEFAULT OFF)
+endif()
+option(VNE_MATH_DEV "Dev build: enable examples and tests (local development)" ${VNE_MATH_DEV_DEFAULT})
+option(VNE_MATH_CI "CI build: enable tests, disable examples (e.g. -DVNE_MATH_CI=ON in pipelines)" OFF)
 
+# Ensure CI preset takes precedence over DEV when both are specified.
+if(VNE_MATH_CI)
+    set(VNE_MATH_DEV OFF CACHE BOOL "Dev build: enable examples and tests (local development)" FORCE)
+endif()
+
+# CMake Options and Presets:
+# | Option / Preset   | Default        | Description                                                      |
+# |-------------------|----------------|------------------------------------------------------------------|
+# | VNE_MATH_DEV      | ON (top-level) | Dev preset: BUILD_TESTS=ON, BUILD_EXAMPLES=ON                     |
+# | VNE_MATH_CI       | OFF            | CI preset: BUILD_TESTS=ON, BUILD_EXAMPLES=OFF                     |
+# | BUILD_TESTS       | ON             | Build the test suite                                              |
+# | VNE_MATH_TESTS    | ON             | Build vnemath test suite (can be set to OFF by parent projects)   |
+# | BUILD_EXAMPLES    | OFF            | Build example programs                                            |
+# | ENABLE_COVERAGE   | OFF            | Enable code coverage reporting                                    |
 option(BUILD_TESTS "Build the test suite" ON)
 option(VNE_MATH_TESTS "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
 option(ENABLE_COVERAGE "Enable code coverage reporting" OFF)
+
+# Apply CI or DEV preset (CI takes precedence; DEV is ignored when CI is active)
+if(VNE_MATH_CI)
+    set(BUILD_TESTS ON CACHE BOOL "Build the test suite" FORCE)
+    set(VNE_MATH_TESTS ON CACHE BOOL "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" FORCE)
+    set(BUILD_EXAMPLES OFF CACHE BOOL "Build example programs" FORCE)
+    set(VNE_MATH_DEV OFF CACHE BOOL "Disable DEV preset when CI preset is active" FORCE)
+    message(STATUS "VneMath: CI build -> BUILD_TESTS=ON, VNE_MATH_TESTS=ON, BUILD_EXAMPLES=OFF")
+elseif(VNE_MATH_DEV)
+    set(BUILD_TESTS ON CACHE BOOL "Build the test suite" FORCE)
+    set(VNE_MATH_TESTS ON CACHE BOOL "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" FORCE)
+    set(BUILD_EXAMPLES ON CACHE BOOL "Build example programs" FORCE)
+    message(STATUS "VneMath: DEV build -> BUILD_TESTS=ON, VNE_MATH_TESTS=ON, BUILD_EXAMPLES=ON")
+endif()
 
 # Enable cache system
 option(ENABLE_CACHE "Enable compiler cache if available" OFF)
@@ -117,8 +154,13 @@ include(CppCheck)
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy" OFF)
 include(ClangTidy)
 
-# Enable coverage
-include(FindCoverage)
+#==============================================================================
+# Coverage Support
+#==============================================================================
+
+if(ENABLE_COVERAGE)
+    include(FindCoverage)
+endif()
 
 #==============================================================================
 # Compiler Warnings
@@ -171,8 +213,7 @@ endif()
 set(VNE_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(VNE_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(VNE_BUILD_DIR ${CMAKE_BINARY_DIR})
-set(VNE_EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
-set(VNE_LIBS_DIR ${PROJECT_SOURCE_DIR}/libs)
+set(VNE_DEPS_DIR ${PROJECT_SOURCE_DIR}/deps)
 
 #==============================================================================
 # Configure config.h
@@ -182,41 +223,62 @@ configure_file(configs/config.h.in ${CMAKE_BINARY_DIR}/config.h)
 include_directories("${CMAKE_BINARY_DIR}")
 
 #==============================================================================
-# Third-Party Libraries (external/)
+# External Dependencies (deps/external/) - third-party libraries
 #==============================================================================
+set(VNE_DEPS_EXTERNAL_DIR ${VNE_DEPS_DIR}/external)
 
-#------------------------------------------------------------------------------
-# GLM (OpenGL Mathematics) - v1.0.1
-#------------------------------------------------------------------------------
-if(EXISTS "${VNE_EXTERNAL_DIR}/glm/CMakeLists.txt")
-    message(STATUS "Using GLM from external/glm (v1.0.1)")
-    add_subdirectory(${VNE_EXTERNAL_DIR}/glm ${CMAKE_BINARY_DIR}/external/glm)
-else()
-    # Try to find system GLM
-    find_package(glm QUIET)
-    if(NOT glm_FOUND)
-        message(STATUS "GLM not found, using FetchContent")
-        include(FetchContent)
-        FetchContent_Declare(
-            glm
-            GIT_REPOSITORY https://github.com/g-truc/glm.git
-            GIT_TAG 1.0.1
-        )
-        FetchContent_MakeAvailable(glm)
+function(_vnemath_configure_glm_dep)
+    if(EXISTS "${VNE_DEPS_EXTERNAL_DIR}/glm/CMakeLists.txt")
+        message(STATUS "Using GLM from deps/external/glm (v1.0.1)")
+        add_subdirectory(${VNE_DEPS_EXTERNAL_DIR}/glm ${CMAKE_BINARY_DIR}/deps/external/glm)
     else()
-        message(STATUS "Using system GLM")
+        find_package(glm QUIET)
+        if(NOT glm_FOUND)
+            message(STATUS "GLM not found, using FetchContent")
+            include(FetchContent)
+            FetchContent_Declare(
+                glm
+                GIT_REPOSITORY https://github.com/g-truc/glm.git
+                GIT_TAG 1.0.1
+            )
+            FetchContent_MakeAvailable(glm)
+        else()
+            message(STATUS "Using system GLM")
+        endif()
     endif()
-endif()
+endfunction()
+
+_vnemath_configure_glm_dep()
 
 #==============================================================================
-# VertexNova Libraries (libs/) - use if already in build, else add
+# Internal Libraries (deps/internal/) - use if already in build, else add
 #==============================================================================
+set(VNE_DEPS_INTERNAL_DIR ${VNE_DEPS_DIR}/internal)
 include(VneUseDep)
 
-vne_use_dep(TARGET vne::common SUBDIR "${VNE_LIBS_DIR}/vnecommon" BINARY_DIR "${CMAKE_BINARY_DIR}/libs/vnecommon")
+function(_vnemath_configure_vnecommon_dep)
+    vne_use_dep(TARGET vne::common
+        SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnecommon"
+        BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnecommon")
+endfunction()
 
-vne_use_dep(TARGET vne::logging SUBDIR "${VNE_LIBS_DIR}/vnelogging" BINARY_DIR "${CMAKE_BINARY_DIR}/libs/vnelogging"
-    CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF)
+function(_vnemath_configure_vnelogging_dep)
+    set(_vnemath_build_tests_saved "${BUILD_TESTS}")
+    set(_vnemath_build_examples_saved "${BUILD_EXAMPLES}")
+    vne_use_dep(TARGET vne::logging
+        SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnelogging"
+        BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnelogging"
+        CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF)
+    # Restore BUILD_TESTS in both cache and normal variable
+    set(BUILD_TESTS "${_vnemath_build_tests_saved}" CACHE BOOL "" FORCE)
+    set(BUILD_TESTS "${_vnemath_build_tests_saved}")
+    # Restore BUILD_EXAMPLES in both cache and normal variable
+    set(BUILD_EXAMPLES "${_vnemath_build_examples_saved}" CACHE BOOL "" FORCE)
+    set(BUILD_EXAMPLES "${_vnemath_build_examples_saved}")
+endfunction()
+
+_vnemath_configure_vnecommon_dep()
+_vnemath_configure_vnelogging_dep()
 
 #==============================================================================
 # Add Library

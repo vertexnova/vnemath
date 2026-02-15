@@ -544,8 +544,7 @@ TEST_F(ProjectionValidationTest, ValidateCorrectMatrices) {
 
     for (GraphicsApi api : apis) {
         Mat4f proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, api);
-        EXPECT_TRUE(validateProjectionMatrix(proj, api))
-            << "Validation failed for " << graphicsApiName(api);
+        EXPECT_TRUE(validateProjectionMatrix(proj, api)) << "Validation failed for " << graphicsApiName(api);
     }
 }
 
@@ -569,14 +568,12 @@ TEST_F(ProjectionValidationTest, DetailedValidation) {
     bool actual_flip = false;
 
     // Vulkan matrix should validate correctly
-    EXPECT_TRUE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eVulkan,
-                                                  expected_flip, actual_flip));
+    EXPECT_TRUE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eVulkan, expected_flip, actual_flip));
     EXPECT_TRUE(expected_flip);  // Vulkan expects Y-flip
     EXPECT_TRUE(actual_flip);    // Matrix has Y-flip
 
     // Same matrix fails for OpenGL
-    EXPECT_FALSE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eOpenGL,
-                                                   expected_flip, actual_flip));
+    EXPECT_FALSE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eOpenGL, expected_flip, actual_flip));
     EXPECT_FALSE(expected_flip);  // OpenGL doesn't expect Y-flip
     EXPECT_TRUE(actual_flip);     // But matrix has Y-flip
 }

@@ -23,9 +23,9 @@ namespace vne::math {
  * Used for extracting and combining transformation components from matrices.
  */
 struct TransformComponents {
-    Vec3f translation{Vec3f::zero()};        ///< Translation component
-    Quatf rotation{Quatf::identity()};       ///< Rotation component
-    Vec3f scale{1.0f, 1.0f, 1.0f};           ///< Scale component
+    Vec3f translation{Vec3f::zero()};   ///< Translation component
+    Quatf rotation{Quatf::identity()};  ///< Rotation component
+    Vec3f scale{1.0f, 1.0f, 1.0f};      ///< Scale component
 
     /**
      * @brief Default constructor. Creates identity transform.
@@ -44,10 +44,8 @@ struct TransformComponents {
      * @brief Checks if this is an identity transform.
      */
     [[nodiscard]] bool isIdentity(float epsilon = kFloatEpsilon) const noexcept {
-        return translation.lengthSquared() < epsilon * epsilon
-               && rotation.approxEquals(Quatf::identity(), epsilon)
-               && approxEqual(scale.x(), 1.0f, epsilon)
-               && approxEqual(scale.y(), 1.0f, epsilon)
+        return translation.lengthSquared() < epsilon * epsilon && rotation.approxEquals(Quatf::identity(), epsilon)
+               && approxEqual(scale.x(), 1.0f, epsilon) && approxEqual(scale.y(), 1.0f, epsilon)
                && approxEqual(scale.z(), 1.0f, epsilon);
     }
 
@@ -55,8 +53,7 @@ struct TransformComponents {
      * @brief Checks if this transform has uniform scale.
      */
     [[nodiscard]] bool hasUniformScale(float epsilon = kFloatEpsilon) const noexcept {
-        return approxEqual(scale.x(), scale.y(), epsilon)
-               && approxEqual(scale.y(), scale.z(), epsilon);
+        return approxEqual(scale.x(), scale.y(), epsilon) && approxEqual(scale.y(), scale.z(), epsilon);
     }
 };
 
@@ -83,9 +80,7 @@ struct TransformComponents {
     TransformComponents result;
 
     // Extract translation from the last column
-    result.translation = Vec3f(matrix.getColumn(3).x(),
-                               matrix.getColumn(3).y(),
-                               matrix.getColumn(3).z());
+    result.translation = Vec3f(matrix.getColumn(3).x(), matrix.getColumn(3).y(), matrix.getColumn(3).z());
 
     // Extract the upper-left 3x3 matrix
     Vec3f col0(matrix.getColumn(0).x(), matrix.getColumn(0).y(), matrix.getColumn(0).z());
@@ -102,9 +97,12 @@ struct TransformComponents {
     }
 
     // Normalize columns to extract rotation
-    if (result.scale.x() != 0.0f) col0 = col0 / result.scale.x();
-    if (result.scale.y() != 0.0f) col1 = col1 / result.scale.y();
-    if (result.scale.z() != 0.0f) col2 = col2 / result.scale.z();
+    if (result.scale.x() != 0.0f)
+        col0 = col0 / result.scale.x();
+    if (result.scale.y() != 0.0f)
+        col1 = col1 / result.scale.y();
+    if (result.scale.z() != 0.0f)
+        col2 = col2 / result.scale.z();
 
     // Build rotation matrix and convert to quaternion
     Mat3f rotation_matrix(col0, col1, col2);
@@ -123,9 +121,7 @@ struct TransformComponents {
  * @param scale Scale vector
  * @return The composed 4x4 transformation matrix
  */
-[[nodiscard]] inline Mat4f compose(const Vec3f& translation,
-                                   const Quatf& rotation,
-                                   const Vec3f& scale) noexcept {
+[[nodiscard]] inline Mat4f compose(const Vec3f& translation, const Quatf& rotation, const Vec3f& scale) noexcept {
     // Get rotation as 3x3 matrix
     Mat3f rot_mat = rotation.toMatrix3();
 
@@ -135,12 +131,10 @@ struct TransformComponents {
     Vec3f col2 = Vec3f(rot_mat.getColumn(2).x(), rot_mat.getColumn(2).y(), rot_mat.getColumn(2).z()) * scale.z();
 
     // Build 4x4 matrix
-    return Mat4f(
-        Vec4f(col0.x(), col0.y(), col0.z(), 0.0f),
-        Vec4f(col1.x(), col1.y(), col1.z(), 0.0f),
-        Vec4f(col2.x(), col2.y(), col2.z(), 0.0f),
-        Vec4f(translation.x(), translation.y(), translation.z(), 1.0f)
-    );
+    return Mat4f(Vec4f(col0.x(), col0.y(), col0.z(), 0.0f),
+                 Vec4f(col1.x(), col1.y(), col1.z(), 0.0f),
+                 Vec4f(col2.x(), col2.y(), col2.z(), 0.0f),
+                 Vec4f(translation.x(), translation.y(), translation.z(), 1.0f));
 }
 
 /**
@@ -164,9 +158,7 @@ struct TransformComponents {
  * @return The translation vector
  */
 [[nodiscard]] inline Vec3f extractTranslation(const Mat4f& matrix) noexcept {
-    return Vec3f(matrix.getColumn(3).x(),
-                 matrix.getColumn(3).y(),
-                 matrix.getColumn(3).z());
+    return Vec3f(matrix.getColumn(3).x(), matrix.getColumn(3).y(), matrix.getColumn(3).z());
 }
 
 /**
@@ -214,9 +206,12 @@ struct TransformComponents {
     }
 
     // Normalize
-    if (sx != 0.0f) col0 = col0 / sx;
-    if (sy != 0.0f) col1 = col1 / sy;
-    if (sz != 0.0f) col2 = col2 / sz;
+    if (sx != 0.0f)
+        col0 = col0 / sx;
+    if (sy != 0.0f)
+        col1 = col1 / sy;
+    if (sz != 0.0f)
+        col2 = col2 / sz;
 
     Mat3f rotation_matrix(col0, col1, col2);
     return Quatf::fromMatrix(rotation_matrix);
@@ -229,11 +224,9 @@ struct TransformComponents {
  * @return The upper-left 3x3 matrix
  */
 [[nodiscard]] inline Mat3f extractMat3(const Mat4f& matrix) noexcept {
-    return Mat3f(
-        Vec3f(matrix.getColumn(0).x(), matrix.getColumn(0).y(), matrix.getColumn(0).z()),
-        Vec3f(matrix.getColumn(1).x(), matrix.getColumn(1).y(), matrix.getColumn(1).z()),
-        Vec3f(matrix.getColumn(2).x(), matrix.getColumn(2).y(), matrix.getColumn(2).z())
-    );
+    return Mat3f(Vec3f(matrix.getColumn(0).x(), matrix.getColumn(0).y(), matrix.getColumn(0).z()),
+                 Vec3f(matrix.getColumn(1).x(), matrix.getColumn(1).y(), matrix.getColumn(1).z()),
+                 Vec3f(matrix.getColumn(2).x(), matrix.getColumn(2).y(), matrix.getColumn(2).z()));
 }
 
 /**
@@ -243,12 +236,10 @@ struct TransformComponents {
  * @return The translation matrix
  */
 [[nodiscard]] inline Mat4f makeTranslation(const Vec3f& translation) noexcept {
-    return Mat4f(
-        Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
-        Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
-        Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
-        Vec4f(translation.x(), translation.y(), translation.z(), 1.0f)
-    );
+    return Mat4f(Vec4f(1.0f, 0.0f, 0.0f, 0.0f),
+                 Vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+                 Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                 Vec4f(translation.x(), translation.y(), translation.z(), 1.0f));
 }
 
 /**
@@ -259,12 +250,10 @@ struct TransformComponents {
  */
 [[nodiscard]] inline Mat4f makeRotation(const Quatf& rotation) noexcept {
     Mat3f rot3 = rotation.toMatrix3();
-    return Mat4f(
-        Vec4f(rot3.getColumn(0).x(), rot3.getColumn(0).y(), rot3.getColumn(0).z(), 0.0f),
-        Vec4f(rot3.getColumn(1).x(), rot3.getColumn(1).y(), rot3.getColumn(1).z(), 0.0f),
-        Vec4f(rot3.getColumn(2).x(), rot3.getColumn(2).y(), rot3.getColumn(2).z(), 0.0f),
-        Vec4f(0.0f, 0.0f, 0.0f, 1.0f)
-    );
+    return Mat4f(Vec4f(rot3.getColumn(0).x(), rot3.getColumn(0).y(), rot3.getColumn(0).z(), 0.0f),
+                 Vec4f(rot3.getColumn(1).x(), rot3.getColumn(1).y(), rot3.getColumn(1).z(), 0.0f),
+                 Vec4f(rot3.getColumn(2).x(), rot3.getColumn(2).y(), rot3.getColumn(2).z(), 0.0f),
+                 Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 /**
@@ -274,12 +263,10 @@ struct TransformComponents {
  * @return The scale matrix
  */
 [[nodiscard]] inline Mat4f makeScale(float scale) noexcept {
-    return Mat4f(
-        Vec4f(scale, 0.0f, 0.0f, 0.0f),
-        Vec4f(0.0f, scale, 0.0f, 0.0f),
-        Vec4f(0.0f, 0.0f, scale, 0.0f),
-        Vec4f(0.0f, 0.0f, 0.0f, 1.0f)
-    );
+    return Mat4f(Vec4f(scale, 0.0f, 0.0f, 0.0f),
+                 Vec4f(0.0f, scale, 0.0f, 0.0f),
+                 Vec4f(0.0f, 0.0f, scale, 0.0f),
+                 Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 /**
@@ -289,12 +276,10 @@ struct TransformComponents {
  * @return The scale matrix
  */
 [[nodiscard]] inline Mat4f makeScale(const Vec3f& scale) noexcept {
-    return Mat4f(
-        Vec4f(scale.x(), 0.0f, 0.0f, 0.0f),
-        Vec4f(0.0f, scale.y(), 0.0f, 0.0f),
-        Vec4f(0.0f, 0.0f, scale.z(), 0.0f),
-        Vec4f(0.0f, 0.0f, 0.0f, 1.0f)
-    );
+    return Mat4f(Vec4f(scale.x(), 0.0f, 0.0f, 0.0f),
+                 Vec4f(0.0f, scale.y(), 0.0f, 0.0f),
+                 Vec4f(0.0f, 0.0f, scale.z(), 0.0f),
+                 Vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 /**

@@ -84,7 +84,7 @@ void demonstrateHermite() {
     Vec3f p0(0.0f, 0.0f, 0.0f);
     Vec3f t0(10.0f, 20.0f, 0.0f);  // Tangent at p0 (steep upward)
     Vec3f p1(10.0f, 0.0f, 0.0f);
-    Vec3f t1(10.0f, 0.0f, 0.0f);   // Tangent at p1 (horizontal)
+    Vec3f t1(10.0f, 0.0f, 0.0f);  // Tangent at p1 (horizontal)
 
     VNE_LOG_INFO << "Start: " << p0 << " with tangent " << t0;
     VNE_LOG_INFO << "End: " << p1 << " with tangent " << t1;
