@@ -159,6 +159,9 @@ jobs:
 
     - name: Check formatting
       run: |
+        # Run from repo root so .clang-format is found (--style=file looks in cwd and file's parent dirs)
+        cd "$GITHUB_WORKSPACE"
+        test -f .clang-format || (echo "error: .clang-format not found" && exit 1)
         # Only check project sources (exclude deps/, cmake/)
         FILES=$(find . -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
           -not -path './deps/*' -not -path './cmake/*' \
@@ -167,7 +170,7 @@ jobs:
           echo "No C/C++ files found under src/include/tests/examples"
           exit 0
         fi
-        # Use project's .clang-format (--style=file discovers it from each file's path)
+        # Use project's .clang-format (--style=file uses .clang-format from repo root)
         echo "$FILES" | xargs clang-format-14 --dry-run -Werror --style=file
 
   clang-tidy:

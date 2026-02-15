@@ -8,9 +8,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
+# Prefer clang-format-14 to match CI (Ubuntu clang-format-14)
+if [ -z "${CLANG_FORMAT:-}" ]; then
+  for cf in clang-format-14 clang-format-15 clang-format-16 clang-format-17 clang-format; do
+    if command -v "$cf" &>/dev/null; then
+      CLANG_FORMAT="$cf"
+      break
+    fi
+  done
+fi
 CLANG_FORMAT="${CLANG_FORMAT:-clang-format}"
 if ! command -v "$CLANG_FORMAT" &>/dev/null; then
-  echo "error: $CLANG_FORMAT not found. Set CLANG_FORMAT or install clang-format."
+  echo "error: clang-format not found. Set CLANG_FORMAT or install clang-format (CI uses clang-format-14)."
   exit 1
 fi
 
