@@ -427,8 +427,7 @@ TEST_F(ObbTest, CornerMatchesGetCorners) {
 
     for (uint32_t i = 0; i < 8; ++i) {
         Vec3f single_corner = obb.corner(i);
-        EXPECT_TRUE(single_corner.areSame(corners_array[i]))
-            << "Corner " << i << " mismatch";
+        EXPECT_TRUE(single_corner.areSame(corners_array[i])) << "Corner " << i << " mismatch";
     }
 }
 

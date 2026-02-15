@@ -39,7 +39,8 @@ void demonstrateBasicDecomposition() {
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "Decomposed components:";
     VNE_LOG_INFO << "  Translation: " << components.translation;
-    VNE_LOG_INFO << "  Rotation: " << components.rotation << " (" << radToDeg(components.rotation.angle()) << " degrees)";
+    VNE_LOG_INFO << "  Rotation: " << components.rotation << " (" << radToDeg(components.rotation.angle())
+                 << " degrees)";
     VNE_LOG_INFO << "  Scale: " << components.scale;
 }
 
@@ -89,9 +90,7 @@ void demonstrateTransformInterpolation() {
     VNE_LOG_INFO << "(Smooth interpolation between two transformations)";
 
     // Start transform
-    Mat4f start = compose(Vec3f(0.0f, 0.0f, 0.0f),
-                          Quatf::identity(),
-                          Vec3f(1.0f, 1.0f, 1.0f));
+    Mat4f start = compose(Vec3f(0.0f, 0.0f, 0.0f), Quatf::identity(), Vec3f(1.0f, 1.0f, 1.0f));
 
     // End transform
     Mat4f end = compose(Vec3f(10.0f, 5.0f, 0.0f),
@@ -103,8 +102,7 @@ void demonstrateTransformInterpolation() {
         Mat4f interpolated = lerpTransform(start, end, t);
         TransformComponents tc = decompose(interpolated);
 
-        VNE_LOG_INFO << "  t=" << t << ": pos=" << tc.translation
-                     << " rot=" << radToDeg(tc.rotation.angle()) << "deg"
+        VNE_LOG_INFO << "  t=" << t << ": pos=" << tc.translation << " rot=" << radToDeg(tc.rotation.angle()) << "deg"
                      << " scale=" << tc.scale.x();
     }
 }
@@ -141,9 +139,9 @@ void demonstratePracticalUseCase() {
     keyframe1.scale = Vec3f(1.0f, 1.0f, 1.0f);
 
     TransformComponents keyframe2;
-    keyframe2.translation = Vec3f(0.0f, 2.0f, 0.0f);  // Jump up
+    keyframe2.translation = Vec3f(0.0f, 2.0f, 0.0f);                     // Jump up
     keyframe2.rotation = Quatf::fromEuler(degToRad(15.0f), 0.0f, 0.0f);  // Tilt forward
-    keyframe2.scale = Vec3f(0.9f, 1.1f, 0.9f);  // Squash/stretch
+    keyframe2.scale = Vec3f(0.9f, 1.1f, 0.9f);                           // Squash/stretch
 
     Mat4f m1 = compose(keyframe1);
     Mat4f m2 = compose(keyframe2);
@@ -153,8 +151,8 @@ void demonstratePracticalUseCase() {
         Mat4f blended = lerpTransform(m1, m2, t);
         TransformComponents tc = decompose(blended);
 
-        VNE_LOG_INFO << "  t=" << t << ": y=" << tc.translation.y()
-                     << " pitch=" << radToDeg(tc.rotation.toEuler().x()) << "deg"
+        VNE_LOG_INFO << "  t=" << t << ": y=" << tc.translation.y() << " pitch=" << radToDeg(tc.rotation.toEuler().x())
+                     << "deg"
                      << " scale_y=" << tc.scale.y();
     }
 }

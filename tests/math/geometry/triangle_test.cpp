@@ -93,7 +93,7 @@ TEST_F(TriangleTest, AreaDegenerate) {
 
 TEST_F(TriangleTest, Centroid) {
     Vec3f c = tri_.centroid();
-    EXPECT_NEAR(c.x(), 1.0f, kEps);  // (0+3+0)/3 = 1
+    EXPECT_NEAR(c.x(), 1.0f, kEps);         // (0+3+0)/3 = 1
     EXPECT_NEAR(c.y(), 4.0f / 3.0f, kEps);  // (0+0+4)/3 = 4/3
     EXPECT_NEAR(c.z(), 0.0f, kEps);
 }
@@ -406,8 +406,7 @@ TEST_F(TriangleTest, AreSameExact) {
 
 TEST_F(TriangleTest, AreSameWithEpsilon) {
     Triangle t1(Vec3f(1.0f, 2.0f, 3.0f), Vec3f(4.0f, 5.0f, 6.0f), Vec3f(7.0f, 8.0f, 9.0f));
-    Triangle t2(Vec3f(1.0001f, 2.0001f, 3.0001f), Vec3f(4.0001f, 5.0001f, 6.0001f),
-                Vec3f(7.0001f, 8.0001f, 9.0001f));
+    Triangle t2(Vec3f(1.0001f, 2.0001f, 3.0001f), Vec3f(4.0001f, 5.0001f, 6.0001f), Vec3f(7.0001f, 8.0001f, 9.0001f));
     EXPECT_TRUE(t1.areSame(t2, 0.001f));
     EXPECT_FALSE(t1.areSame(t2, 0.00001f));
 }

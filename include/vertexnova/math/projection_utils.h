@@ -304,8 +304,7 @@ namespace vne::math {
  * @param api The target graphics API
  * @return true if the Y-flip is correct for the API, false otherwise
  */
-[[nodiscard]] inline bool validateProjectionMatrix(const Mat4f& proj,
-                                                   GraphicsApi api) noexcept {
+[[nodiscard]] inline bool validateProjectionMatrix(const Mat4f& proj, GraphicsApi api) noexcept {
     bool y_flipped = proj[1][1] < 0.0f;
     bool should_flip = needsProjectionYFlip(api);
     return y_flipped == should_flip;

@@ -167,7 +167,8 @@ jobs:
           echo "No C/C++ files found under src/include/tests/examples"
           exit 0
         fi
-        echo "$FILES" | xargs clang-format-14 --dry-run -Werror
+        # Use project's .clang-format (--style=file discovers it from each file's path)
+        echo "$FILES" | xargs clang-format-14 --dry-run -Werror --style=file
 
   clang-tidy:
     name: clang-tidy

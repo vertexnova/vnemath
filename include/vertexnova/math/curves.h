@@ -146,11 +146,8 @@ template<typename T>
  * @return Acceleration vector at t
  */
 template<typename T>
-[[nodiscard]] constexpr T bezierCubicSecondDerivative(const T& p0,
-                                                       const T& p1,
-                                                       const T& p2,
-                                                       const T& p3,
-                                                       float t) noexcept {
+[[nodiscard]] constexpr T bezierCubicSecondDerivative(
+    const T& p0, const T& p1, const T& p2, const T& p3, float t) noexcept {
     float u = 1.0f - t;
     return (p2 - p1 * 2.0f + p0) * (6.0f * u) + (p3 - p2 * 2.0f + p1) * (6.0f * t);
 }
@@ -184,10 +181,8 @@ template<typename T>
     float t3 = t2 * t;
 
     // Catmull-Rom basis matrix coefficients
-    return p0 * (-0.5f * t3 + t2 - 0.5f * t)
-         + p1 * (1.5f * t3 - 2.5f * t2 + 1.0f)
-         + p2 * (-1.5f * t3 + 2.0f * t2 + 0.5f * t)
-         + p3 * (0.5f * t3 - 0.5f * t2);
+    return p0 * (-0.5f * t3 + t2 - 0.5f * t) + p1 * (1.5f * t3 - 2.5f * t2 + 1.0f)
+           + p2 * (-1.5f * t3 + 2.0f * t2 + 0.5f * t) + p3 * (0.5f * t3 - 0.5f * t2);
 }
 
 /**
@@ -204,10 +199,8 @@ template<typename T>
 [[nodiscard]] constexpr T catmullRomDerivative(const T& p0, const T& p1, const T& p2, const T& p3, float t) noexcept {
     float t2 = t * t;
 
-    return p0 * (-1.5f * t2 + 2.0f * t - 0.5f)
-         + p1 * (4.5f * t2 - 5.0f * t)
-         + p2 * (-4.5f * t2 + 4.0f * t + 0.5f)
-         + p3 * (1.5f * t2 - t);
+    return p0 * (-1.5f * t2 + 2.0f * t - 0.5f) + p1 * (4.5f * t2 - 5.0f * t) + p2 * (-4.5f * t2 + 4.0f * t + 0.5f)
+           + p3 * (1.5f * t2 - t);
 }
 
 /**
@@ -227,20 +220,14 @@ template<typename T>
  * @return Point on the curve
  */
 template<typename T>
-[[nodiscard]] constexpr T catmullRomTension(const T& p0,
-                                             const T& p1,
-                                             const T& p2,
-                                             const T& p3,
-                                             float t,
-                                             float tension = 0.0f) noexcept {
+[[nodiscard]] constexpr T catmullRomTension(
+    const T& p0, const T& p1, const T& p2, const T& p3, float t, float tension = 0.0f) noexcept {
     float s = (1.0f - tension) * 0.5f;
     float t2 = t * t;
     float t3 = t2 * t;
 
-    return p0 * (-s * t3 + 2.0f * s * t2 - s * t)
-         + p1 * ((2.0f - s) * t3 + (s - 3.0f) * t2 + 1.0f)
-         + p2 * ((s - 2.0f) * t3 + (3.0f - 2.0f * s) * t2 + s * t)
-         + p3 * (s * t3 - s * t2);
+    return p0 * (-s * t3 + 2.0f * s * t2 - s * t) + p1 * ((2.0f - s) * t3 + (s - 3.0f) * t2 + 1.0f)
+           + p2 * ((s - 2.0f) * t3 + (3.0f - 2.0f * s) * t2 + s * t) + p3 * (s * t3 - s * t2);
 }
 
 // ============================================================================
@@ -323,10 +310,9 @@ template<typename T>
     // B-spline basis matrix (1/6 factor)
     constexpr float k = 1.0f / 6.0f;
 
-    return (p0 * (-t3 + 3.0f * t2 - 3.0f * t + 1.0f)
-          + p1 * (3.0f * t3 - 6.0f * t2 + 4.0f)
-          + p2 * (-3.0f * t3 + 3.0f * t2 + 3.0f * t + 1.0f)
-          + p3 * t3) * k;
+    return (p0 * (-t3 + 3.0f * t2 - 3.0f * t + 1.0f) + p1 * (3.0f * t3 - 6.0f * t2 + 4.0f)
+            + p2 * (-3.0f * t3 + 3.0f * t2 + 3.0f * t + 1.0f) + p3 * t3)
+           * k;
 }
 
 // ============================================================================
@@ -344,11 +330,8 @@ template<typename T>
  * @return Approximate arc length
  */
 template<typename T>
-[[nodiscard]] inline float bezierCubicArcLength(const T& p0,
-                                                 const T& p1,
-                                                 const T& p2,
-                                                 const T& p3,
-                                                 int subdivisions = 32) noexcept {
+[[nodiscard]] inline float bezierCubicArcLength(
+    const T& p0, const T& p1, const T& p2, const T& p3, int subdivisions = 32) noexcept {
     float length = 0.0f;
     T prev = p0;
 
@@ -379,12 +362,12 @@ template<typename T>
  */
 template<typename T>
 inline void bezierCubicSplit(const T& p0,
-                              const T& p1,
-                              const T& p2,
-                              const T& p3,
-                              float t,
-                              std::array<T, 4>& left,
-                              std::array<T, 4>& right) noexcept {
+                             const T& p1,
+                             const T& p2,
+                             const T& p3,
+                             float t,
+                             std::array<T, 4>& left,
+                             std::array<T, 4>& right) noexcept {
     // First level
     T q0 = detail::curveLerp(p0, p1, t);
     T q1 = detail::curveLerp(p1, p2, t);

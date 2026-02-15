@@ -445,11 +445,16 @@ inline float linearToSrgbComponent(float c) {
 
 // Helper: HSL to RGB conversion helper
 inline float hslToRgbHelper(float p, float q, float t) {
-    if (t < 0.0f) t += 1.0f;
-    if (t > 1.0f) t -= 1.0f;
-    if (t < 1.0f / 6.0f) return p + (q - p) * 6.0f * t;
-    if (t < 0.5f) return q;
-    if (t < 2.0f / 3.0f) return p + (q - p) * (2.0f / 3.0f - t) * 6.0f;
+    if (t < 0.0f)
+        t += 1.0f;
+    if (t > 1.0f)
+        t -= 1.0f;
+    if (t < 1.0f / 6.0f)
+        return p + (q - p) * 6.0f * t;
+    if (t < 0.5f)
+        return q;
+    if (t < 2.0f / 3.0f)
+        return p + (q - p) * (2.0f / 3.0f - t) * 6.0f;
     return p;
 }
 }  // namespace
@@ -458,29 +463,42 @@ inline float hslToRgbHelper(float p, float q, float t) {
 Color Color::fromHSV(float h, float s, float v, float a) noexcept {
     // Normalize hue to [0, 360)
     h = std::fmod(h, 360.0f);
-    if (h < 0.0f) h += 360.0f;
+    if (h < 0.0f)
+        h += 360.0f;
 
     s = vne::math::clamp(s, 0.0f, 1.0f);
     v = vne::math::clamp(v, 0.0f, 1.0f);
 
-    float c = v * s;                       // Chroma
+    float c = v * s;  // Chroma
     float x = c * (1.0f - std::abs(std::fmod(h / 60.0f, 2.0f) - 1.0f));
     float m = v - c;
 
     float r = 0.0f, g = 0.0f, b = 0.0f;
 
     if (h < 60.0f) {
-        r = c; g = x; b = 0.0f;
+        r = c;
+        g = x;
+        b = 0.0f;
     } else if (h < 120.0f) {
-        r = x; g = c; b = 0.0f;
+        r = x;
+        g = c;
+        b = 0.0f;
     } else if (h < 180.0f) {
-        r = 0.0f; g = c; b = x;
+        r = 0.0f;
+        g = c;
+        b = x;
     } else if (h < 240.0f) {
-        r = 0.0f; g = x; b = c;
+        r = 0.0f;
+        g = x;
+        b = c;
     } else if (h < 300.0f) {
-        r = x; g = 0.0f; b = c;
+        r = x;
+        g = 0.0f;
+        b = c;
     } else {
-        r = c; g = 0.0f; b = x;
+        r = c;
+        g = 0.0f;
+        b = x;
     }
 
     return {r + m, g + m, b + m, a};
@@ -490,7 +508,8 @@ Color Color::fromHSV(float h, float s, float v, float a) noexcept {
 Color Color::fromHSL(float h, float s, float l, float a) noexcept {
     // Normalize hue to [0, 360)
     h = std::fmod(h, 360.0f);
-    if (h < 0.0f) h += 360.0f;
+    if (h < 0.0f)
+        h += 360.0f;
 
     s = vne::math::clamp(s, 0.0f, 1.0f);
     l = vne::math::clamp(l, 0.0f, 1.0f);
@@ -532,7 +551,8 @@ Vec3f Color::toHSV() const noexcept {
             h = 60.0f * ((r_ - g_) / delta + 4.0f);
         }
 
-        if (h < 0.0f) h += 360.0f;
+        if (h < 0.0f)
+            h += 360.0f;
     }
 
     return {h, s, v};
@@ -549,8 +569,7 @@ Vec3f Color::toHSL() const noexcept {
     float l = (max_val + min_val) * 0.5f;
 
     if (!vne::math::isZero(delta)) {
-        s = l > 0.5f ? delta / (2.0f - max_val - min_val)
-                     : delta / (max_val + min_val);
+        s = l > 0.5f ? delta / (2.0f - max_val - min_val) : delta / (max_val + min_val);
 
         if (vne::math::areSame(r_, max_val)) {
             h = 60.0f * std::fmod((g_ - b_) / delta, 6.0f);
@@ -560,7 +579,8 @@ Vec3f Color::toHSL() const noexcept {
             h = 60.0f * ((r_ - g_) / delta + 4.0f);
         }
 
-        if (h < 0.0f) h += 360.0f;
+        if (h < 0.0f)
+            h += 360.0f;
     }
 
     return {h, s, l};
@@ -568,27 +588,18 @@ Vec3f Color::toHSL() const noexcept {
 
 //------------------------------------------------------------------------------
 Color Color::toLinear() const noexcept {
-    return {srgbToLinearComponent(r_),
-            srgbToLinearComponent(g_),
-            srgbToLinearComponent(b_),
-            a_};
+    return {srgbToLinearComponent(r_), srgbToLinearComponent(g_), srgbToLinearComponent(b_), a_};
 }
 
 //------------------------------------------------------------------------------
 Color Color::toSRGB() const noexcept {
-    return {linearToSrgbComponent(r_),
-            linearToSrgbComponent(g_),
-            linearToSrgbComponent(b_),
-            a_};
+    return {linearToSrgbComponent(r_), linearToSrgbComponent(g_), linearToSrgbComponent(b_), a_};
 }
 
 //------------------------------------------------------------------------------
 Color Color::gammaCorrect(float gamma) const noexcept {
     float inv_gamma = 1.0f / gamma;
-    return {std::pow(r_, inv_gamma),
-            std::pow(g_, inv_gamma),
-            std::pow(b_, inv_gamma),
-            a_};
+    return {std::pow(r_, inv_gamma), std::pow(g_, inv_gamma), std::pow(b_, inv_gamma), a_};
 }
 
 //------------------------------------------------------------------------------
