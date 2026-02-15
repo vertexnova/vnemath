@@ -100,7 +100,10 @@ endif()
 # Build Options
 #==============================================================================
 # Build presets: DEV (local repo) and CI (pipelines). Default DEV when top-level project.
-if(CMAKE_PROJECT_NAME STREQUAL "vnemath")
+# Use CMake's built-in top-level detection; fallback for CMake < 3.21.
+if(DEFINED PROJECT_IS_TOP_LEVEL AND PROJECT_IS_TOP_LEVEL)
+    set(VNE_MATH_DEV_DEFAULT ON)
+elseif(NOT DEFINED PROJECT_IS_TOP_LEVEL AND CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     set(VNE_MATH_DEV_DEFAULT ON)
 else()
     set(VNE_MATH_DEV_DEFAULT OFF)
@@ -266,8 +269,8 @@ function(_vnemath_configure_vnelogging_dep)
         SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnelogging"
         BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnelogging"
         CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF)
-    set(BUILD_TESTS "${_vnemath_build_tests_saved}" CACHE BOOL "" FORCE)
-    set(BUILD_EXAMPLES "${_vnemath_build_examples_saved}" CACHE BOOL "" FORCE)
+    set_property(CACHE BUILD_TESTS PROPERTY VALUE "${_vnemath_build_tests_saved}")
+    set_property(CACHE BUILD_EXAMPLES PROPERTY VALUE "${_vnemath_build_examples_saved}")
 endfunction()
 
 _vnemath_configure_vnecommon_dep()

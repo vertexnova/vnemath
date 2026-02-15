@@ -143,3 +143,54 @@ jobs:
     - name: Test
       working-directory: build
       run: ctest --output-on-failure -C Release
+
+  clang-format:
+    name: clang-format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install clang-format
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format-14
+
+    - name: Check formatting
+      run: |
+        # Only check project sources (exclude deps/, cmake/)
+        FILES=$(find . -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
+          -not -path './deps/*' -not -path './cmake/*' \
+          \( -path './src/*' -o -path './include/*' -o -path './tests/*' -o -path './examples/*' \) | sort)
+        if [ -z "$FILES" ]; then
+          echo "No C/C++ files found under src/include/tests/examples"
+          exit 0
+        fi
+        echo "$FILES" | xargs clang-format-14 --dry-run -Werror
+
+  clang-tidy:
+    name: clang-tidy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake clang-14 clang-tidy-14
+
+    - name: Configure CMake with clang-tidy
+      run: |
+        cmake -B build -S . \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER=clang++-14 \
+          -DCMAKE_C_COMPILER=clang-14 \
+          -DBUILD_TESTS=ON \
+          -DENABLE_CLANG_TIDY=ON \
+          -DCLANG_TIDY=clang-tidy-14
+
+    - name: Build (runs clang-tidy)
+      run: cmake --build build --config Release --parallel
