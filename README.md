@@ -239,12 +239,14 @@ VNE_STATIC_ASSERT(isStd140Compatible<MyUniform>(), "MyUniform must be std140 com
 
 ## Dependencies (Git Submodules)
 
-| Category | Dependency | Version | Description |
+Dependencies live under `deps/`: external third-party in `deps/external/`, internal VertexNova libs in `deps/internal/`.
+
+| Location | Dependency | Version | Description |
 |----------|------------|---------|-------------|
-| External | GLM | 1.1.0 | OpenGL Mathematics library |
-| External | Google Test | 1.17.0 | Unit testing framework |
-| Libs | VertexNova Common | 1.0.0 | Common utilities and macros |
-| Libs | VertexNova Logging | 1.0.0 | Logging library |
+| deps/external | GLM | 1.1.0 | OpenGL Mathematics library |
+| deps/external | Google Test | 1.17.0 | Unit testing framework |
+| deps/internal | VertexNova Common | 1.0.0 | Common utilities and macros |
+| deps/internal | VertexNova Logging | 1.0.0 | Logging library |
 
 ### Initializing Submodules
 

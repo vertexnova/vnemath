@@ -88,7 +88,7 @@ jobs:
       run: |
         cd build
         lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch,unused,empty
-        lcov --remove coverage.info '/usr/*' '*/tests/*' '*/external/*' '*/libs/*' '*/_deps/*' '*/googletest/*' '*/googlemock/*' --output-file coverage.info --ignore-errors mismatch,unused,empty
+        lcov --remove coverage.info '/usr/*' '*/tests/*' '*/deps/*' '*/_deps/*' '*/googletest/*' '*/googlemock/*' --output-file coverage.info --ignore-errors mismatch,unused,empty
         lcov --list coverage.info --ignore-errors mismatch,unused,empty
         cp coverage.info ..
         cd ..
