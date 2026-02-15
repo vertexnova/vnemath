@@ -17,6 +17,22 @@ on:
     branches: [ "main" ]
 
 jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install clang-format
+      run: sudo apt-get update && sudo apt-get install -y clang-format
+
+    - name: Check formatting (uses project .clang-format)
+      run: |
+        find src include examples tests -type f \( -name '*.h' -o -name '*.cpp' -o -name '*.hpp' -o -name '*.c' \) \
+          | xargs clang-format -i --style=file --fallback-style=Google
+        git diff --exit-code
+
   linux:
     runs-on: ubuntu-latest
     strategy:
@@ -135,7 +151,7 @@ jobs:
       run: |
         cmake -B build -S . `
           -DCMAKE_BUILD_TYPE=Release `
-          -DBUILD_TESTS=ON
+          -DVNE_MATH_CI=ON
 
     - name: Build
       run: cmake --build build --config Release --parallel
@@ -144,57 +160,30 @@ jobs:
       working-directory: build
       run: ctest --output-on-failure -C Release
 
-  clang-format:
-    name: clang-format
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Install clang-format
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y clang-format-14
-
-    - name: Check formatting
-      run: |
-        # Run from repo root so .clang-format is found (--style=file looks in cwd and file's parent dirs)
-        cd "$GITHUB_WORKSPACE"
-        test -f .clang-format || (echo "error: .clang-format not found" && exit 1)
-        # Only check project sources (exclude deps/, cmake/)
-        FILES=$(find . -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
-          -not -path './deps/*' -not -path './cmake/*' \
-          \( -path './src/*' -o -path './include/*' -o -path './tests/*' -o -path './examples/*' \) | sort)
-        if [ -z "$FILES" ]; then
-          echo "No C/C++ files found under src/include/tests/examples"
-          exit 0
-        fi
-        # Use project's .clang-format (--style=file uses .clang-format from repo root)
-        echo "$FILES" | xargs clang-format-14 --dry-run -Werror --style=file
-
   clang-tidy:
-    name: clang-tidy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
-        submodules: true
+        submodules: recursive
 
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake clang-14 clang-tidy-14
+        sudo apt-get install -y build-essential cmake clang clang-tidy
 
-    - name: Configure CMake with clang-tidy
+    - name: Configure CMake
       run: |
         cmake -B build -S . \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_CXX_COMPILER=clang++-14 \
-          -DCMAKE_C_COMPILER=clang-14 \
-          -DBUILD_TESTS=ON \
-          -DENABLE_CLANG_TIDY=ON \
-          -DCLANG_TIDY=clang-tidy-14
+          -DCMAKE_C_COMPILER=clang \
+          -DCMAKE_CXX_COMPILER=clang++ \
+          -DVNE_MATH_CI=ON
 
-    - name: Build (runs clang-tidy)
+    - name: Build
       run: cmake --build build --config Release --parallel
+
+    - name: Run clang-tidy (project .clang-tidy)
+      run: |
+        find src -type f \( -name '*.cpp' -o -name '*.h' \) -print0 \
+          | xargs -0 -r clang-tidy -p build
