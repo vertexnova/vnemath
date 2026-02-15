@@ -24,15 +24,17 @@ namespace detail {
 
 // For scalars
 template<typename T>
-[[nodiscard]] constexpr auto curveLerp(const T& a, const T& b, float t) noexcept
-    -> std::enable_if_t<std::is_arithmetic_v<T>, T> {
+[[nodiscard]] constexpr auto curveLerp(const T& a,
+                                       const T& b,
+                                       float t) noexcept -> std::enable_if_t<std::is_arithmetic_v<T>, T> {
     return a + (b - a) * t;
 }
 
 // For Vec types (has lerp member function)
 template<typename T>
-[[nodiscard]] constexpr auto curveLerp(const T& a, const T& b, float t) noexcept
-    -> std::enable_if_t<!std::is_arithmetic_v<T>, T> {
+[[nodiscard]] constexpr auto curveLerp(const T& a,
+                                       const T& b,
+                                       float t) noexcept -> std::enable_if_t<!std::is_arithmetic_v<T>, T> {
     return a.lerp(b, t);
 }
 

@@ -152,8 +152,7 @@ void demonstratePracticalUseCase() {
         TransformComponents tc = decompose(blended);
 
         VNE_LOG_INFO << "  t=" << t << ": y=" << tc.translation.y() << " pitch=" << radToDeg(tc.rotation.toEuler().x())
-                     << "deg"
-                     << " scale_y=" << tc.scale.y();
+                     << "deg" << " scale_y=" << tc.scale.y();
     }
 }
 
