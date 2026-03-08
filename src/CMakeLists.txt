@@ -146,6 +146,7 @@ endif()
 #                          Platform-specific linking                           #
 #==============================================================================
 
-if(NOT WIN32)
-    target_link_libraries(vnemath PRIVATE pthread)
+# Threads::Threads is portable (pthread on Unix/Android; required for Android NDK)
+if(NOT WIN32 AND NOT EMSCRIPTEN)
+    target_link_libraries(vnemath PRIVATE Threads::Threads)
 endif()
