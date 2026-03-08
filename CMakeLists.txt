@@ -19,6 +19,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
+# Threading library (required for Android NDK; use Threads::Threads instead of -lpthread)
+find_package(Threads REQUIRED)
+
 #==============================================================================
 # Add custom CMake modules path
 #==============================================================================

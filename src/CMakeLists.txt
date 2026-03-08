@@ -146,6 +146,6 @@ endif()
 #                          Platform-specific linking                           #
 #==============================================================================
 
-if(NOT WIN32)
-    target_link_libraries(vnemath PRIVATE pthread)
+if(NOT WIN32 AND NOT ANDROID AND NOT EMSCRIPTEN)
+    target_link_libraries(vnemath PRIVATE Threads::Threads)
 endif()
