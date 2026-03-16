@@ -156,8 +156,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_MatchesScalarNdcToScreen_OpenGL) 
     Mat4f m = clipToScreenMatrix(vp, GraphicsApi::eOpenGL);
 
     // Test several NDC points
-    const Vec2f ndc_points[] = {
-        {0.0f, 0.0f}, {1.0f, 1.0f}, {-1.0f, -1.0f}, {0.5f, -0.3f}, {-0.7f, 0.8f}};
+    const Vec2f ndc_points[] = {{0.0f, 0.0f}, {1.0f, 1.0f}, {-1.0f, -1.0f}, {0.5f, -0.3f}, {-0.7f, 0.8f}};
 
     for (const auto& ndc : ndc_points) {
         Vec2f scalar = ndcToScreen(ndc, vp, GraphicsApi::eOpenGL);
@@ -171,8 +170,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_MatchesScalarNdcToScreen_Vulkan) 
     Viewport vp(1280.0f, 720.0f);
     Mat4f m = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
 
-    const Vec2f ndc_points[] = {
-        {0.0f, 0.0f}, {1.0f, 1.0f}, {-1.0f, -1.0f}, {0.5f, -0.3f}, {-0.7f, 0.8f}};
+    const Vec2f ndc_points[] = {{0.0f, 0.0f}, {1.0f, 1.0f}, {-1.0f, -1.0f}, {0.5f, -0.3f}, {-0.7f, 0.8f}};
 
     for (const auto& ndc : ndc_points) {
         Vec2f scalar = ndcToScreen(ndc, vp, GraphicsApi::eVulkan);

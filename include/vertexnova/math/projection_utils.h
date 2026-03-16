@@ -20,7 +20,6 @@ namespace vne::math {
 // Forward declaration so project() can use the 3D NDC-to-screen helper while keeping NDC utilities grouped later.
 [[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc, const Viewport& viewport, GraphicsApi api) noexcept;
 
-
 // ============================================================================
 // World-to-Screen Projection
 // ============================================================================
@@ -241,9 +240,7 @@ namespace vne::math {
  * @param api Graphics API (for Y-flip and depth range handling)
  * @return Screen coordinates (x,y in pixels, z in [z_near, z_far])
  */
-[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc,
-                                       const Viewport& viewport,
-                                       GraphicsApi api) noexcept {
+[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc, const Viewport& viewport, GraphicsApi api) noexcept {
     Vec2f screen_xy = ndcToScreen(Vec2f(ndc.x(), ndc.y()), viewport, api);
 
     // Map NDC z to [viewport.z_near, viewport.z_far]
@@ -338,11 +335,10 @@ namespace vne::math {
     // [   0      scale_y   0   trans_y ]
     // [   0        0       1     0     ]
     // [   0        0       0     1     ]
-    return Mat4f(
-        Vec4f(scale_x, 0.0f,    0.0f, 0.0f),
-        Vec4f(0.0f,    scale_y, 0.0f, 0.0f),
-        Vec4f(0.0f,    0.0f,    1.0f, 0.0f),
-        Vec4f(trans_x, trans_y, 0.0f, 1.0f));
+    return Mat4f(Vec4f(scale_x, 0.0f, 0.0f, 0.0f),
+                 Vec4f(0.0f, scale_y, 0.0f, 0.0f),
+                 Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                 Vec4f(trans_x, trans_y, 0.0f, 1.0f));
 }
 
 /**
