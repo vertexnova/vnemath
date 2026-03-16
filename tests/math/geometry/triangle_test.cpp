@@ -41,8 +41,8 @@ class TriangleTest : public ::testing::Test {
 // ============================================================================
 
 TEST_F(TriangleTest, DefaultConstructor) {
-    Triangle t;
-    // Just verify it compiles and doesn't crash
+    // Just verify that default construction compiles and is well-formed.
+    Triangle{};
     SUCCEED();
 }
 

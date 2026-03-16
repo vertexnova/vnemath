@@ -17,12 +17,17 @@
 
 namespace vne::math {
 
+// Forward declaration so project() can use the 3D NDC-to-screen helper while keeping NDC utilities grouped later.
+[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc,
+                                       const Viewport& viewport,
+                                       GraphicsApi api = GraphicsApi::eOpenGL) noexcept;
+
 // ============================================================================
 // World-to-Screen Projection
 // ============================================================================
 
 /**
- * @brief Projects a 3D world point to 2D screen coordinates.
+ * @brief Projects a 3D world point to 2D screen coordinates and viewport depth.
  *
  * This is the standard gluProject operation.
  *
@@ -30,46 +35,22 @@ namespace vne::math {
  * @param mvp The combined Model-View-Projection matrix
  * @param viewport The viewport parameters
  * @param api Graphics API (for Y-flip handling)
- * @return Screen coordinates (x, y) and normalized depth (z)
- *         z is in [0,1] for most APIs, [-1,1] for OpenGL
+ * @return Screen coordinates (x, y) and viewport depth (z)
+ *         z is a screen-space depth value in the range [viewport.z_near, viewport.z_far],
+ *         i.e., NDC depth mapped into the viewport's depth range (not NDC itself).
  */
 [[nodiscard]] inline Vec3f project(const Vec3f& world_pos,
                                    const Mat4f& mvp,
                                    const Viewport& viewport,
                                    GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
-    // Transform to clip space
     Vec4f clip = mvp * Vec4f(world_pos, 1.0f);
 
-    // Perspective divide to NDC
     if (isZero(clip.w())) {
         return Vec3f(0.0f, 0.0f, -1.0f);  // Behind camera
     }
 
     Vec3f ndc = clip.xyz() / clip.w();
-
-    // NDC to normalized viewport coordinates [0, 1]
-    float sx = (ndc.x() + 1.0f) * 0.5f;
-    float sy = (ndc.y() + 1.0f) * 0.5f;
-
-    // Handle screen-space origin convention.
-    // Most APIs (Vulkan/Metal/DirectX/WebGPU) use top-left origin for framebuffers.
-    if (screenOriginIsTopLeft(api)) {
-        sy = 1.0f - sy;
-    }
-
-    // Convert normalized coordinates to screen-space pixels
-    float screen_x = viewport.x + sx * viewport.width;
-    float screen_y = viewport.y + sy * viewport.height;
-
-    // Map depth to viewport range
-    float screen_z = viewport.z_near + (ndc.z() + 1.0f) * 0.5f * (viewport.z_far - viewport.z_near);
-
-    // For APIs with [0,1] depth, adjust
-    if (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne) {
-        screen_z = viewport.z_near + ndc.z() * (viewport.z_far - viewport.z_near);
-    }
-
-    return Vec3f(screen_x, screen_y, screen_z);
+    return ndcToScreen(ndc, viewport, api);
 }
 
 /**
@@ -93,7 +74,8 @@ namespace vne::math {
  *
  * This is the standard gluUnProject operation.
  *
- * @param screen_pos Screen coordinates (x, y) and depth (z in [0,1])
+ * @param screen_pos Screen coordinates (x, y) and depth (z in viewport depth range
+ *                   [viewport.z_near, viewport.z_far], i.e., screen-space depth)
  * @param inv_mvp The inverse of the Model-View-Projection matrix
  * @param viewport The viewport parameters
  * @param api Graphics API (for Y-flip handling)
@@ -107,8 +89,9 @@ namespace vne::math {
     float sx = (screen_pos.x() - viewport.x) / viewport.width;
     float sy = (screen_pos.y() - viewport.y) / viewport.height;
 
-    // If screen-space uses top-left origin, invert Y to match NDC (+Y up) math
-    if (screenOriginIsTopLeft(api)) {
+    // Invert Y only when screen is top-left and the projection did not already flip NDC Y
+    // (avoids double Y-flip for Vulkan where needsProjectionYFlip(api) is true)
+    if (screenOriginIsTopLeft(api) && !needsProjectionYFlip(api)) {
         sy = 1.0f - sy;
     }
 
@@ -214,8 +197,8 @@ namespace vne::math {
     float sx = (screen_pos.x() - viewport.x) / viewport.width;
     float sy = (screen_pos.y() - viewport.y) / viewport.height;
 
-    // If screen-space uses top-left origin, invert Y to match NDC (+Y up) math
-    if (screenOriginIsTopLeft(api)) {
+    // Invert Y only when screen is top-left and the projection did not already flip NDC Y
+    if (screenOriginIsTopLeft(api) && !needsProjectionYFlip(api)) {
         sy = 1.0f - sy;
     }
 
@@ -236,8 +219,8 @@ namespace vne::math {
     float sx = (ndc_pos.x() + 1.0f) * 0.5f;
     float sy = (ndc_pos.y() + 1.0f) * 0.5f;
 
-    // If screen-space uses top-left origin, invert Y
-    if (screenOriginIsTopLeft(api)) {
+    // Invert Y only when screen is top-left and the projection did not already flip NDC Y
+    if (screenOriginIsTopLeft(api) && !needsProjectionYFlip(api)) {
         sy = 1.0f - sy;
     }
 
@@ -246,6 +229,35 @@ namespace vne::math {
     float screen_y = viewport.y + sy * viewport.height;
 
     return Vec2f(screen_x, screen_y);
+}
+
+/**
+ * @brief Converts 3D NDC coordinates (including depth) to screen coordinates.
+ *
+ * Extends the 2D ndcToScreen to also map the NDC Z component to
+ * [viewport.z_near, viewport.z_far] in a way consistent with the given API's
+ * depth range convention.
+ *
+ * @param ndc NDC coordinates: x and y in [-1,1], z in API depth range
+ *            ([-1,1] for OpenGL, [0,1] for Vulkan/Metal/DirectX/WebGPU)
+ * @param viewport Viewport parameters (x, y, width, height, z_near, z_far)
+ * @param api Graphics API (for Y-flip and depth range handling)
+ * @return Screen coordinates (x,y in pixels, z in [z_near, z_far])
+ */
+[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc, const Viewport& viewport, GraphicsApi api) noexcept {
+    Vec2f screen_xy = ndcToScreen(Vec2f(ndc.x(), ndc.y()), viewport, api);
+
+    // Map NDC z to [viewport.z_near, viewport.z_far]
+    float screen_z;
+    if (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne) {
+        // ndc.z is already in [0,1]
+        screen_z = viewport.z_near + ndc.z() * (viewport.z_far - viewport.z_near);
+    } else {
+        // ndc.z is in [-1,1] — map to [0,1] first
+        screen_z = viewport.z_near + (ndc.z() + 1.0f) * 0.5f * (viewport.z_far - viewport.z_near);
+    }
+
+    return Vec3f(screen_xy.x(), screen_xy.y(), screen_z);
 }
 
 // ============================================================================
@@ -288,6 +300,93 @@ namespace vne::math {
     }
     float ndc_z = (z_far + z_near - 2.0f * z_near * z_far / linear_depth) / (z_far - z_near);
     return (ndc_z + 1.0f) * 0.5f;
+}
+
+// ============================================================================
+// Clip-to-Screen Matrix
+// ============================================================================
+
+/**
+ * @brief Returns a 4x4 matrix that transforms NDC XY to screen pixel coordinates.
+ *
+ * This encodes the viewport transform as a matrix, allowing it to be composed
+ * with a view-projection matrix for a single world-to-screen matrix.
+ *
+ * The transform maps:
+ *   NDC x in [-1, 1]  →  screen x in [viewport.x, viewport.x + viewport.width]
+ *   NDC y in [-1, 1]  →  screen y in [viewport.y, viewport.y + viewport.height]
+ *                         (Y is flipped only when the screen origin is top-left and the
+ *                          projection did not already flip NDC Y, avoiding double-flip for Vulkan)
+ *
+ * Z and W are passed through unchanged: Z remains NDC depth (Z/W after perspective divide),
+ * not mapped into the viewport depth range or depth-buffer encoding. For depth or viewport
+ * mapping use ndcToScreen(Vec3f), linearizeDepth/encodeDepth, or an explicit NDC-depth mapping
+ * in addition to this matrix.
+ *
+ * Matches the scalar ndcToScreen() function exactly for the XY components.
+ *
+ * @param viewport Viewport parameters
+ * @param api Graphics API (controls Y-flip for screen-space origin convention)
+ * @return 4x4 clip-to-screen transform matrix for XY (Z remains NDC depth)
+ */
+[[nodiscard]] inline Mat4f clipToScreenMatrix(const Viewport& viewport,
+                                              GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
+    float half_w = viewport.width * 0.5f;
+    float half_h = viewport.height * 0.5f;
+    float scale_x = half_w;
+    // Flip Y only when screen is top-left and the projection did not already flip NDC Y
+    bool flip_y = screenOriginIsTopLeft(api) && !needsProjectionYFlip(api);
+    float scale_y = flip_y ? -half_h : half_h;
+    float trans_x = viewport.x + half_w;
+    // Translation Y is always vp.y + half_h because scale_y already carries the sign
+    float trans_y = viewport.y + half_h;
+
+    // Column-major 4x4:
+    // [ scale_x    0       0   trans_x ]
+    // [   0      scale_y   0   trans_y ]
+    // [   0        0       1     0     ]
+    // [   0        0       0     1     ]
+    return Mat4f(Vec4f(scale_x, 0.0f, 0.0f, 0.0f),
+                 Vec4f(0.0f, scale_y, 0.0f, 0.0f),
+                 Vec4f(0.0f, 0.0f, 1.0f, 0.0f),
+                 Vec4f(trans_x, trans_y, 0.0f, 1.0f));
+}
+
+/**
+ * @brief Convenience overload: clip-to-screen matrix for a viewport at origin.
+ *
+ * @param width Viewport width in pixels
+ * @param height Viewport height in pixels
+ * @param api Graphics API (controls Y-flip)
+ * @return 4x4 clip-to-screen transform matrix
+ */
+[[nodiscard]] inline Mat4f clipToScreenMatrix(float width,
+                                              float height,
+                                              GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
+    return clipToScreenMatrix(Viewport(width, height), api);
+}
+
+/**
+ * @brief Returns the full world-to-screen matrix: clipToScreen * viewProj.
+ *
+ * Allows transforming a world-space position directly to screen pixels with
+ * a single matrix multiply:
+ *   Vec4f screen = worldToScreenMatrix(...) * Vec4f(world_pos, 1.0f)
+ *   // screen.xy are pixel coordinates (divide by screen.w for perspective)
+ *
+ * This does NOT perform the perspective divide; for perspective cameras divide x, y by w
+ * after the multiply. After divide, z/w is NDC depth, not viewport-mapped depth—use
+ * ndcToScreen(Vec3f) or depth helpers if you need viewport/depth-buffer values.
+ *
+ * @param view_proj The combined view-projection matrix
+ * @param viewport Viewport parameters
+ * @param api Graphics API
+ * @return 4x4 world-to-screen matrix (XY→pixels; Z/W remains NDC depth after divide)
+ */
+[[nodiscard]] inline Mat4f worldToScreenMatrix(const Mat4f& view_proj,
+                                               const Viewport& viewport,
+                                               GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
+    return clipToScreenMatrix(viewport, api) * view_proj;
 }
 
 // ============================================================================
