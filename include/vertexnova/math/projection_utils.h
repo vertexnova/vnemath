@@ -23,10 +23,9 @@ namespace vne::math {
 // ============================================================================
 // World-to-Screen Projection
 // ============================================================================
-// ============================================================================
 
 /**
- * @brief Projects a 3D world point to 2D screen coordinates.
+ * @brief Projects a 3D world point to 2D screen coordinates and viewport depth.
  *
  * This is the standard gluProject operation.
  *
@@ -34,8 +33,9 @@ namespace vne::math {
  * @param mvp The combined Model-View-Projection matrix
  * @param viewport The viewport parameters
  * @param api Graphics API (for Y-flip handling)
- * @return Screen coordinates (x, y) and normalized depth (z)
- *         z is in [0,1] for most APIs, [-1,1] for OpenGL
+ * @return Screen coordinates (x, y) and viewport depth (z)
+ *         z is a screen-space depth value in the range [viewport.z_near, viewport.z_far],
+ *         i.e., NDC depth mapped into the viewport's depth range (not NDC itself).
  */
 [[nodiscard]] inline Vec3f project(const Vec3f& world_pos,
                                    const Mat4f& mvp,
@@ -72,7 +72,8 @@ namespace vne::math {
  *
  * This is the standard gluUnProject operation.
  *
- * @param screen_pos Screen coordinates (x, y) and depth (z in [0,1])
+ * @param screen_pos Screen coordinates (x, y) and depth (z in viewport depth range
+ *                   [viewport.z_near, viewport.z_far], i.e., screen-space depth)
  * @param inv_mvp The inverse of the Model-View-Projection matrix
  * @param viewport The viewport parameters
  * @param api Graphics API (for Y-flip handling)
