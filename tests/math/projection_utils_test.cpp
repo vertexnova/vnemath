@@ -75,26 +75,23 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_Center) {
 }
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_YFlip) {
-    // For Vulkan (top-left origin): NDC +Y (up) maps to smaller screen Y (visually up)
-    // NDC (0, +1) should give screen Y < center (300)
-    Viewport vp(800.0f, 600.0f);
-    Mat4f m_vk = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
-    Mat4f m_gl = clipToScreenMatrix(vp, GraphicsApi::eOpenGL);
-
-    Vec4f vk = m_vk * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
-    Vec4f gl = m_gl * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
-
-    // Vulkan Y should be opposite of OpenGL Y relative to center
-    EXPECT_NEAR(vk.y(), 0.0f, kEps);    // NDC +1 → top of screen → y=0
-    EXPECT_NEAR(gl.y(), 600.0f, kEps);  // NDC +1 → top of OpenGL NDC → y=height
-}
-
-TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_TopLeft) {
-    // For Vulkan: NDC (-1, +1) → screen (0, 0) top-left corner
+    // Vulkan projection already flips NDC Y (Y-down), so viewport transform does not flip again.
+    // NDC (0, +1) = bottom in Vulkan NDC → screen y = height; NDC (0, -1) = top → screen y = 0.
     Viewport vp(800.0f, 600.0f);
     Mat4f m = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
 
-    Vec4f result = m * Vec4f(-1.0f, 1.0f, 0.0f, 1.0f);
+    Vec4f bottom = m * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);  // NDC +1 (down) → screen bottom
+    Vec4f top = m * Vec4f(0.0f, -1.0f, 0.0f, 1.0f);    // NDC -1 (up) → screen top
+    EXPECT_NEAR(bottom.y(), 600.0f, kEps);
+    EXPECT_NEAR(top.y(), 0.0f, kEps);
+}
+
+TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_TopLeft) {
+    // Vulkan NDC is Y-down; top-left screen corner is NDC (-1, -1).
+    Viewport vp(800.0f, 600.0f);
+    Mat4f m = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
+
+    Vec4f result = m * Vec4f(-1.0f, -1.0f, 0.0f, 1.0f);
     EXPECT_NEAR(result.x(), 0.0f, kEps);
     EXPECT_NEAR(result.y(), 0.0f, kEps);
 }
@@ -103,17 +100,17 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_TopLeft) {
 // clipToScreenMatrix — Metal (top-left origin, no projection Y-flip needed)
 // ============================================================================
 
-TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Metal_BehavesLikeVulkan_ScreenSpace) {
-    // Metal also has top-left screen origin, so clipToScreen Y-flip is the same as Vulkan
+TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Metal_VsVulkan) {
+    // Metal: no projection Y-flip, so viewport flips; NDC +1 (up) → top of screen (y=0).
+    // Vulkan: projection already Y-flipped, so viewport does not flip; NDC +1 (down) → bottom (y=height).
     Viewport vp(800.0f, 600.0f);
     Mat4f m_metal = clipToScreenMatrix(vp, GraphicsApi::eMetal);
     Mat4f m_vk = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
 
-    Vec4f metal = m_metal * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
-    Vec4f vk = m_vk * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
-
-    // Both top-left APIs should produce the same screen-space Y for the same NDC input
-    EXPECT_NEAR(metal.y(), vk.y(), kEps);
+    Vec4f metal = m_metal * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);  // NDC +1 (up) → top
+    Vec4f vk = m_vk * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);        // NDC +1 (down) → bottom
+    EXPECT_NEAR(metal.y(), 0.0f, kEps);
+    EXPECT_NEAR(vk.y(), 600.0f, kEps);
 }
 
 // ============================================================================
