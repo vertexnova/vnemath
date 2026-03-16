@@ -18,7 +18,7 @@
 namespace vne::math {
 
 // Forward declaration so project() can use the 3D NDC-to-screen helper while keeping NDC utilities grouped later.
-[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc, const Viewport& viewport, GraphicsApi api) noexcept;
+[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc, const Viewport& viewport, GraphicsApi api = GraphicsApi::eOpenGL) noexcept;
 
 // ============================================================================
 // World-to-Screen Projection
