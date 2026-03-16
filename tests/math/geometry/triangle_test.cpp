@@ -11,6 +11,7 @@
 
 #include <gtest/gtest.h>
 
+#include "vertexnova/common/macos.h"
 #include "vertexnova/math/geometry/triangle.h"
 
 namespace vne::math {
@@ -42,6 +43,7 @@ class TriangleTest : public ::testing::Test {
 
 TEST_F(TriangleTest, DefaultConstructor) {
     Triangle t;
+    VNE_UNUSED(t);
     // Just verify it compiles and doesn't crash
     SUCCEED();
 }

@@ -17,8 +17,13 @@
 
 namespace vne::math {
 
+// Forward declaration so project() can use the 3D NDC-to-screen helper while keeping NDC utilities grouped later.
+[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc, const Viewport& viewport, GraphicsApi api) noexcept;
+
+
 // ============================================================================
 // World-to-Screen Projection
+// ============================================================================
 // ============================================================================
 
 /**
@@ -37,39 +42,14 @@ namespace vne::math {
                                    const Mat4f& mvp,
                                    const Viewport& viewport,
                                    GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
-    // Transform to clip space
     Vec4f clip = mvp * Vec4f(world_pos, 1.0f);
 
-    // Perspective divide to NDC
     if (isZero(clip.w())) {
         return Vec3f(0.0f, 0.0f, -1.0f);  // Behind camera
     }
 
     Vec3f ndc = clip.xyz() / clip.w();
-
-    // NDC to normalized viewport coordinates [0, 1]
-    float sx = (ndc.x() + 1.0f) * 0.5f;
-    float sy = (ndc.y() + 1.0f) * 0.5f;
-
-    // Handle screen-space origin convention.
-    // Most APIs (Vulkan/Metal/DirectX/WebGPU) use top-left origin for framebuffers.
-    if (screenOriginIsTopLeft(api)) {
-        sy = 1.0f - sy;
-    }
-
-    // Convert normalized coordinates to screen-space pixels
-    float screen_x = viewport.x + sx * viewport.width;
-    float screen_y = viewport.y + sy * viewport.height;
-
-    // Map depth to viewport range
-    float screen_z = viewport.z_near + (ndc.z() + 1.0f) * 0.5f * (viewport.z_far - viewport.z_near);
-
-    // For APIs with [0,1] depth, adjust
-    if (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne) {
-        screen_z = viewport.z_near + ndc.z() * (viewport.z_far - viewport.z_near);
-    }
-
-    return Vec3f(screen_x, screen_y, screen_z);
+    return ndcToScreen(ndc, viewport, api);
 }
 
 /**
@@ -248,6 +228,37 @@ namespace vne::math {
     return Vec2f(screen_x, screen_y);
 }
 
+/**
+ * @brief Converts 3D NDC coordinates (including depth) to screen coordinates.
+ *
+ * Extends the 2D ndcToScreen to also map the NDC Z component to
+ * [viewport.z_near, viewport.z_far] in a way consistent with the given API's
+ * depth range convention.
+ *
+ * @param ndc NDC coordinates: x and y in [-1,1], z in API depth range
+ *            ([-1,1] for OpenGL, [0,1] for Vulkan/Metal/DirectX/WebGPU)
+ * @param viewport Viewport parameters (x, y, width, height, z_near, z_far)
+ * @param api Graphics API (for Y-flip and depth range handling)
+ * @return Screen coordinates (x,y in pixels, z in [z_near, z_far])
+ */
+[[nodiscard]] inline Vec3f ndcToScreen(const Vec3f& ndc,
+                                       const Viewport& viewport,
+                                       GraphicsApi api) noexcept {
+    Vec2f screen_xy = ndcToScreen(Vec2f(ndc.x(), ndc.y()), viewport, api);
+
+    // Map NDC z to [viewport.z_near, viewport.z_far]
+    float screen_z;
+    if (getClipSpaceDepth(api) == ClipSpaceDepth::eZeroToOne) {
+        // ndc.z is already in [0,1]
+        screen_z = viewport.z_near + ndc.z() * (viewport.z_far - viewport.z_near);
+    } else {
+        // ndc.z is in [-1,1] — map to [0,1] first
+        screen_z = viewport.z_near + (ndc.z() + 1.0f) * 0.5f * (viewport.z_far - viewport.z_near);
+    }
+
+    return Vec3f(screen_xy.x(), screen_xy.y(), screen_z);
+}
+
 // ============================================================================
 // Depth Utilities
 // ============================================================================
@@ -288,6 +299,86 @@ namespace vne::math {
     }
     float ndc_z = (z_far + z_near - 2.0f * z_near * z_far / linear_depth) / (z_far - z_near);
     return (ndc_z + 1.0f) * 0.5f;
+}
+
+// ============================================================================
+// Clip-to-Screen Matrix
+// ============================================================================
+
+/**
+ * @brief Returns a 4x4 matrix that transforms NDC coordinates to screen pixels.
+ *
+ * This encodes the viewport transform as a matrix, allowing it to be composed
+ * with a view-projection matrix for a single world-to-screen matrix.
+ *
+ * The transform maps:
+ *   NDC x in [-1, 1]  →  screen x in [viewport.x, viewport.x + viewport.width]
+ *   NDC y in [-1, 1]  →  screen y in [viewport.y, viewport.y + viewport.height]
+ *                         (Y is flipped for top-left-origin APIs: Vulkan, Metal, DirectX, WebGPU)
+ *
+ * Matches the scalar ndcToScreen() function exactly for the XY components.
+ *
+ * @param viewport Viewport parameters
+ * @param api Graphics API (controls Y-flip for screen-space origin convention)
+ * @return 4x4 clip-to-screen transform matrix
+ */
+[[nodiscard]] inline Mat4f clipToScreenMatrix(const Viewport& viewport,
+                                              GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
+    float half_w = viewport.width * 0.5f;
+    float half_h = viewport.height * 0.5f;
+    float scale_x = half_w;
+    // Top-left-origin APIs flip Y: NDC +Y (up) maps to smaller screen Y (up on screen)
+    float scale_y = screenOriginIsTopLeft(api) ? -half_h : half_h;
+    float trans_x = viewport.x + half_w;
+    // Translation Y is always vp.y + half_h because scale_y already carries the sign
+    float trans_y = viewport.y + half_h;
+
+    // Column-major 4x4:
+    // [ scale_x    0       0   trans_x ]
+    // [   0      scale_y   0   trans_y ]
+    // [   0        0       1     0     ]
+    // [   0        0       0     1     ]
+    return Mat4f(
+        Vec4f(scale_x, 0.0f,    0.0f, 0.0f),
+        Vec4f(0.0f,    scale_y, 0.0f, 0.0f),
+        Vec4f(0.0f,    0.0f,    1.0f, 0.0f),
+        Vec4f(trans_x, trans_y, 0.0f, 1.0f));
+}
+
+/**
+ * @brief Convenience overload: clip-to-screen matrix for a viewport at origin.
+ *
+ * @param width Viewport width in pixels
+ * @param height Viewport height in pixels
+ * @param api Graphics API (controls Y-flip)
+ * @return 4x4 clip-to-screen transform matrix
+ */
+[[nodiscard]] inline Mat4f clipToScreenMatrix(float width,
+                                              float height,
+                                              GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
+    return clipToScreenMatrix(Viewport(width, height), api);
+}
+
+/**
+ * @brief Returns the full world-to-screen matrix: clipToScreen * viewProj.
+ *
+ * Allows transforming a world-space position directly to screen pixels with
+ * a single matrix multiply:
+ *   Vec4f screen = worldToScreenMatrix(...) * Vec4f(world_pos, 1.0f)
+ *   // screen.xy are pixel coordinates (divide by screen.w for perspective)
+ *
+ * Note: this does NOT perform the perspective divide. For perspective cameras
+ * you must divide x, y by w after the multiply. For orthographic cameras w=1.
+ *
+ * @param view_proj The combined view-projection matrix
+ * @param viewport Viewport parameters
+ * @param api Graphics API
+ * @return 4x4 world-to-screen matrix
+ */
+[[nodiscard]] inline Mat4f worldToScreenMatrix(const Mat4f& view_proj,
+                                               const Viewport& viewport,
+                                               GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
+    return clipToScreenMatrix(viewport, api) * view_proj;
 }
 
 // ============================================================================
