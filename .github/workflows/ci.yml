@@ -370,11 +370,15 @@ jobs:
           cmake --install build/static/Release --config Release --prefix "$STAGE"
           test -d "$STAGE/include/vertexnova/math"
           test -n "$(find "$STAGE/include/vertexnova/math" -name '*.h' -print -quit)"
+          test -d "$STAGE/include/vertexnova/common"
+          test -n "$(find "$STAGE/include/vertexnova/common" -name '*.h' -print -quit)"
           test -n "$(find "$STAGE" -name '*.a' -print -quit)"
           rm -rf "${GITHUB_WORKSPACE}/install"
           cmake --install build/static/Release --config Release
           test -d "${GITHUB_WORKSPACE}/install/include/vertexnova/math"
           test -n "$(find "${GITHUB_WORKSPACE}/install/include/vertexnova/math" -name '*.h' -print -quit)"
+          test -d "${GITHUB_WORKSPACE}/install/include/vertexnova/common"
+          test -n "$(find "${GITHUB_WORKSPACE}/install/include/vertexnova/common" -name '*.h' -print -quit)"
           test -n "$(find "${GITHUB_WORKSPACE}/install" -name '*.a' -print -quit)"
 
   build-android:

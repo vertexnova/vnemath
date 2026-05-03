@@ -285,6 +285,15 @@ jobs:
             echo "::error::No VneMath headers under install/include/vertexnova/math."
             exit 1
           fi
+          if [[ ! -d "$INSTALL/include/vertexnova/common" ]]; then
+            echo "::error::Expected install/include/vertexnova/common missing (vnecommon headers ship with VneMath install)."
+            find "$INSTALL" -type f 2>/dev/null | sort | head -50
+            exit 1
+          fi
+          if [[ -z "$(find "$INSTALL/include/vertexnova/common" -name '*.h' -print -quit)" ]]; then
+            echo "::error::No vnecommon headers under install/include/vertexnova/common."
+            exit 1
+          fi
           for f in LICENSE CHANGELOG.md; do
             if [[ ! -f "$INSTALL/$f" ]]; then
               echo "::error::Expected install/$f missing."

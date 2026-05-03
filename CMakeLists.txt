@@ -14,6 +14,22 @@ cmake_minimum_required(VERSION 3.16)
 # Project declaration
 project(vnemath VERSION 1.0.0 LANGUAGES CXX)
 
+# iOS: default install prefix for CI / local packaging (same idea as vnelogging / vneevents).
+if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    if(DEFINED ENV{CI} AND DEFINED ENV{GITHUB_WORKSPACE})
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" _VNE_GITHUB_WORKSPACE)
+        set(_VNE_IOS_CI_INSTALL_PREFIX "${_VNE_GITHUB_WORKSPACE}/install")
+        if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+                OR CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_BINARY_DIR}/install")
+            set(CMAKE_INSTALL_PREFIX "${_VNE_IOS_CI_INSTALL_PREFIX}"
+                CACHE PATH "Install prefix for iOS on CI (workspace/install)" FORCE)
+        endif()
+    elseif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+        set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install"
+            CACHE PATH "Install prefix for iOS builds (override with -DCMAKE_INSTALL_PREFIX)" FORCE)
+    endif()
+endif()
+
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -122,6 +138,9 @@ endif()
 
 message(STATUS "VneMath: VNE_MATH_LIB_TYPE=${VNE_MATH_LIB_TYPE}")
 
+# Export compile_commands.json for clang-tidy / IDE (matches vneevents).
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 function(vnemath_apply_shared_export target_name)
     get_target_property(_vnm_kind "${target_name}" TYPE)
     if(NOT _vnm_kind STREQUAL "SHARED_LIBRARY")
@@ -175,6 +194,11 @@ option(BUILD_TESTS "Build the test suite" ON)
 option(VNE_MATH_TESTS "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
 option(ENABLE_COVERAGE "Enable code coverage reporting" OFF)
+
+# Skip install() when embedded as a subproject (parent/superbuild owns packaging), same idea as VNEVENTS_SKIP_INSTALL.
+option(VNE_MATH_SKIP_INSTALL
+    "Skip VneMath install() when this project is used as a subproject; parent handles install."
+    OFF)
 
 # Apply CI or DEV preset (CI takes precedence; DEV is ignored when CI is active)
 if(VNE_MATH_CI)
@@ -303,9 +327,13 @@ set(VNE_DEPS_INTERNAL_DIR ${VNE_DEPS_DIR}/internal)
 include(VneUseDep)
 
 function(_vnemath_configure_vnecommon_dep)
+    set(_vnemath_vnecommon_examples_saved "${BUILD_EXAMPLES}")
     vne_use_dep(TARGET vne::common
         SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnecommon"
-        BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnecommon")
+        BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnecommon"
+        CACHE_VARS BUILD_EXAMPLES OFF VNE_COMMON_SKIP_INSTALL ON)
+    set(BUILD_EXAMPLES "${_vnemath_vnecommon_examples_saved}" CACHE BOOL "" FORCE)
+    set(BUILD_EXAMPLES "${_vnemath_vnecommon_examples_saved}")
 endfunction()
 
 function(_vnemath_configure_vnelogging_dep)
@@ -314,7 +342,7 @@ function(_vnemath_configure_vnelogging_dep)
     vne_use_dep(TARGET vne::logging
         SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnelogging"
         BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnelogging"
-        CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF VNE_LOGGING_LIB_TYPE "${VNE_MATH_LIB_TYPE}")
+        CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF VNE_LOGGING_LIB_TYPE "${VNE_MATH_LIB_TYPE}" VNE_LOGGING_SKIP_INSTALL ON)
     # Restore BUILD_TESTS in both cache and normal variable
     set(BUILD_TESTS "${_vnemath_build_tests_saved}" CACHE BOOL "" FORCE)
     set(BUILD_TESTS "${_vnemath_build_tests_saved}")
@@ -353,42 +381,71 @@ endif()
 # Installation
 #==============================================================================
 
-include(GNUInstallDirs)
+if(NOT VNE_MATH_SKIP_INSTALL)
+    include(GNUInstallDirs)
+    if(NOT CMAKE_INSTALL_INCLUDEDIR)
+        set(CMAKE_INSTALL_INCLUDEDIR "include")
+    endif()
 
-# Install the library
-install(TARGETS vnemath
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+    # iOS: when this project owns install(), align prefix with CI layout (vneevents pattern).
+    if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+        if(DEFINED ENV{CI} AND DEFINED ENV{GITHUB_WORKSPACE})
+            file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" _VNE_GITHUB_WORKSPACE)
+            set(_VNE_IOS_CI_INSTALL_PREFIX "${_VNE_GITHUB_WORKSPACE}/install")
+            if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+                    OR CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_BINARY_DIR}/install")
+                set(CMAKE_INSTALL_PREFIX "${_VNE_IOS_CI_INSTALL_PREFIX}"
+                    CACHE PATH "Install prefix for iOS on CI (workspace/install)" FORCE)
+            endif()
+        elseif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+            set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install"
+                CACHE PATH "Install prefix for iOS builds (override with -DCMAKE_INSTALL_PREFIX)" FORCE)
+        endif()
+    endif()
 
-# Install public headers from include/
-install(DIRECTORY include/vertexnova/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova
-    FILES_MATCHING PATTERN "*.h"
-)
+    # Install the library
+    install(TARGETS vnemath
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
 
-# Install internal headers from src/ (needed for implementation)
-install(DIRECTORY src/vertexnova/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova
-    FILES_MATCHING PATTERN "*.h"
-)
+    # Install public headers from include/
+    install(DIRECTORY include/vertexnova/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-# Install config.h
-install(FILES ${CMAKE_BINARY_DIR}/config.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova/math
-)
+    # Install internal headers from src/ (needed for implementation)
+    install(DIRECTORY src/vertexnova/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-# Install CMake module
-install(FILES cmake/FindVneMath.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VneMath
-)
+    # Bundled header-only vnecommon (VNE_COMMON_SKIP_INSTALL when embedded above).
+    if(EXISTS "${VNE_DEPS_INTERNAL_DIR}/vnecommon/include/vertexnova/common")
+        install(DIRECTORY "${VNE_DEPS_INTERNAL_DIR}/vnecommon/include/vertexnova/common"
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova
+            FILES_MATCHING PATTERN "*.h"
+        )
+    endif()
 
-if(EXISTS "${PROJECT_SOURCE_DIR}/LICENSE")
-    install(FILES "${PROJECT_SOURCE_DIR}/LICENSE" DESTINATION .)
-endif()
-if(EXISTS "${PROJECT_SOURCE_DIR}/CHANGELOG.md")
-    install(FILES "${PROJECT_SOURCE_DIR}/CHANGELOG.md" DESTINATION .)
+    # Install config.h
+    install(FILES ${CMAKE_BINARY_DIR}/config.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vertexnova/math
+    )
+
+    # Install CMake module
+    install(FILES cmake/FindVneMath.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VneMath
+    )
+
+    if(EXISTS "${PROJECT_SOURCE_DIR}/LICENSE")
+        install(FILES "${PROJECT_SOURCE_DIR}/LICENSE" DESTINATION .)
+    endif()
+    if(EXISTS "${PROJECT_SOURCE_DIR}/CHANGELOG.md")
+        install(FILES "${PROJECT_SOURCE_DIR}/CHANGELOG.md" DESTINATION .)
+    endif()
 endif()

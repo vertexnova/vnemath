@@ -10,7 +10,7 @@ Configure **publish** with **`VNE_MATH_LIB_TYPE`** (`shared` for desktop/web/and
 
 ## Install layout
 
-Tarballs include **`include/vertexnova/math/`** (with **`export.h`** where applicable), **`lib/`** (static or shared **vnemath**), **`LICENSE`**, **`CHANGELOG.md`**, and **`lib/cmake/VneMath/`** (`FindVneMath.cmake`, etc.). Internal deps are built into the library; consumers use **vnecommon** / **vnelogging** as declared by this project’s CMake.
+Tarballs include **`include/vertexnova/math/`** (with **`export.h`** where applicable), **`include/vertexnova/common/`** (bundled **vnecommon** headers; submodule `VNE_COMMON_SKIP_INSTALL` when embedded), **`lib/`** (static or shared **vnemath**), **`LICENSE`**, **`CHANGELOG.md`**, and **`lib/cmake/VneMath/`** (`FindVneMath.cmake`, etc.). **VneLogging** is linked at build time when embedded with **`VNE_LOGGING_SKIP_INSTALL`** — use **`find_package(VneLogging)`** (or your dependency layout) for **`vertexnova/logging`** if you need those headers/libs in a consumer tree.
 
 ## Artifact naming
 
