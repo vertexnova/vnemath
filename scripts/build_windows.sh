@@ -54,6 +54,58 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+run_interactive_prompts() {
+  local _v _cur_clean
+  echo ""
+  echo "=== Interactive mode ==="
+  echo "Current BUILD_TYPE: $BUILD_TYPE"
+  read -r -p "BUILD_TYPE [Debug|Release|RelWithDebInfo|MinSizeRel] (Enter to keep): " _v
+  if [[ -n "$_v" ]]; then
+    BUILD_TYPE="$_v"
+  fi
+
+  echo "Current ACTION: $ACTION"
+  read -r -p "ACTION [configure|build|configure_and_build|test] (Enter to keep): " _v
+  if [[ -n "$_v" ]]; then
+    ACTION="$_v"
+  fi
+
+  echo "Current LIB_TYPE: $LIB_TYPE"
+  read -r -p "LIB_TYPE [shared|static] (Enter to keep): " _v
+  if [[ -n "$_v" ]]; then
+    LIB_TYPE="$_v"
+  fi
+
+  if [ "$CLEAN_BUILD" = true ]; then _cur_clean="yes"; else _cur_clean="no"; fi
+  echo "Clean build directory first: $_cur_clean"
+  read -r -p "Clean before build? [y/N] (Enter to keep current): " _v
+  if [[ -n "$_v" ]]; then
+    case "$_v" in
+      y|Y|yes|YES) CLEAN_BUILD=true ;;
+      n|N|no|NO) CLEAN_BUILD=false ;;
+      *) echo "Unrecognized response; keeping clean=$CLEAN_BUILD" ;;
+    esac
+  fi
+  echo ""
+}
+
+if [ "$INTERACTIVE_MODE" = true ]; then
+  run_interactive_prompts
+fi
+
+case "$BUILD_TYPE" in
+  Debug|Release|RelWithDebInfo|MinSizeRel) ;;
+  *) echo "Error: Invalid BUILD_TYPE: $BUILD_TYPE" >&2; exit 1 ;;
+esac
+case "$ACTION" in
+  configure|build|configure_and_build|test) ;;
+  *) echo "Error: Invalid ACTION: $ACTION" >&2; exit 1 ;;
+esac
+case "$LIB_TYPE" in
+  shared|static) ;;
+  *) echo "Error: Invalid LIB_TYPE: $LIB_TYPE" >&2; exit 1 ;;
+esac
+
 if ! command -v cl &> /dev/null; then
   echo "Error: Visual Studio compiler 'cl' not found in PATH"
   echo "Run from a Visual Studio Developer Command Prompt."
@@ -76,7 +128,20 @@ echo "$PLATFORM :: $COMPILER-${COMPILER_VERSION}"
 PROJECT_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 BUILD_DIR="$PROJECT_ROOT/build/${LIB_TYPE}/${BUILD_TYPE}/build-windows-$COMPILER-${COMPILER_VERSION}"
 
+# Select Visual Studio generator backend from compiler/detect string, then install dirs, then Ninja.
+# Optional $1 overrides global COMPILER_VERSION (used for testing); default aligns with detected cl.
 pick_cmake_generator() {
+  local ver="${1:-$COMPILER_VERSION}"
+  if [[ -n "$ver" && "$ver" != "unknown" ]]; then
+    if [[ "$ver" == 17* ]] || [[ "$ver" == 2022* ]]; then
+      echo "vs2022"
+      return
+    fi
+    if [[ "$ver" == 16* ]] || [[ "$ver" == 2019* ]]; then
+      echo "vs2019"
+      return
+    fi
+  fi
   if [ -d "/c/Program Files/Microsoft Visual Studio/2022" ]; then
     echo "vs2022"
   elif [ -d "/c/Program Files/Microsoft Visual Studio/2019" ]; then
@@ -86,7 +151,7 @@ pick_cmake_generator() {
   fi
 }
 
-CMAKE_BACKEND=$(pick_cmake_generator)
+CMAKE_BACKEND=$(pick_cmake_generator "$COMPILER_VERSION")
 
 build_cmake_command() {
   case "$CMAKE_BACKEND" in
