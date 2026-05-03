@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+    <diagram name="System Context" id="context">
+        <mxGraphModel dx="910" dy="770" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="app" value="C++ Application&#10;(Game / Engine / Tool)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;strokeWidth=2;fontStyle=1;fontSize=12;fontColor=#0d47a1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="310" width="220" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="vne" value="VneMath&#10;vertexnova/math" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e65100;strokeWidth=2;fontStyle=1;fontSize=14;fontColor=#bf360c;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="300" width="220" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="gpu" value="GPU / Shaders&#10;(uniforms, MVP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6a1b9a;strokeWidth=2;fontSize=11;fontColor=#4a148c;" parent="1" vertex="1">
+                    <mxGeometry x="740" y="200" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="scene" value="Scene &amp; Tools&#10;(picking, culling, physics)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;strokeWidth=2;fontSize=11;fontColor=#1b5e20;" parent="1" vertex="1">
+                    <mxGeometry x="740" y="400" width="200" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#1565c0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="app" target="vne" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1label" value="#include &lt;vertexnova/math/math.h&gt;&#10;Vec3f, Mat4f, Quatf, …" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#0d47a1;backgroundColor=#ffffff;" parent="r1" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="r2" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#6a1b9a;exitX=1;exitY=0.35;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="vne" target="gpu" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2label" value="MVP, GpuMat4f" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#4a148c;backgroundColor=#ffffff;" parent="r2" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="r3" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#2e7d32;exitX=1;exitY=0.65;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="vne" target="scene" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3label" value="Ray, Aabb, Frustum" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1b5e20;backgroundColor=#ffffff;" parent="r3" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
