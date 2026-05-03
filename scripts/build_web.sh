@@ -43,6 +43,19 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# LIB_TYPE is used in BUILD_DIR and rm -rf; validate before any path use.
+if [[ "$LIB_TYPE" == *"/"* || "$LIB_TYPE" == *".."* ]]; then
+  print_error "Invalid lib-type: must not contain '/' or '..'"
+  exit 1
+fi
+case "$LIB_TYPE" in
+  shared|static) ;;
+  *)
+    print_error "Invalid lib-type: must be 'shared' or 'static'"
+    exit 1
+    ;;
+esac
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 print_status "VneMath Web — $PROJECT_ROOT — $BUILD_TYPE — lib $LIB_TYPE — jobs $JOBS"
