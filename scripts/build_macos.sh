@@ -149,6 +149,30 @@ fi
 [ "$GENERATE_XCODE" = true ] && [ "$ACTION" = "configure_and_build" ] && ACTION="xcode_build"
 { [ "$ACTION" = "xcode" ] || [ "$ACTION" = "xcode_build" ]; } && GENERATE_XCODE=true
 
+case "$BUILD_TYPE" in
+  Debug|Release|RelWithDebInfo|MinSizeRel) ;;
+  *)
+    echo "Invalid -t/--build-type: '$BUILD_TYPE' (expected Debug, Release, RelWithDebInfo, or MinSizeRel)"
+    exit 1
+    ;;
+esac
+
+case "$LIB_TYPE" in
+  static|shared) ;;
+  *)
+    echo "Invalid -l/--lib-type: '$LIB_TYPE' (expected static or shared)"
+    exit 1
+    ;;
+esac
+
+case "$ACTION" in
+  configure|build|configure_and_build|test|xcode|xcode_build) ;;
+  *)
+    echo "Invalid -a/--action: '$ACTION'"
+    usage
+    ;;
+esac
+
 COMPILER_VERSION=$(clang --version | head -n 1 | awk '{print $4}' | sed 's/(.*)//')
 [ "$COMPILER_VERSION" = "version" ] && COMPILER_VERSION=$(clang --version | head -n 1 | awk '{print $3}')
 
@@ -161,21 +185,33 @@ else
   BUILD_DIR="$PROJECT_ROOT/build/${LIB_TYPE}/${BUILD_TYPE}/build-macos-$COMPILER-${COMPILER_VERSION}"
 fi
 
-COMMON_FLAGS="-DCMAKE_BUILD_TYPE=$BUILD_TYPE -DVNE_MATH_LIB_TYPE=$LIB_TYPE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15 -DBUILD_TESTS=ON -DVNE_MATH_TESTS=ON -DBUILD_EXAMPLES=OFF -DENABLE_IPO=OFF"
+# CMake cache arguments as an array (no string interpolation into eval).
+COMMON_FLAGS_ARGS=(
+  "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
+  "-DVNE_MATH_LIB_TYPE=${LIB_TYPE}"
+  -DCMAKE_C_COMPILER=clang
+  -DCMAKE_CXX_COMPILER=clang++
+  -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
+  -DBUILD_TESTS=ON
+  -DVNE_MATH_TESTS=ON
+  -DBUILD_EXAMPLES=OFF
+  -DENABLE_IPO=OFF
+)
 
 if [ "$GENERATE_XCODE" = true ]; then
-  BUILD_CMD="xcodebuild -project vnemath.xcodeproj -configuration $BUILD_TYPE -parallelizeTargets -jobs $JOBS"
-  TEST_CMD="xcodebuild -project vnemath.xcodeproj -configuration $BUILD_TYPE -target RUN_TESTS"
+  BUILD_CMD=(xcodebuild -project vnemath.xcodeproj -configuration "$BUILD_TYPE" -parallelizeTargets -jobs "$JOBS")
+  TEST_CMD=(xcodebuild -project vnemath.xcodeproj -configuration "$BUILD_TYPE" -target RUN_TESTS)
 else
-  BUILD_CMD="make -j$JOBS"
-  TEST_CMD="ctest --output-on-failure"
+  BUILD_CMD=(make -j"$JOBS")
+  TEST_CMD=(ctest --output-on-failure)
 fi
 
 run_configure() {
+  echo "Configuring..."
   if [ "$GENERATE_XCODE" = true ]; then
-    cmake -G Xcode $COMMON_FLAGS "$PROJECT_ROOT"
+    cmake -G Xcode "${COMMON_FLAGS_ARGS[@]}" "$PROJECT_ROOT"
   else
-    cmake $COMMON_FLAGS "$PROJECT_ROOT"
+    cmake "${COMMON_FLAGS_ARGS[@]}" "$PROJECT_ROOT"
   fi
 }
 
@@ -184,11 +220,11 @@ ensure_build_dir() { [ ! -d "$BUILD_DIR" ] && mkdir -p "$BUILD_DIR"; cd "$BUILD_
 
 case $ACTION in
   configure) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure ;;
-  build) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; eval "$BUILD_CMD" ;;
-  configure_and_build) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; eval "$BUILD_CMD" ;;
-  test) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; eval "$BUILD_CMD"; eval "$TEST_CMD" ;;
+  build) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; "${BUILD_CMD[@]}" ;;
+  configure_and_build) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; "${BUILD_CMD[@]}" ;;
+  test) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; "${BUILD_CMD[@]}"; "${TEST_CMD[@]}" ;;
   xcode) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; echo "Xcode project: $BUILD_DIR (vnemath.xcodeproj)" ;;
-  xcode_build) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; eval "$BUILD_CMD"; echo "Xcode build done: $BUILD_DIR" ;;
+  xcode_build) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; run_configure; "${BUILD_CMD[@]}"; echo "Xcode build done: $BUILD_DIR" ;;
   *) usage ;;
 esac
 
