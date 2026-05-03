@@ -19,6 +19,6 @@ cmake -DENABLE_DOXYGEN=ON -B build
 cmake --build build --target vnemath_doc
 ```
 
-HTML output is written under `build/vnemath_doxygen/html/index.html` (see `doxyfile.in`). The custom target is **`vnemath_doc`** so it does not collide with **`doc_doxygen`** from the embedded **vnelogging** dependency when both projects enable Doxygen.
+HTML is emitted under `build/vnemath_doxygen/html/` (Doxygen’s default `HTML_OUTPUT` name inside `OUTPUT_DIRECTORY` from `doxyfile.in`); open `build/vnemath_doxygen/html/index.html`. The custom target is **`vnemath_doc`** so it does not collide with **`doc_doxygen`** from the embedded **vnelogging** dependency when both projects enable Doxygen.
 
-**Requirements:** Doxygen 1.8.13+, optional Graphviz (`dot`) for call graphs.
+**Requirements:** Doxygen 1.8.13+ and Graphviz (`dot`). CMake enables the **`dot`** component when finding Doxygen, and `doxyfile.in` turns on call/caller graphs (`HAVE_DOT = YES`).

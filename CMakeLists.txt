@@ -223,7 +223,7 @@ endif()
 # vnelogging's doc_doxygen when both are enabled in the same build.
 option(ENABLE_DOXYGEN "Enable vnemath Doxygen documentation build (target: vnemath_doc)" OFF)
 if(ENABLE_DOXYGEN)
-    find_package(Doxygen REQUIRED dot OPTIONAL_COMPONENTS mscgen dia)
+    find_package(Doxygen REQUIRED COMPONENTS dot OPTIONAL_COMPONENTS mscgen dia)
     set(PLANT_UML_PATH "")
     if(DEFINED DOXYGEN_DOT_EXECUTABLE)
         set(DOXYGEN_DOT_PATH "${DOXYGEN_DOT_EXECUTABLE}")
@@ -234,7 +234,7 @@ if(ENABLE_DOXYGEN)
     set(_VNEMATH_DOXY_OUT "${CMAKE_BINARY_DIR}/vnemath-doxyfile")
     configure_file("${_VNEMATH_DOXY_IN}" "${_VNEMATH_DOXY_OUT}" @ONLY)
     add_custom_target(vnemath_doc
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/vnemath_doxygen/html"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/vnemath_doxygen"
         COMMAND ${DOXYGEN_EXECUTABLE} "${_VNEMATH_DOXY_OUT}"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         COMMENT "Generating vnemath API documentation (Doxygen)"
