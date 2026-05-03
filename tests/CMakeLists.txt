@@ -122,11 +122,29 @@ target_link_libraries(TestVneMath
 
 if(VNE_MATH_LIB_TYPE STREQUAL "shared")
     if(WIN32)
-        add_custom_command(TARGET TestVneMath POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_FILE:vnemath>
-                $<TARGET_FILE_DIR:TestVneMath>
-            VERBATIM)
+        # Stage all runtime DLLs next to the test executable (transitive deps e.g. vnelogging).
+        # vne::common is INTERFACE-only here — no DLL. $<TARGET_RUNTIME_DLLS:...> needs CMake 3.21+.
+        if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.21")
+            add_custom_command(TARGET TestVneMath POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    $<TARGET_RUNTIME_DLLS:TestVneMath>
+                    $<TARGET_FILE_DIR:TestVneMath>
+                COMMAND_EXPAND_LISTS
+                VERBATIM)
+        else()
+            add_custom_command(TARGET TestVneMath POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    $<TARGET_FILE:vnemath>
+                    $<TARGET_FILE_DIR:TestVneMath>
+                VERBATIM)
+            if(TARGET vnelogging)
+                add_custom_command(TARGET TestVneMath POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                        $<TARGET_FILE:vnelogging>
+                        $<TARGET_FILE_DIR:TestVneMath>
+                    VERBATIM)
+            endif()
+        endif()
     else()
         set_target_properties(TestVneMath PROPERTIES
             BUILD_RPATH "$<TARGET_FILE_DIR:vnemath>"

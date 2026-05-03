@@ -17,6 +17,17 @@ from pathlib import Path
 from typing import List, Optional
 
 
+def _positive_jobs(value: str) -> int:
+    """argparse type for -j/--jobs: must be a positive integer."""
+    try:
+        n = int(value, 10)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"jobs must be an integer, not {value!r}") from exc
+    if n < 1:
+        raise argparse.ArgumentTypeError("jobs must be a positive integer (>= 1)")
+    return n
+
+
 class BuildConfig:
     def __init__(self):
         self.jobs = 10
@@ -128,12 +139,20 @@ def interactive_mode(config: BuildConfig):
     config.action = {"1": "configure", "3": "test"}.get(action_choice, "configure_and_build")
     if input("\nClean build directory before starting? (y/N): ").strip().lower() == "y":
         config.clean_build = True
-    jobs_input = input(f"Number of parallel jobs (default: {config.jobs}): ").strip()
-    if jobs_input:
+    while True:
+        jobs_input = input(f"Number of parallel jobs (default: {config.jobs}): ").strip()
+        if not jobs_input:
+            break
         try:
-            config.jobs = int(jobs_input)
+            parsed = int(jobs_input, 10)
         except ValueError:
-            pass
+            print(f"Warning: {jobs_input!r} is not a valid integer. Enter a positive integer or press Enter for default.")
+            continue
+        if parsed < 1:
+            print("Warning: jobs must be a positive integer (>= 1). Please try again.")
+            continue
+        config.jobs = parsed
+        break
     print("\n=== Configuration Summary ===")
     print(
         f"Platform: {config.platform}\nBuild Type: {config.build_type}\n"
@@ -232,7 +251,7 @@ def main():
         choices=["configure", "build", "configure_and_build", "test"],
         default="configure_and_build",
     )
-    parser.add_argument("-j", "--jobs", type=int, default=10)
+    parser.add_argument("-j", "--jobs", type=_positive_jobs, default=10)
     parser.add_argument("--clean", action="store_true")
     parser.add_argument("--interactive", action="store_true")
     args = parser.parse_args()

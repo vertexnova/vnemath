@@ -170,15 +170,15 @@ build_cmake_command() {
   esac
 }
 
-BUILD_COMMAND="cmake --build . --config $BUILD_TYPE --parallel $JOBS"
-TEST_COMMAND="ctest -C $BUILD_TYPE --output-on-failure"
+BUILD_CMD=(cmake --build . --config "$BUILD_TYPE" --parallel "$JOBS")
+TEST_CMD=(ctest -C "$BUILD_TYPE" --output-on-failure)
 
 clean_build() { rm -rf "$BUILD_DIR"; mkdir -p "$BUILD_DIR"; cd "$BUILD_DIR" || exit; }
 ensure_build_dir() { [ ! -d "$BUILD_DIR" ] && mkdir -p "$BUILD_DIR"; cd "$BUILD_DIR" || exit; }
 
 configure_project() { echo "Configuring..."; build_cmake_command || { echo "CMake configuration failed"; exit 1; }; }
-build_project() { echo "Building with $JOBS jobs..."; eval "$BUILD_COMMAND" || { echo "Build failed"; exit 1; }; }
-run_tests() { eval "$TEST_COMMAND"; }
+build_project() { echo "Building with $JOBS jobs..."; "${BUILD_CMD[@]}" || { echo "Build failed"; exit 1; }; }
+run_tests() { "${TEST_CMD[@]}" || { echo "Tests failed"; exit 1; }; }
 
 case $ACTION in
   configure) [ "$CLEAN_BUILD" = true ] && clean_build || ensure_build_dir; configure_project ;;
