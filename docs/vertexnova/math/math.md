@@ -103,13 +103,15 @@ void example() {
 
 ## Examples and tests
 
-Runnable examples live under `examples/` (e.g. transform decomposition, GPU alignment, noise). The test binary is **`TestVneMath`** when tests are enabled.
+Runnable examples live under `examples/` (e.g. transform decomposition, GPU alignment, noise). With tests enabled, CMake registers **`vnemath.test`** (command: **`TestVneMath`**). Run the suite with **`ctest --test-dir build`** instead of a hardcoded `bin/` path so single- and multi-config generators and Windows layouts work.
 
 ```bash
 cmake -B build -DVNE_MATH_DEV=ON
 cmake --build build
-./build/bin/TestVneMath
+ctest --test-dir build
 ```
+
+For multi-config generators, add the build configuration if needed, e.g. `ctest --test-dir build -C Release`.
 
 ## Requirements
 
