@@ -4,7 +4,7 @@ Helper scripts for building, formatting, and documentation. Run from the **repos
 
 ## Build layout
 
-Platform scripts use CMake binary directories under **`build/<lib_type>/<build_type>/…`** (default `lib_type` is **shared**), matching CI. Example:
+Platform scripts use CMake binary directories under **`build/<lib_type>/<build_type>/…`** (default `lib_type` is **shared**), matching CI and the **`VNE_MATH_LIB_TYPE`** CMake cache default. Example:
 
 `build/shared/Release/build-linux-gcc-14.2.0/`
 

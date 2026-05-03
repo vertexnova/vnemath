@@ -20,7 +20,8 @@ LIB_TYPE="static"
 
 usage() {
   echo "Usage: $0 [-t <type>] [-a <action>] [-l static|shared] [-clean] [-simulator|-device] [-deployment-target <ver>] [-j <N>]"
-  echo "  -a configure|build|configure_and_build|test|xcode|xcode_build"
+  echo "  -a configure|build|configure_and_build"
+  echo "      configure — CMake/Xcode project only; build / configure_and_build — also run xcodebuild (ALL_BUILD)."
   exit 1
 }
 
@@ -43,6 +44,14 @@ if [[ "$LIB_TYPE" != "static" && "$LIB_TYPE" != "shared" ]]; then
   echo "Invalid -l/--lib-type: '$LIB_TYPE' (expected static or shared)"
   exit 1
 fi
+
+case "$ACTION" in
+  configure|build|configure_and_build) ;;
+  *)
+    echo "Invalid -a/--action: '$ACTION' (expected configure, build, or configure_and_build)"
+    usage
+    ;;
+esac
 
 command -v xcodebuild &>/dev/null || { echo "Xcode not found"; exit 1; }
 COMPILER_VERSION=$(clang --version 2>/dev/null | head -n1 | awk '{print $4}' | sed 's/(.*)//')
@@ -70,11 +79,15 @@ CMAKE_ARGS=(
 cd "$BUILD_DIR"
 cmake "${CMAKE_ARGS[@]}" "$PROJECT_ROOT"
 
-if [[ "$ACTION" == "build" || "$ACTION" == "configure_and_build" || "$ACTION" == "test" ]]; then
+if [[ "$ACTION" == "build" || "$ACTION" == "configure_and_build" ]]; then
   SDK=$([[ "$TARGET" == "device" ]] && echo "iphoneos" || echo "iphonesimulator")
   CONFIG=$([[ "$BUILD_TYPE" == "Release" ]] && echo "Release" || echo "Debug")
   PROJ=$(find . -maxdepth 1 -name "*.xcodeproj" -type d | head -n1)
-  [[ -n "$PROJ" ]] && xcodebuild -project "$(basename "$PROJ")" -scheme ALL_BUILD -configuration "$CONFIG" -sdk "$SDK" -jobs "$JOBS"
+  if [[ -z "$PROJ" ]]; then
+    echo >&2 "Error: no *.xcodeproj in $BUILD_DIR after CMake configure (expected an Xcode generator project)."
+    exit 1
+  fi
+  xcodebuild -project "$(basename "$PROJ")" -scheme ALL_BUILD -configuration "$CONFIG" -sdk "$SDK" -jobs "$JOBS"
 fi
 
 echo "=== Build completed ==="

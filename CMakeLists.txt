@@ -14,22 +14,6 @@ cmake_minimum_required(VERSION 3.16)
 # Project declaration
 project(vnemath VERSION 1.0.0 LANGUAGES CXX)
 
-# iOS: default install prefix for CI / local packaging (same idea as vnelogging / vneevents).
-if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    if(DEFINED ENV{CI} AND DEFINED ENV{GITHUB_WORKSPACE})
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" _VNE_GITHUB_WORKSPACE)
-        set(_VNE_IOS_CI_INSTALL_PREFIX "${_VNE_GITHUB_WORKSPACE}/install")
-        if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
-                OR CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_BINARY_DIR}/install")
-            set(CMAKE_INSTALL_PREFIX "${_VNE_IOS_CI_INSTALL_PREFIX}"
-                CACHE PATH "Install prefix for iOS on CI (workspace/install)" FORCE)
-        endif()
-    elseif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-        set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install"
-            CACHE PATH "Install prefix for iOS builds (override with -DCMAKE_INSTALL_PREFIX)" FORCE)
-    endif()
-endif()
-
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -123,7 +107,7 @@ endif()
 # Parent projects should align: set(VNE_MATH_LIB_TYPE "${PARENT_LIB_TYPE}" CACHE STRING "" FORCE)
 # before add_subdirectory(vnemath). Embedded VneLogging uses the same kind (see vne_use_dep below).
 
-set(VNE_MATH_LIB_TYPE "static" CACHE STRING "VneMath library type: static or shared (one per build)")
+set(VNE_MATH_LIB_TYPE "shared" CACHE STRING "VneMath library type: static or shared (one per build)")
 set_property(CACHE VNE_MATH_LIB_TYPE PROPERTY STRINGS static shared)
 if(NOT VNE_MATH_LIB_TYPE STREQUAL "static" AND NOT VNE_MATH_LIB_TYPE STREQUAL "shared")
     message(FATAL_ERROR "VNE_MATH_LIB_TYPE must be 'static' or 'shared'. Got: ${VNE_MATH_LIB_TYPE}")
@@ -189,7 +173,7 @@ endif()
 # | VNE_MATH_TESTS    | ON             | Build vnemath test suite (can be set to OFF by parent projects)   |
 # | BUILD_EXAMPLES    | OFF            | Build example programs                                            |
 # | ENABLE_COVERAGE   | OFF            | Enable code coverage reporting                                    |
-# | VNE_MATH_LIB_TYPE | static         | Library artifact: static or shared                                |
+# | VNE_MATH_LIB_TYPE | shared         | Library artifact: static or shared                                |
 option(BUILD_TESTS "Build the test suite" ON)
 option(VNE_MATH_TESTS "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
@@ -381,27 +365,33 @@ endif()
 # Installation
 #==============================================================================
 
+# iOS install prefix: only when this project owns install() (not VNE_MATH_SKIP_INSTALL).
+# Single place of truth — avoids duplicating vnelogging/vneevents-style logic at project() scope.
+function(_vnemath_apply_ios_install_prefix_if_owned_install)
+    if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+        return()
+    endif()
+    if(DEFINED ENV{CI} AND DEFINED ENV{GITHUB_WORKSPACE})
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" _vnm_github_ws)
+        set(_vnm_ios_ci_prefix "${_vnm_github_ws}/install")
+        if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+                OR CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_BINARY_DIR}/install")
+            set(CMAKE_INSTALL_PREFIX "${_vnm_ios_ci_prefix}"
+                CACHE PATH "Install prefix for iOS on CI (workspace/install)" FORCE)
+        endif()
+    elseif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+        set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install"
+            CACHE PATH "Install prefix for iOS builds (override with -DCMAKE_INSTALL_PREFIX)" FORCE)
+    endif()
+endfunction()
+
 if(NOT VNE_MATH_SKIP_INSTALL)
     include(GNUInstallDirs)
     if(NOT CMAKE_INSTALL_INCLUDEDIR)
         set(CMAKE_INSTALL_INCLUDEDIR "include")
     endif()
 
-    # iOS: when this project owns install(), align prefix with CI layout (vneevents pattern).
-    if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-        if(DEFINED ENV{CI} AND DEFINED ENV{GITHUB_WORKSPACE})
-            file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" _VNE_GITHUB_WORKSPACE)
-            set(_VNE_IOS_CI_INSTALL_PREFIX "${_VNE_GITHUB_WORKSPACE}/install")
-            if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
-                    OR CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_BINARY_DIR}/install")
-                set(CMAKE_INSTALL_PREFIX "${_VNE_IOS_CI_INSTALL_PREFIX}"
-                    CACHE PATH "Install prefix for iOS on CI (workspace/install)" FORCE)
-            endif()
-        elseif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-            set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install"
-                CACHE PATH "Install prefix for iOS builds (override with -DCMAKE_INSTALL_PREFIX)" FORCE)
-        endif()
-    endif()
+    _vnemath_apply_ios_install_prefix_if_owned_install()
 
     # Install the library
     install(TARGETS vnemath

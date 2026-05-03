@@ -7,7 +7,10 @@ repos:
     hooks:
       - id: clang-format
         name: clang-format (project style)
-        entry: bash -c "cd $(git rev-parse --show-toplevel) && python3 scripts/clang_formatter.py all"
+        entry: bash
+        args:
+          - -c
+          - 'cd "$(git rev-parse --show-toplevel)" && python3 scripts/clang_formatter.py all'
         language: system
         types: [c++, c]
         pass_filenames: false
