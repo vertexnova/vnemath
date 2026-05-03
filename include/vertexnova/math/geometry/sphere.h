@@ -16,6 +16,7 @@
  */
 
 // Project includes
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/vec.h"
 
@@ -35,7 +36,7 @@ class Aabb;
  * used as bounding volumes due to their simple intersection tests and
  * rotational invariance.
  */
-class Sphere {
+class VNE_MATH_API Sphere {
    public:
     /**
      * @brief Default constructor, creates an invalid sphere
@@ -202,7 +203,7 @@ class Sphere {
     /// @}
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Sphere& sphere);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Sphere& sphere);
 
    private:
     Vec3f center_;  ///< Center point of the sphere

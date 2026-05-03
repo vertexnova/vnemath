@@ -16,6 +16,7 @@
  */
 
 // Project includes
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/geometry/plane.h"
 
 // Standard library includes
@@ -38,7 +39,7 @@ namespace vne::math {
  * top, and bottom. This is commonly used for frustum culling to avoid
  * rendering objects outside the view.
  */
-class Frustum {
+class VNE_MATH_API Frustum {
    public:
     /** @brief Default constructor, creates a clip-space frustum */
     Frustum() noexcept = default;
@@ -126,7 +127,7 @@ class Frustum {
     /// @}
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Frustum& frustum);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Frustum& frustum);
 
    private:
     Plane near_{Vec3f::forward(), 1.0f};  ///< Near clipping plane

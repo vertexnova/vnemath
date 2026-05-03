@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "vertexnova/math/export.h"
 #include "../core/types.h"
 #include "../core/vec.h"
 
@@ -26,7 +27,7 @@ namespace vne::math {
  * - Collision detection
  * - Path segments
  */
-class LineSegment {
+class VNE_MATH_API LineSegment {
    public:
     Vec3f start{Vec3f::zero()};  ///< Start point of the segment
     Vec3f end{Vec3f::zero()};    ///< End point of the segment

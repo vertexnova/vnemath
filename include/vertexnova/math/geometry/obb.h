@@ -16,6 +16,7 @@
  * @brief Defines the Obb class for oriented bounding box operations.
  */
 
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/mat.h"
 #include "vertexnova/math/core/quat.h"
@@ -42,7 +43,7 @@ class Aabb;
  * - Three orthonormal axes (stored as a rotation matrix or quaternion)
  * - Half-extents along each local axis
  */
-class Obb {
+class VNE_MATH_API Obb {
    public:
     /**
      * @brief Default constructor. Creates a unit OBB at origin aligned with world axes.
@@ -276,7 +277,7 @@ class Obb {
     /// @}
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Obb& obb);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Obb& obb);
 
    private:
     Vec3f center_{Vec3f::zero()};           ///< Center point

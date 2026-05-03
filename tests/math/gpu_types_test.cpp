@@ -78,7 +78,8 @@ struct alignas(16) CameraUniforms {
     GpuMat4f view_projection;   // 64 bytes
     GpuVec4f camera_position;   // 16 bytes
     GpuVec4f camera_direction;  // 16 bytes
-};  // Total: 96 bytes
+    // Total: 96 bytes
+};
 
 // Validate at compile time
 VNE_VALIDATE_GPU_STRUCT(CameraUniforms);

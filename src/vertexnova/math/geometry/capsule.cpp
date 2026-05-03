@@ -265,7 +265,7 @@ bool Capsule::areSame(const Capsule& other, float epsilon) const noexcept {
            && approxEqual(radius_, other.radius_, epsilon);
 }
 
-std::ostream& operator<<(std::ostream& os, const Capsule& capsule) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Capsule& capsule) {
     return os << "Capsule: [start: " << capsule.start() << ", end: " << capsule.end()
               << ", radius: " << capsule.radius() << "]";
 }

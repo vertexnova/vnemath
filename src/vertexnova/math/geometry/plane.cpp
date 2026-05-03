@@ -146,7 +146,7 @@ bool Plane::operator!=(const Plane& plane) const noexcept {
     return !(*this == plane);
 }
 
-std::ostream& operator<<(std::ostream& os, const Plane& plane) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Plane& plane) {
     return os << "Plane: [normal: " << plane.normal << ", d: " << plane.d << "]";
 }
 

@@ -141,7 +141,7 @@ bool Frustum::operator!=(const Frustum& other) const noexcept {
     return !(*this == other);
 }
 
-std::ostream& operator<<(std::ostream& os, const Frustum& frustum) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Frustum& frustum) {
     return os << "Frustum: [near: " << frustum.near_ << ", far: " << frustum.far_ << ", left: " << frustum.left_
               << ", right: " << frustum.right_ << ", bottom: " << frustum.bottom_ << ", top: " << frustum.top_ << "]";
 }

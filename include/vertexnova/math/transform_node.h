@@ -16,6 +16,7 @@
  */
 
 // Project includes
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/mat.h"
 
 // Standard library includes
@@ -31,7 +32,7 @@ namespace vne::math {
  * transformation based on the parent hierarchy. This is commonly used for
  * scene graphs in 3D applications where objects have parent-child relationships.
  */
-class TransformNode {
+class VNE_MATH_API TransformNode {
    public:
     /** @brief Default constructor, creates a root node with identity transform */
     TransformNode() noexcept;

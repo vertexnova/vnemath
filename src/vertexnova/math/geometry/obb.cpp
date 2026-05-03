@@ -310,7 +310,7 @@ bool Obb::areSame(const Obb& other, float epsilon) const noexcept {
            && orientation_.approxEquals(other.orientation_, epsilon);
 }
 
-std::ostream& operator<<(std::ostream& os, const Obb& obb) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Obb& obb) {
     return os << "Obb: [center: " << obb.center() << ", half_extents: " << obb.halfExtents()
               << ", orientation: " << obb.orientation() << "]";
 }

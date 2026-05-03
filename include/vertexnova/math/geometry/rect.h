@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "vertexnova/math/export.h"
 #include "../core/types.h"
 #include "../core/vec.h"
 
@@ -27,7 +28,7 @@ namespace vne::math {
  * - Texture regions / sprite sheets
  * - Screen regions
  */
-class Rect {
+class VNE_MATH_API Rect {
    public:
     float x = 0.0f;       ///< X coordinate of the rectangle origin
     float y = 0.0f;       ///< Y coordinate of the rectangle origin

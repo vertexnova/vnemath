@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "vertexnova/math/export.h"
 #include "../core/types.h"
 #include "../core/vec.h"
 
@@ -23,7 +24,7 @@ namespace vne::math {
  * - Point containment testing
  * - Edge access
  */
-class Triangle {
+class VNE_MATH_API Triangle {
    public:
     Vec3f v0;  ///< First vertex
     Vec3f v1;  ///< Second vertex

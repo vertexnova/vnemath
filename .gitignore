@@ -1,49 +1,33 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# debug information files
-*.dwo
-
-# Build directories
+# Build
 build/
 _build/
 cmake-build-*/
+build-*/
+out/
+target/
+*.user
+
+# Binaries / objects
+*.d
+*.o
+*.obj
+*.lo
+*.slo
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+*.ilk
+*.pdb
+*.dwo
+*.pch
+*.gch
+*.mod
+*.smod
 
 # CMake
 CMakeCache.txt
@@ -52,23 +36,48 @@ cmake_install.cmake
 compile_commands.json
 _deps/
 
-# IDE
-.vscode/
+# IDE (allow .vscode/settings.json to be committed)
+.vscode/*
+!.vscode/settings.json
 .idea/
 *.swp
+*.swo
 *~
 
-# macOS
-.DS_Store
-._*
+# Clangd / tooling cache
+.cache/
 
-# Test output
-test_dir/
-logs/
-*.log
-
-# CMakeLists.txt.user
+# Qt Creator / local CMake user file
 CMakeLists.txt.user
 
-# Clangd cache
-.cache/
+# AI tools (local-only)
+.cursor/
+.copilot/
+.claude/
+.deepseek/
+.gemini/
+.google/
+.openai/
+.anthropic/
+.perplexity/
+.grok/
+
+# OS
+.DS_Store
+._*
+Thumbs.db
+
+# Logs / tests
+logs/
+*.log
+test_dir/
+test_output/
+
+# Coverage
+*.gcov
+*.gcda
+*.gcno
+coverage/
+coverage.info
+
+.vscode/

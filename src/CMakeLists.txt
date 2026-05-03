@@ -18,6 +18,7 @@ project(vnemath)
 
 # Define header files
 set(INCLUDE_FILES
+    ${VNE_INCLUDE_DIR}/vertexnova/math/export.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/math.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/color.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_node.h
@@ -77,11 +78,19 @@ set(SOURCE_FILES
 #                                 Library                                      #
 #==============================================================================
 
-# Create a library from the source and header files
-add_library(vnemath STATIC ${SOURCE_FILES} ${INCLUDE_FILES})
+# Create a library from the source and header files (static or shared: VNE_MATH_LIB_TYPE)
+add_library(vnemath ${_VNE_MATH_LIB_KIND} ${SOURCE_FILES} ${INCLUDE_FILES})
 
 # Alias for the library
 add_library(vne::math ALIAS vnemath)
+
+vnemath_apply_shared_export(vnemath)
+
+set_target_properties(vnemath PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    OUTPUT_NAME vnemath
+)
 
 # Set include directories for the library
 target_include_directories(vnemath

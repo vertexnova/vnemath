@@ -1,0 +1,8 @@
+# ----------------------------------------------------------------------
+# CodeQL configuration for VneMath — exclude vendored deps from analysis.
+# ----------------------------------------------------------------------
+
+name: vnemath CodeQL config
+
+paths-ignore:
+  - "deps/external/**"
