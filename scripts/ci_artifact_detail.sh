@@ -32,6 +32,65 @@ _xcode_version_raw() {
   printf '%s' "$v"
 }
 
+# Visual Studio generation for Windows artifact slugs (Git Bash / GHA / WSL path layouts).
+_windows_toolchain_slug() {
+  local vswhere iv major cand
+  vswhere=""
+  for cand in \
+    "/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe" \
+    "/mnt/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"; do
+    if [[ -f "$cand" ]]; then
+      vswhere="$cand"
+      break
+    fi
+  done
+  if [[ -n "$vswhere" ]]; then
+    iv="$("$vswhere" -latest -property installationVersion 2>/dev/null | tr -d '\r\n' || true)"
+    if [[ "$iv" =~ ^([0-9]+)\. ]]; then
+      major="${BASH_REMATCH[1]}"
+      case "$major" in
+        17) printf '%s' "vs2022"; return ;;
+        16) printf '%s' "vs2019"; return ;;
+        15) printf '%s' "vs2017"; return ;;
+        *)
+          # New VS majors stay unique (e.g. vsinst18) to avoid tarball collisions.
+          printf 'vsinst%s' "$major"
+          return
+          ;;
+      esac
+    fi
+  fi
+  if [[ -d "/c/Program Files/Microsoft Visual Studio/2022" ]] \
+    || [[ -d "/mnt/c/Program Files/Microsoft Visual Studio/2022" ]]; then
+    printf '%s' "vs2022"
+    return
+  fi
+  if [[ -d "/c/Program Files/Microsoft Visual Studio/2019" ]] \
+    || [[ -d "/mnt/c/Program Files/Microsoft Visual Studio/2019" ]]; then
+    printf '%s' "vs2019"
+    return
+  fi
+  printf '%s' "vsunknown"
+}
+
+# Normalize runner CPU for Windows (uname -m, else PROCESSOR_ARCHITECTURE on cmd runners).
+_windows_arch_slug() {
+  local raw="$1"
+  local a=""
+  if [[ -n "$raw" ]]; then
+    a="$(printf '%s' "$raw" | tr '[:upper:]' '[:lower:]')"
+  else
+    a="$(printf '%s' "${PROCESSOR_ARCHITECTURE:-}" | tr '[:upper:]' '[:lower:]')"
+  fi
+  case "$a" in
+    x86_64|amd64) printf '%s' "x64" ;;
+    aarch64|arm64) printf '%s' "arm64" ;;
+    i386|i686|x86) printf '%s' "x86" ;;
+    "") printf '%s' "unknown" ;;
+    *) printf '%s' "$a" ;;
+  esac
+}
+
 base="${1:-generic}"
 arch="$(uname -m 2>/dev/null || true)"
 arch="${arch//$'\r'/}"
@@ -77,7 +136,9 @@ case "$base" in
     fi
     ;;
   windows)
-    detail="vs2022-x64"
+    wtool="$(_windows_toolchain_slug)"
+    warch="$(_windows_arch_slug "$arch")"
+    detail="${wtool}-${warch}"
     ;;
   web-emscripten)
     emv="$(emcc -dumpversion 2>/dev/null || true)"
