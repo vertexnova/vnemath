@@ -155,13 +155,42 @@ if [ "$INTERACTIVE_MODE" = true ]; then
   interactive_mode
 fi
 
+case "$BUILD_TYPE" in
+  Debug|Release|RelWithDebInfo|MinSizeRel) ;;
+  *)
+    echo "Invalid -t/--build-type: '$BUILD_TYPE' (expected Debug, Release, RelWithDebInfo, or MinSizeRel)"
+    exit 1
+    ;;
+esac
+
+case "$LIB_TYPE" in
+  static|shared) ;;
+  *)
+    echo "Invalid -l/--lib-type: '$LIB_TYPE' (expected static or shared)"
+    exit 1
+    ;;
+esac
+
+case "$COMPILER" in
+  gcc|clang) ;;
+  *)
+    echo "Invalid -c/--compiler: '$COMPILER' (expected gcc or clang)"
+    exit 1
+    ;;
+esac
+
+case "$ACTION" in
+  configure|build|configure_and_build|test) ;;
+  *)
+    echo "Invalid -a/--action: '$ACTION'"
+    usage
+    ;;
+esac
+
 if [ "$COMPILER" = "gcc" ]; then
   COMPILER_VERSION=$(gcc --version | head -n 1 | awk '{print $4}')
 elif [ "$COMPILER" = "clang" ]; then
   COMPILER_VERSION=$(clang --version | head -n 1 | awk '{print $3}')
-else
-  echo "Unsupported compiler: $COMPILER"
-  exit 1
 fi
 
 echo "$PLATFORM :: $COMPILER-${COMPILER_VERSION}"
@@ -169,22 +198,22 @@ echo "$PLATFORM :: $COMPILER-${COMPILER_VERSION}"
 PROJECT_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 BUILD_DIR="$PROJECT_ROOT/build/${LIB_TYPE}/${BUILD_TYPE}/build-linux-$COMPILER-${COMPILER_VERSION}"
 
-IPO_FLAGS=""
-if [ "$COMPILER" = "clang" ]; then
-  IPO_FLAGS="-DENABLE_IPO=OFF"
+# Array-based cmake invocation (no eval — avoids injection via cache vars).
+CONFIGURE_CMD=(cmake
+  "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
+  "-DVNE_MATH_LIB_TYPE=${LIB_TYPE}"
+  -DBUILD_TESTS=ON
+  -DVNE_MATH_TESTS=ON
+)
+if [ "$COMPILER" = "gcc" ]; then
+  CONFIGURE_CMD+=(-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++)
+else
+  CONFIGURE_CMD+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DENABLE_IPO=OFF)
 fi
+CONFIGURE_CMD+=("$PROJECT_ROOT")
 
-build_cmake_command() {
-  if [ "$COMPILER" = "gcc" ]; then
-    echo "cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DVNE_MATH_LIB_TYPE=$LIB_TYPE -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DBUILD_TESTS=ON -DVNE_MATH_TESTS=ON $IPO_FLAGS \"$PROJECT_ROOT\""
-  elif [ "$COMPILER" = "clang" ]; then
-    echo "cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DVNE_MATH_LIB_TYPE=$LIB_TYPE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_TESTS=ON -DVNE_MATH_TESTS=ON $IPO_FLAGS \"$PROJECT_ROOT\""
-  fi
-}
-
-CONFIGURE_COMMAND=$(build_cmake_command)
-BUILD_COMMAND="make -j$JOBS"
-TEST_COMMAND="ctest --output-on-failure"
+BUILD_CMD=(make -j"$JOBS")
+TEST_CMD=(ctest --output-on-failure)
 
 clean_build() {
   rm -rf "$BUILD_DIR"
@@ -200,17 +229,17 @@ ensure_build_dir() {
 }
 
 configure_project() {
-  echo "Configuring with command: $CONFIGURE_COMMAND"
-  eval "$CONFIGURE_COMMAND"
+  echo "Configuring: $(printf '%q ' "${CONFIGURE_CMD[@]}")"
+  "${CONFIGURE_CMD[@]}"
 }
 
 build_project() {
   echo "Building with $JOBS parallel jobs..."
-  eval "$BUILD_COMMAND"
+  "${BUILD_CMD[@]}"
 }
 
 run_tests() {
-  eval "$TEST_COMMAND"
+  "${TEST_CMD[@]}"
 }
 
 case $ACTION in
