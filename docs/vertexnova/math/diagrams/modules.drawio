@@ -1,0 +1,25 @@
+<mxfile host="65bd71144e">
+    <diagram name="Module layers" id="modules">
+        <mxGraphModel dx="965" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="core" value="Core (core/core.h)&#xa;Vec, Mat, Quat&#xa;GraphicsApi traits" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#0d47a1;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="120" width="280" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="geom" value="Geometry (geometry/)&#xa;Ray, Aabb, Sphere, Frustum, …&#xa;intersect / intersects" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#bf360c;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="120" width="300" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="util" value="Utilities (math.h umbrella)&#xa;Color, projection_utils, transform_utils&#xa;noise, curves, easing, random, Statistic, gpu_types" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#1b5e20;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="280" width="640" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="arr1" style="endArrow=blockThin;endFill=0;html=1;dashed=1;strokeWidth=2;strokeColor=#666666;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="util" target="core" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arr2" style="endArrow=blockThin;endFill=0;html=1;dashed=1;strokeWidth=2;strokeColor=#666666;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="util" target="geom" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

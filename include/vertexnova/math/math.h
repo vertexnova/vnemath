@@ -14,7 +14,8 @@
  * @file math.h
  * @brief Main include file for the VNE Math library.
  *
- * This file includes all the math module headers for convenient access.
+ * This file includes core types, geometry, color, animation/noise helpers,
+ * projection and transform utilities, running statistics, and GPU-aligned types.
  */
 
 // Core templated types (Vec, Mat, Quat)
@@ -41,6 +42,10 @@
 
 // Geometry module includes
 #include "geometry/geometry.h"
+
+// Analysis and GPU layout helpers (also available via direct includes)
+#include "statistic.h"
+#include "gpu_types.h"
 
 namespace vne::math {
 

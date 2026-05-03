@@ -1,0 +1,34 @@
+<mxfile host="65bd71144e">
+    <diagram name="Typical usage" id="api">
+        <mxGraphModel dx="965" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="step1" value="1. Include" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#0d47a1;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="94" width="120" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="inc" value="#include &lt;vertexnova/math/math.h&gt;&#xa;using namespace vne::math;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=11;fontColor=#000000;fontFamily=Courier New;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="150" width="300" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="arr1" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#1565c0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="inc" target="use" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="step2" value="2. Transforms" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#bf360c;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="80" width="140" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="use" value="Mat4f M = modelMatrix(pos, rot, scale);&#xa;Mat4f V = Mat4f::lookAt(eye, center, up, api);&#xa;Mat4f P = Mat4f::perspective(fovy, aspect, n, f, api);&#xa;Mat4f mvp = mvp(M, V, P);" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e65100;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=10;fontColor=#000000;fontFamily=Courier New;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="130" width="360" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="arr2" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#e65100;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="use" target="opt" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="step3" value="3. Optional" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#1b5e20;" parent="1" vertex="1">
+                    <mxGeometry x="900" y="90" width="120" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="opt" value="project(world, mvp, viewport, api);&#xa;intersect(ray, aabb);&#xa;GpuMat4f for UBO packing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=10;fontColor=#000000;fontFamily=Courier New;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="140" width="300" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

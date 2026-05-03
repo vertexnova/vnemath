@@ -27,6 +27,11 @@
 
 This library is part of [VertexNova](https://github.com/vertexnova) — a multi-backend game/graphics engine built from scratch.
 
+## Documentation
+
+- **Module guide (architecture & usage):** [docs/vertexnova/math/math.md](docs/vertexnova/math/math.md) — figures use PNGs exported from [docs/vertexnova/math/diagrams/](docs/vertexnova/math/diagrams/) (see that folder’s README).
+- **Docs index & Doxygen:** [docs/README.md](docs/README.md) — API HTML via `cmake -DENABLE_DOXYGEN=ON -B build && cmake --build build --target vnemath_doc`.
+
 ## Features
 
 ### Core Types

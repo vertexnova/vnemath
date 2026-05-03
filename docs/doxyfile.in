@@ -1,0 +1,74 @@
+#==============================================================================
+# Doxyfile Configuration for VneMath
+#==============================================================================
+
+PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
+PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
+PROJECT_BRIEF          = "C++20 math library for 3D graphics: vectors, matrices, quaternions, geometry"
+PROJECT_LOGO           =
+
+INPUT                  = @PROJECT_SOURCE_DIR@/include \
+                         @PROJECT_SOURCE_DIR@/src \
+                         @CMAKE_CURRENT_SOURCE_DIR@/docs/ \
+                         @CMAKE_CURRENT_SOURCE_DIR@/README.md
+
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/vnemath_doxygen
+
+FILE_PATTERNS          = *.h \
+                         *.hpp \
+                         *.cpp \
+                         *.md
+
+RECURSIVE              = YES
+
+USE_MDFILE_AS_MAINPAGE = @CMAKE_CURRENT_SOURCE_DIR@/README.md
+
+HTML_COLORSTYLE_HUE    = 200
+HTML_COLORSTYLE_SAT    = 100
+HTML_COLORSTYLE_GAMMA  = 60
+
+OUTPUT_LANGUAGE        = English
+
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+EXTRACT_PRIVATE        = YES
+
+UML_LOOK               = YES
+UML_LIMIT_NUM_FIELDS   = 16
+
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+GENERATE_LATEX         = NO
+USE_PDFLATEX           = NO
+
+GENERATE_TREEVIEW      = YES
+
+BUILTIN_STL_SUPPORT    = YES
+
+JAVADOC_AUTOBRIEF      = YES
+
+GENERATE_TODOLIST      = YES
+
+IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@/docs/
+PLANTUML_JAR_PATH      = @PLANT_UML_PATH@
+DOT_PATH               = @DOXYGEN_DOT_PATH@
+DOT_CLEANUP            = NO
+HAVE_DOT               = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+GRAPHICAL_HIERARCHY    = YES
+DIRECTORY_GRAPH        = YES
+GENERATE_LEGEND        = YES
+INCLUDED_BY_GRAPH      = YES
+INCLUDE_GRAPH          = YES
+DOT_IMAGE_FORMAT       = png:cairo:cairo
+
+EXCLUDE_PATTERNS       = */tests/* \
+                         */deps/* \
+                         */examples/*
+
+MARKDOWN_SUPPORT       = YES
+
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
