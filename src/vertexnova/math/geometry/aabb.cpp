@@ -177,7 +177,7 @@ bool Aabb::operator!=(const Aabb& other) const noexcept {
     return !(*this == other);
 }
 
-std::ostream& operator<<(std::ostream& os, const Aabb& aabb) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Aabb& aabb) {
     return os << "Aabb: [min: " << aabb.min() << ", max: " << aabb.max() << "]";
 }
 

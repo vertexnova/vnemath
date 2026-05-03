@@ -16,6 +16,7 @@
  */
 
 // Project includes
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/vec.h"
 
@@ -32,7 +33,7 @@ namespace vne::math {
  * infinitely in that direction. This is commonly used for raycasting,
  * picking, and intersection tests.
  */
-class Ray {
+class VNE_MATH_API Ray {
    public:
     /**
      * @brief Default constructor, creates a ray at origin pointing along +Z
@@ -126,7 +127,7 @@ class Ray {
      * @param ray The ray to output
      * @return The output stream
      */
-    friend std::ostream& operator<<(std::ostream& os, const Ray& ray);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Ray& ray);
 
    private:
     Vec3f origin_;     ///< The origin point of the ray

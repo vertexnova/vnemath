@@ -120,6 +120,20 @@ target_link_libraries(TestVneMath
         vne::math
 )
 
+if(VNE_MATH_LIB_TYPE STREQUAL "shared")
+    if(WIN32)
+        add_custom_command(TARGET TestVneMath POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:vnemath>
+                $<TARGET_FILE_DIR:TestVneMath>
+            VERBATIM)
+    else()
+        set_target_properties(TestVneMath PROPERTIES
+            BUILD_RPATH "$<TARGET_FILE_DIR:vnemath>"
+        )
+    endif()
+endif()
+
 # Web platform specific configuration
 if(VNE_PLATFORM_WEB)
     target_compile_definitions(TestVneMath PRIVATE VNE_PLATFORM_WEB)

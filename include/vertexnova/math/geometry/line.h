@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "vertexnova/math/export.h"
 #include "../core/types.h"
 #include "../core/vec.h"
 #include "line_segment.h"
@@ -27,7 +28,7 @@ namespace vne::math {
  * - Closest point queries
  * - Geometric constructions
  */
-class Line {
+class VNE_MATH_API Line {
    public:
     Vec3f point{Vec3f::zero()};  ///< A point on the line
     Vec3f dir{Vec3f::zAxis()};   ///< Direction of the line (should be normalized)

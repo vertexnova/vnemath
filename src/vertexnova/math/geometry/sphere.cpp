@@ -162,7 +162,7 @@ bool Sphere::operator!=(const Sphere& other) const noexcept {
     return !(*this == other);
 }
 
-std::ostream& operator<<(std::ostream& os, const Sphere& sphere) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Sphere& sphere) {
     return os << "Sphere: [center: " << sphere.center() << ", radius: " << sphere.radius() << "]";
 }
 

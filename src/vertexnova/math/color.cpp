@@ -383,12 +383,12 @@ void Color::clamp() noexcept {
 }
 
 //------------------------------------------------------------------------------
-std::ostream& operator<<(std::ostream& os, const Color& color) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Color& color) {
     return os << "[" << color.r_ << ", " << color.g_ << ", " << color.b_ << ", " << color.a_ << "]";
 }
 
 //------------------------------------------------------------------------------
-std::istream& operator>>(std::istream& is, Color& color) {
+VNE_MATH_API std::istream& operator>>(std::istream& is, Color& color) {
     // Skip white spaces
     is.setf(std::ios_base::skipws);
     is.ignore(1);

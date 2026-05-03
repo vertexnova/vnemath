@@ -16,6 +16,7 @@
  */
 
 // Project includes
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/vec.h"
 
@@ -32,7 +33,7 @@ namespace vne::math {
  * This is one of the simplest and most commonly used bounding volumes for
  * collision detection and spatial queries.
  */
-class Aabb {
+class VNE_MATH_API Aabb {
    public:
     /**
      * @brief Default constructor, creates an invalid (inverted) AABB
@@ -244,7 +245,7 @@ class Aabb {
     /// @}
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Aabb& aabb);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Aabb& aabb);
 
    private:
     Vec3f min_;  ///< Minimum corner of the AABB

@@ -67,7 +67,7 @@ const Vec3f& Ray::direction() const noexcept {
     return direction_;
 }
 
-std::ostream& operator<<(std::ostream& os, const Ray& ray) {
+VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Ray& ray) {
     return os << "Ray: [origin: " << ray.origin() << ", direction: " << ray.direction() << "]";
 }
 

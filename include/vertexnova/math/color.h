@@ -15,6 +15,7 @@
  * @brief Defines the Color class for RGBA color representation.
  */
 
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/vec.h"
 
@@ -27,7 +28,7 @@ namespace vne::math {
  * Each component is stored as a float in the range [0, 1].
  * Values outside this range are automatically clamped.
  */
-class Color {
+class VNE_MATH_API Color {
    public:
     /** @brief Default constructor, initializes to black with full opacity (0, 0, 0, 1) */
     Color() noexcept;
@@ -298,8 +299,8 @@ class Color {
    public:
     /// @name Stream Operators
     /// @{
-    friend std::ostream& operator<<(std::ostream& os, const Color& color);
-    friend std::istream& operator>>(std::istream& is, Color& color);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Color& color);
+    friend VNE_MATH_API std::istream& operator>>(std::istream& is, Color& color);
     /// @}
 
    private:

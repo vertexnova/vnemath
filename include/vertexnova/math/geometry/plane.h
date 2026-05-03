@@ -16,6 +16,7 @@
  */
 
 // Project includes
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/mat.h"
 #include "vertexnova/math/core/vec.h"
@@ -34,7 +35,7 @@ namespace vne::math {
  *
  * The Hesse normal form: ax + by + cz + d = 0
  */
-class Plane {
+class VNE_MATH_API Plane {
    public:
     /** @brief Default constructor, creates XY plane at origin */
     Plane() noexcept = default;
@@ -246,7 +247,7 @@ class Plane {
     /// @}
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Plane& plane);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Plane& plane);
 
    public:
     Vec3f normal{Vec3f::zAxis()};  ///< The plane normal (should be normalized)

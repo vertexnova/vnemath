@@ -102,6 +102,46 @@ elseif(VNE_TARGET_PLATFORM STREQUAL "Web")
 endif()
 
 #==============================================================================
+# Library type — static or shared (one per build directory)
+#==============================================================================
+# Parent projects should align: set(VNE_MATH_LIB_TYPE "${PARENT_LIB_TYPE}" CACHE STRING "" FORCE)
+# before add_subdirectory(vnemath). Embedded VneLogging uses the same kind (see vne_use_dep below).
+
+set(VNE_MATH_LIB_TYPE "static" CACHE STRING "VneMath library type: static or shared (one per build)")
+set_property(CACHE VNE_MATH_LIB_TYPE PROPERTY STRINGS static shared)
+if(NOT VNE_MATH_LIB_TYPE STREQUAL "static" AND NOT VNE_MATH_LIB_TYPE STREQUAL "shared")
+    message(FATAL_ERROR "VNE_MATH_LIB_TYPE must be 'static' or 'shared'. Got: ${VNE_MATH_LIB_TYPE}")
+endif()
+
+if(VNE_MATH_LIB_TYPE STREQUAL "shared")
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    set(_VNE_MATH_LIB_KIND SHARED)
+else()
+    set(_VNE_MATH_LIB_KIND STATIC)
+endif()
+
+message(STATUS "VneMath: VNE_MATH_LIB_TYPE=${VNE_MATH_LIB_TYPE}")
+
+function(vnemath_apply_shared_export target_name)
+    get_target_property(_vnm_kind "${target_name}" TYPE)
+    if(NOT _vnm_kind STREQUAL "SHARED_LIBRARY")
+        return()
+    endif()
+    target_compile_definitions(${target_name}
+        PRIVATE VNE_MATH_BUILDING_DLL
+        INTERFACE VNE_MATH_DLL
+    )
+    if(MSVC)
+        target_compile_options(${target_name} PRIVATE /wd4251 /wd4275)
+    else()
+        set_target_properties(${target_name} PROPERTIES
+            CXX_VISIBILITY_PRESET hidden
+            VISIBILITY_INLINES_HIDDEN ON
+        )
+    endif()
+endfunction()
+
+#==============================================================================
 # Build Options
 #==============================================================================
 # Build presets: DEV (local repo) and CI (pipelines). Default DEV when top-level project.
@@ -130,6 +170,7 @@ endif()
 # | VNE_MATH_TESTS    | ON             | Build vnemath test suite (can be set to OFF by parent projects)   |
 # | BUILD_EXAMPLES    | OFF            | Build example programs                                            |
 # | ENABLE_COVERAGE   | OFF            | Enable code coverage reporting                                    |
+# | VNE_MATH_LIB_TYPE | static         | Library artifact: static or shared                                |
 option(BUILD_TESTS "Build the test suite" ON)
 option(VNE_MATH_TESTS "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
@@ -273,7 +314,7 @@ function(_vnemath_configure_vnelogging_dep)
     vne_use_dep(TARGET vne::logging
         SUBDIR "${VNE_DEPS_INTERNAL_DIR}/vnelogging"
         BINARY_DIR "${CMAKE_BINARY_DIR}/deps/internal/vnelogging"
-        CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF)
+        CACHE_VARS BUILD_TESTS OFF BUILD_EXAMPLES OFF VNE_LOGGING_LIB_TYPE "${VNE_MATH_LIB_TYPE}")
     # Restore BUILD_TESTS in both cache and normal variable
     set(BUILD_TESTS "${_vnemath_build_tests_saved}" CACHE BOOL "" FORCE)
     set(BUILD_TESTS "${_vnemath_build_tests_saved}")
@@ -319,6 +360,7 @@ install(TARGETS vnemath
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 

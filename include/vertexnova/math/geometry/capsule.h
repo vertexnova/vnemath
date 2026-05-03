@@ -16,6 +16,7 @@
  * @brief Defines the Capsule class for capsule (swept sphere) operations.
  */
 
+#include "vertexnova/math/export.h"
 #include "vertexnova/math/core/constants.h"
 #include "vertexnova/math/core/vec.h"
 #include "vertexnova/math/geometry/line_segment.h"
@@ -42,7 +43,7 @@ class Sphere;
  * - Bone/limb collision in skeletal systems
  * - Fast approximation of elongated objects
  */
-class Capsule {
+class VNE_MATH_API Capsule {
    public:
     /**
      * @brief Default constructor. Creates a unit capsule along Y-axis.
@@ -271,7 +272,7 @@ class Capsule {
     /// @}
 
    public:
-    friend std::ostream& operator<<(std::ostream& os, const Capsule& capsule);
+    friend VNE_MATH_API std::ostream& operator<<(std::ostream& os, const Capsule& capsule);
 
    private:
     Vec3f start_{Vec3f(0.0f, -0.5f, 0.0f)};  ///< Start point of segment
