@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/vertexnova/vnemath/compare/v1.1.0...v1.2.0) (2026-05-03)
+
+
+### Features
+
+* Added the documentation for the math lib ([#7](https://github.com/vertexnova/vnemath/issues/7)) ([a7e9ebb](https://github.com/vertexnova/vnemath/commit/a7e9ebbe82b1891a475ddec8ffdda17b4dd91c0e))
+
 ## [1.1.0](https://github.com/vertexnova/vnemath/compare/v1.0.0...v1.1.0) (2026-05-03)
 
 
