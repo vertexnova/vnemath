@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/vertexnova/vnemath/compare/v1.2.1...v1.2.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* update vnelogging subproject commit reference ([#11](https://github.com/vertexnova/vnemath/issues/11)) ([bcdc661](https://github.com/vertexnova/vnemath/commit/bcdc661c7da45fbdb5eb78f4b24d5186620fe7c6))
+
 ## [1.2.1](https://github.com/vertexnova/vnemath/compare/v1.2.0...v1.2.1) (2026-05-17)
 
 
