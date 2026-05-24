@@ -89,9 +89,8 @@ namespace vne::math {
     float sx = (screen_pos.x() - viewport.x) / viewport.width;
     float sy = (screen_pos.y() - viewport.y) / viewport.height;
 
-    // Invert Y only when screen is top-left and the projection did not already flip NDC Y
-    // (avoids double Y-flip for Vulkan where needsProjectionYFlip(api) is true)
-    if (screenOriginIsTopLeft(api) && !needsProjectionYFlip(api)) {
+    // Invert Y when the framebuffer origin is top-left.
+    if (screenOriginIsTopLeft(api)) {
         sy = 1.0f - sy;
     }
 
@@ -197,8 +196,8 @@ namespace vne::math {
     float sx = (screen_pos.x() - viewport.x) / viewport.width;
     float sy = (screen_pos.y() - viewport.y) / viewport.height;
 
-    // Invert Y only when screen is top-left and the projection did not already flip NDC Y
-    if (screenOriginIsTopLeft(api) && !needsProjectionYFlip(api)) {
+    // Invert Y when the framebuffer origin is top-left.
+    if (screenOriginIsTopLeft(api)) {
         sy = 1.0f - sy;
     }
 
@@ -219,8 +218,8 @@ namespace vne::math {
     float sx = (ndc_pos.x() + 1.0f) * 0.5f;
     float sy = (ndc_pos.y() + 1.0f) * 0.5f;
 
-    // Invert Y only when screen is top-left and the projection did not already flip NDC Y
-    if (screenOriginIsTopLeft(api) && !needsProjectionYFlip(api)) {
+    // Invert Y when the framebuffer origin is top-left.
+    if (screenOriginIsTopLeft(api)) {
         sy = 1.0f - sy;
     }
 
@@ -315,8 +314,7 @@ namespace vne::math {
  * The transform maps:
  *   NDC x in [-1, 1]  →  screen x in [viewport.x, viewport.x + viewport.width]
  *   NDC y in [-1, 1]  →  screen y in [viewport.y, viewport.y + viewport.height]
- *                         (Y is flipped only when the screen origin is top-left and the
- *                          projection did not already flip NDC Y, avoiding double-flip for Vulkan)
+ *                         (Y is flipped when the framebuffer origin is top-left)
  *
  * Z and W are passed through unchanged: Z remains NDC depth (Z/W after perspective divide),
  * not mapped into the viewport depth range or depth-buffer encoding. For depth or viewport
@@ -334,8 +332,7 @@ namespace vne::math {
     float half_w = viewport.width * 0.5f;
     float half_h = viewport.height * 0.5f;
     float scale_x = half_w;
-    // Flip Y only when screen is top-left and the projection did not already flip NDC Y
-    bool flip_y = screenOriginIsTopLeft(api) && !needsProjectionYFlip(api);
+    const bool flip_y = screenOriginIsTopLeft(api);
     float scale_y = flip_y ? -half_h : half_h;
     float trans_x = viewport.x + half_w;
     // Translation Y is always vp.y + half_h because scale_y already carries the sign
@@ -387,44 +384,6 @@ namespace vne::math {
                                                const Viewport& viewport,
                                                GraphicsApi api = GraphicsApi::eOpenGL) noexcept {
     return clipToScreenMatrix(viewport, api) * view_proj;
-}
-
-// ============================================================================
-// Validation Utilities
-// ============================================================================
-
-/**
- * @brief Validates that a projection matrix has the correct Y-flip for the API.
- *
- * This helps catch mismatches where a projection matrix was generated for one API
- * but is being used with another. Only Vulkan requires Y-flip in the projection matrix.
- *
- * @param proj The projection matrix to validate
- * @param api The target graphics API
- * @return true if the Y-flip is correct for the API, false otherwise
- */
-[[nodiscard]] inline bool validateProjectionMatrix(const Mat4f& proj, GraphicsApi api) noexcept {
-    bool y_flipped = proj[1][1] < 0.0f;
-    bool should_flip = needsProjectionYFlip(api);
-    return y_flipped == should_flip;
-}
-
-/**
- * @brief Validates projection matrix and returns detailed mismatch info.
- *
- * @param proj The projection matrix to validate
- * @param api The target graphics API
- * @param out_expected_flip Output: whether Y-flip was expected
- * @param out_actual_flip Output: whether Y-flip was detected
- * @return true if the Y-flip is correct for the API, false otherwise
- */
-[[nodiscard]] inline bool validateProjectionMatrixDetailed(const Mat4f& proj,
-                                                           GraphicsApi api,
-                                                           bool& out_expected_flip,
-                                                           bool& out_actual_flip) noexcept {
-    out_actual_flip = proj[1][1] < 0.0f;
-    out_expected_flip = needsProjectionYFlip(api);
-    return out_actual_flip == out_expected_flip;
 }
 
 }  // namespace vne::math

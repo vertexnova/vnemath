@@ -45,7 +45,7 @@ namespace vne::math {
  *
  * Different graphics APIs have different conventions for:
  * - Clip space depth range: [-1, 1] (OpenGL) vs [0, 1] (others)
- * - NDC Y-axis direction: +Y up (OpenGL, Metal, DirectX, WebGPU) vs +Y down (Vulkan)
+ * - NDC Y-axis direction: +Y up for all backends in this engine (Vulkan uses negative viewport height)
  * - Framebuffer origin: top-left (Vulkan, Metal, DirectX, WebGPU) vs bottom-left (OpenGL)
  *
  * Note: Coordinate system handedness is best treated as an engine/world convention,
@@ -54,7 +54,7 @@ namespace vne::math {
  */
 enum class GraphicsApi : uint8_t {
     eOpenGL,   ///< OpenGL: depth [-1,1], NDC Y-up, framebuffer origin bottom-left
-    eVulkan,   ///< Vulkan: depth [0,1], NDC Y-down, framebuffer origin top-left
+    eVulkan,   ///< Vulkan: depth [0,1], NDC Y-up (viewport Y correction), framebuffer origin top-left
     eMetal,    ///< Metal: depth [0,1], NDC Y-up, framebuffer origin top-left
     eDirectX,  ///< DirectX: depth [0,1], NDC Y-up, framebuffer origin top-left
     eWebGPU    ///< WebGPU: depth [0,1], NDC Y-up, framebuffer origin top-left
@@ -96,60 +96,40 @@ template<>
 struct GraphicsApiTraits<GraphicsApi::eOpenGL> {
     static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eNegativeOneToOne;
     static constexpr Handedness kHandedness = Handedness::eRight;
-    /// Whether to flip Y in the projection matrix (for NDC Y-down APIs like Vulkan)
-    static constexpr bool kProjectionYFlip = false;
     /// Whether screen-space/framebuffer coordinates use top-left origin
     static constexpr bool kScreenOriginTopLeft = false;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eVulkan> {
     static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
     static constexpr Handedness kHandedness = Handedness::eRight;
-    /// Vulkan NDC is Y-down, so we flip Y in projection matrix (or use VK_KHR_maintenance1 viewport)
-    static constexpr bool kProjectionYFlip = true;
-    /// Vulkan framebuffer origin is top-left
+    /// Vulkan framebuffer origin is top-left; NDC Y correction uses negative viewport height
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eMetal> {
     static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
     static constexpr Handedness kHandedness = Handedness::eLeft;
-    /// Metal NDC is Y-up, no projection flip needed
-    static constexpr bool kProjectionYFlip = false;
     /// Metal framebuffer origin is top-left
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eDirectX> {
     static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
     static constexpr Handedness kHandedness = Handedness::eLeft;
-    /// DirectX NDC is Y-up, no projection flip needed
-    static constexpr bool kProjectionYFlip = false;
     /// DirectX framebuffer origin is top-left
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
     static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
     static constexpr Handedness kHandedness = Handedness::eRight;
-    /// WebGPU NDC is Y-up, no projection flip needed
-    static constexpr bool kProjectionYFlip = false;
     /// WebGPU framebuffer origin is top-left
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 // ============================================================================
@@ -186,24 +166,6 @@ struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
 }
 
 /**
- * @brief Runtime query for whether a projection-matrix Y flip is needed.
- *
- * Use this only if you want to bake Vulkan's NDC Y inversion into the projection
- * matrix (instead of flipping the viewport via VK_KHR_maintenance1).
- *
- * For Metal/DirectX/WebGPU, NDC Y is already +up, so NO projection Y flip is needed.
- * Only Vulkan has NDC Y-down by default.
- */
-[[nodiscard]] constexpr bool needsProjectionYFlip(GraphicsApi api) noexcept {
-    switch (api) {
-        case GraphicsApi::eVulkan:
-            return true;
-        default:
-            return false;
-    }
-}
-
-/**
  * @brief Runtime query for whether screen-space uses a top-left origin.
  *
  * This is used by project/unproject helpers that operate in screen (pixel) coordinates.
@@ -220,19 +182,6 @@ struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
         default:
             return false;
     }
-}
-
-/**
- * @brief Runtime query for whether a screen-space Y-axis flip is needed.
- *
- * @deprecated Use screenOriginIsTopLeft() for screen-space coordinate handling,
- * or needsProjectionYFlip() for projection matrix Y inversion.
- *
- * This function returns true when screen-space (pixel) coordinates use top-left
- * origin, which is the case for Vulkan/Metal/DirectX/WebGPU.
- */
-[[nodiscard]] constexpr bool needsYFlip(GraphicsApi api) noexcept {
-    return screenOriginIsTopLeft(api);
 }
 
 /**

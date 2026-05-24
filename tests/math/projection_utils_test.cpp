@@ -75,23 +75,22 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_Center) {
 }
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_YFlip) {
-    // Vulkan projection already flips NDC Y (Y-down), so viewport transform does not flip again.
-    // NDC (0, +1) = bottom in Vulkan NDC → screen y = height; NDC (0, -1) = top → screen y = 0.
+    // Vulkan projection keeps NDC Y-up; viewport transform flips to top-left screen space.
     Viewport vp(800.0f, 600.0f);
     Mat4f m = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
 
-    Vec4f bottom = m * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);  // NDC +1 (down) → screen bottom
-    Vec4f top = m * Vec4f(0.0f, -1.0f, 0.0f, 1.0f);    // NDC -1 (up) → screen top
-    EXPECT_NEAR(bottom.y(), 600.0f, kEps);
+    Vec4f top = m * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
+    Vec4f bottom = m * Vec4f(0.0f, -1.0f, 0.0f, 1.0f);
     EXPECT_NEAR(top.y(), 0.0f, kEps);
+    EXPECT_NEAR(bottom.y(), 600.0f, kEps);
 }
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_TopLeft) {
-    // Vulkan NDC is Y-down; top-left screen corner is NDC (-1, -1).
+    // NDC Y-up: top-left screen corner is NDC (-1, +1).
     Viewport vp(800.0f, 600.0f);
     Mat4f m = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
 
-    Vec4f result = m * Vec4f(-1.0f, -1.0f, 0.0f, 1.0f);
+    Vec4f result = m * Vec4f(-1.0f, 1.0f, 0.0f, 1.0f);
     EXPECT_NEAR(result.x(), 0.0f, kEps);
     EXPECT_NEAR(result.y(), 0.0f, kEps);
 }
@@ -101,16 +100,15 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_TopLeft) {
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Metal_VsVulkan) {
-    // Metal: no projection Y-flip, so viewport flips; NDC +1 (up) → top of screen (y=0).
-    // Vulkan: projection already Y-flipped, so viewport does not flip; NDC +1 (down) → bottom (y=height).
+    // Metal and Vulkan both use Y-up projection; viewport transform flips to top-left screen space.
     Viewport vp(800.0f, 600.0f);
     Mat4f m_metal = clipToScreenMatrix(vp, GraphicsApi::eMetal);
     Mat4f m_vk = clipToScreenMatrix(vp, GraphicsApi::eVulkan);
 
-    Vec4f metal = m_metal * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);  // NDC +1 (up) → top
-    Vec4f vk = m_vk * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);        // NDC +1 (down) → bottom
+    Vec4f metal = m_metal * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
+    Vec4f vk = m_vk * Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
     EXPECT_NEAR(metal.y(), 0.0f, kEps);
-    EXPECT_NEAR(vk.y(), 600.0f, kEps);
+    EXPECT_NEAR(vk.y(), 0.0f, kEps);
 }
 
 // ============================================================================

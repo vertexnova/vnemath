@@ -149,8 +149,8 @@ TEST_F(Mat4Test, TransformVector) {
 TEST(Mat4ProjectionTest, PerspectiveVulkan) {
     Mat4f proj = Mat4f::perspective(degToRad(45.0f), 1.0f, 0.1f, 100.0f, GraphicsApi::eVulkan);
 
-    // Vulkan: depth [0,1], Y-flipped
-    EXPECT_LT(proj[1][1], 0.0f);  // Y should be flipped
+    // Vulkan: depth [0,1], NDC Y-up in projection (Y correction via negative viewport height)
+    EXPECT_GT(proj[1][1], 0.0f);
 }
 
 TEST(Mat4ProjectionTest, PerspectiveOpenGL) {
@@ -171,7 +171,7 @@ TEST(Mat4ProjectionTest, PerspectiveMetal) {
 
 TEST(Mat4ProjectionTest, OrthoVulkan) {
     Mat4f proj = Mat4f::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f, GraphicsApi::eVulkan);
-    EXPECT_LT(proj[1][1], 0.0f);  // Y should be flipped
+    EXPECT_GT(proj[1][1], 0.0f);
 }
 
 TEST(Mat4ProjectionTest, OrthoOpenGL) {
