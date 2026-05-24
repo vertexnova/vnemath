@@ -87,7 +87,7 @@ inline constexpr size_t kUniformBufferAlign = 256;
  */
 struct alignas(16) GpuVec3f {
     float x, y, z;
-    // Implicit 4-byte padding added by alignas(16)
+    float _pad{};  // explicit std140 padding (avoids MSVC C4324 on implicit alignas padding)
 
     GpuVec3f() = default;
     constexpr GpuVec3f(float x_, float y_, float z_)
