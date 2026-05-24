@@ -155,17 +155,19 @@ Memory: [m00 m10 m20 m30 | m01 m11 m21 m31 | m02 m12 m22 m32 | m03 m13 m23 m33]
 
 Different graphics APIs have different conventions. VertexNova Math handles this transparently:
 
-| API | Depth Range | NDC Y-Axis | Screen Origin | Projection Y-Flip |
-|-----|-------------|------------|---------------|-------------------|
+| API | Depth Range | NDC Y-Axis (projection) | Screen Origin | Screen Y Inversion |
+|-----|-------------|-------------------------|---------------|--------------------|
 | OpenGL | [-1, 1] | +Y up | Bottom-left | No |
-| Vulkan | [0, 1] | +Y down | Top-left | Yes |
-| Metal | [0, 1] | +Y up | Top-left | No |
-| DirectX | [0, 1] | +Y up | Top-left | No |
-| WebGPU | [0, 1] | +Y up | Top-left | No |
+| Vulkan | [0, 1] | +Y up | Top-left | Yes (`screenOriginIsTopLeft`) |
+| Metal | [0, 1] | +Y up | Top-left | Yes (`screenOriginIsTopLeft`) |
+| DirectX | [0, 1] | +Y up | Top-left | Yes (`screenOriginIsTopLeft`) |
+| WebGPU | [0, 1] | +Y up | Top-left | Yes (`screenOriginIsTopLeft`) |
+
+All APIs emit Y-up NDC from projection matrices. Vulkan's native Y-down rasterization is corrected in the RHI/viewport (negative viewport height), not by altering projection matrices. Screen Y inversion applies only in pixel/screen-space helpers when `screenOriginIsTopLeft(api)` is true.
 
 **NDC and screen coordinates:**
 
-```
+```text
 All APIs (projection matrices):     Screen / framebuffer origin:
       +Y ↑                            OpenGL: bottom-left
          |                            Vulkan/Metal/DX/WebGPU: top-left

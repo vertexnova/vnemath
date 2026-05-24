@@ -520,8 +520,10 @@ TEST_F(ProjectionValidationTest, DepthRangeDiffersByApi) {
 
     // Same Y convention; depth range differs (near maps to 0 vs -1).
     Vec4f near_point(0.0f, 0.0f, -kNear, 1.0f);
-    float vulkan_ndc_z = (vulkan_proj * near_point).z() / kNear;
-    float opengl_ndc_z = (opengl_proj * near_point).z() / kNear;
+    Vec4f vk_clip = vulkan_proj * near_point;
+    Vec4f gl_clip = opengl_proj * near_point;
+    float vulkan_ndc_z = vk_clip.z() / vk_clip.w();
+    float opengl_ndc_z = gl_clip.z() / gl_clip.w();
     EXPECT_NEAR(vulkan_ndc_z, 0.0f, 1e-5f);
     EXPECT_NEAR(opengl_ndc_z, -1.0f, 1e-5f);
 }
