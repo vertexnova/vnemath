@@ -163,24 +163,25 @@ Different graphics APIs have different conventions. VertexNova Math handles this
 | DirectX | [0, 1] | +Y up | Top-left | No |
 | WebGPU | [0, 1] | +Y up | Top-left | No |
 
-**NDC Coordinate Systems:**
+**NDC and screen coordinates:**
 
 ```
-OpenGL/Metal/DX/WebGPU:        Vulkan (without Y-flip):
-      +Y ↑                            -Y ↑
-         |                               |
-    -----+-----> +X                 -----+-----> +X
-         |                               |
-      -Y ↓                            +Y ↓
+All APIs (projection matrices):     Screen / framebuffer origin:
+      +Y ↑                            OpenGL: bottom-left
+         |                            Vulkan/Metal/DX/WebGPU: top-left
+    -----+-----> +X
+         |
+      -Y ↓
 
-With needsProjectionYFlip(), Vulkan projection matrices are adjusted
-so that the resulting NDC behaves like OpenGL/Metal/DX/WebGPU (+Y up).
+Projection matrices use Y-up NDC for all APIs. Vulkan Y correction is handled
+by the RHI via negative viewport height (VK_KHR_maintenance1), not in the matrix.
+Screen-space helpers use screenOriginIsTopLeft() for pixel-coordinate Y inversion.
 ```
 
-> **Key distinction**: NDC Y-axis direction (used in projection matrices) is different from 
-> framebuffer/screen origin (used in viewport/rasterization). Only Vulkan has NDC Y-down and 
-> requires a projection matrix Y-flip. Metal/DirectX/WebGPU have NDC Y-up like OpenGL; their 
-> top-left screen origin is handled by the viewport, not the projection matrix.
+> **Key distinction**: NDC Y-axis direction (projection matrices) is separate from
+> framebuffer/screen origin (viewport/rasterization). All projection matrices use
+> Y-up NDC. Top-left screen origins are handled in screen-space utilities and the
+> viewport, not by flipping the projection matrix.
 
 **Usage:**
 
@@ -204,12 +205,10 @@ Mat4f view_lh = Mat4f::lookAtLH(eye, center, up);  // Metal, DirectX
 // Query API conventions at compile time
 using VulkanTraits = GraphicsApiTraits<GraphicsApi::eVulkan>;
 VNE_STATIC_ASSERT(VulkanTraits::kDepth == ClipSpaceDepth::eZeroToOne, "Vulkan uses [0,1] depth");
-VNE_STATIC_ASSERT(VulkanTraits::kProjectionYFlip == true, "Vulkan needs projection Y flip");
 VNE_STATIC_ASSERT(VulkanTraits::kScreenOriginTopLeft == true, "Vulkan uses top-left origin");
 
 // Runtime queries
 ClipSpaceDepth depth = getClipSpaceDepth(GraphicsApi::eOpenGL);      // eNegativeOneToOne
-bool projFlip = needsProjectionYFlip(GraphicsApi::eVulkan);          // true (only Vulkan)
 bool screenFlip = screenOriginIsTopLeft(GraphicsApi::eMetal);        // true
 bool screenFlipGL = screenOriginIsTopLeft(GraphicsApi::eOpenGL);     // false
 ```

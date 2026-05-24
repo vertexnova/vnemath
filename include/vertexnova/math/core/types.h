@@ -45,7 +45,7 @@ namespace vne::math {
  *
  * Different graphics APIs have different conventions for:
  * - Clip space depth range: [-1, 1] (OpenGL) vs [0, 1] (others)
- * - NDC Y-axis direction: +Y up (OpenGL, Metal, DirectX, WebGPU) vs +Y down (Vulkan)
+ * - NDC Y-axis direction: +Y up for all backends in this engine (Vulkan uses negative viewport height)
  * - Framebuffer origin: top-left (Vulkan, Metal, DirectX, WebGPU) vs bottom-left (OpenGL)
  *
  * Note: Coordinate system handedness is best treated as an engine/world convention,
@@ -54,7 +54,7 @@ namespace vne::math {
  */
 enum class GraphicsApi : uint8_t {
     eOpenGL,   ///< OpenGL: depth [-1,1], NDC Y-up, framebuffer origin bottom-left
-    eVulkan,   ///< Vulkan: depth [0,1], NDC Y-down, framebuffer origin top-left
+    eVulkan,   ///< Vulkan: depth [0,1], NDC Y-up (viewport Y correction), framebuffer origin top-left
     eMetal,    ///< Metal: depth [0,1], NDC Y-up, framebuffer origin top-left
     eDirectX,  ///< DirectX: depth [0,1], NDC Y-up, framebuffer origin top-left
     eWebGPU    ///< WebGPU: depth [0,1], NDC Y-up, framebuffer origin top-left
@@ -98,20 +98,14 @@ struct GraphicsApiTraits<GraphicsApi::eOpenGL> {
     static constexpr Handedness kHandedness = Handedness::eRight;
     /// Whether screen-space/framebuffer coordinates use top-left origin
     static constexpr bool kScreenOriginTopLeft = false;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
 struct GraphicsApiTraits<GraphicsApi::eVulkan> {
     static constexpr ClipSpaceDepth kDepth = ClipSpaceDepth::eZeroToOne;
     static constexpr Handedness kHandedness = Handedness::eRight;
-    /// Vulkan NDC is Y-down; this engine corrects it via negative viewport height (VK_KHR_maintenance1),
-    /// so no projection matrix Y-flip is needed.
-    /// Vulkan framebuffer origin is top-left
+    /// Vulkan framebuffer origin is top-left; NDC Y correction uses negative viewport height
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
@@ -120,8 +114,6 @@ struct GraphicsApiTraits<GraphicsApi::eMetal> {
     static constexpr Handedness kHandedness = Handedness::eLeft;
     /// Metal framebuffer origin is top-left
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
@@ -130,8 +122,6 @@ struct GraphicsApiTraits<GraphicsApi::eDirectX> {
     static constexpr Handedness kHandedness = Handedness::eLeft;
     /// DirectX framebuffer origin is top-left
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 template<>
@@ -140,8 +130,6 @@ struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
     static constexpr Handedness kHandedness = Handedness::eRight;
     /// WebGPU framebuffer origin is top-left
     static constexpr bool kScreenOriginTopLeft = true;
-    /// @deprecated Use kScreenOriginTopLeft instead. Kept for backward compatibility.
-    static constexpr bool kFlipY = kScreenOriginTopLeft;
 };
 
 // ============================================================================
@@ -178,17 +166,6 @@ struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
 }
 
 /**
- * @brief Runtime query for whether a projection-matrix Y flip is needed.
- *
- * This engine does not bake NDC Y inversion into projection matrices: Vulkan uses
- * negative viewport height (VK_KHR_maintenance1); Metal/DirectX/WebGPU NDC is Y-up.
- * Screen-space helpers use screenOriginIsTopLeft() for pixel coordinate conversion.
- */
-[[nodiscard]] constexpr bool needsProjectionYFlip(GraphicsApi /*api*/) noexcept {
-    return false;
-}
-
-/**
  * @brief Runtime query for whether screen-space uses a top-left origin.
  *
  * This is used by project/unproject helpers that operate in screen (pixel) coordinates.
@@ -205,19 +182,6 @@ struct GraphicsApiTraits<GraphicsApi::eWebGPU> {
         default:
             return false;
     }
-}
-
-/**
- * @brief Runtime query for whether a screen-space Y-axis flip is needed.
- *
- * @deprecated Use screenOriginIsTopLeft() for screen-space coordinate handling,
- * or needsProjectionYFlip() for projection matrix Y inversion.
- *
- * This function returns true when screen-space (pixel) coordinates use top-left
- * origin, which is the case for Vulkan/Metal/DirectX/WebGPU.
- */
-[[nodiscard]] constexpr bool needsYFlip(GraphicsApi api) noexcept {
-    return screenOriginIsTopLeft(api);
 }
 
 /**

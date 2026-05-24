@@ -30,50 +30,31 @@ class GraphicsApiTraitsTest : public ::testing::Test {
 TEST_F(GraphicsApiTraitsTest, OpenGLTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eOpenGL), ClipSpaceDepth::eNegativeOneToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eOpenGL), Handedness::eRight);
-    // OpenGL framebuffer origin is bottom-left
-    EXPECT_FALSE(needsYFlip(GraphicsApi::eOpenGL));
     EXPECT_FALSE(screenOriginIsTopLeft(GraphicsApi::eOpenGL));
-    // OpenGL NDC is Y-up, no projection flip needed
-    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eOpenGL));
 }
 
 TEST_F(GraphicsApiTraitsTest, VulkanTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eVulkan), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eVulkan), Handedness::eRight);
-    // Vulkan framebuffer origin is top-left
-    EXPECT_TRUE(needsYFlip(GraphicsApi::eVulkan));
     EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eVulkan));
-    // Vulkan NDC is Y-down, so projection Y-flip is needed
-    EXPECT_TRUE(needsProjectionYFlip(GraphicsApi::eVulkan));
 }
 
 TEST_F(GraphicsApiTraitsTest, MetalTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eMetal), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eMetal), Handedness::eLeft);
-    // Metal framebuffer origin is top-left
-    EXPECT_TRUE(needsYFlip(GraphicsApi::eMetal));
     EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eMetal));
-    // Metal NDC is Y-up, no projection flip needed
-    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eMetal));
 }
 
 TEST_F(GraphicsApiTraitsTest, DirectXTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eDirectX), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eDirectX), Handedness::eLeft);
-    // DirectX framebuffer origin is top-left, so needsYFlip() returns true for screen-space
-    EXPECT_TRUE(needsYFlip(GraphicsApi::eDirectX));
-    // But no projection matrix Y-flip needed (NDC Y-up)
-    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eDirectX));
+    EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eDirectX));
 }
 
 TEST_F(GraphicsApiTraitsTest, WebGPUTraits) {
     EXPECT_EQ(getClipSpaceDepth(GraphicsApi::eWebGPU), ClipSpaceDepth::eZeroToOne);
     EXPECT_EQ(getHandedness(GraphicsApi::eWebGPU), Handedness::eRight);
-    // WebGPU framebuffer origin is top-left
-    EXPECT_TRUE(needsYFlip(GraphicsApi::eWebGPU));
     EXPECT_TRUE(screenOriginIsTopLeft(GraphicsApi::eWebGPU));
-    // WebGPU NDC is Y-up, no projection flip needed
-    EXPECT_FALSE(needsProjectionYFlip(GraphicsApi::eWebGPU));
 }
 
 // ============================================================================
@@ -111,8 +92,8 @@ TEST_F(PerspectiveProjectionTest, OpenGLPerspective) {
 TEST_F(PerspectiveProjectionTest, VulkanPerspective) {
     Mat4f proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eVulkan);
 
-    // Vulkan: Y flipped
-    EXPECT_LT(proj[1][1], 0.0f);
+    // Vulkan: NDC Y-up in projection (viewport handles top-left framebuffer origin)
+    EXPECT_GT(proj[1][1], 0.0f);
 
     // Test near plane mapping (should map to 0)
     Vec4f near_point(0.0f, 0.0f, -kNear, 1.0f);
@@ -216,8 +197,7 @@ TEST_F(OrthographicProjectionTest, OpenGLOrtho) {
 TEST_F(OrthographicProjectionTest, VulkanOrtho) {
     Mat4f proj = Mat4f::ortho(kLeft, kRight, kBottom, kTop, kNear, kFar, GraphicsApi::eVulkan);
 
-    // Vulkan: Y flipped
-    EXPECT_LT(proj[1][1], 0.0f);
+    EXPECT_GT(proj[1][1], 0.0f);
 
     // Test center mapping
     Vec4f center(0.0f, 0.0f, -kNear, 1.0f);
@@ -534,8 +514,19 @@ class ProjectionValidationTest : public ::testing::Test {
     static constexpr float kFar = 1000.0f;
 };
 
-TEST_F(ProjectionValidationTest, ValidateCorrectMatrices) {
-    // Each API's projection matrix should validate for its own API
+TEST_F(ProjectionValidationTest, DepthRangeDiffersByApi) {
+    Mat4f vulkan_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eVulkan);
+    Mat4f opengl_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eOpenGL);
+
+    // Same Y convention; depth range differs (near maps to 0 vs -1).
+    Vec4f near_point(0.0f, 0.0f, -kNear, 1.0f);
+    float vulkan_ndc_z = (vulkan_proj * near_point).z() / kNear;
+    float opengl_ndc_z = (opengl_proj * near_point).z() / kNear;
+    EXPECT_NEAR(vulkan_ndc_z, 0.0f, 1e-5f);
+    EXPECT_NEAR(opengl_ndc_z, -1.0f, 1e-5f);
+}
+
+TEST_F(ProjectionValidationTest, ProjectionUsesYUpForAllApis) {
     GraphicsApi apis[] = {GraphicsApi::eOpenGL,
                           GraphicsApi::eVulkan,
                           GraphicsApi::eMetal,
@@ -544,38 +535,8 @@ TEST_F(ProjectionValidationTest, ValidateCorrectMatrices) {
 
     for (GraphicsApi api : apis) {
         Mat4f proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, api);
-        EXPECT_TRUE(validateProjectionMatrix(proj, api)) << "Validation failed for " << graphicsApiName(api);
+        EXPECT_GT(proj[1][1], 0.0f) << "Failed for API: " << graphicsApiName(api);
     }
-}
-
-TEST_F(ProjectionValidationTest, DetectMismatchedMatrices) {
-    // Vulkan matrix used with OpenGL should fail validation
-    Mat4f vulkan_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eVulkan);
-    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eOpenGL));
-    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eMetal));
-    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eDirectX));
-    EXPECT_FALSE(validateProjectionMatrix(vulkan_proj, GraphicsApi::eWebGPU));
-
-    // OpenGL matrix used with Vulkan should fail validation
-    Mat4f opengl_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eOpenGL);
-    EXPECT_FALSE(validateProjectionMatrix(opengl_proj, GraphicsApi::eVulkan));
-}
-
-TEST_F(ProjectionValidationTest, DetailedValidation) {
-    Mat4f vulkan_proj = Mat4f::perspective(kFov, kAspect, kNear, kFar, GraphicsApi::eVulkan);
-
-    bool expected_flip = false;
-    bool actual_flip = false;
-
-    // Vulkan matrix should validate correctly
-    EXPECT_TRUE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eVulkan, expected_flip, actual_flip));
-    EXPECT_TRUE(expected_flip);  // Vulkan expects Y-flip
-    EXPECT_TRUE(actual_flip);    // Matrix has Y-flip
-
-    // Same matrix fails for OpenGL
-    EXPECT_FALSE(validateProjectionMatrixDetailed(vulkan_proj, GraphicsApi::eOpenGL, expected_flip, actual_flip));
-    EXPECT_FALSE(expected_flip);  // OpenGL doesn't expect Y-flip
-    EXPECT_TRUE(actual_flip);     // But matrix has Y-flip
 }
 
 TEST_F(ProjectionValidationTest, GraphicsApiName) {
