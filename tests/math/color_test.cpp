@@ -150,6 +150,35 @@ TEST_F(ColorTest, TestColorRGBA) {
 }
 
 /**
+ * Test Color rgb(), rgba(), bgr() and bgra(): every channel distinct, so a swap fails.
+ */
+TEST_F(ColorTest, TestColorChannelOrderAccessors) {
+    const vne::math::Color clr(0.1f, 0.2f, 0.3f, 0.4f);
+
+    const vne::math::Vec3f rgb = clr.rgb();
+    EXPECT_FLOAT_EQ(0.1f, rgb.x());
+    EXPECT_FLOAT_EQ(0.2f, rgb.y());
+    EXPECT_FLOAT_EQ(0.3f, rgb.z());
+
+    const vne::math::Vec4f rgba = clr.rgba();
+    EXPECT_FLOAT_EQ(0.1f, rgba.x());
+    EXPECT_FLOAT_EQ(0.2f, rgba.y());
+    EXPECT_FLOAT_EQ(0.3f, rgba.z());
+    EXPECT_FLOAT_EQ(0.4f, rgba.w());
+
+    const vne::math::Vec3f bgr = clr.bgr();
+    EXPECT_FLOAT_EQ(0.3f, bgr.x());
+    EXPECT_FLOAT_EQ(0.2f, bgr.y());
+    EXPECT_FLOAT_EQ(0.1f, bgr.z());
+
+    const vne::math::Vec4f bgra = clr.bgra();
+    EXPECT_FLOAT_EQ(0.3f, bgra.x());
+    EXPECT_FLOAT_EQ(0.2f, bgra.y());
+    EXPECT_FLOAT_EQ(0.1f, bgra.z());
+    EXPECT_FLOAT_EQ(0.4f, bgra.w());
+}
+
+/**
  * Test Color GetPtr()
  */
 TEST_F(ColorTest, TestColorGetPtr) {
