@@ -11,6 +11,8 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
+
 #include "vertexnova/math/geometry/ray.h"
 #include "vertexnova/math/core/math_utils.h"
 
@@ -95,8 +97,8 @@ TEST_F(RayTest, DistanceToPoint) {
     // Point 3 units above the ray at x=5
     EXPECT_NEAR(ray.distanceToPoint(Vec3f(5.0f, 3.0f, 0.0f)), 3.0f, kFloatEpsilon);
 
-    // Point behind origin
-    EXPECT_NEAR(ray.distanceToPoint(Vec3f(-5.0f, 3.0f, 0.0f)), sqrt(25.0f + 9.0f), kFloatEpsilon);
+    // Point behind origin — closest point is the origin, distance is ||(-5, 3, 0)||
+    EXPECT_NEAR(ray.distanceToPoint(Vec3f(-5.0f, 3.0f, 0.0f)), std::sqrt(34.0f), kFloatEpsilon);
 }
 
 TEST_F(RayTest, AreSame) {
