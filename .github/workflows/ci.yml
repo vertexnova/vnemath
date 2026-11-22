@@ -211,11 +211,12 @@ jobs:
         working-directory: build/shared/Debug
         run: ctest --output-on-failure --timeout 300
 
+      # inconsistent: GCC 15 reports gtest TEST() bodies with an end line lcov 2.x rejects ("mismatched end line").
       - name: Generate Coverage Report
         run: |
-          lcov --capture --directory build/shared/Debug --output-file coverage.info --ignore-errors mismatch,unused
-          lcov --remove coverage.info '/usr/*' '*/tests/*' '*/deps/external/*' '*/deps/internal/*' '*/_deps/*' '*/googletest/*' '*/googlemock/*' --output-file coverage.info --ignore-errors mismatch,unused
-          lcov --list coverage.info --ignore-errors mismatch,unused
+          lcov --capture --directory build/shared/Debug --output-file coverage.info --ignore-errors mismatch,unused,inconsistent
+          lcov --remove coverage.info '/usr/*' '*/tests/*' '*/deps/external/*' '*/deps/internal/*' '*/_deps/*' '*/googletest/*' '*/googlemock/*' --output-file coverage.info --ignore-errors mismatch,unused,inconsistent
+          lcov --list coverage.info --ignore-errors mismatch,unused,inconsistent
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
