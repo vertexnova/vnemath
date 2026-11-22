@@ -56,12 +56,6 @@ This library is part of [VertexNova](https://github.com/vertexnova) — a multi-
 - **Splines**: Catmull-Rom (passes through points), Hermite (tangent control), B-spline
 - **Spring Physics**: Critical damping and exponential decay
 
-### Procedural Generation
-- **Perlin Noise**: 1D, 2D, 3D gradient noise
-- **Simplex Noise**: Faster, fewer artifacts
-- **Fractal Brownian Motion**: Multi-octave layered noise
-- **Turbulence & Ridged Noise**: For fire, smoke, mountains
-
 ### Coordinate Spaces
 - **Projection Utilities**: project, unproject, screenToWorldRay
 - **Transform Decomposition**: Extract TRS from matrices, smooth interpolation
@@ -100,7 +94,7 @@ VertexNova Math uses [GLM](https://github.com/g-truc/glm) (OpenGL Mathematics) a
 - Unified type system with seamless GLM conversion
 - Multi-backend graphics API support
 - Geometry primitives and intersection tests
-- Easing, curves, noise, and other utilities
+- Easing, curves, and other utilities
 - C++20 concepts and modern API design
 
 ### Seamless GLM Interop
@@ -372,21 +366,6 @@ float eased = ease(EaseType::eQuadInOut, t);
 float smooth = smoothstep(0.0f, 1.0f, t);
 ```
 
-### Procedural Noise
-
-```cpp
-#include <vertexnova/math/noise.h>
-
-// Perlin noise
-float height = perlin(x * 0.1f, z * 0.1f);
-
-// Fractal Brownian Motion
-float terrain = fbm(Vec2f(x, z) * 0.01f, 6);  // 6 octaves
-
-// Ridged noise for mountains
-float mountain = ridged(Vec2f(x, z) * 0.02f, 4);
-```
-
 ### Transform Decomposition
 
 ```cpp
@@ -437,7 +416,6 @@ Color gray = color.grayscale();
 | [08_gpu_buffer_alignment](examples/08_gpu_buffer_alignment) | Shader-compatible types |
 | [09_easing_intersection](examples/09_easing_intersection) | Easing and ray tests |
 | [10_curves_animation](examples/10_curves_animation) | Bezier and spline curves |
-| [11_noise_generation](examples/11_noise_generation) | Procedural noise |
 | [12_transform_decomposition](examples/12_transform_decomposition) | Matrix TRS decomposition |
 
 ## CMake Integration
@@ -479,13 +457,12 @@ vnemath/
 │   ├── color.h                  # RGBA with HSV/HSL/gamma
 │   ├── easing.h                 # Smoothstep and easing curves
 │   ├── curves.h                 # Bezier and splines
-│   ├── noise.h                  # Perlin, Simplex, fBm
 │   ├── projection_utils.h       # Screen/world conversions
 │   ├── transform_utils.h        # TRS decomposition
 │   └── math.h                   # Main include
 ├── src/                         # Implementation files
-├── tests/                       # Unit tests (695 tests)
-├── examples/                    # Example programs (12 examples)
+├── tests/                       # Unit tests
+├── examples/                    # Example programs
 └── cmake/                       # CMake modules
 ```
 

@@ -15,6 +15,8 @@
 #include "vertexnova/common/macros.h"
 #include "vertexnova/math/core/math_utils.h"
 
+#include <cmath>
+
 namespace vne::math {
 
 Plane::Plane(const Vec3f& normal, float d) noexcept
@@ -67,7 +69,7 @@ void Plane::normalize() noexcept {
     if (isZero(len_sq, kFloatEpsilon)) {
         return;
     }
-    float one_over_length = 1.0f / sqrt(len_sq);
+    float one_over_length = 1.0f / std::sqrt(len_sq);
     normal *= one_over_length;
     d *= one_over_length;
 }

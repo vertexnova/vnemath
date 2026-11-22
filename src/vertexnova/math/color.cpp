@@ -16,6 +16,8 @@
 #include "vertexnova/common/macros.h"
 #include "vertexnova/math/core/math_utils.h"
 
+#include <cmath>
+
 namespace vne::math {
 
 const Color Color::kWhite = Color(1.0f, 1.0f, 1.0f);
@@ -379,16 +381,16 @@ float Color::operator[](uint32_t index) const noexcept {
 
 //------------------------------------------------------------------------------
 void Color::clamp() noexcept {
-    r_ = r_ < 0.0f || vne::math::isNaN(r_) ? 0.0f : r_;
+    r_ = r_ < 0.0f || std::isnan(r_) ? 0.0f : r_;
     r_ = r_ > kColorByteMax ? 1.0f : r_ > 1.0f ? r_ / kColorByteMax : r_;
 
-    g_ = g_ < 0.0f || vne::math::isNaN(g_) ? 0.0f : g_;
+    g_ = g_ < 0.0f || std::isnan(g_) ? 0.0f : g_;
     g_ = g_ > kColorByteMax ? 1.0f : g_ > 1.0f ? g_ / kColorByteMax : g_;
 
-    b_ = b_ < 0.0f || vne::math::isNaN(b_) ? 0.0f : b_;
+    b_ = b_ < 0.0f || std::isnan(b_) ? 0.0f : b_;
     b_ = b_ > kColorByteMax ? 1.0f : b_ > 1.0f ? b_ / kColorByteMax : b_;
 
-    a_ = a_ < 0.0f || vne::math::isNaN(a_) ? 0.0f : a_;
+    a_ = a_ < 0.0f || std::isnan(a_) ? 0.0f : a_;
     a_ = a_ > 1.0f ? 1.0f : a_;
 }
 

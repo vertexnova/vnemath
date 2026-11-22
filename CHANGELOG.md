@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Removed
+
+* **noise:** deleted `noise.h` (Perlin, Simplex, fBm, turbulence, ridged, value noise), its unit tests, and `examples/11_noise_generation`
+* **math_utils:** removed thin `std::` passthrough wrappers (`pow`, `sqrt`, `floor`/`ceil`/`trunc`/`round`, `modf`, `isNaN`/`isInf`/`isNormal`/`isFinite`, `exp`/`log`/`log2`/`log10`, trig/hyperbolic functions, `sinCos`, `floatToInt`, deprecated `quarterPi()`). Call `std::` math directly. Kept helpers with real logic: `invSqrt`, `logx`, `areSame`, `midPoint`, `roundMultipleOf`, and angle/range utilities
+
 ## [1.2.4](https://github.com/vertexnova/vnemath/compare/v1.2.3...v1.2.4) (2026-11-22)
 
 

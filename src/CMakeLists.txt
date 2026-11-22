@@ -26,8 +26,6 @@ set(INCLUDE_FILES
     # Interpolation and animation
     ${VNE_INCLUDE_DIR}/vertexnova/math/easing.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/curves.h
-    # Procedural generation
-    ${VNE_INCLUDE_DIR}/vertexnova/math/noise.h
     # Coordinate space utilities
     ${VNE_INCLUDE_DIR}/vertexnova/math/projection_utils.h
     ${VNE_INCLUDE_DIR}/vertexnova/math/transform_utils.h
