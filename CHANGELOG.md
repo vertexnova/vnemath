@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/vertexnova/vnemath/compare/v1.2.2...v1.2.3) (2026-11-22)
+
+
+### Bug Fixes
+
+* **color:** rgb() returns red, green, blue; add bgr() and bgra() ([#14](https://github.com/vertexnova/vnemath/issues/14)) ([70e8c13](https://github.com/vertexnova/vnemath/commit/70e8c130a102d35575ae5107376aa2744893e4b4))
+
 ## [1.2.2](https://github.com/vertexnova/vnemath/compare/v1.2.1...v1.2.2) (2026-05-22)
 
 
