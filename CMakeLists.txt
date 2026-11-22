@@ -119,6 +119,8 @@ endif()
 if(EMSCRIPTEN AND VNE_MATH_LIB_TYPE STREQUAL "shared")
     message(STATUS "VneMath: Emscripten builds static libraries; using VNE_MATH_LIB_TYPE=static")
     set(VNE_MATH_LIB_TYPE "static" CACHE STRING "VneMath library type: static or shared (one per build)" FORCE)
+    # Also the normal variable: with policy CMP0126 NEW a parent's set(VNE_MATH_LIB_TYPE shared) would hide the cache.
+    set(VNE_MATH_LIB_TYPE "static")
 endif()
 
 if(VNE_MATH_LIB_TYPE STREQUAL "shared")
