@@ -234,6 +234,12 @@ class VNE_MATH_API Color {
     /** @brief Gets the RGBA components as a Vec4f */
     [[nodiscard]] Vec4f rgba() const noexcept;
 
+    /** @brief Gets the components as (blue, green, red), the order of BGRA8 formats */
+    [[nodiscard]] Vec3f bgr() const noexcept;
+
+    /** @brief Gets the components as (blue, green, red, alpha), the order of BGRA8 formats */
+    [[nodiscard]] Vec4f bgra() const noexcept;
+
     /** @brief Gets a reference to the red component */
     [[nodiscard]] float& r() noexcept;
 

@@ -113,6 +113,16 @@ if(NOT VNE_MATH_LIB_TYPE STREQUAL "static" AND NOT VNE_MATH_LIB_TYPE STREQUAL "s
     message(FATAL_ERROR "VNE_MATH_LIB_TYPE must be 'static' or 'shared'. Got: ${VNE_MATH_LIB_TYPE}")
 endif()
 
+# Web builds are always static. Since Emscripten 6.0, -shared makes real side modules (.so) that only a
+# MAIN_MODULE program can load, and linking them fails when emcc cannot find their dependencies
+# (libvnelogging.so). Before 6.0 the Emscripten toolchain built SHARED targets as static archives anyway.
+if(EMSCRIPTEN AND VNE_MATH_LIB_TYPE STREQUAL "shared")
+    message(STATUS "VneMath: Emscripten builds static libraries; using VNE_MATH_LIB_TYPE=static")
+    set(VNE_MATH_LIB_TYPE "static" CACHE STRING "VneMath library type: static or shared (one per build)" FORCE)
+    # Also the normal variable: with policy CMP0126 NEW a parent's set(VNE_MATH_LIB_TYPE shared) would hide the cache.
+    set(VNE_MATH_LIB_TYPE "static")
+endif()
+
 if(VNE_MATH_LIB_TYPE STREQUAL "shared")
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     set(_VNE_MATH_LIB_KIND SHARED)
@@ -173,7 +183,7 @@ endif()
 # | VNE_MATH_TESTS    | ON             | Build vnemath test suite (can be set to OFF by parent projects)   |
 # | BUILD_EXAMPLES    | OFF            | Build example programs                                            |
 # | ENABLE_COVERAGE   | OFF            | Enable code coverage reporting                                    |
-# | VNE_MATH_LIB_TYPE | shared         | Library artifact: static or shared                                |
+# | VNE_MATH_LIB_TYPE | shared         | Library artifact: static or shared (always static on Emscripten)  |
 option(BUILD_TESTS "Build the test suite" ON)
 option(VNE_MATH_TESTS "Build vnemath test suite (turn OFF when used as submodule with only parent tests)" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
