@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/vertexnova/vnemath/compare/v1.2.3...v1.2.4) (2026-11-22)
+
+
+### Bug Fixes
+
+* fixing CI release for windows ([#16](https://github.com/vertexnova/vnemath/issues/16)) ([9b6c999](https://github.com/vertexnova/vnemath/commit/9b6c999685c7236c4e44f46a1fd1a0cb2ad44e31))
+
 ## [1.2.3](https://github.com/vertexnova/vnemath/compare/v1.2.2...v1.2.3) (2026-11-22)
 
 
