@@ -18,7 +18,7 @@
  * concrete float and double values, as well as numeric limits.
  *
  * For templated constants that work with any floating-point type,
- * use the kPiT<T>, kEpsilon<T>, etc. templates in math_utils.h
+ * use the kPiT<T>, kEpsilon<T>, etc. templates in types.h
  *
  * Use this file when:
  * - You need specific float or double constants (kPi, kPiDouble)

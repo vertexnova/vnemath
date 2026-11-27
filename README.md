@@ -25,12 +25,12 @@
 
 **VertexNova Math** (vnemath) is a comprehensive math library designed for real-time graphics applications, game engines, and 3D tools. It provides templated vector, matrix, and quaternion types along with a rich set of geometry primitives, intersection tests, and procedural generation utilities.
 
-This library is part of [VertexNova](https://github.com/vertexnova) — a multi-backend game/graphics engine built from scratch.
+This library is part of [VertexNova](https://github.com/vertexnova)  -  a multi-backend game/graphics engine built from scratch.
 
 ## Documentation
 
-- **Module guide (architecture & usage):** [docs/vertexnova/math/math.md](docs/vertexnova/math/math.md) — figures use PNGs exported from [docs/vertexnova/math/diagrams/](docs/vertexnova/math/diagrams/) (see that folder’s README).
-- **Docs index & Doxygen:** [docs/README.md](docs/README.md) — API HTML via `cmake -DENABLE_DOXYGEN=ON -B build && cmake --build build --target vnemath_doc`.
+- **Module guide (architecture & usage):** [docs/vertexnova/math/math.md](docs/vertexnova/math/math.md)  -  figures use PNGs exported from [docs/vertexnova/math/diagrams/](docs/vertexnova/math/diagrams/) (see that folder's README).
+- **Docs index & Doxygen:** [docs/README.md](docs/README.md)  -  API HTML via `cmake -DENABLE_DOXYGEN=ON -B build && cmake --build build --target vnemath_doc`.
 
 ## Features
 
@@ -46,7 +46,7 @@ This library is part of [VertexNova](https://github.com/vertexnova) — a multi-
 - **Complex**: Triangle, Frustum
 
 ### Intersection Testing
-- Ray-Plane, Ray-Sphere, Ray-AABB, Ray-Triangle (Möller–Trumbore)
+- Ray-Plane, Ray-Sphere, Ray-AABB, Ray-Triangle (Moller-Trumbore)
 - Frustum culling for visibility determination
 - Fast boolean intersection tests for culling
 
@@ -74,13 +74,13 @@ This library is part of [VertexNova](https://github.com/vertexnova) — a multi-
 VertexNova Math uses [GLM](https://github.com/g-truc/glm) (OpenGL Mathematics) as the optimized backend for expensive matrix operations while providing its own API layer:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    VertexNova Math API                       │
-│  Vec<T,N>, Mat<T,R,C>, Quatf, Color, geometry primitives    │
-├─────────────────────────────────────────────────────────────┤
-│                     GLM Backend                              │
-│  Optimized: inverse, determinant, perspective, lookAt, etc. │
-└─────────────────────────────────────────────────────────────┘
++-------------------------------------------------------------+
+|                    VertexNova Math API                       |
+|  Vec<T,N>, Mat<T,R,C>, Quatf, Color, geometry primitives    |
++-------------------------------------------------------------+
+|                     GLM Backend                              |
+|  Optimized: inverse, determinant, perspective, lookAt, etc. |
++-------------------------------------------------------------+
 ```
 
 **GLM is used for:**
@@ -142,7 +142,7 @@ Vec3f forward = transform.zAxis();  // Column 2
 
 ```
 Memory: [m00 m10 m20 m30 | m01 m11 m21 m31 | m02 m12 m22 m32 | m03 m13 m23 m33]
-        └── Column 0 ───┘ └── Column 1 ───┘ └── Column 2 ───┘ └── Column 3 ───┘
+        +-- Column 0 ---+ +-- Column 1 ---+ +-- Column 2 ---+ +-- Column 3 ---+
 ```
 
 ### Multi-Backend Graphics API Support
@@ -163,11 +163,11 @@ All APIs emit Y-up NDC from projection matrices. Vulkan's native Y-down rasteriz
 
 ```text
 All APIs (projection matrices):     Screen / framebuffer origin:
-      +Y ↑                            OpenGL: bottom-left
+      +Y ^                            OpenGL: bottom-left
          |                            Vulkan/Metal/DX/WebGPU: top-left
     -----+-----> +X
          |
-      -Y ↓
+      -Y v
 
 Projection matrices use Y-up NDC for all APIs. Vulkan Y correction is handled
 by the RHI via negative viewport height (VK_KHR_maintenance1), not in the matrix.
@@ -404,6 +404,8 @@ Color gray = color.grayscale();
 
 ## Examples
 
+Build and run instructions: [examples/README.md](examples/README.md).
+
 | Example | Description |
 |---------|-------------|
 | [01_hello_math](examples/01_hello_math) | Basic vectors, matrices, quaternions |
@@ -451,19 +453,19 @@ target_link_libraries(your_target PRIVATE vne::math)
 
 ```
 vnemath/
-├── include/vertexnova/math/
-│   ├── core/                    # Vec, Mat, Quat, types
-│   ├── geometry/                # Primitives and intersection
-│   ├── color.h                  # RGBA with HSV/HSL/gamma
-│   ├── easing.h                 # Smoothstep and easing curves
-│   ├── curves.h                 # Bezier and splines
-│   ├── projection_utils.h       # Screen/world conversions
-│   ├── transform_utils.h        # TRS decomposition
-│   └── math.h                   # Main include
-├── src/                         # Implementation files
-├── tests/                       # Unit tests
-├── examples/                    # Example programs
-└── cmake/                       # CMake modules
++-- include/vertexnova/math/
+|   +-- core/                    # Vec, Mat, Quat, types
+|   +-- geometry/                # Primitives and intersection
+|   +-- color.h                  # RGBA with HSV/HSL/gamma
+|   +-- easing.h                 # Smoothstep and easing curves
+|   +-- curves.h                 # Bezier and splines
+|   +-- projection_utils.h       # Screen/world conversions
+|   +-- transform_utils.h        # TRS decomposition
+|   +-- math.h                   # Main include
++-- src/                         # Implementation files
++-- tests/                       # Unit tests
++-- examples/                    # Example programs
++-- cmake/                       # CMake modules
 ```
 
 ## Running Tests
@@ -479,7 +481,7 @@ cmake --build build --target TestVneMath
 
 ## License
 
-Apache License 2.0 — See [LICENSE](LICENSE) for details.
+Apache License 2.0  -  See [LICENSE](LICENSE) for details.
 
 ## Author
 

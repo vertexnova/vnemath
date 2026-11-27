@@ -10,6 +10,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <cmath>
 
 #include "vertexnova/math/core/quat.h"
 
@@ -618,6 +619,39 @@ TEST(QuatGlmTest, ConvertFromGlm) {
     EXPECT_FLOAT_EQ(q.y, gq.y);
     EXPECT_FLOAT_EQ(q.z, gq.z);
     EXPECT_FLOAT_EQ(q.w, gq.w);
+}
+
+TEST_F(QuatTest, SlerpIdenticalReturnsSame) {
+    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(40.0f));
+    for (float t : {0.0f, 0.25f, 0.5f, 0.75f, 1.0f}) {
+        Quatf r = Quatf::slerp(q, q, t);
+        EXPECT_TRUE(r.approxEquals(q, 1e-5f)) << "t=" << t;
+    }
+}
+
+TEST_F(QuatTest, SlerpNegatedTakesShortestPath) {
+    Quatf q = Quatf::fromAxisAngle(Vec3f::yAxis(), degToRad(20.0f));
+    Quatf neg = -q;
+    Quatf mid = Quatf::slerp(q, neg, 0.5f);
+    // Shortest path between q and -q is identity rotation (same orientation)
+    EXPECT_TRUE(mid.approxEquals(q, 1e-4f) || mid.approxEquals(neg, 1e-4f)
+                || mid.approxEquals(Quatf::identity(), 1e-3f));
+    Vec3f v(1.0f, 0.0f, 0.0f);
+    Vec3f rq = q.rotate(v);
+    Vec3f rm = mid.rotate(v);
+    EXPECT_TRUE(rq.approxEquals(rm, 1e-3f));
+}
+
+TEST_F(QuatTest, ToEulerNearPitchPlusMinus90IsFinite) {
+    for (float pitch : {degToRad(89.0f), degToRad(-89.0f), degToRad(90.0f), degToRad(-90.0f)}) {
+        Quatf q = Quatf::fromEuler(Vec3f(pitch, 0.0f, 0.0f));
+        Vec3f e = q.toEuler();
+        EXPECT_TRUE(std::isfinite(e.x()));
+        EXPECT_TRUE(std::isfinite(e.y()));
+        EXPECT_TRUE(std::isfinite(e.z()));
+        Vec3f v(0.0f, 0.0f, 1.0f);
+        EXPECT_TRUE(q.rotate(v).approxEquals(Quatf::fromEuler(e).rotate(v), 1e-3f));
+    }
 }
 
 }  // namespace vne::math

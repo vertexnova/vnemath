@@ -112,8 +112,8 @@ float Capsule::diameter() const noexcept {
 
 float Capsule::volume() const noexcept {
     // Volume = cylinder + sphere
-    // Cylinder: π * r² * h
-    // Sphere: (4/3) * π * r³
+    // Cylinder: pi * r^2 * h
+    // Sphere: (4/3) * pi * r^3
     float r2 = radius_ * radius_;
     float cylinder_volume = kPi * r2 * segmentLength();
     float sphere_volume = kVolumeFactor * kPi * r2 * radius_;
@@ -122,8 +122,8 @@ float Capsule::volume() const noexcept {
 
 float Capsule::surfaceArea() const noexcept {
     // Surface = cylinder lateral + sphere
-    // Cylinder lateral: 2 * π * r * h
-    // Sphere: 4 * π * r²
+    // Cylinder lateral: 2 * pi * r * h
+    // Sphere: 4 * pi * r^2
     float cylinder_area = kTwo * kPi * radius_ * segmentLength();
     float sphere_area = kFour * kPi * radius_ * radius_;
     return cylinder_area + sphere_area;

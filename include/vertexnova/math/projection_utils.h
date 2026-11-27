@@ -252,7 +252,7 @@ namespace vne::math {
         // ndc.z is already in [0,1]
         screen_z = viewport.z_near + ndc.z() * (viewport.z_far - viewport.z_near);
     } else {
-        // ndc.z is in [-1,1] — map to [0,1] first
+        // ndc.z is in [-1,1]  -  map to [0,1] first
         screen_z = viewport.z_near + (ndc.z() + 1.0f) * 0.5f * (viewport.z_far - viewport.z_near);
     }
 
@@ -312,8 +312,8 @@ namespace vne::math {
  * with a view-projection matrix for a single world-to-screen matrix.
  *
  * The transform maps:
- *   NDC x in [-1, 1]  →  screen x in [viewport.x, viewport.x + viewport.width]
- *   NDC y in [-1, 1]  →  screen y in [viewport.y, viewport.y + viewport.height]
+ *   NDC x in [-1, 1]  ->  screen x in [viewport.x, viewport.x + viewport.width]
+ *   NDC y in [-1, 1]  ->  screen y in [viewport.y, viewport.y + viewport.height]
  *                         (Y is flipped when the framebuffer origin is top-left)
  *
  * Z and W are passed through unchanged: Z remains NDC depth (Z/W after perspective divide),
@@ -372,13 +372,13 @@ namespace vne::math {
  *   // screen.xy are pixel coordinates (divide by screen.w for perspective)
  *
  * This does NOT perform the perspective divide; for perspective cameras divide x, y by w
- * after the multiply. After divide, z/w is NDC depth, not viewport-mapped depth—use
+ * after the multiply. After divide, z/w is NDC depth, not viewport-mapped depth - use
  * ndcToScreen(Vec3f) or depth helpers if you need viewport/depth-buffer values.
  *
  * @param view_proj The combined view-projection matrix
  * @param viewport Viewport parameters
  * @param api Graphics API
- * @return 4x4 world-to-screen matrix (XY→pixels; Z/W remains NDC depth after divide)
+ * @return 4x4 world-to-screen matrix (XY->pixels; Z/W remains NDC depth after divide)
  */
 [[nodiscard]] inline Mat4f worldToScreenMatrix(const Mat4f& view_proj,
                                                const Viewport& viewport,

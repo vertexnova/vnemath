@@ -80,7 +80,7 @@ TEST_F(TriangleTest, Area) {
 }
 
 TEST_F(TriangleTest, AreaEquilateral) {
-    // Equilateral triangle with side 1: area = sqrt(3)/4 ≈ 0.433
+    // Equilateral triangle with side 1: area = sqrt(3)/4 ~= 0.433
     float area = equi_.area();
     EXPECT_NEAR(area, 0.433012f, 0.001f);
 }
@@ -105,7 +105,7 @@ TEST_F(TriangleTest, Perimeter) {
 }
 
 TEST_F(TriangleTest, PerimeterEquilateral) {
-    // Equilateral triangle with side ≈ 1
+    // Equilateral triangle with side ~= 1
     float p = equi_.perimeter();
     EXPECT_NEAR(p, 3.0f, 0.01f);
 }
@@ -370,13 +370,13 @@ TEST_F(TriangleTest, IsDegenerateWithEpsilon) {
     // So normal.lengthSquared = 1e-16
     Triangle tiny(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0001f, 0.0f, 0.0f), Vec3f(0.0f, 0.0001f, 0.0f));
 
-    // With epsilon = 0.01, epsilon^2 = 1e-4, and 1e-16 < 1e-4 → degenerate
+    // With epsilon = 0.01, epsilon^2 = 1e-4, and 1e-16 < 1e-4 -> degenerate
     EXPECT_TRUE(tiny.isDegenerate(0.01f));
 
-    // With epsilon = 1e-6, epsilon^2 = 1e-12, and 1e-16 < 1e-12 → still degenerate
+    // With epsilon = 1e-6, epsilon^2 = 1e-12, and 1e-16 < 1e-12 -> still degenerate
     EXPECT_TRUE(tiny.isDegenerate(1e-6f));
 
-    // With epsilon = 1e-9, epsilon^2 = 1e-18, and 1e-16 > 1e-18 → NOT degenerate
+    // With epsilon = 1e-9, epsilon^2 = 1e-18, and 1e-16 > 1e-18 -> NOT degenerate
     EXPECT_FALSE(tiny.isDegenerate(1e-9f));
 }
 

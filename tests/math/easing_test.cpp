@@ -5,6 +5,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <cmath>
 #include <vertexnova/math/easing.h>
 
 using namespace vne::math;
@@ -281,4 +282,45 @@ TEST(DampTest, InstantWithZeroSmoothing) {
     // Very small smoothing = fast convergence
     float result = damp(current, target, 0.001f, 1.0f);
     EXPECT_NEAR(result, target, 0.1f);
+}
+
+TEST(EasingExtrasTest, BiasEndpointsAndMid) {
+    EXPECT_NEAR(bias(0.0f, 0.5f), 0.0f, 1e-5f);
+    EXPECT_NEAR(bias(1.0f, 0.5f), 1.0f, 1e-5f);
+    EXPECT_NEAR(bias(0.5f, 0.5f), 0.5f, 1e-5f);
+}
+
+TEST(EasingExtrasTest, PowerCurveEndpointsAndPeak) {
+    EXPECT_NEAR(powerCurve(0.0f, 2.0f, 2.0f), 0.0f, 1e-5f);
+    EXPECT_NEAR(powerCurve(1.0f, 2.0f, 2.0f), 0.0f, 1e-5f);
+    EXPECT_GT(powerCurve(0.5f, 2.0f, 2.0f), 0.5f);
+}
+
+TEST(EasingExtrasTest, ExpStepEndpoints) {
+    EXPECT_NEAR(expStep(0.0f, 2.0f), 1.0f, 1e-4f);
+    EXPECT_LT(expStep(1.0f, 2.0f), 0.1f);
+}
+
+TEST(EasingExtrasTest, SincImpulseIsFiniteAwayFromPole) {
+    EXPECT_TRUE(std::isfinite(sincImpulse(0.25f, 2.0f)));
+    EXPECT_NEAR(sincImpulse(0.0f, 2.0f), 0.0f, 1e-4f);
+}
+
+TEST(EasingExtrasTest, AlmostUnitIdentityEndpoints) {
+    EXPECT_NEAR(almostUnitIdentity(0.0f), 0.0f, 1e-6f);
+    EXPECT_NEAR(almostUnitIdentity(1.0f), 1.0f, 1e-6f);
+    EXPECT_NEAR(almostUnitIdentity(0.5f), 0.5f * 0.5f * (2.0f - 0.5f), 1e-6f);
+}
+
+TEST(DampTest, SpringDamperCriticalConverges) {
+    float position = 0.0f;
+    float velocity = 0.0f;
+    const float target = 10.0f;
+    const float omega = 8.0f;
+    const float dt = 0.016f;
+    for (int i = 0; i < 500; ++i) {
+        springDamperCritical(position, velocity, target, omega, dt);
+    }
+    EXPECT_NEAR(position, target, 0.05f);
+    EXPECT_NEAR(velocity, 0.0f, 0.05f);
 }

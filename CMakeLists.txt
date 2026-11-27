@@ -102,7 +102,7 @@ elseif(VNE_TARGET_PLATFORM STREQUAL "Web")
 endif()
 
 #==============================================================================
-# Library type — static or shared (one per build directory)
+# Library type  -  static or shared (one per build directory)
 #==============================================================================
 # Parent projects should align: set(VNE_MATH_LIB_TYPE "${PARENT_LIB_TYPE}" CACHE STRING "" FORCE)
 # before add_subdirectory(vnemath). Embedded VneLogging uses the same kind (see vne_use_dep below).
@@ -402,7 +402,7 @@ endif()
 #==============================================================================
 
 # iOS install prefix: only when this project owns install() (not VNE_MATH_SKIP_INSTALL).
-# Single place of truth — avoids duplicating vnelogging/vneevents-style logic at project() scope.
+# Single place of truth  -  avoids duplicating vnelogging/vneevents-style logic at project() scope.
 function(_vnemath_apply_ios_install_prefix_if_owned_install)
     if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
         return()

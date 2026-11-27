@@ -9,10 +9,10 @@ Demonstrates high-performance easing functions inspired by [Inigo Quilez](https:
 ```cpp
 #include <vertexnova/math/easing.h>
 
-// Standard cubic smoothstep: x²(3-2x)
+// Standard cubic smoothstep: x^2(3-2x)
 float y = smoothstep(x);
 
-// Quintic smootherstep: x³(x(6x-15)+10) - C2 continuous
+// Quintic smootherstep: x^3(x(6x-15)+10) - C2 continuous
 float y = smootherstep(x);
 
 // Quartic: uses only even powers (good when x is a distance)
@@ -86,10 +86,10 @@ Ray ray = screenToWorldRay(mousePos, invMvp, viewport, cameraPos, api);
 ### Angle Utilities
 
 ```cpp
-// Normalize to [0, 2π]
+// Normalize to [0, 2pi]
 float a = normalizeAngle(angle);
 
-// Normalize to [-π, π]
+// Normalize to [-pi, pi]
 float a = normalizeAngleSigned(angle);
 
 // Shortest angular difference

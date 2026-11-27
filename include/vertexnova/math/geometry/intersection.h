@@ -216,13 +216,13 @@ struct RayHit {
 }
 
 // ============================================================================
-// Ray-Triangle Intersection (Möller–Trumbore Algorithm)
+// Ray-Triangle Intersection (Moller-Trumbore Algorithm)
 // ============================================================================
 
 /**
  * @brief Intersects a ray with a triangle.
  *
- * Uses the Möller–Trumbore algorithm for fast ray-triangle intersection.
+ * Uses the Moller-Trumbore algorithm for fast ray-triangle intersection.
  * Returns barycentric coordinates in uv field.
  *
  * @param ray The ray

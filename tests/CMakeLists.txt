@@ -63,6 +63,8 @@ set(TEST_SOURCES
     math/core/vec_test.cpp
     math/core/mat_test.cpp
     math/core/quat_test.cpp
+    math/core/types_test.cpp
+    math/core/constants_test.cpp
     # Other math tests
     math/color_test.cpp
     math/transform_node_test.cpp
@@ -70,6 +72,7 @@ set(TEST_SOURCES
     math/math_utils_test.cpp
     math/angle_utils_test.cpp
     math/easing_test.cpp
+    math/viewport_test.cpp
     # New feature tests
     math/curves_test.cpp
     math/transform_utils_test.cpp
@@ -122,7 +125,7 @@ target_link_libraries(TestVneMath
 if(VNE_MATH_LIB_TYPE STREQUAL "shared")
     if(WIN32)
         # Stage all runtime DLLs next to the test executable (transitive deps e.g. vnelogging).
-        # vne::common is INTERFACE-only here — no DLL. $<TARGET_RUNTIME_DLLS:...> needs CMake 3.21+.
+        # vne::common is INTERFACE-only here  -  no DLL. $<TARGET_RUNTIME_DLLS:...> needs CMake 3.21+.
         if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.21")
             add_custom_command(TARGET TestVneMath POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different

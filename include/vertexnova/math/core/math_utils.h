@@ -26,7 +26,7 @@
  * are in core/types.h as they're required by the templated vec/mat/quat classes.
  *
  * For non-templated constants, use constants.h.
- * Call std::sin, std::sqrt, std::floor, etc. directly — this header does not
+ * Call std::sin, std::sqrt, std::floor, etc. directly  -  this header does not
  * wrap the C++ standard library math functions.
  */
 
@@ -242,10 +242,10 @@ template<typename T>
 // ============================================================================
 
 /**
- * @brief Normalizes an angle to the range [0, 2π).
+ * @brief Normalizes an angle to the range [0, 2pi).
  *
  * @param radians Angle in radians
- * @return Normalized angle in [0, 2π)
+ * @return Normalized angle in [0, 2pi)
  */
 template<FloatingPoint T>
 [[nodiscard]] inline T normalizeAngle(T radians) noexcept {
@@ -257,10 +257,10 @@ template<FloatingPoint T>
 }
 
 /**
- * @brief Normalizes an angle to the range [-π, π].
+ * @brief Normalizes an angle to the range [-pi, pi].
  *
  * @param radians Angle in radians
- * @return Normalized angle in [-π, π]
+ * @return Normalized angle in [-pi, pi]
  */
 template<FloatingPoint T>
 [[nodiscard]] inline T normalizeAngleSigned(T radians) noexcept {
@@ -274,7 +274,7 @@ template<FloatingPoint T>
 /**
  * @brief Computes the shortest angular difference between two angles.
  *
- * The result is in the range [-π, π], representing the shortest
+ * The result is in the range [-pi, pi], representing the shortest
  * path from 'from' to 'to'.
  *
  * @param from Starting angle in radians

@@ -6,51 +6,53 @@
 
 ![System context](diagrams/context.png)
 
-**Figure 1: Context** — Application code includes `vertexnova/math/math.h` and uses types for shader uniforms (MVP, GPU-aligned structs), scene logic (picking, culling), and tools.
+**Figure 1: Context** - Application code includes `vertexnova/math/math.h` and uses types for shader uniforms (MVP, GPU-aligned structs), scene logic (picking, culling), and tools.
 
 | Element | Description |
 |---------|-------------|
 | C++ Application | Engine, game, or tool code |
 | VneMath | Headers under `include/vertexnova/math/` |
-| GPU / Shaders | `Mat4f`, `GpuMat4f`, packed vectors for UBOs |
+| GPU / Shaders | `Mat4f`, `GpuMat4f`, packed vectors for UBOs (`GraphicsApi` selects clip/NDC conventions) |
 | Scene & Tools | `Ray`, `Aabb`, `Frustum`, `project` / `unproject`, etc. |
 
 ## Architecture
 
-The library is organized in layers. The **umbrella** header `math.h` pulls in core types, geometry, color, animation utilities, projection helpers, and optional **Statistic** / **GPU** layout types. For a smaller include surface, use **`core/core.h`** (Vec, Mat, Quat only) and add other headers as needed.
+The library is organized in layers. **Geometry** depends on **Core**. **Utilities** depend on both. The **umbrella** header `math.h` pulls in all layers. For a smaller include surface, use **`core/core.h`** (Vec, Mat, Quat only) and add other headers as needed.
 
 ![Module layers](diagrams/modules.png)
 
 **Figure 2: Module layers**
 
-| Layer | Contents |
-|-------|----------|
-| **Core** | `Vec`, `Mat`, `Quat`; `GraphicsApi` traits; `modelMatrix`, `mvp`, `viewProjection` |
-| **Geometry** | `Ray`, `Aabb`, `Sphere`, `Triangle`, `Frustum`, `Plane`, `Obb`, `Capsule`, …; `intersect`, `intersects` |
-| **Utilities** | `Color`, `projection_utils`, `transform_utils`, `viewport`, `TransformNode`, `curves`, `easing`, `random`, `Statistic`, `gpu_types` |
+| Layer | Depends on | Contents |
+|-------|------------|----------|
+| **Core** | - | `Vec`, `Mat`, `Quat`; `GraphicsApi` traits; `modelMatrix`, `mvp`, `viewProjection` |
+| **Geometry** | Core | `Ray`, `Aabb`, `Sphere`, `Triangle`, `Frustum`, `Plane`, `Obb`, `Capsule`, ...; `intersect`, `intersects` |
+| **Utilities** | Core, Geometry | Projection/Viewport; Transforms/`TransformNode`; Color; Animation (`curves`, `easing`); Random/Statistic; GPU types |
 
 ## Key components
 
 ### Core types (`core/`)
 
-- **`Vec<T, N>`** — `Vec2f`, `Vec3f`, `Vec4f`, integer and double aliases.
-- **`Mat<T, R, C>`** — `Mat4f` for transforms and projection; `Mat3f` / `Mat2f` for linear algebra.
-- **`Quat<T>`** — `Quatf`; rotation via `fromAxisAngle`, `slerp`, `toMatrix4`.
-- **`GraphicsApi`** — Selects clip depth, NDC Y convention, and projection Y-flip (Vulkan) when building `perspective` / `lookAt`.
+- **`Vec<T, N>`** - `Vec2f`, `Vec3f`, `Vec4f`, integer and double aliases.
+- **`Mat<T, R, C>`** - `Mat4f` for transforms and projection; `Mat3f` / `Mat2f` for linear algebra.
+- **`Quat<T>`** - `Quatf`; rotation via `fromAxisAngle`, `slerp`, `toMatrix4`.
+- **`GraphicsApi`** - Selects clip depth, NDC Y convention, and projection Y-flip (Vulkan) when building `perspective` / `lookAt`.
+- **`modelMatrix`** (`core/core.h`) - Builds a TRS model matrix from position, rotation, and scale.
 
 ### Geometry (`geometry/`)
 
-Volumes and primitives for collision, picking, and frustum culling. **`RayHit`** carries `distance`, `point`, `normal`, and optional **`uv`** (e.g. ray–triangle).
+Volumes and primitives for collision, picking, and frustum culling. **`RayHit`** carries `distance`, `point`, `normal`, and optional **`uv`** (e.g. ray-triangle).
 
 ### Projection and screenspace (`projection_utils.h`, `viewport.h`)
 
-- **`project`** / **`unproject`** — World ↔ pixel coordinates with API-correct Y.
-- **`Viewport`** — Origin, width, height, depth range.
+- **`project`** / **`unproject`** - World <-> pixel coordinates with API-correct Y.
+- **`Viewport`** - Origin, width, height, depth range.
 
 ### Transforms (`transform_utils.h`, `core/core.h`)
 
-- **`decompose`** / **`compose`** / **`lerpTransform`** — TRS round-trip and blended matrices.
-- **`TransformNode`** — Minimal parent/child hierarchy with cached world matrix.
+- **`compose`** / **`decompose`** - TRS round-trip for `Mat4f` (same role as `modelMatrix` for building; also exposes `makeTranslation` / `makeRotation` / `makeScale`).
+- **`lerpTransform`** - Interpolates two matrices in TRS space (decompose, slerp rotation, recompose).
+- **`TransformNode`** - Minimal parent/child hierarchy with cached world matrix.
 
 ### Color (`color.h`)
 
@@ -62,7 +64,7 @@ Aligned `GpuVec3f`, `GpuMat4f`, etc., for std140 / std430 style buffers.
 
 ## Graphics API conventions (summary)
 
-Always pass the same **`GraphicsApi`** to **`Mat4f::perspective`** and **`Mat4f::lookAt`** as your renderer. Vertical field of view for **`perspective`** is in **radians** (use **`degToRad`** for degrees). Vulkan’s NDC Y-down is handled via a projection Y-flip inside vnemath when `GraphicsApi::eVulkan` is selected.
+Always pass the same **`GraphicsApi`** to **`Mat4f::perspective`** and **`Mat4f::lookAt`** as your renderer. Vertical field of view for **`perspective`** is in **radians** (use **`degToRad`** for degrees). Vulkan's NDC Y-down is handled via a projection Y-flip inside vnemath when `GraphicsApi::eVulkan` is selected.
 
 See header comments in `core/types.h` for depth range, framebuffer origin, and handedness traits.
 
@@ -75,7 +77,7 @@ See header comments in `core/types.h` for depth range, framebuffer origin, and h
 | Step | Description |
 |------|-------------|
 | 1. Include | `#include <vertexnova/math/math.h>` and `using namespace vne::math;` (or qualify `vne::math::`) |
-| 2. Transforms | Build model, view, projection; combine with **`mvp`** or manually $P \times V \times M$ |
+| 2. Transforms | Build model with **`modelMatrix`**, view/projection with **`lookAt`** / **`perspective`**; combine with **`mvp`** or manually P x V x M |
 | 3. Optional | **`project`** for picking; **`intersect`** for rays; **`Gpu*`** types for uniform buffers |
 
 ### Minimal example
@@ -120,6 +122,6 @@ For multi-config generators, add the build configuration if needed, e.g. `ctest 
 
 ## Related documentation
 
-- Repository **README.md** — build options, embedding as a submodule
-- **Doxygen** — `cmake -DENABLE_DOXYGEN=ON -B build && cmake --build build --target vnemath_doc` for API HTML
+- Repository **README.md** - build options, embedding as a submodule
+- **Doxygen** - `cmake -DENABLE_DOXYGEN=ON -B build && cmake --build build --target vnemath_doc` for API HTML
 - Diagram sources: [diagrams/README.md](diagrams/README.md)

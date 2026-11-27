@@ -11,7 +11,10 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
+
 #include "vertexnova/math/core/mat.h"
+#include "vertexnova/math/core/types.h"
 
 namespace vne::math {
 
@@ -245,6 +248,68 @@ TEST(Mat4GlmTest, ConvertFromGlm) {
     EXPECT_FLOAT_EQ(m[3][0], 1.0f);
     EXPECT_FLOAT_EQ(m[3][1], 2.0f);
     EXPECT_FLOAT_EQ(m[3][2], 3.0f);
+}
+
+TEST_F(Mat4Test, RotateZMapsPlusXTowardPlusY) {
+    Mat4f r = Mat4f::rotateZ(kHalfPiT<float>);
+    Vec4f x = r * Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
+    EXPECT_NEAR(x.x(), 0.0f, 1e-5f);
+    EXPECT_NEAR(x.y(), 1.0f, 1e-5f);
+    EXPECT_NEAR(x.z(), 0.0f, 1e-5f);
+}
+
+TEST_F(Mat4Test, GetRowMatchesTransposeColumn) {
+    Mat4f m = Mat4f::translate(1.0f, 2.0f, 3.0f) * Mat4f::scale(2.0f);
+    Mat4f mt = m.transpose();
+    for (size_t i = 0; i < 4; ++i) {
+        EXPECT_TRUE(m.getRow(i).approxEquals(mt.getColumn(i), 1e-6f));
+    }
+}
+
+TEST_F(Mat4Test, InverseTransposeMatchesInverseThenTranspose) {
+    Mat4f m = Mat4f::translate(1.0f, 2.0f, 3.0f) * Mat4f::scale(Vec3f(2.0f, 3.0f, 4.0f));
+    Mat4f a = m.inverseTranspose();
+    Mat4f b = m.inverse().transpose();
+    EXPECT_TRUE(a.approxEquals(b, 1e-5f));
+}
+
+TEST(Mat2Test, DeterminantAndInverse) {
+    Mat2f m(Vec2f(4.0f, 2.0f), Vec2f(1.0f, 3.0f));
+    EXPECT_NEAR(m.determinant(), 10.0f, 1e-5f);
+    Mat2f inv = m.inverse();
+    Mat2f id = m * inv;
+    EXPECT_NEAR(id[0][0], 1.0f, 1e-5f);
+    EXPECT_NEAR(id[1][1], 1.0f, 1e-5f);
+    EXPECT_NEAR(id[0][1], 0.0f, 1e-5f);
+    EXPECT_NEAR(id[1][0], 0.0f, 1e-5f);
+}
+
+TEST(Mat3Test, DeterminantAndInverse) {
+    Mat3f m = Mat3f::identity();
+    m[0] = Vec3f(2.0f, 0.0f, 0.0f);
+    m[1] = Vec3f(0.0f, 3.0f, 0.0f);
+    m[2] = Vec3f(0.0f, 0.0f, 4.0f);
+    EXPECT_NEAR(m.determinant(), 24.0f, 1e-5f);
+    Mat3f inv = m.inverse();
+    EXPECT_NEAR(inv[0][0], 0.5f, 1e-5f);
+    EXPECT_NEAR(inv[1][1], 1.0f / 3.0f, 1e-5f);
+    EXPECT_NEAR(inv[2][2], 0.25f, 1e-5f);
+}
+
+TEST_F(Mat4Test, SingularInverseFollowsGlm) {
+    // Zero scale is singular; GLM inverse yields non-finite entries (no special fallback).
+    Mat4f singular = Mat4f::scale(0.0f);
+    EXPECT_NEAR(singular.determinant(), 0.0f, 1e-6f);
+    Mat4f inv = singular.inverse();
+    bool any_non_finite = false;
+    for (size_t c = 0; c < 4; ++c) {
+        for (size_t r = 0; r < 4; ++r) {
+            if (!std::isfinite(inv[c][r])) {
+                any_non_finite = true;
+            }
+        }
+    }
+    EXPECT_TRUE(any_non_finite);
 }
 
 }  // namespace vne::math

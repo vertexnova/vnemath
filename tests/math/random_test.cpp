@@ -242,3 +242,19 @@ TEST_F(RandomTest, TestIntegerRandomGetAndSetMinMax) {
     ASSERT_DEATH(rand_withseed_->setMinMax(50, 40), ".* Assertion Failed: a <= b :: invalid min and max arguments.*");
 #endif  // _DEBUG
 }
+
+TEST_F(RandomTest, SameSeedProducesSameSequence) {
+    vne::math::Random<float> a(seed_, lower_f_, upper_f_);
+    vne::math::Random<float> b(seed_, lower_f_, upper_f_);
+    for (size_t i = 0; i < size_; ++i) {
+        EXPECT_FLOAT_EQ(a.get(), b.get()) << "i=" << i;
+    }
+}
+
+TEST_F(RandomTest, CopyPreservesRangeParams) {
+    vne::math::Random<float> a(seed_, lower_f_, upper_f_);
+    vne::math::Random<float> copy(a);
+    EXPECT_FLOAT_EQ(copy.getMin(), lower_f_);
+    EXPECT_FLOAT_EQ(copy.getMax(), upper_f_);
+    EXPECT_TRUE(IsInBetween(copy.get(), lower_f_, upper_f_));
+}

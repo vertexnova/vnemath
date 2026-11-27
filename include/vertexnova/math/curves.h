@@ -61,7 +61,7 @@ template<typename T>
  * The curve passes through p0 at t=0 and p2 at t=1.
  * p1 is a control point that influences the shape.
  *
- * Formula: B(t) = (1-t)²p0 + 2(1-t)t*p1 + t²p2
+ * Formula: B(t) = (1-t)^2p0 + 2(1-t)t*p1 + t^2p2
  *
  * @param p0 Start point
  * @param p1 Control point
@@ -98,7 +98,7 @@ template<typename T>
  * The curve passes through p0 at t=0 and p3 at t=1.
  * p1 and p2 are control points that influence the shape.
  *
- * Formula: B(t) = (1-t)³p0 + 3(1-t)²t*p1 + 3(1-t)t²p2 + t³p3
+ * Formula: B(t) = (1-t)^3p0 + 3(1-t)^2t*p1 + 3(1-t)t^2p2 + t^3p3
  *
  * @param p0 Start point
  * @param p1 First control point

@@ -41,10 +41,10 @@ TEST(NormalizeAngleSignedTest, AlreadyNormalized) {
 }
 
 TEST(NormalizeAngleSignedTest, WrapAround) {
-    // Just over π should wrap to negative
+    // Just over pi should wrap to negative
     EXPECT_NEAR(normalizeAngleSigned(kPi + 0.1f), -kPi + 0.1f, 1e-5f);
 
-    // Just under -π should wrap to positive
+    // Just under -pi should wrap to positive
     EXPECT_NEAR(normalizeAngleSigned(-kPi - 0.1f), kPi - 0.1f, 1e-5f);
 }
 
@@ -58,16 +58,16 @@ TEST(AngleDifferenceTest, SmallDifference) {
 }
 
 TEST(AngleDifferenceTest, WrapAround) {
-    // From 0 to 3π/2 should go backwards (-π/2) not forwards (3π/2)
+    // From 0 to 3pi/2 should go backwards (-pi/2) not forwards (3pi/2)
     float diff = angleDifference(0.0f, 3.0f * kHalfPi);
     EXPECT_NEAR(diff, -kHalfPi, 1e-5f);
 
-    // From π to -π (represented as π) should be 0
+    // From pi to -pi (represented as pi) should be 0
     EXPECT_NEAR(angleDifference(kPi, -kPi), 0.0f, 1e-5f);
 }
 
 TEST(AngleDifferenceTest, HalfCircle) {
-    // Going exactly π should work in either direction
+    // Going exactly pi should work in either direction
     float diff = angleDifference(0.0f, kPi);
     EXPECT_TRUE(std::abs(diff) <= kPi + 1e-5f);
 }
@@ -83,7 +83,7 @@ TEST(LerpAngleTest, Simple) {
 }
 
 TEST(LerpAngleTest, WrapAround) {
-    // Lerp from near 0 to near 2π should go through 0, not the long way
+    // Lerp from near 0 to near 2pi should go through 0, not the long way
     float from = 0.1f;
     float to = kTwoPi - 0.1f;
     float mid = lerpAngle(from, to, 0.5f);

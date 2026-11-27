@@ -126,3 +126,19 @@ TEST_F(TransformNodeTest, DestructorTest) {
         delete child;
     }
 }
+
+TEST_F(TransformNodeTest, UpdateRootTransformPropagatesParentChange) {
+    vne::math::Mat4x4f parent_a = vne::math::Mat4x4f::translate(vne::math::Vec3f(10.0f, 0.0f, 0.0f));
+    vne::math::Mat4x4f parent_b = vne::math::Mat4x4f::translate(vne::math::Vec3f(20.0f, 0.0f, 0.0f));
+    vne::math::Mat4x4f child_local = vne::math::Mat4x4f::translate(vne::math::Vec3f(0.0f, 5.0f, 0.0f));
+
+    parent_.setLocalTransform(parent_a);
+    child_.setLocalTransform(child_local);
+    child_.setParent(&parent_);
+    EXPECT_EQ(child_.getModelMatrix(), parent_a * child_local);
+
+    parent_.setLocalTransform(parent_b);
+    // Stale until child refreshes root from parent
+    child_.updateRootTransform();
+    EXPECT_EQ(child_.getModelMatrix(), parent_b * child_local);
+}
