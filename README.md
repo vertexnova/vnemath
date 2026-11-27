@@ -474,7 +474,7 @@ cmake --build build --target TestVneMath
 ./build/bin/TestVneMath
 
 # Run specific test suite
-./build/bin/TestVneMath --gtest_filter="NoiseTest.*"
+./build/bin/TestVneMath --gtest_filter="ColorTest.*"
 ```
 
 ## License
