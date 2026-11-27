@@ -14,7 +14,7 @@
  * @file math.h
  * @brief Main include file for the VNE Math library.
  *
- * This file includes core types, geometry, color, animation/noise helpers,
+ * This file includes core types, geometry, color, animation helpers,
  * projection and transform utilities, running statistics, and GPU-aligned types.
  */
 
@@ -31,9 +31,6 @@
 // Interpolation and animation
 #include "easing.h"
 #include "curves.h"
-
-// Procedural generation
-#include "noise.h"
 
 // Coordinate space utilities
 #include "projection_utils.h"

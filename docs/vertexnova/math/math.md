@@ -17,7 +17,7 @@
 
 ## Architecture
 
-The library is organized in layers. The **umbrella** header `math.h` pulls in core types, geometry, color, animation/noise utilities, projection helpers, and optional **Statistic** / **GPU** layout types. For a smaller include surface, use **`core/core.h`** (Vec, Mat, Quat only) and add other headers as needed.
+The library is organized in layers. The **umbrella** header `math.h` pulls in core types, geometry, color, animation utilities, projection helpers, and optional **Statistic** / **GPU** layout types. For a smaller include surface, use **`core/core.h`** (Vec, Mat, Quat only) and add other headers as needed.
 
 ![Module layers](diagrams/modules.png)
 
@@ -27,7 +27,7 @@ The library is organized in layers. The **umbrella** header `math.h` pulls in co
 |-------|----------|
 | **Core** | `Vec`, `Mat`, `Quat`; `GraphicsApi` traits; `modelMatrix`, `mvp`, `viewProjection` |
 | **Geometry** | `Ray`, `Aabb`, `Sphere`, `Triangle`, `Frustum`, `Plane`, `Obb`, `Capsule`, …; `intersect`, `intersects` |
-| **Utilities** | `Color`, `projection_utils`, `transform_utils`, `viewport`, `TransformNode`, `noise`, `curves`, `easing`, `random`, `Statistic`, `gpu_types` |
+| **Utilities** | `Color`, `projection_utils`, `transform_utils`, `viewport`, `TransformNode`, `curves`, `easing`, `random`, `Statistic`, `gpu_types` |
 
 ## Key components
 
@@ -103,7 +103,7 @@ void example() {
 
 ## Examples and tests
 
-Runnable examples live under `examples/` (e.g. transform decomposition, GPU alignment, noise). With tests enabled, CMake registers **`vnemath.test`** (command: **`TestVneMath`**). Run the suite with **`ctest --test-dir build`** instead of a hardcoded `bin/` path so single- and multi-config generators and Windows layouts work.
+Runnable examples live under `examples/` (e.g. transform decomposition, GPU alignment, easing). With tests enabled, CMake registers **`vnemath.test`** (command: **`TestVneMath`**). Run the suite with **`ctest --test-dir build`** instead of a hardcoded `bin/` path so single- and multi-config generators and Windows layouts work.
 
 ```bash
 cmake -B build -DVNE_MATH_DEV=ON

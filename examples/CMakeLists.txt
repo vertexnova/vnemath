@@ -32,8 +32,5 @@ add_subdirectory(09_easing_intersection)
 # 10 - Curves & Animation: Bezier, Catmull-Rom, and Hermite splines
 add_subdirectory(10_curves_animation)
 
-# 11 - Noise Generation: Perlin, Simplex, fBm, and procedural textures
-add_subdirectory(11_noise_generation)
-
 # 12 - Transform Decomposition: Matrix TRS decomposition and interpolation
 add_subdirectory(12_transform_decomposition)

@@ -72,7 +72,6 @@ set(TEST_SOURCES
     math/easing_test.cpp
     # New feature tests
     math/curves_test.cpp
-    math/noise_test.cpp
     math/transform_utils_test.cpp
     # Multi-backend graphics API tests
     math/graphics_api_test.cpp
