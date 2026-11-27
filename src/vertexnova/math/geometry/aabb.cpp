@@ -14,12 +14,12 @@
 
 #include "vertexnova/math/core/math_utils.h"
 
-namespace vne::math {
-
 namespace {
 constexpr float kHalf = 0.5f;
 constexpr float kSurfaceAreaMultiplier = 2.0f;
 }  // namespace
+
+namespace vne::math {
 
 Aabb::Aabb() noexcept
     : min_(kFloatMax, kFloatMax, kFloatMax)

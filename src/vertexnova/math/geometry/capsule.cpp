@@ -16,14 +16,14 @@
 #include "vertexnova/math/geometry/aabb.h"
 #include "vertexnova/math/geometry/sphere.h"
 
-namespace vne::math {
-
 namespace {
 constexpr float kHalf = 0.5f;
 constexpr float kTwo = 2.0f;
 constexpr float kFour = 4.0f;
 constexpr float kVolumeFactor = 4.0f / 3.0f;  // 4/3 for sphere volume
 }  // namespace
+
+namespace vne::math {
 
 // Constructors
 Capsule::Capsule() noexcept = default;

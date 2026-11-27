@@ -15,13 +15,13 @@
 #include "vertexnova/math/core/math_utils.h"
 #include "vertexnova/math/geometry/aabb.h"
 
-namespace vne::math {
-
 namespace {
 constexpr float kHalf = 0.5f;
 constexpr float kSurfaceAreaMultiplier = 2.0f;
 constexpr uint32_t kCornerCount = 8;
 }  // namespace
+
+namespace vne::math {
 
 // Constructors
 Obb::Obb() noexcept = default;

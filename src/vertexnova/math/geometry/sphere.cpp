@@ -14,14 +14,14 @@
 
 #include "vertexnova/math/core/math_utils.h"
 
-namespace vne::math {
-
 namespace {
 constexpr float kHalf = 0.5f;
 constexpr float kDiameterMultiplier = 2.0f;
 constexpr float kVolumeFactor = 4.0f / 3.0f;
 constexpr float kSurfaceAreaFactor = 4.0f;
 }  // namespace
+
+namespace vne::math {
 
 Sphere::Sphere() noexcept
     : center_(Vec3f::zero())

@@ -18,10 +18,8 @@
 
 #include <cmath>
 
-namespace vne::math {
-
 //------------------------------------------------------------------------------
-// Color Space Conversions
+// File-local color-space helpers (not part of the public API)
 //------------------------------------------------------------------------------
 
 namespace {
@@ -31,6 +29,7 @@ constexpr float kSRGBLinearScale = 12.92f;
 constexpr float kSRGBGammaOffset = 0.055f;
 constexpr float kSRGBGammaScale = 1.055f;
 constexpr float kSRGBGamma = 2.4f;
+constexpr float kSRGBLinearToSrgbThreshold = 0.0031308f;
 
 // ITU-R BT.709 luminance coefficients
 constexpr float kLuminanceR = 0.2126f;
@@ -47,7 +46,7 @@ inline float srgbToLinearComponent(float c) {
 
 // Helper: linear to sRGB for a single component
 inline float linearToSrgbComponent(float c) {
-    if (c <= 0.0031308f) {
+    if (c <= kSRGBLinearToSrgbThreshold) {
         return c * kSRGBLinearScale;
     }
     return kSRGBGammaScale * std::pow(c, 1.0f / kSRGBGamma) - kSRGBGammaOffset;
@@ -69,6 +68,9 @@ inline float hslToRgbHelper(float p, float q, float t) {
 }
 }  // namespace
 
+namespace vne::math {
+
+// Public predefined colors (declared as Color::k* in color.h - not file-local)
 const Color Color::kWhite = Color(1.0f, 1.0f, 1.0f);
 const Color Color::kBlack = Color(0.0f, 0.0f, 0.0f);
 const Color Color::kRed = Color(1.0f, 0.0f, 0.0f);
