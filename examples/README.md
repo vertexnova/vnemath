@@ -5,6 +5,8 @@ self-contained CMake target with its own `README.md` for feature details.
 
 ## Building
 
+### Direct CMake (build dir: `build/`)
+
 Enable examples when configuring (also implied by `VNE_MATH_DEV=ON`):
 
 ```bash
@@ -14,27 +16,28 @@ cmake -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_EXAMPLES=ON
 cmake --build build
 ```
 
-Platform scripts work the same way:
-
-```bash
-./scripts/build_macos.sh -t Debug -a configure_and_build
-```
-
-Binaries land under `build/bin/examples/` (layout may differ for multi-config
-generators).
-
-## Running
+Binaries: `build/bin/examples/` (layout may differ for multi-config generators).
 
 ```bash
 ./build/bin/examples/example_01_hello_math
-./build/bin/examples/example_02_multibackend
-# ...
+cmake --build build --target example_01_hello_math
 ```
 
-Build a single example:
+### Platform script (build dir: printed by the script)
 
 ```bash
-cmake --build build --target example_01_hello_math
+./scripts/build_macos.sh -t Debug -a configure_and_build
+# Linux: ./scripts/build_linux.sh -t Debug -a configure_and_build
+```
+
+The script ends with `Build directory: <path>` (default single-config layout looks
+like `build/shared/Debug/build-macos-<compiler>-<version>`). Use that path for
+runs and single-target builds:
+
+```bash
+BUILD_DIR=build/shared/Debug/build-macos-clang-17.0.0   # use the path the script printed
+./"$BUILD_DIR"/bin/examples/example_01_hello_math
+cmake --build "$BUILD_DIR" --target example_01_hello_math
 ```
 
 ## Catalog
