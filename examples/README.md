@@ -25,19 +25,20 @@ cmake --build build --target example_01_hello_math
 
 ### Platform script (build dir: printed by the script)
 
+`build_macos.sh` / `build_linux.sh` configure with `-DBUILD_EXAMPLES=OFF`. After the
+script finishes, reconfigure that build tree with `VNE_MATH_DEV=ON` (forces
+examples on even if the cache had them off), then build:
+
 ```bash
 ./scripts/build_macos.sh -t Debug -a configure_and_build
 # Linux: ./scripts/build_linux.sh -t Debug -a configure_and_build
-```
 
-The script ends with `Build directory: <path>` (default single-config layout looks
-like `build/shared/Debug/build-macos-<compiler>-<version>`). Use that path for
-runs and single-target builds:
+# Use the "Build directory: <path>" line the script prints:
+BUILD_DIR=build/shared/Debug/build-macos-clang-17.0.0
 
-```bash
-BUILD_DIR=build/shared/Debug/build-macos-clang-17.0.0   # use the path the script printed
-./"$BUILD_DIR"/bin/examples/example_01_hello_math
+cmake -B "$BUILD_DIR" -DVNE_MATH_DEV=ON
 cmake --build "$BUILD_DIR" --target example_01_hello_math
+"$BUILD_DIR"/bin/examples/example_01_hello_math
 ```
 
 ## Catalog
