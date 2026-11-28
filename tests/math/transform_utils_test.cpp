@@ -5,7 +5,11 @@
  */
 
 #include <gtest/gtest.h>
+
+#include <vertexnova/math/core/core.h>
 #include <vertexnova/math/transform_utils.h>
+
+#include <cmath>
 
 using namespace vne::math;
 
@@ -315,4 +319,78 @@ TEST(RoundTripTest, MultipleIterations) {
     auto final_components = decompose(matrix);
     EXPECT_NEAR(final_components.translation.x(), 1.0f, 0.01f);
     EXPECT_NEAR(final_components.scale.x(), 2.0f, 0.01f);
+}
+
+// ============================================================================
+// Consistency Tests (overlapping APIs must stay aligned)
+// ============================================================================
+
+TEST(ConsistencyTest, ComposeEqualsModelMatrix) {
+    Vec3f translation(1.5f, -2.0f, 3.25f);
+    Quatf rotation = Quatf::fromAxisAngle(Vec3f::yAxis(), kPi / 3.0f);
+    Vec3f scale(0.5f, 1.25f, 2.0f);
+
+    Mat4f via_compose = compose(translation, rotation, scale);
+    Mat4f via_model = modelMatrix(translation, rotation, scale);
+
+    EXPECT_TRUE(via_compose.approxEquals(via_model, 1e-5f));
+}
+
+TEST(ConsistencyTest, MakeTranslationEqualsMat4Translate) {
+    Vec3f t(4.0f, 5.0f, 6.0f);
+    EXPECT_TRUE(makeTranslation(t).approxEquals(Mat4f::translate(t), 1e-6f));
+}
+
+TEST(ConsistencyTest, MakeRotationEqualsToMatrix4) {
+    Quatf rotation = Quatf::fromAxisAngle(Vec3f::zAxis(), kPi / 5.0f);
+    EXPECT_TRUE(makeRotation(rotation).approxEquals(rotation.toMatrix4(), 1e-5f));
+}
+
+TEST(ConsistencyTest, MakeScaleEqualsMat4Scale) {
+    EXPECT_TRUE(makeScale(2.5f).approxEquals(Mat4f::scale(2.5f), 1e-6f));
+    Vec3f s(1.0f, 2.0f, 3.0f);
+    EXPECT_TRUE(makeScale(s).approxEquals(Mat4f::scale(s), 1e-6f));
+}
+
+TEST(DecomposeTest, NegativeScaleRecoversSign) {
+    Vec3f translation(1.0f, 2.0f, 3.0f);
+    Quatf rotation = Quatf::fromAxisAngle(Vec3f::yAxis(), kPi / 6.0f);
+    Vec3f scale(-1.0f, 1.0f, 1.0f);
+
+    Mat4f matrix = compose(translation, rotation, scale);
+    auto result = decompose(matrix);
+
+    EXPECT_TRUE(result.translation.areSame(translation, 1e-4f));
+    EXPECT_NEAR(result.scale.x(), -1.0f, 1e-3f);
+    EXPECT_NEAR(result.scale.y(), 1.0f, 1e-3f);
+    EXPECT_NEAR(result.scale.z(), 1.0f, 1e-3f);
+
+    Mat4f reconstructed = compose(result);
+    EXPECT_TRUE(matrix.approxEquals(reconstructed, 1e-3f));
+}
+
+TEST(DecomposeTest, ZeroScaleIsFinite) {
+    Mat4f matrix = makeScale(0.0f);
+    auto result = decompose(matrix);
+
+    EXPECT_TRUE(std::isfinite(result.translation.x()));
+    EXPECT_TRUE(std::isfinite(result.translation.y()));
+    EXPECT_TRUE(std::isfinite(result.translation.z()));
+    EXPECT_TRUE(std::isfinite(result.scale.x()));
+    EXPECT_TRUE(std::isfinite(result.scale.y()));
+    EXPECT_TRUE(std::isfinite(result.scale.z()));
+    EXPECT_TRUE(std::isfinite(result.rotation.x));
+    EXPECT_TRUE(std::isfinite(result.rotation.y));
+    EXPECT_TRUE(std::isfinite(result.rotation.z));
+    EXPECT_TRUE(std::isfinite(result.rotation.w));
+}
+
+TEST(ExtractTest, ExtractScaleAndRotationAgreeWithDecompose) {
+    Mat4f matrix =
+        compose(Vec3f(2.0f, -1.0f, 4.0f), Quatf::fromAxisAngle(Vec3f::xAxis(), 0.4f), Vec3f(1.5f, 0.75f, 2.25f));
+    auto components = decompose(matrix);
+
+    EXPECT_TRUE(extractScale(matrix).areSame(components.scale, 1e-5f));
+    EXPECT_TRUE(extractRotation(matrix).approxEquals(components.rotation, 1e-5f));
+    EXPECT_TRUE(extractTranslation(matrix).areSame(components.translation, 1e-5f));
 }

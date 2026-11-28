@@ -148,7 +148,7 @@ class Statistic {
     /**
      * @brief Computes the population variance.
      *
-     * Uses the formula: Var = E[X²] - E[X]²
+     * Uses the formula: Var = E[X^2] - E[X]^2
      *
      * @return Variance, or 0 if empty
      */
@@ -196,7 +196,7 @@ class Statistic {
     /**
      * @brief Computes the root mean square (RMS).
      *
-     * RMS = sqrt(mean(x²))
+     * RMS = sqrt(mean(x^2))
      *
      * @return RMS value, or 0 if empty
      */

@@ -57,7 +57,7 @@ TEST(BezierTest, QuadraticMidpoint) {
 
     auto result = bezierQuadratic(p0, p1, p2, 0.5f);
 
-    // At t=0.5: (1-t)²p0 + 2(1-t)t*p1 + t²p2
+    // At t=0.5: (1-t)^2p0 + 2(1-t)t*p1 + t^2p2
     // = 0.25*p0 + 0.5*p1 + 0.25*p2
     // = 0 + (2.5, 5, 0) + (2.5, 0, 0) = (5, 5, 0)
     Vec3f expected(5.0f, 5.0f, 0.0f);

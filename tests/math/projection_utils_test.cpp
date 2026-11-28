@@ -27,7 +27,7 @@ class ProjectionUtilsTest : public ::testing::Test {
 };
 
 // ============================================================================
-// clipToScreenMatrix — OpenGL (bottom-left origin, no Y-flip)
+// clipToScreenMatrix  -  OpenGL (bottom-left origin, no Y-flip)
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_OpenGL_Center) {
@@ -61,7 +61,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_OpenGL_TopRight) {
 }
 
 // ============================================================================
-// clipToScreenMatrix — Vulkan (top-left origin, Y-flip)
+// clipToScreenMatrix  -  Vulkan (top-left origin, Y-flip)
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_Center) {
@@ -96,7 +96,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Vulkan_TopLeft) {
 }
 
 // ============================================================================
-// clipToScreenMatrix — Metal (top-left origin, no projection Y-flip needed)
+// clipToScreenMatrix  -  Metal (top-left origin, no projection Y-flip needed)
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Metal_VsVulkan) {
@@ -112,7 +112,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_Metal_VsVulkan) {
 }
 
 // ============================================================================
-// clipToScreenMatrix — Offset viewport
+// clipToScreenMatrix  -  Offset viewport
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_OffsetViewport) {
@@ -132,7 +132,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_OffsetViewport) {
 }
 
 // ============================================================================
-// clipToScreenMatrix — float width/height convenience overload
+// clipToScreenMatrix  -  float width/height convenience overload
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_ConvenienceOverload_MatchesViewport) {
@@ -143,7 +143,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_ConvenienceOverload_MatchesViewpo
 }
 
 // ============================================================================
-// clipToScreenMatrix — must match scalar ndcToScreen for XY
+// clipToScreenMatrix  -  must match scalar ndcToScreen for XY
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_MatchesScalarNdcToScreen_OpenGL) {
@@ -176,7 +176,7 @@ TEST_F(ProjectionUtilsTest, ClipToScreenMatrix_MatchesScalarNdcToScreen_Vulkan) 
 }
 
 // ============================================================================
-// worldToScreenMatrix — consistency with scalar project()
+// worldToScreenMatrix  -  consistency with scalar project()
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, WorldToScreenMatrix_ConsistentWithProject_OpenGL) {
@@ -247,7 +247,7 @@ TEST_F(ProjectionUtilsTest, WorldToScreenMatrix_ConsistentWithProject_Vulkan) {
 }
 
 // ============================================================================
-// Round-trip: project → unproject
+// Round-trip: project -> unproject
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, RoundTrip_ProjectUnproject_OpenGL) {
@@ -302,11 +302,11 @@ TEST_F(ProjectionUtilsTest, RoundTrip_ProjectUnproject_Vulkan) {
 }
 
 // ============================================================================
-// ndcToScreen (3D overload) — depth mapping
+// ndcToScreen (3D overload)  -  depth mapping
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, NdcToScreen3D_DepthMapping_OpenGL) {
-    // OpenGL: ndc.z in [-1,1] → screen_z in [z_near, z_far]
+    // OpenGL: ndc.z in [-1,1] -> screen_z in [z_near, z_far]
     Viewport vp(0.0f, 0.0f, 800.0f, 600.0f, 0.0f, 1.0f);
 
     Vec3f near_ndc(0.0f, 0.0f, -1.0f);  // OpenGL near plane is NDC z = -1
@@ -320,7 +320,7 @@ TEST_F(ProjectionUtilsTest, NdcToScreen3D_DepthMapping_OpenGL) {
 }
 
 TEST_F(ProjectionUtilsTest, NdcToScreen3D_DepthMapping_Vulkan) {
-    // Vulkan: ndc.z in [0,1] → screen_z in [z_near, z_far]
+    // Vulkan: ndc.z in [0,1] -> screen_z in [z_near, z_far]
     Viewport vp(0.0f, 0.0f, 800.0f, 600.0f, 0.0f, 1.0f);
 
     Vec3f near_ndc(0.0f, 0.0f, 0.0f);  // Vulkan near plane is NDC z = 0
@@ -346,7 +346,7 @@ TEST_F(ProjectionUtilsTest, NdcToScreen3D_XY_MatchesScalar2D) {
 }
 
 // ============================================================================
-// screenToWorldRay — direction and origin
+// screenToWorldRay  -  direction and origin
 // ============================================================================
 
 TEST_F(ProjectionUtilsTest, ScreenToWorldRay_OriginIsCameraPosition) {
@@ -376,10 +376,77 @@ TEST_F(ProjectionUtilsTest, ScreenToWorldRay_CenterPointsAtTarget) {
     // Center pixel
     Ray ray = screenToWorldRay(Vec2f(400.0f, 300.0f), inv_vp, vp, eye, GraphicsApi::eOpenGL);
 
-    // Direction should be (0,0,-1) — pointing from camera toward origin
+    // Direction should be (0,0,-1)  -  pointing from camera toward origin
     EXPECT_NEAR(ray.direction().x(), 0.0f, kEps);
     EXPECT_NEAR(ray.direction().y(), 0.0f, kEps);
     EXPECT_NEAR(ray.direction().z(), -1.0f, kEps);
+}
+
+// ============================================================================
+// NDC / depth / convenience wrappers
+// ============================================================================
+
+TEST_F(ProjectionUtilsTest, ScreenToNdcRoundTripsWithOffsetViewport) {
+    Viewport vp(100.0f, 50.0f, 800.0f, 600.0f);
+    Vec2f screen(500.0f, 350.0f);
+
+    Vec2f ndc = screenToNDC(screen, vp, GraphicsApi::eOpenGL);
+    Vec2f back = ndcToScreen(ndc, vp, GraphicsApi::eOpenGL);
+    EXPECT_NEAR(back.x(), screen.x(), kEps);
+    EXPECT_NEAR(back.y(), screen.y(), kEps);
+
+    Vec2f ndc_vk = screenToNDC(screen, vp, GraphicsApi::eVulkan);
+    Vec2f back_vk = ndcToScreen(ndc_vk, vp, GraphicsApi::eVulkan);
+    EXPECT_NEAR(back_vk.x(), screen.x(), kEps);
+    EXPECT_NEAR(back_vk.y(), screen.y(), kEps);
+}
+
+TEST_F(ProjectionUtilsTest, LinearizeEncodeDepthRoundTrip) {
+    const float z_near = 0.1f;
+    const float z_far = 100.0f;
+    const float linear = 5.0f;
+
+    for (GraphicsApi api : {GraphicsApi::eOpenGL, GraphicsApi::eVulkan, GraphicsApi::eMetal}) {
+        float encoded = encodeDepth(linear, z_near, z_far, api);
+        float recovered = linearizeDepth(encoded, z_near, z_far, api);
+        EXPECT_NEAR(recovered, linear, 1e-3f) << "api=" << static_cast<int>(api);
+    }
+}
+
+TEST_F(ProjectionUtilsTest, ProjectToScreenMatchesProjectXy) {
+    Mat4f mvp = Mat4f::identity();
+    Vec3f world(0.0f, 0.0f, 0.0f);
+    Viewport vp(800.0f, 600.0f);
+
+    Vec3f full = project(world, mvp, vp, GraphicsApi::eOpenGL);
+    Vec2f simplified = projectToScreen(world, mvp, 800.0f, 600.0f, GraphicsApi::eOpenGL);
+    EXPECT_NEAR(simplified.x(), full.x(), kEps);
+    EXPECT_NEAR(simplified.y(), full.y(), kEps);
+}
+
+TEST_F(ProjectionUtilsTest, UnprojectFromScreenMatchesUnproject) {
+    Mat4f mvp = Mat4f::identity();
+    Mat4f inv = mvp.inverse();
+    Vec2f screen(400.0f, 300.0f);
+    float depth = 0.5f;
+
+    Vec3f via_full =
+        unproject(Vec3f(screen.x(), screen.y(), depth), inv, Viewport(800.0f, 600.0f), GraphicsApi::eOpenGL);
+    Vec3f via_simple = unprojectFromScreen(screen, depth, inv, 800.0f, 600.0f, GraphicsApi::eOpenGL);
+    EXPECT_TRUE(via_full.areSame(via_simple, kEps));
+}
+
+TEST_F(ProjectionUtilsTest, ScreenToRayMatchesScreenToWorldRay) {
+    Vec3f eye(0.0f, 0.0f, 5.0f);
+    Mat4f view = Mat4f::lookAt(eye, Vec3f::zero(), Vec3f::yAxis(), GraphicsApi::eOpenGL);
+    Mat4f proj = Mat4f::perspective(degToRad(60.0f), 800.0f / 600.0f, 0.1f, 100.0f, GraphicsApi::eOpenGL);
+    Mat4f inv_vp = (proj * view).inverse();
+    Vec2f screen(400.0f, 300.0f);
+
+    Ray a = screenToWorldRay(screen, inv_vp, Viewport(800.0f, 600.0f), eye, GraphicsApi::eOpenGL);
+    Ray b = screenToRay(screen, inv_vp, 800.0f, 600.0f, eye, GraphicsApi::eOpenGL);
+    EXPECT_TRUE(a.origin().areSame(b.origin(), kEps));
+    EXPECT_TRUE(a.direction().areSame(b.direction(), kEps));
 }
 
 }  // namespace vne::math

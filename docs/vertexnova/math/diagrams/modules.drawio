@@ -1,23 +1,38 @@
 <mxfile host="65bd71144e">
     <diagram name="Module layers" id="modules">
-        <mxGraphModel dx="965" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+        <mxGraphModel dx="604" dy="470" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="900" background="#1C1C1E" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="core" value="Core (core/core.h)&#xa;Vec, Mat, Quat&#xa;GraphicsApi traits" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#0d47a1;" parent="1" vertex="1">
-                    <mxGeometry x="70" y="120" width="280" height="90" as="geometry"/>
+                <mxCell id="util" value="Utilities (math.h umbrella)&#10;Projection / Viewport&#10;Transforms / TransformNode&#10;Color | Animation (curves, easing)&#10;Random / Statistic | GPU types" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C2C2E;strokeColor=#F28C5E;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#EBEBF0;align=left;spacingLeft=16;spacingTop=8;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="60" width="560" height="150" as="geometry"/>
                 </mxCell>
-                <mxCell id="geom" value="Geometry (geometry/)&#xa;Ray, Aabb, Sphere, Frustum, …&#xa;intersect / intersects" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#bf360c;" parent="1" vertex="1">
-                    <mxGeometry x="480" y="120" width="300" height="90" as="geometry"/>
+                <mxCell id="geom" value="Geometry (geometry/)&#10;Ray, Aabb, Sphere, Triangle, Frustum, Plane, Obb, Capsule&#10;intersect / intersects" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2C2C2E;strokeColor=#48484A;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#EBEBF0;align=left;spacingLeft=16;spacingTop=8;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="280" width="400" height="100" as="geometry"/>
                 </mxCell>
-                <mxCell id="util" value="Utilities (math.h umbrella)&#xa;Color, projection_utils, transform_utils&#xa;noise, curves, easing, random, Statistic, gpu_types" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#1b5e20;" parent="1" vertex="1">
-                    <mxGeometry x="80" y="280" width="640" height="90" as="geometry"/>
+                <mxCell id="core" value="Core (core/core.h)&#10;Vec, Mat, Quat&#10;GraphicsApi traits | modelMatrix, mvp, viewProjection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E1A07;strokeColor=#E8622A;strokeWidth=3;fontSize=12;fontStyle=1;fontColor=#EBEBF0;align=left;spacingLeft=16;spacingTop=8;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="480" width="560" height="100" as="geometry"/>
                 </mxCell>
-                <mxCell id="arr1" style="endArrow=blockThin;endFill=0;html=1;dashed=1;strokeWidth=2;strokeColor=#666666;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="util" target="core" edge="1">
+                <mxCell id="a1" value="depends on" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#E8622A;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=11;fontColor=#AEAEB2;labelBackgroundColor=#1C1C1E;" parent="1" source="util" target="geom" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="arr2" style="endArrow=blockThin;endFill=0;html=1;dashed=1;strokeWidth=2;strokeColor=#666666;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="util" target="geom" edge="1">
+                <mxCell id="a2" value="depends on" style="endArrow=blockThin;endFill=1;html=1;strokeWidth=2;strokeColor=#E8622A;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=11;fontColor=#AEAEB2;labelBackgroundColor=#1C1C1E;" parent="1" source="geom" target="core" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="a3" style="endArrow=blockThin;endFill=1;html=1;dashed=1;strokeWidth=2;strokeColor=#48484A;exitX=0.15;exitY=1;exitDx=0;exitDy=0;" parent="1" source="util" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="238" y="230"/>
+                            <mxPoint x="238" y="350"/>
+                            <mxPoint x="238" y="460"/>
+                        </Array>
+                        <mxPoint x="240" y="480" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="a3l" value="depends on" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#AEAEB2;labelBackgroundColor=#1C1C1E;" parent="a3" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
                 </mxCell>
             </root>
         </mxGraphModel>

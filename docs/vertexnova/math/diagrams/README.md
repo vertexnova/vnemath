@@ -12,22 +12,32 @@ If [draw.io Desktop](https://github.com/jgraph/drawio-desktop/releases) is insta
 
 ```bash
 cd docs/vertexnova/math/diagrams
-drawio -x -f png -o context.png context.drawio
-drawio -x -f png -o modules.png modules.drawio
-drawio -x -f png -o api.png api.drawio
+
+# Regenerate all (scale 2 for crisp PNGs)
+for f in context modules api; do
+  drawio -x -f png -s 2 -o "${f}.png" "${f}.drawio"
+done
+```
+
+Or one file at a time:
+
+```bash
+drawio -x -f png -s 2 -o context.png context.drawio
+drawio -x -f png -s 2 -o modules.png modules.drawio
+drawio -x -f png -s 2 -o api.png api.drawio
 ```
 
 ### Option 2: draw.io Web
 
 1. Open [app.diagrams.net](https://app.diagrams.net)
-2. File → Open from → Device → select each `.drawio` file
-3. File → Export as → PNG
+2. File -> Open from -> Device -> select each `.drawio` file
+3. File -> Export as -> PNG (set zoom/scale to 200% if available)
 4. Save to this `diagrams/` folder
 
 ### Files
 
 | Source | Output | Used in math.md | Contents |
 |--------|--------|-----------------|----------|
-| context.drawio | context.png | Overview | C4-style context: Application → VneMath → GPU/shaders and scene code |
-| modules.drawio | modules.png | Architecture | Layered modules: core types, geometry, color & utilities |
-| api.drawio | api.png | Usage | Flow: include `math.h` → build transforms / project → optional GPU helpers |
+| context.drawio | context.png | Overview | C4-style context: Application -> VneMath -> GPU/shaders and scene code |
+| modules.drawio | modules.png | Architecture | Layered modules: Core <- Geometry <- Utilities |
+| api.drawio | api.png | Usage | Flow: include `math.h` -> `modelMatrix` / transforms -> optional GPU helpers |

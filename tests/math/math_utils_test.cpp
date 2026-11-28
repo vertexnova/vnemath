@@ -84,13 +84,13 @@ TEST_F(MathUtilsTest, TestMathRadToDeg) {
 /**
  * Test vne::math::degToRad<T>(...)
  */
-TEST_F(MathUtilsTest, TestMathDegToRad) {
-    ASSERT_EQ(glm::radians(90.0f), vne::math::degToRad<float>(90));
-    ASSERT_EQ(glm::radians(90.0f), vne::math::degToRad<float>(90.0f));
-    ASSERT_EQ(glm::radians(90.0), vne::math::degToRad<double>(90));
+TEST_F(MathUtilsTest, DegToRadMatchesGlm) {
+    ASSERT_FLOAT_EQ(glm::radians(90.0f), vne::math::degToRad<float>(90));
+    ASSERT_FLOAT_EQ(glm::radians(90.0f), vne::math::degToRad<float>(90.0f));
+    ASSERT_DOUBLE_EQ(glm::radians(90.0), vne::math::degToRad<double>(90));
     ASSERT_NE(glm::radians(90.0f), vne::math::degToRad<double>(90));
-    ASSERT_EQ(glm::radians(45.35f), vne::math::degToRad<float>(45.35f));
-    ASSERT_EQ(glm::radians(45.305), vne::math::degToRad<double>(45.305));
+    ASSERT_FLOAT_EQ(glm::radians(45.35f), vne::math::degToRad<float>(45.35f));
+    ASSERT_DOUBLE_EQ(glm::radians(45.305), vne::math::degToRad<double>(45.305));
 }
 
 /**

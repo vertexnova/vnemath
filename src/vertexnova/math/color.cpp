@@ -18,8 +18,59 @@
 
 #include <cmath>
 
+//------------------------------------------------------------------------------
+// File-local color-space helpers (not part of the public API)
+//------------------------------------------------------------------------------
+
+namespace {
+// sRGB gamma constants
+constexpr float kSRGBLinearThreshold = 0.04045f;
+constexpr float kSRGBLinearScale = 12.92f;
+constexpr float kSRGBGammaOffset = 0.055f;
+constexpr float kSRGBGammaScale = 1.055f;
+constexpr float kSRGBGamma = 2.4f;
+constexpr float kSRGBLinearToSrgbThreshold = 0.0031308f;
+
+// ITU-R BT.709 luminance coefficients
+constexpr float kLuminanceR = 0.2126f;
+constexpr float kLuminanceG = 0.7152f;
+constexpr float kLuminanceB = 0.0722f;
+
+// Helper: sRGB to linear for a single component
+inline float srgbToLinearComponent(float c) {
+    if (c <= kSRGBLinearThreshold) {
+        return c / kSRGBLinearScale;
+    }
+    return std::pow((c + kSRGBGammaOffset) / kSRGBGammaScale, kSRGBGamma);
+}
+
+// Helper: linear to sRGB for a single component
+inline float linearToSrgbComponent(float c) {
+    if (c <= kSRGBLinearToSrgbThreshold) {
+        return c * kSRGBLinearScale;
+    }
+    return kSRGBGammaScale * std::pow(c, 1.0f / kSRGBGamma) - kSRGBGammaOffset;
+}
+
+// Helper: HSL to RGB conversion helper
+inline float hslToRgbHelper(float p, float q, float t) {
+    if (t < 0.0f)
+        t += 1.0f;
+    if (t > 1.0f)
+        t -= 1.0f;
+    if (t < 1.0f / 6.0f)
+        return p + (q - p) * 6.0f * t;
+    if (t < 0.5f)
+        return q;
+    if (t < 2.0f / 3.0f)
+        return p + (q - p) * (2.0f / 3.0f - t) * 6.0f;
+    return p;
+}
+}  // namespace
+
 namespace vne::math {
 
+// Public predefined colors (declared as Color::k* in color.h - not file-local)
 const Color Color::kWhite = Color(1.0f, 1.0f, 1.0f);
 const Color Color::kBlack = Color(0.0f, 0.0f, 0.0f);
 const Color Color::kRed = Color(1.0f, 0.0f, 0.0f);
@@ -421,55 +472,6 @@ VNE_MATH_API std::istream& operator>>(std::istream& is, Color& color) {
     }
     return is;
 }
-
-//------------------------------------------------------------------------------
-// Color Space Conversions
-//------------------------------------------------------------------------------
-
-namespace {
-// sRGB gamma constants
-constexpr float kSRGBLinearThreshold = 0.04045f;
-constexpr float kSRGBLinearScale = 12.92f;
-constexpr float kSRGBGammaOffset = 0.055f;
-constexpr float kSRGBGammaScale = 1.055f;
-constexpr float kSRGBGamma = 2.4f;
-
-// ITU-R BT.709 luminance coefficients
-constexpr float kLuminanceR = 0.2126f;
-constexpr float kLuminanceG = 0.7152f;
-constexpr float kLuminanceB = 0.0722f;
-
-// Helper: sRGB to linear for a single component
-inline float srgbToLinearComponent(float c) {
-    if (c <= kSRGBLinearThreshold) {
-        return c / kSRGBLinearScale;
-    }
-    return std::pow((c + kSRGBGammaOffset) / kSRGBGammaScale, kSRGBGamma);
-}
-
-// Helper: linear to sRGB for a single component
-inline float linearToSrgbComponent(float c) {
-    if (c <= 0.0031308f) {
-        return c * kSRGBLinearScale;
-    }
-    return kSRGBGammaScale * std::pow(c, 1.0f / kSRGBGamma) - kSRGBGammaOffset;
-}
-
-// Helper: HSL to RGB conversion helper
-inline float hslToRgbHelper(float p, float q, float t) {
-    if (t < 0.0f)
-        t += 1.0f;
-    if (t > 1.0f)
-        t -= 1.0f;
-    if (t < 1.0f / 6.0f)
-        return p + (q - p) * 6.0f * t;
-    if (t < 0.5f)
-        return q;
-    if (t < 2.0f / 3.0f)
-        return p + (q - p) * (2.0f / 3.0f - t) * 6.0f;
-    return p;
-}
-}  // namespace
 
 //------------------------------------------------------------------------------
 Color Color::fromHSV(float h, float s, float v, float a) noexcept {

@@ -267,9 +267,21 @@ TEST_F(ColorTest, TestColorIsZero) {
 TEST_F(ColorTest, TestColorLerp) {
     vne::math::Color clr1(0.0f, 0.01f, 0.2f, 1.0f);
     vne::math::Color clr2(1.0f, 0.2f, 0.2f, 0.0f);
-    EXPECT_EQ(clr1, clr1.lerp(clr2, 0.0f));
-    EXPECT_EQ(clr2, clr1.lerp(clr2, 1.0f));
-    EXPECT_EQ(vne::math::Color(0.5f, 0.105f, 0.2f, 0.5f), clr1.lerp(clr2, 0.5f));
+    vne::math::Color at_zero = clr1.lerp(clr2, 0.0f);
+    vne::math::Color at_one = clr1.lerp(clr2, 1.0f);
+    vne::math::Color at_mid = clr1.lerp(clr2, 0.5f);
+    EXPECT_FLOAT_EQ(at_zero.r(), clr1.r());
+    EXPECT_FLOAT_EQ(at_zero.g(), clr1.g());
+    EXPECT_FLOAT_EQ(at_zero.b(), clr1.b());
+    EXPECT_FLOAT_EQ(at_zero.a(), clr1.a());
+    EXPECT_FLOAT_EQ(at_one.r(), clr2.r());
+    EXPECT_FLOAT_EQ(at_one.g(), clr2.g());
+    EXPECT_FLOAT_EQ(at_one.b(), clr2.b());
+    EXPECT_FLOAT_EQ(at_one.a(), clr2.a());
+    EXPECT_FLOAT_EQ(at_mid.r(), 0.5f);
+    EXPECT_FLOAT_EQ(at_mid.g(), 0.105f);
+    EXPECT_FLOAT_EQ(at_mid.b(), 0.2f);
+    EXPECT_FLOAT_EQ(at_mid.a(), 0.5f);
 }
 
 /**

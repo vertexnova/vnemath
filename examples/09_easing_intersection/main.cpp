@@ -201,24 +201,24 @@ void demonstrateAngleUtilities() {
     VNE_LOG_INFO << "=== Angle Utilities ===";
     VNE_LOG_INFO << "";
 
-    VNE_LOG_INFO << "normalizeAngle (to [0, 2π]):";
-    VNE_LOG_INFO << "  -π    -> " << normalizeAngle(-kPi);
-    VNE_LOG_INFO << "  3π    -> " << normalizeAngle(3.0f * kPi);
-    VNE_LOG_INFO << "  -π/2  -> " << normalizeAngle(-kHalfPi);
+    VNE_LOG_INFO << "normalizeAngle (to [0, 2pi]):";
+    VNE_LOG_INFO << "  -pi    -> " << normalizeAngle(-kPi);
+    VNE_LOG_INFO << "  3pi    -> " << normalizeAngle(3.0f * kPi);
+    VNE_LOG_INFO << "  -pi/2  -> " << normalizeAngle(-kHalfPi);
 
     VNE_LOG_INFO << "";
-    VNE_LOG_INFO << "normalizeAngleSigned (to [-π, π]):";
-    VNE_LOG_INFO << "  3π/2  -> " << normalizeAngleSigned(1.5f * kPi);
-    VNE_LOG_INFO << "  -3π/2 -> " << normalizeAngleSigned(-1.5f * kPi);
+    VNE_LOG_INFO << "normalizeAngleSigned (to [-pi, pi]):";
+    VNE_LOG_INFO << "  3pi/2  -> " << normalizeAngleSigned(1.5f * kPi);
+    VNE_LOG_INFO << "  -3pi/2 -> " << normalizeAngleSigned(-1.5f * kPi);
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "angleDifference (shortest path):";
-    VNE_LOG_INFO << "  0 to π/2:  " << angleDifference(0.0f, kHalfPi);
-    VNE_LOG_INFO << "  0 to 3π/2: " << angleDifference(0.0f, 1.5f * kPi) << " (goes backward!)";
+    VNE_LOG_INFO << "  0 to pi/2:  " << angleDifference(0.0f, kHalfPi);
+    VNE_LOG_INFO << "  0 to 3pi/2: " << angleDifference(0.0f, 1.5f * kPi) << " (goes backward!)";
 
     VNE_LOG_INFO << "";
     VNE_LOG_INFO << "lerpAngle (handles wraparound):";
-    VNE_LOG_INFO << "  lerp(0, π, 0.5) = " << lerpAngle(0.0f, kPi, 0.5f);
+    VNE_LOG_INFO << "  lerp(0, pi, 0.5) = " << lerpAngle(0.0f, kPi, 0.5f);
 }
 
 void demonstrateDamping() {

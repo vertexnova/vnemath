@@ -12,12 +12,12 @@
 // Corresponding header
 #include "vertexnova/math/geometry/triangle.h"
 
-namespace vne::math {
-
 namespace {
 constexpr float kHalf = 0.5f;
 constexpr float kOneThird = 1.0f / 3.0f;
 }  // namespace
+
+namespace vne::math {
 
 // Geometric properties
 Vec3f Triangle::unitNormal() const noexcept {

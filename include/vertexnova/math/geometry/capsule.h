@@ -176,13 +176,13 @@ class VNE_MATH_API Capsule {
 
     /**
      * @brief Computes the volume of the capsule.
-     * Volume = cylinder + 2 hemispheres = π*r²*h + (4/3)*π*r³
+     * Volume = cylinder + 2 hemispheres = pi*r^2*h + (4/3)*pi*r^3
      */
     [[nodiscard]] float volume() const noexcept;
 
     /**
      * @brief Computes the surface area of the capsule.
-     * Surface = cylinder lateral + sphere = 2*π*r*h + 4*π*r²
+     * Surface = cylinder lateral + sphere = 2*pi*r*h + 4*pi*r^2
      */
     [[nodiscard]] float surfaceArea() const noexcept;
 

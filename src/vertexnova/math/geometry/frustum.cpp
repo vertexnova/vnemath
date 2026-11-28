@@ -16,11 +16,11 @@
 #include "vertexnova/math/geometry/aabb.h"
 #include "vertexnova/math/geometry/sphere.h"
 
-namespace vne::math {
-
 namespace {
 constexpr uint32_t kAabbCornerCount = 8;
 }  // namespace
+
+namespace vne::math {
 
 void Frustum::extractFromMatrix(const Mat4x4f& mat) noexcept {
     // Gribb/Hartmann plane extraction method

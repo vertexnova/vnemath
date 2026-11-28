@@ -21,7 +21,7 @@ namespace vne::math {
 // ============================================================================
 
 /**
- * @brief Standard cubic smoothstep: x²(3-2x)
+ * @brief Standard cubic smoothstep: x^2(3-2x)
  *
  * C1 continuous (zero derivative at edges).
  * Most common smoothstep, fast to evaluate.
@@ -51,7 +51,7 @@ template<FloatingPoint T>
 }
 
 /**
- * @brief Quintic smoothstep (smootherstep): x³(x(6x-15)+10)
+ * @brief Quintic smoothstep (smootherstep): x^3(x(6x-15)+10)
  *
  * C2 continuous (zero first AND second derivative at edges).
  * Better for noise functions and surface stitching.
@@ -75,7 +75,7 @@ template<FloatingPoint T>
 }
 
 /**
- * @brief Quartic smoothstep: x²(2-x²)
+ * @brief Quartic smoothstep: x^2(2-x^2)
  *
  * Uses only even powers - useful when x is a distance (avoids sqrt).
  * Note: Not symmetric around 0.5.
@@ -299,7 +299,7 @@ template<FloatingPoint T>
  * @brief Attempt to provide smooth absolute value (soft mirroring).
  *
  * Behaves like abs(x) but with smooth transition at zero.
- * sqrt(x² + n²) where n controls smoothness.
+ * sqrt(x^2 + n^2) where n controls smoothness.
  *
  * @param x Input value
  * @param n Smoothness (higher = smoother transition at 0)
@@ -317,8 +317,8 @@ template<FloatingPoint T>
 /**
  * @brief Attempt to near-identity mapping with zero derivative at origin.
  *
- * Maps 0→0, 1→1 with derivative 0 at x=0 and derivative 1 at x=1.
- * Cousin of smoothstep. Formula: x²(2-x)
+ * Maps 0->0, 1->1 with derivative 0 at x=0 and derivative 1 at x=1.
+ * Cousin of smoothstep. Formula: x^2(2-x)
  *
  * @param x Value in [0,1] range
  * @return Near-identity value

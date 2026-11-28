@@ -5,6 +5,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <cmath>
 #include <vertexnova/math/geometry/intersection.h>
 
 using namespace vne::math;
@@ -251,4 +252,14 @@ TEST(DistanceTest, PointToTriangle) {
 
     // Above triangle center
     EXPECT_NEAR(distance(Vec3f(0.25f, 0.25f, 1.0f), tri), 1.0f, 0.1f);
+}
+
+TEST(DistanceTest, RayToPointAheadAndBehind) {
+    Ray ray(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+
+    // Point ahead on the ray axis offset in Y
+    EXPECT_NEAR(distance(ray, Vec3f(4.0f, 3.0f, 0.0f)), 3.0f, 1e-5f);
+
+    // Point behind origin: closest point on the ray is the origin
+    EXPECT_NEAR(distance(ray, Vec3f(-5.0f, 4.0f, 0.0f)), std::sqrt(25.0f + 16.0f), 1e-5f);
 }
